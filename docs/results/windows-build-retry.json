@@ -1,0 +1,19 @@
+﻿{
+    "observedAt":  "2026-10-14T22:04:36.4489282+09:00",
+    "artifact":  "src-tauri/target/release/dockslate.exe",
+    "bytes":  3481600,
+    "sha256":  "9950A5487FF102D24E361D508FDF5E8AA0573B8E13EB1A7E84E2925B1C4270D2",
+    "buildCommand":  ".\\scripts\\desktop.ps1 -Mode build",
+    "buildExitCode":  0,
+    "releaseBuildElapsed":  "2m 11s",
+    "executionEnvironment":  "outside Codex sandbox; Windows process not elevated",
+    "readOnlyCommand":  ".\\scripts\\desktop.ps1 -Mode verify",
+    "readOnlyExitCode":  0,
+    "guiCheckCount":  11,
+    "guiExitCode":  0,
+    "ipcCheckCount":  5,
+    "ipcExitCode":  0,
+    "newReaMcpCalls":  0,
+    "dockerMutations":  false,
+    "wslMutations":  false
+}

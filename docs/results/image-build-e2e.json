@@ -1,0 +1,915 @@
+{
+  "observedAt": "2026-10-17T08:14:50.043Z",
+  "target": "actual built Windows DockSlate native window and its verified owned running Moby engine",
+  "mockData": false,
+  "explicitIsolatedFixtureApproval": true,
+  "fixture": {
+    "namespace": "dockslate-e2e-build-1792224890039",
+    "root": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039",
+    "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+    "tag": "dockslate-e2e-build-1792224890039:verify",
+    "payloadBytes": 499712,
+    "payloadSha256": "8ef10e80b89c800241b80ac506f87378c18a8fb5658bf95c82fc1b1206d9c96a"
+  },
+  "checks": [
+    {
+      "name": "verified running independent engine and exact user image/container/cache baseline; unique fixture context uses Korean and spaces",
+      "passed": true
+    },
+    {
+      "name": "missing context, Dockerfile traversal and injected tag reject before job creation without changing user data",
+      "passed": true
+    },
+    {
+      "name": "malformed Dockerfile fails through the actual UI with real Buildx error logs and no fabricated image",
+      "passed": true
+    },
+    {
+      "name": "corrected Dockerfile retries successfully and automatically updates shared views; real CLI image label, COPY payload and .dockerignore exclusions match",
+      "passed": true
+    },
+    {
+      "name": "three menu round trips retain build inputs and output with zero data or build-status reads during navigation and idle",
+      "passed": true
+    },
+    {
+      "name": "approved cleanup deletes only the exact new fixture image and preserves all original images, containers and cache IDs",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "ownership": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 3196,
+          "childStartedTicks": "639278216470259637",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 14748,
+          "startedAt": 1792224846931,
+          "startedTicks": "639278216459224597",
+          "state": "completed",
+          "updatedAt": 1792224863668
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      },
+      "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5"
+    },
+    "baseline": {
+      "images": [
+        {
+          "containers": 0,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "containers": [],
+      "usage": {
+        "buildCache": [
+          {
+            "eligible": true,
+            "id": "zqd3knm2r1af5ynskbigho8ju",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "phkwnafm28f3rs01xoptzb9ll",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "rol703j7rcx69xfdq3x7pnslo",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "v53hsrkdfu9sswz68x7u75mzb",
+            "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+            "reason": null,
+            "size": 8329
+          },
+          {
+            "eligible": true,
+            "id": "8qq0hy0o4wgz31ahm1s2jljml",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          }
+        ],
+        "buildCacheBytes": 49289,
+        "containersBytes": 0,
+        "images": [
+          {
+            "eligible": true,
+            "estimatedReclaimableBytes": 25874,
+            "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "label": "hello-world:latest",
+            "reason": null,
+            "size": 25874
+          }
+        ],
+        "imagesBytes": 36936,
+        "reclaimableBytes": 75163,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      }
+    },
+    "validation": [
+      {
+        "name": "nonexistent context",
+        "args": {
+          "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\missing context",
+          "dockerfile": "Dockerfile",
+          "tag": "dockslate-e2e-build-1792224890039:verify",
+          "noCache": true
+        },
+        "result": {
+          "rejected": true,
+          "error": "빌드 경로에 접근할 수 없습니다."
+        }
+      },
+      {
+        "name": "Dockerfile traversal",
+        "args": {
+          "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+          "dockerfile": "..\\outside.Dockerfile",
+          "tag": "dockslate-e2e-build-1792224890039:verify",
+          "noCache": true
+        },
+        "result": {
+          "rejected": true,
+          "error": "Dockerfile은 빌드 폴더 안의 상대 경로로 입력하세요. 상위 폴더 경로는 사용할 수 없습니다."
+        }
+      },
+      {
+        "name": "tag shell-metacharacter injection",
+        "args": {
+          "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+          "dockerfile": "Dockerfile",
+          "tag": "dockslate-e2e-build-1792224890039:verify; echo dockslate-e2e",
+          "noCache": true
+        },
+        "result": {
+          "rejected": true,
+          "error": "이미지 이름과 태그를 확인하세요. 예: my-app:latest"
+        }
+      }
+    ],
+    "activeBuildNavigation": {
+      "stopDisabled": true,
+      "rejection": {
+        "rejected": true,
+        "error": "이미지 빌드가 진행 중입니다. 완료 후 다시 시도하세요."
+      },
+      "buildGuardObserved": true
+    },
+    "malformedDockerfile": {
+      "job": {
+        "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+        "dockerfile": "Dockerfile",
+        "error": "이미지 빌드에 실패했습니다 (종료 코드 1). 아래 로그를 확인하세요.",
+        "id": "22444-1792224905026-1",
+        "imageId": null,
+        "logVersion": 4,
+        "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 78B 0.0s done\n#1 DONE 0.1s\nDockerfile:2\n--------------------\n   1 |     FROM scratch\n   2 | >>> THIS_INSTRUCTION_IS_INVALID\n   3 |     \n--------------------\nERROR: failed to build: failed to solve: dockerfile parse error on line 2: unknown instruction: THIS_INSTRUCTION_IS_INVALID\n",
+        "noCache": true,
+        "state": "failed",
+        "tag": "dockslate-e2e-build-1792224890039:verify",
+        "truncated": false
+      },
+      "view": {
+        "context": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+        "dockerfile": "Dockerfile",
+        "tag": "dockslate-e2e-build-1792224890039:verify",
+        "noCache": true,
+        "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 78B 0.0s done\n#1 DONE 0.1s\nDockerfile:2\n--------------------\n   1 |     FROM scratch\n   2 | >>> THIS_INSTRUCTION_IS_INVALID\n   3 |     \n--------------------\nERROR: failed to build: failed to solve: dockerfile parse error on line 2: unknown instruction: THIS_INSTRUCTION_IS_INVALID\n",
+        "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 시작\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 실패 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 78B 0.0s done\n#1 DONE 0.1s\nDockerfile:2\n--------------------\n   1 |     FROM scratch\n   2 | >>> THIS_INSTRUCTION_IS_INVALID\n   3 |     \n--------------------\nERROR: failed to build: failed to solve: dockerfile parse error on line 2: unknown instruction: THIS_INSTRUCTION_IS_INVALID\n\n\n이미지 빌드에 실패했습니다 (종료 코드 1). 아래 로그를 확인하세요.",
+        "submitDisabled": true
+      },
+      "samples": [
+        {
+          "observedAt": 1792224905031,
+          "logs": "",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 준비 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224905387,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224905541,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224905698,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224905852,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906009,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906165,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906320,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906475,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906628,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906785,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224906939,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224907094,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224907247,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224907405,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224907561,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224907718,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224907872,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908027,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908183,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908337,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908493,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908649,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908804,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224908959,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224909117,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 78B 0.0s done\n#1 DONE 0.1s\nDockerfile:2\n--------------------\n   1 |     FROM scratch\n   2 | >>> THIS_INSTRUCTION_IS_INVALID\n   3 |     \n--------------------\nERROR: failed to build: failed to solve: dockerfile parse error on line 2: unknown instruction: THIS_INSTRUCTION_IS_INVALID\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 시작\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 실패 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 78B 0.0s done\n#1 DONE 0.1s\nDockerfile:2\n--------------------\n   1 |     FROM scratch\n   2 | >>> THIS_INSTRUCTION_IS_INVALID\n   3 |     \n--------------------\nERROR: failed to build: failed to solve: dockerfile parse error on line 2: unknown instruction: THIS_INSTRUCTION_IS_INVALID\n\n\n이미지 빌드에 실패했습니다 (종료 코드 1). 아래 로그를 확인하세요.",
+          "submitDisabled": true
+        }
+      ],
+      "runningObserved": true,
+      "visibleLogsWhileRunning": true,
+      "durationMs": 4104,
+      "calls": [
+        {
+          "command": "image_build_start",
+          "observedAt": 1792224905023,
+          "finishedAt": 1792224905032,
+          "durationMs": 9
+        },
+        {
+          "command": "runtime_stop",
+          "observedAt": 1792224905212,
+          "finishedAt": 1792224905216,
+          "durationMs": 4
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224906057,
+          "finishedAt": 1792224906061,
+          "durationMs": 4
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224907079,
+          "finishedAt": 1792224907081,
+          "durationMs": 2
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224908074,
+          "finishedAt": 1792224908076,
+          "durationMs": 2
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224909070,
+          "finishedAt": 1792224909072,
+          "durationMs": 2
+        },
+        {
+          "command": "dashboard_snapshot",
+          "observedAt": 1792224909086
+        }
+      ],
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0,
+        "image_search": 0,
+        "image_build_start": 1,
+        "image_build_status": 4,
+        "image_build_pick_context": 0,
+        "destructive_preview": 0,
+        "destructive_execute": 0
+      }
+    },
+    "completedBuild": {
+      "job": {
+        "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+        "dockerfile": "Dockerfile",
+        "error": null,
+        "id": "22444-1792224914229-2",
+        "imageId": "sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+        "logVersion": 7,
+        "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+        "noCache": true,
+        "state": "completed",
+        "tag": "dockslate-e2e-build-1792224890039:verify",
+        "truncated": false
+      },
+      "view": {
+        "context": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+        "dockerfile": "Dockerfile",
+        "tag": "dockslate-e2e-build-1792224890039:verify",
+        "noCache": true,
+        "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+        "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 시작\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 완료 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\nsha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+        "submitDisabled": true
+      },
+      "samples": [
+        {
+          "observedAt": 1792224914229,
+          "logs": "",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 준비 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224914572,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224914728,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224914884,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915041,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915196,
+          "logs": "빌드 로그를 기다립니다…",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\n빌드 로그를 기다립니다…\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915352,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915509,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915663,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915819,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224915974,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224916130,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224916286,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224916441,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224916597,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224916753,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224916908,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224917064,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224917221,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224917378,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224917534,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224917691,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224917845,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918001,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918157,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918314,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918470,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918625,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918781,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224918936,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224919089,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224919245,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 중…\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 중 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\n다른 메뉴로 이동해도 빌드는 계속됩니다. 완료될 때까지 엔진을 중지하거나 앱을 종료할 수 없습니다.",
+          "submitDisabled": true
+        },
+        {
+          "observedAt": 1792224919401,
+          "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+          "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 시작\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 완료 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\nsha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+          "submitDisabled": true
+        }
+      ],
+      "runningObserved": true,
+      "visibleLogsWhileRunning": true,
+      "durationMs": 5182,
+      "calls": [
+        {
+          "command": "image_build_start",
+          "observedAt": 1792224914224,
+          "finishedAt": 1792224914233,
+          "durationMs": 9
+        },
+        {
+          "command": "runtime_stop",
+          "observedAt": 1792224914399,
+          "finishedAt": 1792224914403,
+          "durationMs": 4
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224915244,
+          "finishedAt": 1792224915248,
+          "durationMs": 4
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224916256,
+          "finishedAt": 1792224916258,
+          "durationMs": 2
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224917253,
+          "finishedAt": 1792224917258,
+          "durationMs": 5
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224918265,
+          "finishedAt": 1792224918267,
+          "durationMs": 2
+        },
+        {
+          "command": "image_build_status",
+          "observedAt": 1792224919277,
+          "finishedAt": 1792224919280,
+          "durationMs": 3
+        },
+        {
+          "command": "dashboard_snapshot",
+          "observedAt": 1792224919288
+        }
+      ],
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0,
+        "image_search": 0,
+        "image_build_start": 1,
+        "image_build_status": 5,
+        "image_build_pick_context": 0,
+        "destructive_preview": 0,
+        "destructive_execute": 0
+      }
+    },
+    "imageEvidence": {
+      "id": "sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+      "tag": "dockslate-e2e-build-1792224890039:verify",
+      "inspect": {
+        "Id": "sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+        "RepoTags": [
+          "dockslate-e2e-build-1792224890039:verify"
+        ],
+        "RepoDigests": [
+          "dockslate-e2e-build-1792224890039@sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-17T17:15:17.551786369+09:00",
+        "Config": {
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "WorkingDir": "/",
+          "Labels": {
+            "io.dockslate.e2e": "dockslate-e2e-build-1792224890039"
+          }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 510752,
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:e6c0a326ac57cae8c21b261612d46623f4a9e91430b6e2c1b7e2739f012e4e11"
+          ]
+        },
+        "Metadata": {
+          "LastTagTime": "2026-10-17T08:15:17.749547857Z"
+        },
+        "Descriptor": {
+          "mediaType": "application/vnd.oci.image.index.v1+json",
+          "digest": "sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+          "size": 855
+        },
+        "Identity": {
+          "Build": [
+            {
+              "Ref": "pty2gkfbkl4uevn23ec3t16w5",
+              "CreatedAt": "2026-10-17T17:15:17.783988003+09:00"
+            }
+          ]
+        }
+      },
+      "layerPaths": [
+        "dockslate-e2e-context/",
+        "dockslate-e2e-context/payload.txt"
+      ],
+      "copiedPayloadBytes": 499712,
+      "copiedPayloadSha256": "8ef10e80b89c800241b80ac506f87378c18a8fb5658bf95c82fc1b1206d9c96a",
+      "newCacheIds": [
+        "6y412t96uqj7ycn8zplpc1w3b",
+        "oxqi7paywdhoe5gousysdyjzt",
+        "g21tij0o6hbdarn4kf189svvh",
+        "four8i3guaiha8ng02lb7pfnz"
+      ]
+    },
+    "navigation": {
+      "roundTrips": 3,
+      "idleMs": 6505,
+      "calls": [],
+      "counts": {
+        "dashboard_snapshot": 0,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0,
+        "image_search": 0,
+        "image_build_start": 0,
+        "image_build_status": 0,
+        "image_build_pick_context": 0,
+        "destructive_preview": 0,
+        "destructive_execute": 0
+      },
+      "retained": {
+        "context": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\한글 빌드 컨텍스트",
+        "dockerfile": "Dockerfile",
+        "tag": "dockslate-e2e-build-1792224890039:verify",
+        "noCache": true,
+        "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n",
+        "text": "이미지 빌드\n빌드 폴더\n폴더 선택\nDockerfile · 빌드 폴더 기준 경로\n이미지 이름과 태그\n캐시를 사용하지 않고 빌드\n빌드 시작\n\n선택한 폴더를 빌드 컨텍스트로 사용하며 .dockerignore를 적용합니다. 같은 태그가 있으면 새 빌드 결과를 가리키게 됩니다.\n\n빌드 완료 · dockslate-e2e-build-1792224890039:verify\n자동 스크롤\n로그 복사\nDockSlate 엔진과 빌드 경로를 확인합니다.\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 140B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 77B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 499.84kB 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY . /dockslate-e2e-context/\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:c9b754bf67266d474a75ec03d80854adf50824d7cac9bb79dd27e7a690df02ff 0.0s done\n#5 exporting config sha256:325a1fc91d29dd80447be36f77dbf5003f4e5d82341214d7867cc3f5cdfa42a1 0.0s done\n#5 exporting attestation manifest sha256:39f989656f08e7b049641b4598d0319af58b27192b01237b7dc8cc6414bb9479 0.0s done\n#5 exporting manifest list sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-build-1792224890039:verify done\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify\n#5 unpacking to docker.io/library/dockslate-e2e-build-1792224890039:verify 0.0s done\n#5 DONE 0.2s\n\n\nsha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+        "submitDisabled": false
+      }
+    },
+    "cleanup": {
+      "target": "sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c",
+      "impact": [
+        "Deletion is irreversible within DockSlate.",
+        "Existing volumes are retained. Force deletion and system-wide prune are excluded.",
+        "Only selected images are requested for deletion; image metadata and unreferenced layers may be removed. Downloading an image again requires its source registry."
+      ],
+      "result": {
+        "deleted": [
+          "sha256:8d17d523d1cc6b584518f18dfed25615023ba516b2f300976b57a670f7d3066c"
+        ],
+        "failed": [],
+        "message": "image_delete: 1 deleted, 0 failed"
+      },
+      "remainingImages": [
+        {
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "remainingContainerIds": [],
+      "preservedBaselineCacheIds": [
+        "zqd3knm2r1af5ynskbigho8ju",
+        "b9joos2g2rkxz1e8pvdl6zpx9",
+        "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "phkwnafm28f3rs01xoptzb9ll",
+        "rol703j7rcx69xfdq3x7pnslo",
+        "v53hsrkdfu9sswz68x7u75mzb",
+        "8qq0hy0o4wgz31ahm1s2jljml"
+      ],
+      "newRetainedCacheIds": [
+        "6y412t96uqj7ycn8zplpc1w3b",
+        "four8i3guaiha8ng02lb7pfnz",
+        "oxqi7paywdhoe5gousysdyjzt",
+        "g21tij0o6hbdarn4kf189svvh"
+      ]
+    }
+  },
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\malformed-dockerfile-real-error.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-build-1792224890039\\completed-image-build-retained.png"
+  ],
+  "completed": true,
+  "failure": null,
+  "failureConditions": [
+    "Engine ownership or identity changes",
+    "Any preexisting image/container/cache ID or image tag changes",
+    "Invalid build input starts a job instead of rejecting",
+    "Malformed Dockerfile reports success or lacks real error logs",
+    "Successful UI build does not automatically update Images/Overview/Docker Usage",
+    "CLI image identity, fixture label, COPY payload or .dockerignore evidence disagrees",
+    "Navigation or idle rereads data after terminal build state",
+    "Cleanup targets any preexisting or non-fixture image"
+  ],
+  "failurePolicy": "Halt at the first failed criterion. Preserve all remaining fixture images, build cache and workspace evidence for inspection. Never retry automatically or globally prune.",
+  "untested": [
+    "Native folder picker interaction",
+    "WSL lifecycle changes",
+    "Container runtime execution of the built scratch image"
+  ],
+  "finishedAt": "2026-10-17T08:15:57.227Z",
+  "exceptions": [],
+  "observedCounts": {
+    "dashboard_snapshot": 2,
+    "engine_status": 6,
+    "overview": 0,
+    "containers_list": 6,
+    "images_list": 6,
+    "disk_usage": 6,
+    "runtime_status": 6,
+    "wsl_inventory": 0,
+    "image_search": 0,
+    "image_build_start": 5,
+    "image_build_status": 9,
+    "image_build_pick_context": 0,
+    "destructive_preview": 1,
+    "destructive_execute": 1
+  },
+  "remaining": "Workspace fixture files are retained. On success only the exact newly built fixture image is deleted; all original and newly generated build cache is retained. Failure performs no cleanup.",
+  "artifactSha256": "28DD56273C714E7F59E15EF155754A6606E3FD89CF7B063903D5A37D72949FA1"
+}

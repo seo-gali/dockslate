@@ -1,0 +1,222 @@
+{
+  "containers": {
+    "Err": "The verified DockSlate WSL runtime is installed and stopped."
+  },
+  "diskUsage": {
+    "Err": "The verified DockSlate WSL runtime is installed and stopped."
+  },
+  "engine": {
+    "Ok": {
+      "apiVersion": null,
+      "context": "DockSlate",
+      "endpoint": "wsl://DockSlate/var/run/docker.sock",
+      "engine": null,
+      "message": "The verified DockSlate WSL runtime is installed and stopped.",
+      "ownerPath": null,
+      "serverVersion": null,
+      "state": "unavailable"
+    }
+  },
+  "images": {
+    "Err": "The verified DockSlate WSL runtime is installed and stopped."
+  },
+  "invalidDiskPreview": {
+    "Ok": {
+      "blockedReasons": [
+        "The requested disk ID does not identify a current supported WSL registration.",
+        "The runtime owner requires a verified disk registration.",
+        "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
+        "An elevated Windows administrator session is required.",
+        "Disk inspection requires verified ownership and elevation.",
+        "Exclusive VHDX lock failed: The original disk registration is not verified.",
+        "Disk identity verification failed: Disk identity approval requires all preceding safety checks to pass."
+      ],
+      "checks": [
+        {
+          "detail": "The requested disk ID does not identify a current supported WSL registration.",
+          "name": "ownership",
+          "status": "blocked"
+        },
+        {
+          "detail": "The runtime owner requires a verified disk registration.",
+          "name": "runtimeOwner",
+          "status": "blocked"
+        },
+        {
+          "detail": "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
+          "name": "diskTools",
+          "status": "blocked"
+        },
+        {
+          "detail": "The Windows process token is not elevated.",
+          "name": "administrator",
+          "status": "blocked"
+        },
+        {
+          "detail": "WSL reports no running distribution. No shutdown command is issued.",
+          "name": "wslStopped",
+          "status": "passed"
+        },
+        {
+          "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+          "name": "runtimeExited",
+          "status": "passed"
+        },
+        {
+          "detail": "Disk inspection requires verified ownership and elevation.",
+          "name": "detachedDynamicVhdx",
+          "status": "blocked"
+        },
+        {
+          "detail": "The original disk registration is not verified.",
+          "name": "exclusiveLock",
+          "status": "blocked"
+        },
+        {
+          "detail": "Disk identity approval requires all preceding safety checks to pass.",
+          "name": "sourceIdentity",
+          "status": "blocked"
+        }
+      ],
+      "diskId": "dockslate-invalid-verification-disk",
+      "diskTools": {
+        "available": false,
+        "checks": [
+          {
+            "available": true,
+            "detail": "사용 가능",
+            "name": "Storage\\Get-DiskImage"
+          },
+          {
+            "available": false,
+            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
+            "name": "Hyper-V\\Get-VHD"
+          },
+          {
+            "available": false,
+            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
+            "name": "Hyper-V\\Optimize-VHD"
+          }
+        ],
+        "missing": [
+          "Hyper-V\\Get-VHD",
+          "Hyper-V\\Optimize-VHD"
+        ]
+      },
+      "distribution": null,
+      "eligible": false,
+      "expiresAt": null,
+      "fileSizeBytes": null,
+      "owner": null,
+      "path": null,
+      "requiresBackup": false,
+      "token": null,
+      "warnings": [
+        "백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.",
+        "엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.",
+        "Windows Optimize-VHD로 압축하며 파일 크기가 줄어들지 않을 수 있습니다.",
+        "실행 직전에 모든 안전 조건을 다시 확인합니다."
+      ]
+    }
+  },
+  "invalidPull": {
+    "Err": "Invalid image reference"
+  },
+  "mode": "read-only; no valid mutation token or approved destructive operation",
+  "runtime": {
+    "Ok": {
+      "blockedReasons": [],
+      "distribution": "DockSlate",
+      "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "keeperVerified": false,
+      "message": "The verified DockSlate WSL runtime is installed and stopped.",
+      "operation": {
+        "childProcessId": 15724,
+        "childStartedTicks": "639278220343181223",
+        "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+        "processId": 9636,
+        "startedAt": 1792225233973,
+        "startedTicks": "639278220327126674",
+        "state": "completed",
+        "updatedAt": 1792225234994
+      },
+      "state": "stopped"
+    }
+  },
+  "runtimeInstallPreview": {
+    "Ok": {
+      "blockedReasons": [
+        "The verified DockSlate WSL runtime is installed and stopped.",
+        "The runtime target already exists; it will not be overwritten or automatically removed.",
+        "A WSL registration already uses the runtime target directory. Existing registrations will not be changed."
+      ],
+      "eligible": false,
+      "expiresAt": null,
+      "impact": [
+        "Download Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.",
+        "Install pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.",
+        "Create a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.",
+        "Configure systemd and a root-only Unix socket; no Docker TCP listener is created.",
+        "Stop only the newly created DockSlate distribution after setup. It remains stopped until an approved Start action."
+      ],
+      "requirements": [
+        "Windows 11 x64 with working WSL 2.4.10 or later.",
+        "HTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.",
+        "A free DockSlate distribution name and an absent runtime target directory.",
+        "At least 4 GiB of host free space; container images and volumes use additional space.",
+        "Keep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection."
+      ],
+      "targets": [
+        "DockSlate (new WSL 2 distribution)",
+        "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "D:\\Program Files\\DockSlate\\runtime\\ownership.json"
+      ],
+      "token": null
+    }
+  },
+  "unapprovedCompact": {
+    "Err": "Explicit approval is required to modify the selected VHDX."
+  },
+  "unapprovedDelete": {
+    "Err": "Explicit user approval is required"
+  },
+  "unapprovedDesktopElevation": {
+    "Err": "관리자 권한으로 다시 실행하려면 명시적인 승인이 필요합니다."
+  },
+  "unapprovedRuntimeInstall": {
+    "Err": "Explicit approval is required to download and create the separate DockSlate WSL runtime."
+  },
+  "unapprovedRuntimeStart": {
+    "Err": "Explicit approval is required to start the owned DockSlate distribution."
+  },
+  "unapprovedRuntimeStop": {
+    "Err": "Explicit approval is required to stop the owned DockSlate distribution."
+  },
+  "wsl": {
+    "Ok": {
+      "admin": false,
+      "diagnostics": [],
+      "disks": [
+        {
+          "attached": null,
+          "blockedReasons": [
+            "An elevated Windows administrator session is required for compaction.",
+            "Disk separation has not been verified by both Get-DiskImage and Get-VHD."
+          ],
+          "compactionStatus": "blocked",
+          "distribution": "DockSlate",
+          "exists": true,
+          "fileSizeBytes": 2900361216,
+          "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+          "owner": "DockSlate",
+          "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+          "running": false
+        }
+      ],
+      "operation": null,
+      "runningDistributions": [],
+      "runtimeProcesses": [],
+      "status": "ready"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "observedAt": "2026-10-16T13:39:35.878Z",
+  "observations": {
+    "startApprovalDialog": "DockSlate 런타임 시작 확인\nDockSlate · Moby 엔진\n\nDockSlate 배포판과 컨테이너 엔진을 시작합니다. 저장된 컨테이너는 재시작 정책에 따라 자동으로 실행될 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n시작 승인 및 실행"
+  },
+  "completed": true,
+  "before": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": false,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "operation": {
+      "childProcessId": 18676,
+      "childStartedTicks": "639277544738005301",
+      "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+      "processId": 16552,
+      "startedAt": 1792157673503,
+      "startedTicks": "639277544723624940",
+      "state": "completed",
+      "updatedAt": 1792157674515
+    },
+    "state": "stopped"
+  },
+  "after": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": true,
+    "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+    "operation": {
+      "childProcessId": 8488,
+      "childStartedTicks": "639277547794113257",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 25448,
+      "startedAt": 1792157979299,
+      "startedTicks": "639277547779214930",
+      "state": "completed",
+      "updatedAt": 1792157995885
+    },
+    "state": "running"
+  },
+  "engine": {
+    "apiVersion": "1.55",
+    "context": "dockslate",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": "moby",
+    "message": "Verified independent DockSlate Moby Engine",
+    "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "provider": "DockSlate",
+    "serverVersion": "29.8.2",
+    "state": "connected"
+  }
+}

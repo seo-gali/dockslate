@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-16T10:24:34.038Z",
+  "target": "real built Windows DockSlate EXE and approved own WSL runtime",
+  "mockData": false,
+  "explicitOwnedRuntimeStopStartApproval": true,
+  "mutations": [
+    "own-runtime Stop UI approval",
+    "own-runtime Start UI approval"
+  ],
+  "transitionObservation": "Real Settings lifecycle confirmation is followed by immediate navigation to Images or Containers. Subsequent transition observation is DOM-only: no runtime_status, engine_status, manual refresh, further navigation or CLI call completes or recovers the operation. The global application controller tracks its actual approved action without idle polling.",
+  "failurePolicy": "Stop at the first failed criterion; do not retry lifecycle commands or automatically clean up. An interrupted test can leave the approved own runtime stopped.",
+  "checks": [
+    {
+      "name": "halt at the first failed recovery criterion",
+      "passed": false,
+      "error": "Stop/start verification requires no existing containers or images; existing objects are preserved"
+    }
+  ],
+  "observations": {},
+  "transitions": [],
+  "screenshots": [
+    ".analysis\\runtime-recovery\\failure.png"
+  ],
+  "exceptions": [],
+  "completed": false,
+  "failure": "Error: Stop/start verification requires no existing containers or images; existing objects are preserved\n    at requireFact (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-runtime-recovery.mjs:14:61)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-runtime-recovery.mjs:174:3\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+  "untested": [
+    "VHDX compaction or deletion",
+    "Other WSL distributions",
+    "Concurrent external Docker object changes"
+  ],
+  "finishedAt": "2026-10-16T10:24:49.868Z"
+}

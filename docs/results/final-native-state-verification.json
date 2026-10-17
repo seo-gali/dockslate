@@ -1,0 +1,343 @@
+{
+  "observedAt": "2026-10-16T13:53:50.382Z",
+  "mode": "actual final EXE; read-only engine/disk/CLI comparison and native UI",
+  "mutationExecuted": false,
+  "checks": [
+    {
+      "name": "final EXE connects to the owned D-drive Moby engine without Docker Desktop",
+      "passed": true
+    },
+    {
+      "name": "same real engine identity survives Desktop removal and final app relaunch",
+      "passed": true
+    },
+    {
+      "name": "all four real usage categories match Docker CLI, including omitted-zero fields",
+      "passed": true
+    },
+    {
+      "name": "only actual owned D-drive VHDX is reported and unsafe compaction remains blocked",
+      "passed": true
+    },
+    {
+      "name": "final real Overview displays connected state and measured usage",
+      "passed": true
+    },
+    {
+      "name": "visible Overview usage and cleanup estimate match actual decimal bytes",
+      "passed": true
+    },
+    {
+      "name": "Overview cleanup shortcut opens the actual Docker Usage panel",
+      "passed": true
+    },
+    {
+      "name": "visible WSL disk size matches the actual file using decimal units",
+      "passed": true
+    },
+    {
+      "name": "VHDX preparation has no backup input and retains owned-engine stop, administrator and disk checks",
+      "passed": true
+    },
+    {
+      "name": "actual backup-free disk preview preserves runtime/elevation safety and issues no compaction token",
+      "passed": true
+    },
+    {
+      "name": "canceling VHDX preparation stop approval leaves the real engine running and compaction blocked",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "runtime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": true,
+    "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+    "operation": {
+      "childProcessId": 8488,
+      "childStartedTicks": "639277547794113257",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 25448,
+      "startedAt": 1792157979299,
+      "startedTicks": "639277547779214930",
+      "state": "completed",
+      "updatedAt": 1792157995885
+    },
+    "state": "running"
+  },
+  "engine": {
+    "apiVersion": "1.55",
+    "context": "dockslate",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": "moby",
+    "message": "Verified independent DockSlate Moby Engine",
+    "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "provider": "DockSlate",
+    "serverVersion": "29.8.2",
+    "state": "connected"
+  },
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "usage": {
+    "buildCache": [
+      {
+        "eligible": true,
+        "id": "8qq0hy0o4wgz31ahm1s2jljml",
+        "label": "local source for dockerfile",
+        "reason": null,
+        "size": 8192
+      },
+      {
+        "eligible": true,
+        "id": "zqd3knm2r1af5ynskbigho8ju",
+        "label": "local source for context",
+        "reason": null,
+        "size": 8192
+      },
+      {
+        "eligible": true,
+        "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+        "label": "local source for context",
+        "reason": null,
+        "size": 4096
+      },
+      {
+        "eligible": true,
+        "id": "phkwnafm28f3rs01xoptzb9ll",
+        "label": "local source for context",
+        "reason": null,
+        "size": 8192
+      },
+      {
+        "eligible": true,
+        "id": "rol703j7rcx69xfdq3x7pnslo",
+        "label": "local source for context",
+        "reason": null,
+        "size": 4096
+      },
+      {
+        "eligible": true,
+        "id": "v53hsrkdfu9sswz68x7u75mzb",
+        "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+        "reason": null,
+        "size": 8329
+      },
+      {
+        "eligible": true,
+        "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "label": "local source for dockerfile",
+        "reason": null,
+        "size": 8192
+      }
+    ],
+    "buildCacheBytes": 49289,
+    "containersBytes": 0,
+    "images": [],
+    "imagesBytes": 0,
+    "reclaimableBytes": 49289,
+    "volumesBytes": 0,
+    "warnings": [
+      "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+      "Container and volume automatic cleanup is excluded."
+    ]
+  },
+  "overview": {
+    "containersRunning": 0,
+    "containersStopped": 0,
+    "dockerBytes": 49289,
+    "engine": {
+      "apiVersion": "1.55",
+      "context": "dockslate",
+      "endpoint": "wsl://DockSlate/var/run/docker.sock",
+      "engine": "moby",
+      "message": "Verified independent DockSlate Moby Engine",
+      "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "provider": "DockSlate",
+      "serverVersion": "29.8.2",
+      "state": "connected"
+    },
+    "images": 0,
+    "reclaimableBytes": 49289
+  },
+  "dockerCliDf": [
+    {
+      "Active": "0",
+      "Reclaimable": "0B",
+      "Size": "0B",
+      "TotalCount": "0",
+      "Type": "Images"
+    },
+    {
+      "Active": "0",
+      "Reclaimable": "0B",
+      "Size": "0B",
+      "TotalCount": "0",
+      "Type": "Containers"
+    },
+    {
+      "Active": "0",
+      "Reclaimable": "0B",
+      "Size": "0B",
+      "TotalCount": "0",
+      "Type": "Local Volumes"
+    },
+    {
+      "Active": "0",
+      "Reclaimable": "49.29kB",
+      "Size": "49.29kB",
+      "TotalCount": "7",
+      "Type": "Build Cache"
+    }
+  ],
+  "wsl": {
+    "admin": false,
+    "diagnostics": [],
+    "disks": [
+      {
+        "attached": null,
+        "blockedReasons": [
+          "Running WSL distributions must be stopped manually: DockSlate",
+          "An elevated Windows administrator session is required for compaction.",
+          "Disk separation has not been verified by both Get-DiskImage and Get-VHD."
+        ],
+        "compactionStatus": "blocked",
+        "distribution": "DockSlate",
+        "exists": true,
+        "fileSizeBytes": 2811232256,
+        "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+        "owner": "DockSlate",
+        "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+        "running": true
+      }
+    ],
+    "operation": null,
+    "runningDistributions": [
+      "DockSlate"
+    ],
+    "runtimeProcesses": [],
+    "status": "ready"
+  },
+  "metricTexts": [
+    "0",
+    "0",
+    "49.3 KB",
+    "49.3 KB"
+  ],
+  "displayedBytes": {
+    "dockerUsage": {
+      "text": "49.3 KB",
+      "measuredBytes": 49289,
+      "bytes": 49300,
+      "tolerance": 51
+    },
+    "reclaimable": {
+      "text": "49.3 KB",
+      "measuredBytes": 49289,
+      "bytes": 49300,
+      "tolerance": 51
+    },
+    "vhdx": {
+      "text": "2.8 GB",
+      "measuredBytes": 2811232256,
+      "bytes": 2800000000,
+      "tolerance": 50000001
+    }
+  },
+  "preparation": {
+    "text": "DockSlate\n\nDockSlate\n\n압축 준비 필요\nVHDX 파일 크기\n2.8 GB\nWSL 배포판 상태\n실행 중\n디스크 연결 상태\n미확인\nD:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx\n종료가 필요한 WSL 배포판: DockSlate\n압축 검사·실행에는 관리자 권한으로 실행한 DockSlate가 필요합니다.\n디스크 분리 상태를 아직 확인하지 못했습니다. 엔진 중지와 관리자 권한이 필요하며 Get-DiskImage·Get-VHD 검사가 모두 통과해야 합니다.\n원본 진단 보기\n압축 준비\n엔진과 배포판 중지\n\n실행 중인 컨테이너와 서비스가 중단됩니다. 저장된 데이터는 유지됩니다.\n\nDockSlate 엔진 중지…\n관리자 권한과 디스크 지원 확인\n\n현재 앱은 관리자 권한이 없습니다. 작업을 마친 뒤 DockSlate를 관리자 권한으로 다시 실행하세요. Windows의 Get-DiskImage·Get-VHD·Optimize-VHD 지원과 디스크 분리·잠금 상태를 검사합니다. 필요한 도구가 없거나 상태를 확인할 수 없으면 압축은 사용할 수 없습니다.\n\n백업 파일 없이 원본 VHDX를 압축합니다. 아래 검사는 파일을 변경하지 않으며, 모든 조건을 통과한 뒤 실행을 승인합니다.\n\n사전 조건 검사\n안전 조건 검사 후에만 압축을 승인할 수 있습니다.\n준비 패널 닫기\n압축…",
+    "stopAvailable": true,
+    "compactionDisabled": true,
+    "inputCount": 0
+  },
+  "backupFreePreview": {
+    "blockedReasons": [
+      "An elevated Windows administrator session is required.",
+      "Running WSL distributions must be stopped manually: DockSlate",
+      "Disk inspection requires verified ownership and elevation.",
+      "Exclusive VHDX lock failed: \"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
+      "Disk identity verification failed: Disk identity approval requires all preceding safety checks to pass."
+    ],
+    "checks": [
+      {
+        "detail": "WSL 2 registration: DockSlate; owner: DockSlate",
+        "name": "ownership",
+        "status": "passed"
+      },
+      {
+        "detail": "DockSlate ownership marker, installation ID, completed operation, WSL registration ID, and dedicated BasePath were verified. Metadata and the existing runtime mutation lock remain read-locked.",
+        "name": "runtimeOwner",
+        "status": "passed"
+      },
+      {
+        "detail": "The Windows process token is not elevated.",
+        "name": "administrator",
+        "status": "blocked"
+      },
+      {
+        "detail": "Running WSL distributions must be stopped manually: DockSlate",
+        "name": "wslStopped",
+        "status": "blocked"
+      },
+      {
+        "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+        "name": "runtimeExited",
+        "status": "passed"
+      },
+      {
+        "detail": "Disk inspection requires verified ownership and elevation.",
+        "name": "detachedDynamicVhdx",
+        "status": "blocked"
+      },
+      {
+        "detail": "\"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
+        "name": "exclusiveLock",
+        "status": "blocked"
+      },
+      {
+        "detail": "Disk identity approval requires all preceding safety checks to pass.",
+        "name": "sourceIdentity",
+        "status": "blocked"
+      }
+    ],
+    "diskId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+    "distribution": "DockSlate",
+    "eligible": false,
+    "expiresAt": null,
+    "fileSizeBytes": null,
+    "owner": "DockSlate",
+    "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+    "requiresBackup": false,
+    "token": null,
+    "warnings": [
+      "The original VHDX is modified without a backup. DockSlate cannot undo the operation or restore disk data after a failure.",
+      "No runtime is stopped and no disk is mounted or detached automatically.",
+      "Optimize-VHD -Mode Full on a detached VHDX uses the Windows Prezeroed fallback. File size reduction is not guaranteed.",
+      "All safety conditions are checked again immediately before optimization."
+    ]
+  },
+  "stopApproval": {
+    "text": "DockSlate 런타임 중지 확인\nDockSlate · Moby 엔진 · 이 엔진의 실행 중 컨테이너\n\n실행 중인 컨테이너와 컨테이너에 연결된 서비스가 중단됩니다. 저장하지 않은 메모리 상태와 연결은 복구되지 않습니다.\n\nDockSlate 배포판을 중지합니다. 저장된 컨테이너·이미지·볼륨은 유지되며 다음 시작 시 다시 사용할 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n중지 승인 및 실행",
+    "acknowledged": false,
+    "executionDisabled": true
+  },
+  "runtimeAfterCancel": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": true,
+    "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+    "operation": {
+      "childProcessId": 8488,
+      "childStartedTicks": "639277547794113257",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 25448,
+      "startedAt": 1792157979299,
+      "startedTicks": "639277547779214930",
+      "state": "completed",
+      "updatedAt": 1792157995885
+    },
+    "state": "running"
+  },
+  "finishedAt": "2026-10-16T13:54:02.563Z"
+}

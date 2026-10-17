@@ -1,0 +1,29 @@
+﻿{
+  "id": 1,
+  "result": {
+    "result": {
+      "type": "object",
+      "value": {
+        "status": {
+          "blockedReasons": [],
+          "distribution": "DockSlate",
+          "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+          "keeperVerified": true,
+          "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+          "operation": {
+            "childProcessId": 10384,
+            "childStartedTicks": "639276632567099673",
+            "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+            "processId": 18732,
+            "startedAt": 1792066456599,
+            "startedTicks": "639276632552289203",
+            "state": "completed",
+            "updatedAt": 1792066472496
+          },
+          "state": "running"
+        },
+        "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n새로고침\nPull image\nPull 실패: Invalid internal Docker request.. The operation outcome is unknown; refresh the engine state before retrying.\n이미지 참조\nPull 실행\n선택 삭제\n이미지가 없습니다\n\n연결된 Docker Engine에 로컬 이미지가 없습니다. Pull image에서 이미지 참조를 입력하세요."
+      }
+    }
+  }
+}

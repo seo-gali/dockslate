@@ -1,0 +1,65 @@
+﻿{
+    "observedAt":  "2026-10-16T21:22:34.4200902+09:00",
+    "artifact":  "src-tauri/target/release/dockslate.exe",
+    "sha256":  "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273",
+    "normalCloseCompleted":  true,
+    "verificationProcessExitCode":  null,
+    "resumedMeasurement":  true,
+    "measurementRecoveryNote":  "Normal close and launch completed before the first memory-recording attempt failed on OrderedDictionary property measurement. The original exit code was not retained; the existing normal process was measured without another launch.",
+    "normalLaunchWindowReady":  true,
+    "processId":  24784,
+    "startedTicks":  "639277501048994120",
+    "webViewDebuggingArgumentsSupplied":  false,
+    "customWebViewProfileSupplied":  false,
+    "engineId":  "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "engineVersion":  "29.8.2",
+    "memory":  {
+                   "processes":  [
+                                     {
+                                         "processId":  24784,
+                                         "name":  "dockslate",
+                                         "privateCommittedBytes":  6062080,
+                                         "workingSetBytes":  24899584
+                                     },
+                                     {
+                                         "processId":  3868,
+                                         "name":  "msedgewebview2",
+                                         "privateCommittedBytes":  41107456,
+                                         "workingSetBytes":  131080192
+                                     },
+                                     {
+                                         "processId":  20948,
+                                         "name":  "msedgewebview2",
+                                         "privateCommittedBytes":  3547136,
+                                         "workingSetBytes":  19099648
+                                     },
+                                     {
+                                         "processId":  21000,
+                                         "name":  "msedgewebview2",
+                                         "privateCommittedBytes":  98754560,
+                                         "workingSetBytes":  76754944
+                                     },
+                                     {
+                                         "processId":  3968,
+                                         "name":  "msedgewebview2",
+                                         "privateCommittedBytes":  12165120,
+                                         "workingSetBytes":  39337984
+                                     },
+                                     {
+                                         "processId":  2908,
+                                         "name":  "msedgewebview2",
+                                         "privateCommittedBytes":  7667712,
+                                         "workingSetBytes":  20000768
+                                     },
+                                     {
+                                         "processId":  17952,
+                                         "name":  "msedgewebview2",
+                                         "privateCommittedBytes":  35540992,
+                                         "workingSetBytes":  77578240
+                                     }
+                                 ],
+                   "sumPrivateCommittedBytes":  204845056,
+                   "sumWorkingSetBytes":  388751360,
+                   "scope":  "One observed native app and its WebView2 descendants. Private commit and summed working sets are not physical RAM usage; working sets may share pages. WSL VM, engine and OS memory are excluded."
+               }
+}

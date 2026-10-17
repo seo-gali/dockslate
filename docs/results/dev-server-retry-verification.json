@@ -1,0 +1,66 @@
+{
+  "observedAt": "2026-10-13T14:19:50.863Z",
+  "mode": "Vite outside sandbox; HTTP module transformation and dependency serving only; native desktop dev mode not tested",
+  "initialFailure": "Watcher EBUSY on .analysis artifact; fixed by excluding analysis, toolchain, Rust, and verification directories",
+  "checks": [
+    {
+      "route": "/",
+      "status": 200,
+      "bytes": 403,
+      "passed": true
+    },
+    {
+      "route": "/src/main.tsx",
+      "status": 200,
+      "bytes": 1879,
+      "passed": true
+    },
+    {
+      "route": "/src/api.ts",
+      "status": 200,
+      "bytes": 9772,
+      "passed": true
+    },
+    {
+      "route": "/src/App.tsx",
+      "status": 200,
+      "bytes": 27411,
+      "passed": true
+    },
+    {
+      "route": "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=52e9cde0",
+      "status": 200,
+      "bytes": 12785,
+      "passed": true
+    },
+    {
+      "route": "/node_modules/.vite/deps/react.js?v=52e9cde0",
+      "status": 200,
+      "bytes": 1024,
+      "passed": true
+    },
+    {
+      "route": "/node_modules/.vite/deps/react-dom_client.js?v=52e9cde0",
+      "status": 200,
+      "bytes": 1113340,
+      "passed": true
+    },
+    {
+      "route": "/node_modules/.vite/deps/@tauri-apps_api_core.js?v=52e9cde0",
+      "status": 200,
+      "bytes": 2428,
+      "passed": true
+    },
+    {
+      "route": "/node_modules/.vite/deps/@tauri-apps_api_event.js?v=52e9cde0",
+      "status": 200,
+      "bytes": 2524,
+      "passed": true
+    },
+    {
+      "name": "Server remains available after analysis artifact creation",
+      "status": 200,
+      "passed": true
+    }
+  ]
+}

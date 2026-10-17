@@ -1,0 +1,233 @@
+{
+  "observedAt": "2026-10-15T12:43:01.488Z",
+  "approved": true,
+  "prefix": "dockslate-e2e-cache-mv9j4ijz",
+  "fixtureRoot": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-cache-mv9j4ijz",
+  "checks": [
+    {
+      "name": "empty independent engine and build cache; existing data excluded",
+      "passed": true
+    },
+    {
+      "name": "two real isolated Buildx scratch-image builds",
+      "passed": true
+    },
+    {
+      "name": "actual app deletes only the approved exact cache ID and retains every unselected ID",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "baseline": {
+      "containers": [],
+      "images": [],
+      "usage": {
+        "buildCache": [],
+        "buildCacheBytes": 0,
+        "containersBytes": 0,
+        "images": [],
+        "imagesBytes": null,
+        "reclaimableBytes": 0,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      }
+    },
+    "a": {
+      "tag": "dockslate-e2e-cache-mv9j4ijz:a",
+      "directory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-cache-mv9j4ijz\\a",
+      "guestDirectory": "/mnt/d/01_Programming/08_AI/REA/dockslate/.analysis/dockslate-e2e-cache-mv9j4ijz/a",
+      "stdout": "",
+      "stderr": "#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 145B 0.0s done\n#1 DONE 0.1s\n\n#2 [internal] load .dockerignore\n#2 transferring context:\n#2 transferring context: 2B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 69B 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY payload.txt /dockslate-e2e-marker\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:1ab68c71caeb111e344a7739e6e929dc9876fcd8b6a08fe4eb51112e3c0afe87 0.0s done\n#5 exporting config sha256:540e133d5583ba9f1b01ea6e25dc94a02047ac6b6656d1590e51941ea5ca3c02 0.0s done\n#5 exporting attestation manifest sha256:8793b7e6a33a9e7806ccb1e3729de72beb32604817e442e8a93b3284b9a299f0 0.0s done\n#5 exporting manifest list sha256:863cefacb150733b9bddb6720b565f6005dc7e87f579dcd1439a8822240598b6\n#5 exporting manifest list sha256:863cefacb150733b9bddb6720b565f6005dc7e87f579dcd1439a8822240598b6 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-cache-mv9j4ijz:a done\n#5 unpacking to docker.io/library/dockslate-e2e-cache-mv9j4ijz:a 0.0s done\n#5 DONE 0.3s\n"
+    },
+    "b": {
+      "tag": "dockslate-e2e-cache-mv9j4ijz:b",
+      "directory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-cache-mv9j4ijz\\b",
+      "guestDirectory": "/mnt/d/01_Programming/08_AI/REA/dockslate/.analysis/dockslate-e2e-cache-mv9j4ijz/b",
+      "stdout": "",
+      "stderr": "#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 145B 0.0s done\n#1 DONE 0.1s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 2B 0.0s done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 69B 0.0s done\n#3 DONE 0.1s\n\n#4 [1/1] COPY payload.txt /dockslate-e2e-marker\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:9fe0b1ab12dcc9d392255b9f66d47086006363203aa3b8bde22e9bf8f439414d 0.0s done\n#5 exporting config sha256:53ffb50cffcfc911bcd5429aba45670bca3babffbe3f0821e7f5f915c499c26c 0.0s done\n#5 exporting attestation manifest sha256:87351d7ff39944a9163e495daf95ff3ecf68ae809bfb83bfdc73e8e99f036d04 0.0s done\n#5 exporting manifest list sha256:c36899da609ba491a05dd0b88841566b3071b5b9755faf3166532b5aac206af9\n#5 exporting manifest list sha256:c36899da609ba491a05dd0b88841566b3071b5b9755faf3166532b5aac206af9 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-cache-mv9j4ijz:b done\n#5 unpacking to docker.io/library/dockslate-e2e-cache-mv9j4ijz:b 0.0s done\n#5 DONE 0.3s\n"
+    },
+    "images": [
+      {
+        "containers": 0,
+        "created": 1792068228,
+        "id": "sha256:c36899da609ba491a05dd0b88841566b3071b5b9755faf3166532b5aac206af9",
+        "size": 11913,
+        "tags": [
+          "dockslate-e2e-cache-mv9j4ijz:b"
+        ]
+      },
+      {
+        "containers": 0,
+        "created": 1792068213,
+        "id": "sha256:863cefacb150733b9bddb6720b565f6005dc7e87f579dcd1439a8822240598b6",
+        "size": 11915,
+        "tags": [
+          "dockslate-e2e-cache-mv9j4ijz:a"
+        ]
+      }
+    ],
+    "before": {
+      "buildCache": [
+        {
+          "eligible": true,
+          "id": "phkwnafm28f3rs01xoptzb9ll",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "zqd3knm2r1af5ynskbigho8ju",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "55wg7dfwrc2leouhg7bript6r",
+          "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+          "reason": null,
+          "size": 8327
+        },
+        {
+          "eligible": true,
+          "id": "8qq0hy0o4wgz31ahm1s2jljml",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "rol703j7rcx69xfdq3x7pnslo",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "v53hsrkdfu9sswz68x7u75mzb",
+          "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+          "reason": null,
+          "size": 8329
+        }
+      ],
+      "buildCacheBytes": 57616,
+      "containersBytes": 0,
+      "images": [],
+      "imagesBytes": null,
+      "reclaimableBytes": 57616,
+      "volumesBytes": 0,
+      "warnings": [
+        "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+        "Container and volume automatic cleanup is excluded."
+      ]
+    },
+    "selected": {
+      "eligible": true,
+      "id": "55wg7dfwrc2leouhg7bript6r",
+      "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+      "reason": null,
+      "size": 8327
+    },
+    "deletion": {
+      "targets": [
+        "55wg7dfwrc2leouhg7bript6r"
+      ],
+      "impact": [
+        "Deletion is irreversible within DockSlate.",
+        "Existing volumes are retained. Force deletion and system-wide prune are excluded.",
+        "Only exact selected unused, unshared build cache IDs are requested. Subsequent builds may take longer."
+      ],
+      "result": {
+        "deleted": [
+          "55wg7dfwrc2leouhg7bript6r"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    "after": {
+      "buildCache": [
+        {
+          "eligible": true,
+          "id": "phkwnafm28f3rs01xoptzb9ll",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "zqd3knm2r1af5ynskbigho8ju",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "8qq0hy0o4wgz31ahm1s2jljml",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "rol703j7rcx69xfdq3x7pnslo",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "v53hsrkdfu9sswz68x7u75mzb",
+          "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+          "reason": null,
+          "size": 8329
+        },
+        {
+          "eligible": true,
+          "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        }
+      ],
+      "buildCacheBytes": 49289,
+      "containersBytes": 0,
+      "images": [],
+      "imagesBytes": null,
+      "reclaimableBytes": 49289,
+      "volumesBytes": 0,
+      "warnings": [
+        "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+        "Container and volume automatic cleanup is excluded."
+      ]
+    }
+  },
+  "completed": true,
+  "finishedAt": "2026-10-15T12:45:44.683Z",
+  "remaining": "On success, unselected fixture caches are retained to prove selection. Small workspace Dockerfiles and payloads are retained as evidence. Failure performs no automatic cleanup."
+}

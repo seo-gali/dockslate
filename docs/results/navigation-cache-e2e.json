@@ -1,0 +1,1163 @@
+{
+  "observedAt": "2026-10-16T10:26:24.818Z",
+  "target": "actual built Windows DockSlate WebView2 window",
+  "mockData": false,
+  "changes": "renderer reload, menu/tab clicks, temporary local filter/backup-input edits and one explicit Images Refresh; no runtime or Docker object mutation",
+  "measurement": "CDP Network.requestWillBeSent records decoded IPC POST command names and local timestamps only; CORS OPTIONS requests are excluded. No headers, payloads, responses, backend functions, or request routing are intercepted or modified.",
+  "checks": [
+    {
+      "name": "startup performs one real dashboard snapshot, one runtime query and one WSL inventory query",
+      "passed": true
+    },
+    {
+      "name": "real Docker measurements and WSL path/size data are loaded; local filter and backup-input state can be edited without disk operations",
+      "passed": true
+    },
+    {
+      "name": "three menu/tab round trips retain the same actual data nodes, measurements and local inputs on the first animation frame",
+      "passed": true
+    },
+    {
+      "name": "menu/tab navigation and a 16-second idle interval make zero full-data backend IPC calls",
+      "passed": true
+    },
+    {
+      "name": "explicit Images Refresh makes exactly one engine and image-list read while retaining the actual list or empty state throughout loading",
+      "passed": true
+    },
+    {
+      "name": "temporary local inputs are cleared and the real Overview is restored without renderer exceptions",
+      "passed": true
+    }
+  ],
+  "startup": {
+    "calls": [
+      {
+        "command": "wsl_inventory",
+        "observedAt": 1792146387341,
+        "finishedAt": 1792146388307
+      },
+      {
+        "command": "dashboard_snapshot",
+        "observedAt": 1792146387341,
+        "finishedAt": 1792146392472
+      },
+      {
+        "command": "runtime_status",
+        "observedAt": 1792146387341,
+        "finishedAt": 1792146388114
+      },
+      {
+        "command": "plugin:event|listen",
+        "observedAt": 1792146387342,
+        "finishedAt": 1792146387346
+      }
+    ],
+    "counts": {
+      "dashboard_snapshot": 1,
+      "engine_status": 0,
+      "overview": 0,
+      "containers_list": 0,
+      "images_list": 0,
+      "disk_usage": 0,
+      "runtime_status": 1,
+      "wsl_inventory": 1
+    }
+  },
+  "navigation": {
+    "idleObservationMs": 16001,
+    "calls": [],
+    "counts": {
+      "dashboard_snapshot": 0,
+      "engine_status": 0,
+      "overview": 0,
+      "containers_list": 0,
+      "images_list": 0,
+      "disk_usage": 0,
+      "runtime_status": 0,
+      "wsl_inventory": 0
+    },
+    "firstFrameDelayMs": {
+      "samples": [
+        5.100000000093132,
+        12,
+        5.400000000023283,
+        6,
+        3.199999999953434,
+        5.900000000023283,
+        5.200000000069849,
+        4.199999999953434,
+        4.399999999906868,
+        8.099999999976717,
+        3.1000000000931323,
+        6,
+        6.599999999976717,
+        4.700000000069849,
+        2.900000000023283,
+        6.400000000023283,
+        4.099999999976717,
+        5.199999999953434
+      ],
+      "minimum": 2.900000000023283,
+      "maximum": 12,
+      "mean": 5.47222222222869
+    }
+  },
+  "manualRefresh": {
+    "firstFrame": {
+      "page": "Images",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        ""
+      ],
+      "activeFilter": null,
+      "refreshDisabled": true,
+      "imageDataVisible": true,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 4.400000000023283
+    },
+    "samples": [
+      {
+        "observedAt": 1792146409418,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146409625,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146409829,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146410033,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146410249,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146410466,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146410683,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146410886,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146411102,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146411304,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146411508,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146411725,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146411930,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146412146,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146412349,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146412553,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146412756,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146412960,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146413164,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146413367,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146413569,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146413772,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146413976,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146414178,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146414395,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146414599,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146414803,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146415006,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146415210,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146415426,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146415628,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146415834,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146416038,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": true,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      },
+      {
+        "observedAt": 1792146416256,
+        "page": "Images",
+        "tab": null,
+        "header": "Connected",
+        "metrics": [],
+        "diskPaths": [],
+        "diskSizes": [],
+        "inputs": [
+          ""
+        ],
+        "activeFilter": null,
+        "refreshDisabled": false,
+        "imageDataVisible": true,
+        "busyPanels": [],
+        "errors": []
+      }
+    ],
+    "calls": [
+      {
+        "command": "engine_status",
+        "observedAt": 1792146409414,
+        "finishedAt": 1792146411900
+      },
+      {
+        "command": "images_list",
+        "observedAt": 1792146411901,
+        "finishedAt": 1792146416109
+      }
+    ],
+    "counts": {
+      "dashboard_snapshot": 0,
+      "engine_status": 1,
+      "overview": 0,
+      "containers_list": 0,
+      "images_list": 1,
+      "disk_usage": 0,
+      "runtime_status": 0,
+      "wsl_inventory": 0
+    },
+    "durationMs": 7109,
+    "loadingObserved": true
+  },
+  "observations": [
+    {
+      "step": "initial docker data",
+      "page": "Disk Manager",
+      "tab": "Docker Usage",
+      "header": "Connected",
+      "metrics": [
+        "36.9 KB",
+        "49.3 KB",
+        "0 B",
+        "0 B"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        ""
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 0.7000000000698492
+    },
+    {
+      "step": "initial WSL data",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 1.5
+    },
+    {
+      "step": "round 1 overview",
+      "page": "Overview",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [
+        "0",
+        "1",
+        "86.2 KB",
+        "75.2 KB"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 5.100000000093132
+    },
+    {
+      "step": "round 1 containers",
+      "page": "Containers",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-container-state"
+      ],
+      "activeFilter": "Stopped",
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 12
+    },
+    {
+      "step": "round 1 images",
+      "page": "Images",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-image-state"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": false,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 5.400000000023283
+    },
+    {
+      "step": "round 1 WSL page",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache-input-only.vhdx.bak"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 6
+    },
+    {
+      "step": "round 1 Docker tab",
+      "page": "Disk Manager",
+      "tab": "Docker Usage",
+      "header": "Connected",
+      "metrics": [
+        "36.9 KB",
+        "49.3 KB",
+        "0 B",
+        "0 B"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-cache-state"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 3.199999999953434
+    },
+    {
+      "step": "round 1 WSL tab",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache-input-only.vhdx.bak"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 5.900000000023283
+    },
+    {
+      "step": "round 2 overview",
+      "page": "Overview",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [
+        "0",
+        "1",
+        "86.2 KB",
+        "75.2 KB"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 5.200000000069849
+    },
+    {
+      "step": "round 2 containers",
+      "page": "Containers",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-container-state"
+      ],
+      "activeFilter": "Stopped",
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 4.199999999953434
+    },
+    {
+      "step": "round 2 images",
+      "page": "Images",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-image-state"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": false,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 4.399999999906868
+    },
+    {
+      "step": "round 2 WSL page",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache-input-only.vhdx.bak"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 8.099999999976717
+    },
+    {
+      "step": "round 2 Docker tab",
+      "page": "Disk Manager",
+      "tab": "Docker Usage",
+      "header": "Connected",
+      "metrics": [
+        "36.9 KB",
+        "49.3 KB",
+        "0 B",
+        "0 B"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-cache-state"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 3.1000000000931323
+    },
+    {
+      "step": "round 2 WSL tab",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache-input-only.vhdx.bak"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 6
+    },
+    {
+      "step": "round 3 overview",
+      "page": "Overview",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [
+        "0",
+        "1",
+        "86.2 KB",
+        "75.2 KB"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 6.599999999976717
+    },
+    {
+      "step": "round 3 containers",
+      "page": "Containers",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-container-state"
+      ],
+      "activeFilter": "Stopped",
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 4.700000000069849
+    },
+    {
+      "step": "round 3 images",
+      "page": "Images",
+      "tab": null,
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-image-state"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": false,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 2.900000000023283
+    },
+    {
+      "step": "round 3 WSL page",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache-input-only.vhdx.bak"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 6.400000000023283
+    },
+    {
+      "step": "round 3 Docker tab",
+      "page": "Disk Manager",
+      "tab": "Docker Usage",
+      "header": "Connected",
+      "metrics": [
+        "36.9 KB",
+        "49.3 KB",
+        "0 B",
+        "0 B"
+      ],
+      "diskPaths": [],
+      "diskSizes": [],
+      "inputs": [
+        "dockslate-navigation-cache-state"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 4.099999999976717
+    },
+    {
+      "step": "round 3 WSL tab",
+      "page": "Disk Manager",
+      "tab": "WSL Disks",
+      "header": "Connected",
+      "metrics": [],
+      "diskPaths": [
+        "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx"
+      ],
+      "diskSizes": [
+        "2.8 GB"
+      ],
+      "inputs": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache-input-only.vhdx.bak"
+      ],
+      "activeFilter": null,
+      "refreshDisabled": false,
+      "imageDataVisible": null,
+      "busyPanels": [],
+      "errors": [],
+      "firstFrameDelayMs": 5.199999999953434
+    }
+  ],
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache\\retained-wsl-preparation.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache\\retained-docker-usage.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache\\manual-images-refresh-retains-data.png"
+  ],
+  "completed": true,
+  "failure": null,
+  "untested": [
+    "Backend internals beyond actual IPC call counts",
+    "VHDX compaction or deletion"
+  ],
+  "calibration": {
+    "command": "engine_status",
+    "observed": true
+  },
+  "finishedAt": "2026-10-16T10:26:56.569Z",
+  "exceptions": []
+}

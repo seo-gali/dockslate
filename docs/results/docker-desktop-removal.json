@@ -1,0 +1,51 @@
+﻿{
+    "startedAt":  "2026-10-15T21:34:25.2199627+09:00",
+    "approved":  true,
+    "installer":  "C:\\Program Files\\Docker\\Docker\\Docker Desktop Installer.exe",
+    "installerSha256":  "DBA0643EF9CDCA6723CE0E158E4EF8531B880651D8EF89DA9C4D4E1E7C85AB8F",
+    "version":  "4.57.0",
+    "independentEngineId":  "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "ownedRuntime":  "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "desktopVhdxBefore":  [
+                              {
+                                  "path":  "C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\main\\ext4.vhdx",
+                                  "identity":  "06D38ABD:307500000002D0AB",
+                                  "length":  109051904
+                              },
+                              {
+                                  "path":  "C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\disk\\docker_data.vhdx",
+                                  "identity":  "06D38ABD:000A000000064E1F",
+                                  "length":  20675821568
+                              }
+                          ],
+    "windowsCFreeBefore":  332335935488,
+    "uninstallExitCode":  0,
+    "residualFileActions":  [
+                                {
+                                    "path":  "C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\main\\ext4.vhdx",
+                                    "result":  "Already removed by the official uninstaller"
+                                },
+                                {
+                                    "path":  "C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\disk\\docker_data.vhdx",
+                                    "result":  "Already removed by the official uninstaller"
+                                }
+                            ],
+    "completed":  true,
+    "uninstallFinishedAt":  "2026-10-15T21:41:52.2927900+09:00",
+    "desktopRegistrationRemoved":  true,
+    "desktopExecutableExists":  false,
+    "desktopServiceExists":  false,
+    "desktopVhdxAfter":  [
+                             {
+                                 "path":  "C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\main\\ext4.vhdx",
+                                 "exists":  false
+                             },
+                             {
+                                 "path":  "C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\disk\\docker_data.vhdx",
+                                 "exists":  false
+                             }
+                         ],
+    "windowsCFreeAfter":  354703241216,
+    "windowsCFreeObservedChange":  22367305728,
+    "finishedAt":  "2026-10-15T21:41:52.3819612+09:00"
+}

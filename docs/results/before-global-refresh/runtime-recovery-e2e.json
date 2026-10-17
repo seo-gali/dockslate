@@ -1,0 +1,445 @@
+{
+  "observedAt": "2026-10-16T12:10:36.135Z",
+  "target": "real built Windows DockSlate EXE and approved own WSL runtime",
+  "mockData": false,
+  "explicitOwnedRuntimeStopStartApproval": true,
+  "mutations": [
+    "own-runtime Stop UI approval",
+    "own-runtime Start UI approval"
+  ],
+  "transitionObservation": "Real Settings lifecycle confirmation is followed by immediate navigation to Images or Containers. Subsequent transition observation is DOM-only: no runtime_status, engine_status, manual refresh, further navigation or CLI call completes or recovers the operation. The global application controller tracks its actual approved action without idle polling.",
+  "failurePolicy": "Stop at the first failed criterion; do not retry lifecycle commands or automatically clean up. An interrupted test can leave the approved own runtime stopped.",
+  "checks": [
+    {
+      "name": "verified independent owned runtime, stable CLI identity, empty container baseline and preserved image identities",
+      "passed": true
+    },
+    {
+      "name": "off-Settings runtime stop completes and Images automatically reflects the stopped engine",
+      "passed": true
+    },
+    {
+      "name": "real off-Settings start displays busy separately and automatically restores Containers without manual refresh",
+      "passed": true
+    },
+    {
+      "name": "Images reopens connected without the stale runtime-operation query error",
+      "passed": true
+    },
+    {
+      "name": "same real engine and owned registration reconnect; containers, images and private build caches are preserved",
+      "passed": true
+    },
+    {
+      "name": "no unhandled renderer exceptions",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "baseline": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 18096,
+          "childStartedTicks": "639277427183098862",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 8552,
+          "startedAt": 1792145918207,
+          "startedTicks": "639277427169471191",
+          "state": "completed",
+          "updatedAt": 1792145936367
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      },
+      "ownership": {
+        "installId": "48f2d8a3-d3a6-4474-9177-aac957726715",
+        "registrationId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+        "rootfsSha256": "bb415d824822c4b878125729af451a5d18fb13d1cf5cbed9a7393ad64ac6039e",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "engineVersion": "5:29.8.2-1~ubuntu.24.04~noble"
+      },
+      "containers": [],
+      "images": [
+        {
+          "containers": 0,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "usage": {
+        "buildCache": [
+          {
+            "eligible": true,
+            "id": "phkwnafm28f3rs01xoptzb9ll",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "8qq0hy0o4wgz31ahm1s2jljml",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "rol703j7rcx69xfdq3x7pnslo",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "v53hsrkdfu9sswz68x7u75mzb",
+            "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+            "reason": null,
+            "size": 8329
+          },
+          {
+            "eligible": true,
+            "id": "zqd3knm2r1af5ynskbigho8ju",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          }
+        ],
+        "buildCacheBytes": 49289,
+        "containersBytes": 0,
+        "images": [
+          {
+            "eligible": true,
+            "estimatedReclaimableBytes": 25874,
+            "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "label": "hello-world:latest",
+            "reason": null,
+            "size": 25874
+          }
+        ],
+        "imagesBytes": 36936,
+        "reclaimableBytes": 75163,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      },
+      "info": {
+        "id": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+        "operatingSystem": "Ubuntu 24.04.5 LTS",
+        "serverVersion": "29.8.2"
+      }
+    },
+    "stopApprovalDialog": "DockSlate 런타임 중지 확인\nDockSlate · Moby 엔진 · 이 엔진의 실행 중 컨테이너\n\n실행 중인 컨테이너와 컨테이너에 연결된 서비스가 중단됩니다. 저장하지 않은 메모리 상태와 연결은 복구되지 않습니다.\n\nDockSlate 배포판을 중지합니다. 저장된 컨테이너·이미지·볼륨은 유지되며 다음 시작 시 다시 사용할 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n중지 승인 및 실행",
+    "stopTransition": {
+      "snapshot": {
+        "page": "Images",
+        "header": "Disconnected",
+        "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n새로고침\nPull image\nDockSlate 엔진이 실행되지 않았습니다\n\nThe verified DockSlate WSL runtime is installed and stopped.\n\n새로고침\n엔진 설정",
+        "busyPanels": [],
+        "errors": [],
+        "imageRows": [],
+        "navigationDisabled": false
+      },
+      "busyObserved": true
+    },
+    "startApprovalDialog": "DockSlate 런타임 시작 확인\nDockSlate · Moby 엔진\n\nDockSlate 배포판과 컨테이너 엔진을 시작합니다. 저장된 컨테이너는 재시작 정책에 따라 자동으로 실행될 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n시작 승인 및 실행",
+    "startTransition": {
+      "snapshot": {
+        "page": "Containers",
+        "header": "Connected",
+        "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n새로고침\nAll\nRunning\nStopped\n컨테이너가 없습니다\n\n연결된 Docker Engine에 컨테이너가 없습니다.",
+        "busyPanels": [],
+        "errors": [],
+        "imageRows": [],
+        "navigationDisabled": false
+      },
+      "busyObserved": true
+    },
+    "finalState": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 17548,
+          "childStartedTicks": "639277494707401273",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 3432,
+          "startedAt": 1792152670625,
+          "startedTicks": "639277494691025001",
+          "state": "completed",
+          "updatedAt": 1792152686780
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      },
+      "containers": [],
+      "images": [
+        {
+          "containers": 0,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "usage": {
+        "buildCache": [
+          {
+            "eligible": true,
+            "id": "v53hsrkdfu9sswz68x7u75mzb",
+            "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+            "reason": null,
+            "size": 8329
+          },
+          {
+            "eligible": true,
+            "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "rol703j7rcx69xfdq3x7pnslo",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "8qq0hy0o4wgz31ahm1s2jljml",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "zqd3knm2r1af5ynskbigho8ju",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "phkwnafm28f3rs01xoptzb9ll",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          }
+        ],
+        "buildCacheBytes": 49289,
+        "containersBytes": 0,
+        "images": [
+          {
+            "eligible": true,
+            "estimatedReclaimableBytes": 25874,
+            "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "label": "hello-world:latest",
+            "reason": null,
+            "size": 25874
+          }
+        ],
+        "imagesBytes": 36936,
+        "reclaimableBytes": 75163,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      },
+      "info": {
+        "id": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+        "operatingSystem": "Ubuntu 24.04.5 LTS",
+        "serverVersion": "29.8.2"
+      }
+    }
+  },
+  "transitions": [
+    {
+      "observedAt": "2026-10-16T12:11:03.297Z",
+      "action": "stop",
+      "page": "Images",
+      "header": "작업 중",
+      "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n새로고침\nPull image\n런타임·디스크 작업 중\n\n작업을 마치면 연결 상태와 목록을 자동으로 다시 조회합니다.",
+      "busyPanels": [
+        "런타임·디스크 작업 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:06.094Z",
+      "action": "stop",
+      "page": "Images",
+      "header": "작업 중",
+      "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n조회 중…\nPull image\n런타임·디스크 작업 중\n\n작업을 마치면 연결 상태와 목록을 자동으로 다시 조회합니다.",
+      "busyPanels": [
+        "런타임·디스크 작업 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:07.949Z",
+      "action": "stop",
+      "page": "Images",
+      "header": "Disconnected",
+      "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n새로고침\nPull image\nDockSlate 엔진이 실행되지 않았습니다\n\nThe verified DockSlate WSL runtime is installed and stopped.\n\n새로고침\n엔진 설정",
+      "busyPanels": [],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:10.149Z",
+      "action": "start",
+      "page": "Containers",
+      "header": "작업 중",
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n새로고침\n런타임·디스크 작업 중\n\n작업을 마치면 연결 상태와 목록을 자동으로 다시 조회합니다.",
+      "busyPanels": [
+        "런타임·디스크 작업 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:14.198Z",
+      "action": "start",
+      "page": "Containers",
+      "header": "작업 중",
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n조회 중…\n런타임·디스크 작업 중\n\n작업을 마치면 연결 상태와 목록을 자동으로 다시 조회합니다.",
+      "busyPanels": [
+        "런타임·디스크 작업 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:14.412Z",
+      "action": "start",
+      "page": "Containers",
+      "header": "작업 중",
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n새로고침\n런타임·디스크 작업 중\n\n작업을 마치면 연결 상태와 목록을 자동으로 다시 조회합니다.",
+      "busyPanels": [
+        "런타임·디스크 작업 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:27.446Z",
+      "action": "start",
+      "page": "Containers",
+      "header": "작업 중",
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n조회 중…\n런타임·디스크 작업 중\n\n작업을 마치면 연결 상태와 목록을 자동으로 다시 조회합니다.",
+      "busyPanels": [
+        "런타임·디스크 작업 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:32.304Z",
+      "action": "start",
+      "page": "Containers",
+      "header": "Connected",
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n조회 중…\nAll\nRunning\nStopped\n컨테이너 조회 중",
+      "busyPanels": [
+        "컨테이너 조회 중"
+      ],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    },
+    {
+      "observedAt": "2026-10-16T12:11:38.852Z",
+      "action": "start",
+      "page": "Containers",
+      "header": "Connected",
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n새로고침\nAll\nRunning\nStopped\n컨테이너가 없습니다\n\n연결된 Docker Engine에 컨테이너가 없습니다.",
+      "busyPanels": [],
+      "errors": [],
+      "imageRows": [],
+      "navigationDisabled": false
+    }
+  ],
+  "screenshots": [
+    ".analysis\\runtime-recovery\\initial-connected-images.png",
+    ".analysis\\runtime-recovery\\stop-busy-images.png",
+    ".analysis\\runtime-recovery\\stopped-images.png",
+    ".analysis\\runtime-recovery\\start-busy-containers.png",
+    ".analysis\\runtime-recovery\\recovered-containers.png",
+    ".analysis\\runtime-recovery\\recovered-images.png"
+  ],
+  "exceptions": [],
+  "completed": true,
+  "failure": null,
+  "untested": [
+    "VHDX compaction or deletion",
+    "Other WSL distributions",
+    "Concurrent external Docker object changes"
+  ],
+  "finishedAt": "2026-10-16T12:12:05.708Z"
+}

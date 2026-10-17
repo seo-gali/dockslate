@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-10-15T13:31:16.640Z",
+  "source": "independent-engine-e2e-interrupted-ui.json",
+  "approvedIsolatedFixturesOnly": true,
+  "actions": [
+    {
+      "containerId": "35da44a964cfbfe653d1460f875ecce154ed521acb1e1c11fbc6a0090bc5dd6f",
+      "result": {
+        "deleted": [
+          "35da44a964cfbfe653d1460f875ecce154ed521acb1e1c11fbc6a0090bc5dd6f"
+        ],
+        "failed": [],
+        "message": "container_delete: 1 deleted, 0 failed"
+      }
+    },
+    {
+      "imageId": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "result": {
+        "deleted": [
+          "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+        ],
+        "failed": [],
+        "message": "image_delete: 1 deleted, 0 failed"
+      }
+    }
+  ],
+  "completed": true
+}

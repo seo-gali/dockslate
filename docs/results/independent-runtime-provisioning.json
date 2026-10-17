@@ -1,0 +1,43 @@
+{
+  "observedAt": "2026-10-15T12:43:01.303Z",
+  "approved": true,
+  "target": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+  "succeeded": true,
+  "observations": [
+    {
+      "observedAt": "2026-10-15T12:42:57.288Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 25796,
+          "childStartedTicks": "639276643623384440",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 26532,
+          "startedAt": 1792067562205,
+          "startedTicks": "639276643605205597",
+          "state": "completed",
+          "updatedAt": 1792067579018
+        },
+        "state": "running"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:43:01.303Z",
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      }
+    }
+  ]
+}

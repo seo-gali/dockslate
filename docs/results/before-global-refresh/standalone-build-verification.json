@@ -1,0 +1,116 @@
+{
+  "observedAt": "2026-10-16T12:22:34.628Z",
+  "artifact": "src-tauri/target/release/dockslate.exe",
+  "bytes": 3590656,
+  "sha256": "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273",
+  "buildExitCode": 0,
+  "releaseBuildElapsed": "1m 58s",
+  "readOnlyExitCode": 0,
+  "engineInstalled": true,
+  "engineE2eVerified": true,
+  "runtimePath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "dockerDesktopRemovalEvidence": "docs/results/docker-desktop-removal.json",
+  "checks": {
+    "navigationCache": {
+      "file": "docs/results/navigation-cache-e2e.json",
+      "checksPassed": 6,
+      "observedAt": "2026-10-16T10:26:24.818Z",
+      "finishedAt": "2026-10-16T10:26:56.569Z",
+      "artifactSha256": "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273"
+    },
+    "runtimeRecovery": {
+      "file": "docs/results/runtime-recovery-e2e.json",
+      "checksPassed": 6,
+      "observedAt": "2026-10-16T12:10:36.135Z",
+      "finishedAt": "2026-10-16T12:12:05.708Z",
+      "artifactSha256": "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273"
+    },
+    "independentEngine": {
+      "file": "docs/results/independent-engine-e2e-final-build.json",
+      "checksPassed": 21,
+      "observedAt": "2026-10-16T12:12:05.940Z",
+      "finishedAt": "2026-10-16T12:21:28.900Z",
+      "artifactSha256": "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273"
+    },
+    "readOnlyState": {
+      "file": "docs/results/final-native-state-verification.json",
+      "checksPassed": 10,
+      "observedAt": "2026-10-16T10:26:56.705Z",
+      "finishedAt": "2026-10-16T10:27:19.402Z",
+      "artifactSha256": "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273"
+    },
+    "registrySearch": {
+      "file": "docs/results/registry-search-e2e.json",
+      "checksPassed": 7,
+      "observedAt": "2026-10-16T10:19:15.638Z",
+      "finishedAt": "2026-10-16T10:19:44.374Z",
+      "artifactSha256": "6A658251988464EBB3365B8030892C7978AABC9653B0EF366D6EC6D50BECB815"
+    }
+  },
+  "navigationDataReads": {
+    "dashboard_snapshot": 0,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0
+  },
+  "manualImagesRefreshReads": {
+    "dashboard_snapshot": 0,
+    "engine_status": 1,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 1,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0
+  },
+  "startupReads": {
+    "dashboard_snapshot": 1,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 1,
+    "wsl_inventory": 1
+  },
+  "firstFrameObservationMs": {
+    "samples": [
+      5.100000000093132,
+      12,
+      5.400000000023283,
+      6,
+      3.199999999953434,
+      5.900000000023283,
+      5.200000000069849,
+      4.199999999953434,
+      4.399999999906868,
+      8.099999999976717,
+      3.1000000000931323,
+      6,
+      6.599999999976717,
+      4.700000000069849,
+      2.900000000023283,
+      6.400000000023283,
+      4.099999999976717,
+      5.199999999953434
+    ],
+    "minimum": 2.900000000023283,
+    "maximum": 12,
+    "mean": 5.47222222222869
+  },
+  "firstFrameMeasurementScope": "Observed retained DOM and data at the first animation frame after actual menu/tab clicks; not a general startup or paint benchmark.",
+  "normalRunEvidence": "docs/results/final-normal-session.json",
+  "newReaMcpCalls": 0,
+  "vhdxCompressionExecuted": false,
+  "vhdxCompressionVerified": false,
+  "limitations": [
+    "Actual VHDX compaction remains unverified and safety-gated.",
+    "CPU/memory limits and app-start automation settings were not added.",
+    "Registry search was checked on the identical functional build before a unit-label-only correction."
+  ]
+}

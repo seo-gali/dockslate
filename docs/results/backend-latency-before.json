@@ -1,0 +1,53 @@
+{
+  "observedAt": "2026-10-16T13:43:15.597Z",
+  "artifactSha256": "8C50904C6A9B41A4DA2D293619AE8BF74BED065F37252C86C3C99F69DF69C273",
+  "mode": "actual old-build read-only IPC timings; no execution of approval tokens",
+  "measurements": [
+    {
+      "command": "runtime_status",
+      "ms": 1017.4432999999999
+    },
+    {
+      "command": "engine_status",
+      "ms": 3349.1449000000002
+    },
+    {
+      "command": "dashboard_snapshot",
+      "ms": 6345.3604000000005
+    },
+    {
+      "command": "images_list",
+      "ms": 5527.065499999999
+    },
+    {
+      "command": "disk_usage",
+      "ms": 5904.564699999999
+    },
+    {
+      "command": "destructive_preview",
+      "ms": 7168.168600000001
+    }
+  ],
+  "completed": true,
+  "runtime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": true,
+    "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+    "operation": {
+      "childProcessId": 8488,
+      "childStartedTicks": "639277547794113257",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 25448,
+      "startedAt": 1792157979299,
+      "startedTicks": "639277547779214930",
+      "state": "completed",
+      "updatedAt": 1792157995885
+    },
+    "state": "running"
+  },
+  "previewTargets": [
+    "v53hsrkdfu9sswz68x7u75mzb"
+  ]
+}

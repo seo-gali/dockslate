@@ -1,0 +1,270 @@
+{
+  "artifact_provenance": {
+    "release": "v1.24.0",
+    "release_url": "https://github.com/rancher-sandbox/rancher-desktop/releases/tag/v1.24.0",
+    "msi_size": 670932992,
+    "msi_sha256": "5fc4e795a1c3bf72a2dac9144d55daab181f30d1a3049d96a4c025985769960b",
+    "msi_sha512": "6428f330cdf8dc9dbbc07bbde270046c9e86fb91e90392c0d25ac764e64eaa8f9d2b3e7faaffed669a48f7fd7445dadda18072dd51c905bf59df4787b70ed77e",
+    "msi_access_mode": "MsiOpenDatabaseW / MSIDBOPEN_READONLY",
+    "msi_properties": [
+      {
+        "name": "Manufacturer",
+        "value": "SUSE"
+      },
+      {
+        "name": "ProductCode",
+        "value": "{E99D3E3A-149F-4F15-BC82-7904DBB0BA47}"
+      },
+      {
+        "name": "ProductName",
+        "value": "Rancher Desktop"
+      },
+      {
+        "name": "ProductVersion",
+        "value": "1.24.0"
+      }
+    ],
+    "app_asar": {
+      "relative_path": "resources\\app.asar",
+      "file_id": "f_wgee3DDgNpzMdUmhYo7zzDVHSko5bYjNK4J6vymhmew",
+      "cabinet": "#cab7.cab",
+      "sequence": 150,
+      "size": 56844552,
+      "sha256": "385a8ec31fb1a44e022670ef56e44cba60450e1c711cb8e22a62c3d00a071d5d"
+    },
+    "preload": {
+      "path": "resources/resources/preload.js",
+      "size": 12219,
+      "sha256": "9ca9db5c4eeb24caba95287b5bf5cc3303ab7f03cdcd9b6dfe8fe04bf4c1e728",
+      "file_id": "f_lGRGCkBmJlnzKtEkdMpwHBTnY1T8Ar3bBWOzfEIwCGk",
+      "cabinet": "#cab3.cab",
+      "sequence": 89
+    }
+  },
+  "inventory": {
+    "regular_members": 5754,
+    "packed_integrity_verified": 5677,
+    "unpacked_members": 77,
+    "javascript_files": 3359,
+    "first_party_js": 31,
+    "first_party_source_maps": 0,
+    "native_members": [
+      {
+        "path": "node_modules/native-reg/prebuilds/win32-arm64/node.napi.node",
+        "size": 935424,
+        "unpacked": true
+      },
+      {
+        "path": "node_modules/native-reg/prebuilds/win32-ia32/node.napi.node",
+        "size": 114688,
+        "unpacked": true
+      },
+      {
+        "path": "node_modules/native-reg/prebuilds/win32-x64/node.napi.node",
+        "size": 159232,
+        "unpacked": true
+      },
+      {
+        "path": "node_modules/posix-node/dist/aarch64-linux-gnu.node",
+        "size": 2934384,
+        "unpacked": true
+      },
+      {
+        "path": "node_modules/posix-node/dist/aarch64-macos.node",
+        "size": 1628832,
+        "unpacked": true
+      },
+      {
+        "path": "node_modules/posix-node/dist/x86_64-linux-gnu.node",
+        "size": 2764896,
+        "unpacked": true
+      },
+      {
+        "path": "node_modules/posix-node/dist/x86_64-macos.node",
+        "size": 1564251,
+        "unpacked": true
+      }
+    ]
+  },
+  "observations": [
+    {
+      "id": "wsl-distros",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 614723,
+      "line": 29,
+      "zero_based_column": 218154,
+      "excerpt_start_utf16": 614623,
+      "excerpt": "eners(e)}rawListeners(e){return super.rawListeners(e)}}const ei=A;var ti=z(4657);const ni=be.Ay.wsl,ii=\"rancher-desktop\",ri=\"rancher-desktop-data\",ai=\"/etc/rancher/desktop\",si=`${ai}/credfwd`,oi=\"/root/.docker\",ci=`${oi}/config.json`;var li;!function(e){e.NONE=\"idle\",e.STARTING=\"starting\",e.STOPPING=\"stopping\"}(li||(li={}));const di=ht().WSLDistro.version,ui=[\"/etc/rancher\",\"/var/lib\"];class pi extends Le().EventEmitter{constructor(e){super(),this.progressTracker=new pt((e=>{this.progress=e,this.emit(\"progress\")}),ni),this.hostSwitchProcess=new ti.A(\"host-switch.e",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "wsl-data-directories",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 614985,
+      "line": 29,
+      "zero_based_column": 218416,
+      "excerpt_start_utf16": 614885,
+      "excerpt": "idle\",e.STARTING=\"starting\",e.STOPPING=\"stopping\"}(li||(li={}));const di=ht().WSLDistro.version,ui=[\"/etc/rancher\",\"/var/lib\"];class pi extends Le().EventEmitter{constructor(e){super(),this.progressTracker=new pt((e=>{this.progress=e,this.emit(\"progress\")}),ni),this.hostSwitchProcess=new ti.A(\"host-switch.exe\",{spawn:async()=>{const e=q().join(we.Ay.resources,\"win32\",\"internal\",\"host-switch.exe\"),t=await be.Ay[\"host-switch\"].fdStream,n=[];if(this.cfg?.kubernetes.enabled){const e=6443,t=`127.0.0.1:${e}=192.168.127.2:${e}`;n.push(\"--port-forward\",t)}return Ye.cH(e,n,{std",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "wsl-import",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 617737,
+      "line": 29,
+      "zero_based_column": 221168,
+      "excerpt_start_utf16": 617637,
+      "excerpt": "and(\"/bin/sh\",\"-c\",\"[ -e /etc/os-release ] && . /etc/os-release ; echo ${VERSION_ID:-0.1}\")).trim()}async ensureDistroRegistered(){if(await this.isDistroRegistered()||await this.progressTracker.action((0,ue.t)(\"progress.registeringWslDistribution\"),100,(async()=>{await U().promises.mkdir(we.Ay.wslDistro,{recursive:!0});try{await this.execWSL({capture:!0},\"--import\",ii,we.Ay.wslDistro,this.distroFile,\"--version\",\"2\")}catch(e){if(!String(e.stdout??\"\").includes(\"ensure virtualization is enabled\"))throw e;throw new X.J(\"Virtualization not supported\",e.stdout,!0)}})),!await this",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "wsl-exec",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 630252,
+      "line": 41,
+      "zero_based_column": 7942,
+      "excerpt_start_utf16": 630152,
+      "excerpt": "sbin/rc-update\",\"add\",\"rancher-desktop-guestagent\",\"default\")}debugArg(...e){return this.debug?e:[]}async execWSL(e,...t){let n={};\"string\"==typeof e?t=[e].concat(...t):n=e;try{let e=n.logStream;if(!e){const n=be.Ay[\"wsl-exec\"];n.log(`Running: wsl.exe ${t.join(\" \")}`),e=await n.fdStream}if(n.capture){ni.debug(`Capturing output: wsl.exe ${t.join(\" \")}`);const{stdout:i}=await Ye.Qi(\"wsl.exe\",t,{...n,encoding:n.encoding??\"utf16le\",stdio:[\"ignore\",\"pipe\",e]});return i}ni.debug(`Running: wsl.exe ${t.join(\" \")}`),await Ye.Qi(\"wsl.exe\",t,{...n,encoding:n.encoding??\"utf16l",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "docker-endpoint",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 655705,
+      "line": 41,
+      "zero_based_column": 33395,
+      "excerpt_start_utf16": 655605,
+      "excerpt": "mespaces\",\"create\",\"default\")}catch{}this.#t=new lt(this);break;case le.yz.MOBY:this.#t=new ot(this,\"npipe:////./pipe/docker_engine\")}t.kubernetes.ingress.localhostOnly||await this.getIsAdminInstall()||this.writeSetting({kubernetes:{ingress:{localhostOnly:!0}}});const a=[this.progressTracker.action((0,ue.t)(\"progress.waitingForContainerEngine\"),0,this.containerEngineClient.waitForReady())];n&&a.push(this.progressTracker.action((0,ue.t)(\"progress.startingKubernetes\"),100,this.kubeBackend.start(t,n))),await Promise.all(a),await this.setState(t.kubernetes.enabled?X.U.STARTED:X.U",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "docker-cli-env",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 520020,
+      "line": 29,
+      "zero_based_column": 123451,
+      "excerpt_start_utf16": 519920,
+      "excerpt": "resolve(o,r);a&&i.push(o);const l=Z.default.merge({env:Z.default.merge({},process.env)},n??{},{env:{DOCKER_HOST:this.endpoint,PATH:`${process.env.PATH}${q().delimiter}${i.join(q().delimiter)}`}});switch(t){case\"ignore\":case void 0:return(0,Ye.Qi)(c,e,{...l,stdio:\"ignore\"});case\"stream\":return(0,Ye.cH)(c,e,{...l,stdio:[\"ignore\",\"pipe\",\"pipe\"]});case\"interactive\":return(0,Ye.cH)(c,e,{...l,stdio:\"pipe\"});case\"pipe\":return(0,Ye.Qi)(c,e,{...l,stdio:\"pipe\"})}return(0,Ye.Qi)(c,e,{...l,stdio:t})}}const ct=be.Ay.nerdctl;class lt{constructor(e){this.vm=e}vm;executable=(0,rt.F)(\"",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "windows-proxy",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 324730,
+      "line": 2,
+      "zero_based_column": 324662,
+      "excerpt_start_utf16": 324630,
+      "excerpt": " b.A(\"Win32 socket proxy\",{spawn:async()=>{const e=await k.Ay[\"wsl-helper\"].fdStream;return C.debug(\"Spawning Windows docker proxy\"),(0,w.cH)((0,S.F)(\"wsl-helper\"),[\"docker-proxy\",\"serve\",...this.wslHelperDebugArgs],{stdio:[\"ignore\",e,e],windowsHide:!0})}}),f.A.emit(\"settings-write\",{})}static getInstance(){return I.instance||=new I,I.instance}async enforce(){this.enforcing=!0,await this.sync()}async remove(){this.enforcing=!1,await this.sync()}async sync(){const e=(0,y.A)();switch(this.syncState.state){case T.IDLE:this.syncState={state:T.ACTIVE,active:e};break;case T.ACTIVE",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "docker-context",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 204149,
+      "line": 2,
+      "zero_based_column": 204081,
+      "excerpt_start_utf16": 204049,
+      "excerpt": ".Endpoints?.docker?.Host??t}catch(e){f.log(`Failed to read context ${n}, skipping: ${e}`)}}return t}async getDesiredDockerContext(e,t){if(e)return;if(s().platform().startsWith(\"win\"))throw new Error(\"must call getDesiredDockerContext with weOwnDefaultSocket === true on Windows\");if(!t)return this.contextName;if(t===this.contextName)return this.contextName;const n=await this.getCurrentDockerSocket(t);if(!n.startsWith(\"unix://\"))return t;const i=n.replace(/^unix:\\/\\//,\"\");try{if((await r().promises.stat(i)).isSocket())return t;f.log(`Invalid existing context \"${t}\": ${n} is ",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "settings-read",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 763837,
+      "line": 41,
+      "zero_based_column": 141527,
+      "excerpt_start_utf16": 763737,
+      "excerpt": "backend-locked-check\",(async()=>{await Va()})),wa.on(\"backend-state-check\",(async()=>{await Va()})),wa.on(\"settings-read\",(e=>{e.reply(\"settings-read\",ka)})),wa.on(\"settings-read\",(e=>{ba.debug(`event settings-read in main: ${JSON.stringify(ka)}`),e.returnValue=ka})),wa.on(\"images-namespaces-read\",(e=>{[yn.U.STARTED,yn.U.DISABLED].includes(va.state)&&Da?.relayNamespaces()})),wa.on(\"dashboard-open\",(()=>{_r()})),wa.on(\"dashboard-close\",(()=>{Nr()})),wa.on(\"preferences-open\",(()=>{(0,yr.V)()})),wa.on(\"preferences-close\",(()=>{Ae.zk(\"preferences\")?.close()})),wa.on(\"p",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "settings-write",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 764480,
+      "line": 41,
+      "zero_based_column": 142170,
+      "excerpt_start_utf16": 764380,
+      "excerpt": "ses\",(()=>{Ae.tN(\"is-debugging\",re.D_(ka.application.debug)),Ae.tN(\"always-debugging\",re.D_(!1))})),wa.handle(\"settings-write\",((e,t)=>{Ka(t),!1===t?.kubernetes?.enabled&&Nr(),e.sender.sendToFrame(e.frameId,\"settings-update\",ka)})),Se.A.on(\"settings-write\",Ka),Se.A.on(\"extensions/ui/uninstall\",(e=>{Ae.tN(\"ok:extensions/uninstall\",e)})),Se.A.on(\"dialog-info\",(e=>{Ae.zk(e.dialog)?.webContents.send(\"dialog/info\",e)})),wa.on(\"extensions/open\",((e,t,n)=>{Ae.e1(t,n)})),wa.on(\"extensions/close\",(()=>{Ae.kB()})),wa.handle(\"transient-settings-fetch\",(()=>Promise.resolve(ae.Om.va",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "current-engine",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 765078,
+      "line": 41,
+      "zero_based_column": 142768,
+      "excerpt_start_utf16": 764978,
+      "excerpt": "sient-settings-update\",((e,t)=>{ae.Om.update(t)})),wa.on(\"k8s-state\",(e=>{e.returnValue=va.state})),wa.on(\"k8s-current-engine\",(()=>{Ae.tN(\"k8s-current-engine\",Ia)})),wa.on(\"k8s-current-port\",(()=>{Ae.tN(\"k8s-current-port\",va.kubeBackend.desiredPort)})),wa.on(\"k8s-reset\",(async(e,t)=>{await qa(t,{interactive:!0})})),wa.handle(\"api-get-credentials\",(()=>Se.A.invoke(\"api-get-credentials\"))),wa.handle(\"get-locked-fields\",(()=>re.y6()));let ja;function Ba(){return[yn.U.STARTING,yn.U.STOPPING].includes(va.state)}async function qa(e,t){if(Ba())ba.log(`Skipping reset, invalid ",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "main-window",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 384425,
+      "line": 2,
+      "zero_based_column": 384357,
+      "excerpt_start_utf16": 384325,
+      "excerpt": "n:s().join(m.Ay.resources,\"icons\",\"logo-square-512.png\"),webPreferences:{devTools:!o.app.isPackaged,nodeIntegration:!0,contextIsolation:!1}});h.O.isRegistered(r)||(h.O.register(r,{...h.y,key:\",\"},(()=>(0,f.V)()),\"open preferences\"),g.forEach((({route:e},t)=>{h.O.register(r,{...h.y,key:t+1},(()=>r.webContents.send(\"route\",{path:e})),`switch main tabs ${e}`)})),h.O.register(r,{...h.y,key:\"]\"},(()=>r.webContents.send(\"route\",{direction:\"forward\"})),\"switch preferences tabs by cycle [forward]\"),h.O.register(r,{...h.y,key:\"[\"},(()=>r.webContents.send(\"route\",{direction:\"back\"})),\"switch",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "extension-window",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 386315,
+      "line": 2,
+      "zero_based_column": 386247,
+      "excerpt_start_utf16": 386215,
+      "excerpt": "extensionVersion:n};if(!e)throw new Error(\"Failed to get main window, cannot create view\");const a={nodeIntegration:!1,contextIsolation:!0,sandbox:!0,additionalArguments:[JSON.stringify(i)]};if(R?.id){a.partition=`persist:rdx-${R.id}`;const e=c().session.fromPartition(a.partition),{webRequest:t}=e,n=`rdx-preload-${R.id}`;e.getPreloadScripts().some((e=>e.id===n))||e.registerPreloadScript({id:n,filePath:s().join(m.Ay.resources,\"preload.js\"),type:\"frame\"}),t.onBeforeSendHeaders(((e,t)=>{const n=e.webContents?.getURL()??\"\",i={...e.requestHeaders};E(n)&&delete i.Orig",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "preload-registration",
+      "source": "dist/app/background.js",
+      "sha256": "8e15922dfbdb6710b50963b9ae7c37f58c1caccaaef4690661297e2abbebf728",
+      "utf16_offset": 386611,
+      "line": 2,
+      "zero_based_column": 386543,
+      "excerpt_start_utf16": 386511,
+      "excerpt": "=e,n=`rdx-preload-${R.id}`;e.getPreloadScripts().some((e=>e.id===n))||e.registerPreloadScript({id:n,filePath:s().join(m.Ay.resources,\"preload.js\"),type:\"frame\"}),t.onBeforeSendHeaders(((e,t)=>{const n=e.webContents?.getURL()??\"\",i={...e.requestHeaders};E(n)&&delete i.Origin,t({requestHeaders:i})})),t.onHeadersReceived(((e,t)=>{if(!E(e.webContents?.getURL()??\"\"))return void t({});const n={...e.responseHeaders},{compare:i}=new Intl.Collator(\"en\",{sensitivity:\"accent\"}),r=[\"Access-Control-Allow-Headers\",\"Access-Control-Allow-Methods\",\"Access-Control-Allow-Origin\"];for(const e of r)n[Object.ke",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    },
+    {
+      "id": "extension-ddClient",
+      "source": "resources/resources/preload.js",
+      "sha256": "9ca9db5c4eeb24caba95287b5bf5cc3303ab7f03cdcd9b6dfe8fe04bf4c1e728",
+      "utf16_offset": 11508,
+      "line": 1,
+      "zero_based_column": 11508,
+      "excerpt": "`,t),t}}}try{!function(){switch(document.location.protocol){case\"x-rd-extension:\":i().contextBridge.exposeInMainWorld(\"ddClient\",new b);break;case\"app:\":Promise.resolve().then(r.t.bind(r,857,23)).then((({arch:e,hostname:t})=>{Object.defineProperty(window,\"ddClient\",{value:new b({arch:e(),hostname:t()}),configurable:!0,enumerable:!0,writable:!0})}));break;default:return void console.debug(`Not adding extension API to ${document.location.protocol}`)}window.addEventListener(\"unload\",(()=>{function ",
+      "authority": "supplemental-artifact-text-inspection",
+      "runtime_verified": false
+    }
+  ]
+}

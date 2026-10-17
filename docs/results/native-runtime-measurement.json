@@ -1,0 +1,66 @@
+﻿{
+    "observedAt":  "2026-10-13T23:14:01.9553502+09:00",
+    "os":  {
+               "caption":  "Microsoft Windows 11 Home",
+               "version":  "10.0.26300",
+               "buildNumber":  "26300"
+           },
+    "target":  "DockSlate release EXE; disconnected Overview; dedicated temporary WebView2 profile",
+    "rootProcessId":  17516,
+    "exe":  {
+                "path":  "src-tauri/target/release/dockslate.exe",
+                "bytes":  3481600,
+                "sha256":  "F718BADB576C17BDFE1BDBFD6E7876D63805BBF1E24DF464E6FCA523BAD82FB6"
+            },
+    "processes":  [
+                      {
+                          "pid":  17516,
+                          "name":  "dockslate",
+                          "workingSetBytes":  24702976,
+                          "privateBytes":  6287360
+                      },
+                      {
+                          "pid":  25700,
+                          "name":  "msedgewebview2",
+                          "workingSetBytes":  123699200,
+                          "privateBytes":  38002688
+                      },
+                      {
+                          "pid":  27224,
+                          "name":  "msedgewebview2",
+                          "workingSetBytes":  19828736,
+                          "privateBytes":  3522560
+                      },
+                      {
+                          "pid":  6496,
+                          "name":  "msedgewebview2",
+                          "workingSetBytes":  88530944,
+                          "privateBytes":  121556992
+                      },
+                      {
+                          "pid":  27836,
+                          "name":  "msedgewebview2",
+                          "workingSetBytes":  41537536,
+                          "privateBytes":  12013568
+                      },
+                      {
+                          "pid":  7012,
+                          "name":  "msedgewebview2",
+                          "workingSetBytes":  20729856,
+                          "privateBytes":  7733248
+                      },
+                      {
+                          "pid":  28260,
+                          "name":  "msedgewebview2",
+                          "workingSetBytes":  79953920,
+                          "privateBytes":  41099264
+                      }
+                  ],
+    "summedWorkingSetBytes":  398983168,
+    "summedPrivateBytes":  230215680,
+    "limitations":  [
+                        "One idle snapshot with local debugging enabled; no connected engine workload.",
+                        "Summed working sets may double-count shared pages.",
+                        "EXE size excludes installed WebView2 and its generated profile; no installer size is measured."
+                    ]
+}

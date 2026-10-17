@@ -1,0 +1,52 @@
+{
+  "observedAt": "2026-10-14T14:15:22.761Z",
+  "target": "built Windows Tauri IPC; no approved mutation",
+  "observation": {
+    "engine": {
+      "apiVersion": null,
+      "context": "DockSlate",
+      "endpoint": "wsl://DockSlate/var/run/docker.sock",
+      "engine": null,
+      "message": "Create a separate DockSlate WSL 2 runtime to use Linux Docker Engine without Docker Desktop or Rancher Desktop.",
+      "ownerPath": null,
+      "serverVersion": null,
+      "state": "unavailable"
+    },
+    "overview": {
+      "containersRunning": null,
+      "containersStopped": null,
+      "dockerBytes": null,
+      "engine": {
+        "apiVersion": null,
+        "context": "DockSlate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": null,
+        "message": "Create a separate DockSlate WSL 2 runtime to use Linux Docker Engine without Docker Desktop or Rancher Desktop.",
+        "ownerPath": null,
+        "serverVersion": null,
+        "state": "unavailable"
+      },
+      "images": null,
+      "reclaimableBytes": null
+    },
+    "delete": {
+      "allowed": false,
+      "message": "Explicit user approval is required"
+    },
+    "compact": {
+      "allowed": false,
+      "message": "Explicit approval is required to modify the selected VHDX."
+    },
+    "pull": {
+      "allowed": false,
+      "message": "Invalid image reference"
+    }
+  },
+  "checks": {
+    "uninstalledRuntimeUnavailable": true,
+    "unknownUsageNotNumeric": true,
+    "deleteWithoutApprovalDenied": true,
+    "compactWithoutApprovalDenied": true,
+    "invalidPullDenied": true
+  }
+}

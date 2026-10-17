@@ -21,8 +21,10 @@
 
 ## 구현
 
-- Windows 11, Tauri 2 + React + TypeScript + Rust, 기존 Rancher Desktop Moby 엔진을 기준으로 구현합니다.
-- 연결할 Docker context와 엔진 종류를 검증합니다. containerd를 Docker Engine으로 간주하지 않습니다.
+- Windows 11, Tauri 2 + React + TypeScript + Rust, DockSlate 전용 WSL 2 Moby 엔진을 기준으로 구현합니다. 사용자 목표는 Docker Desktop 제거 후 독립 사용입니다.
+- Docker Desktop/Rancher Desktop의 실행 파일·엔진·디스크에 런타임 의존성을 두지 않습니다. 기존 데이터와 배포판은 보존합니다.
+- 엔진 설치는 별도 대상·영향을 보여주고 승인받습니다. 2026-10-14 사용자는 전용 WSL 엔진 설치·검증과 Docker Desktop 제거·소유 VHDX 삭제를 승인했습니다. 새 런타임 저장 위치는 사용자 지정 `D:\Program Files\DockSlate\runtime\wsl`입니다. 기존 Docker Desktop 제거는 자체 엔진 확인 후 수행하며 다른 배포판과 디스크를 변경하지 않습니다.
+- 연결할 전용 배포판의 소유권·엔진 종류·API·엔진 ID를 검증합니다. containerd를 Docker Engine으로 간주하지 않습니다.
 - 핵심 메뉴는 Overview / Containers / Images / Disk Manager / Settings로 제한합니다.
 - Compose는 컨테이너의 프로젝트별 그룹 표시까지만 지원합니다.
 - Docker API 호출·시스템 명령·파일 조작은 Rust 백엔드에서 제한된 명령으로 수행합니다.
@@ -36,7 +38,7 @@
 - 삭제·Prune·압축은 대상 목록, 영향 범위, 복구 가능 여부를 보여주고 명시적으로 승인받습니다.
 - 실행 중 컨테이너와 볼륨의 자동 삭제, VHDX 직접 삭제, 무조건적인 `wsl --shutdown`을 금지합니다.
 - Docker Desktop과 Rancher Desktop의 VHDX를 혼동하지 않습니다. WSL 배포판 등록 정보와 실제 경로로 확인합니다.
-- 압축 전 백업 확인, 소유 프로세스 종료, 디스크 분리·잠금 상태, 관리자 권한 등 지원 조건을 검증합니다.
+- 2026-10-16 사용자의 명시적 변경 지시에 따라 압축 전 백업 생성·경로 입력·백업 검증은 요구하지 않습니다. 승인창에 백업 없이 원본 VHDX를 변경함을 표시합니다. 소유 프로세스 종료, 디스크 분리·잠금 상태, 관리자 권한 등 나머지 지원 조건은 검증합니다.
 - WSL 전체 종료가 필요한 경우 영향받는 다른 배포판을 안내하고 별도로 승인받습니다.
 - 확인 불가능한 사전 조건이 하나라도 있으면 압축을 차단합니다.
 - Docker 정리 추정치, VHDX 크기, Windows 실제 회수량을 동일한 값으로 취급하지 않습니다.

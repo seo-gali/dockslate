@@ -1,0 +1,179 @@
+{
+  "observedAt": "2026-10-16T14:02:06.857Z",
+  "artifact": "src-tauri/target/release/dockslate.exe",
+  "bytes": 3611136,
+  "sha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D",
+  "buildExitCode": 0,
+  "releaseBuildElapsed": "2m 05s",
+  "readOnlyExitCode": 0,
+  "engineInstalled": true,
+  "engineE2eVerified": true,
+  "runtimePath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "dockerDesktopRemovalEvidence": "docs/results/docker-desktop-removal.json",
+  "checks": {
+    "globalRefresh": {
+      "file": "docs/results/global-refresh-e2e.json",
+      "checksPassed": 6,
+      "observedAt": "2026-10-16T13:50:24.875Z",
+      "finishedAt": "2026-10-16T13:50:44.051Z",
+      "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+    },
+    "runtimeRecovery": {
+      "file": "docs/results/runtime-recovery-e2e.json",
+      "checksPassed": 6,
+      "observedAt": "2026-10-16T13:54:02.783Z",
+      "finishedAt": "2026-10-16T13:54:46.076Z",
+      "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+    },
+    "independentEngine": {
+      "file": "docs/results/independent-engine-e2e-final-build.json",
+      "checksPassed": 23,
+      "observedAt": "2026-10-16T13:54:46.238Z",
+      "finishedAt": "2026-10-16T13:58:44.854Z",
+      "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+    },
+    "readOnlyState": {
+      "file": "docs/results/final-native-state-verification.json",
+      "checksPassed": 11,
+      "observedAt": "2026-10-16T13:53:50.382Z",
+      "finishedAt": "2026-10-16T13:54:02.563Z",
+      "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+    }
+  },
+  "navigationDataReads": {
+    "dashboard_snapshot": 0,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0
+  },
+  "manualRefreshes": [
+    {
+      "page": "Images",
+      "durationMs": 1796,
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0
+      }
+    },
+    {
+      "page": "Overview",
+      "durationMs": 1689,
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0
+      }
+    },
+    {
+      "page": "Disk Manager",
+      "durationMs": 1695,
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0
+      }
+    },
+    {
+      "page": "Settings",
+      "durationMs": 1687,
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0
+      }
+    }
+  ],
+  "startupReads": {
+    "dashboard_snapshot": 1,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0
+  },
+  "confirmationFirstFrame": {
+    "firstAnimationFrameDelayMs": 7.5,
+    "visible": true,
+    "title": "선택한 데이터 정리 확인",
+    "checking": "대상과 현재 참조 상태를 검사하고 있습니다. 검사 후에 승인할 수 있습니다.",
+    "confirmDisabled": true,
+    "acknowledgeDisabled": true,
+    "targets": [
+      "local source for dockerfile · 8qq0hy0o4wgz31ahm1s2jljml"
+    ]
+  },
+  "firstFrameMeasurementScope": "Observed the real confirmation dialog at the first animation frame after a click; not a general paint benchmark.",
+  "backendLatencies": [
+    {
+      "command": "runtime_status",
+      "beforeMs": 1017.4432999999999,
+      "afterMs": 982.9369
+    },
+    {
+      "command": "engine_status",
+      "beforeMs": 3349.1449000000002,
+      "afterMs": 1256.8709000000001
+    },
+    {
+      "command": "dashboard_snapshot",
+      "beforeMs": 6345.3604000000005,
+      "afterMs": 1585.6845000000003
+    },
+    {
+      "command": "images_list",
+      "beforeMs": 5527.065499999999,
+      "afterMs": 1631.527
+    },
+    {
+      "command": "disk_usage",
+      "beforeMs": 5904.564699999999,
+      "afterMs": 1654.2637999999997
+    },
+    {
+      "command": "destructive_preview",
+      "beforeMs": 7168.168600000001,
+      "afterMs": 2423.1569
+    }
+  ],
+  "latencyMeasurementScope": "One observed sample per command on the same PC and owned engine; not a statistical benchmark. The optimized full snapshot includes runtime and WSL inventory as well.",
+  "restoredRuntimeState": "stopped",
+  "restorationEvidence": "docs/results/restored-original-runtime-state.json",
+  "normalRunEvidence": "docs/results/final-normal-session.json",
+  "newReaMcpCalls": 0,
+  "backupRequired": false,
+  "vhdxBackupCreated": false,
+  "vhdxCompressionExecuted": false,
+  "vhdxCompressionVerified": false,
+  "limitations": [
+    "Actual VHDX compaction remains unverified; ownership, stopped/detached state, locking and elevation remain mandatory.",
+    "CPU/memory limits and app-start automation settings were not added."
+  ]
+}

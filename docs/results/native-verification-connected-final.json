@@ -1,0 +1,256 @@
+{
+  "containers": {
+    "Ok": []
+  },
+  "diskUsage": {
+    "Ok": {
+      "buildCache": [
+        {
+          "eligible": true,
+          "id": "phkwnafm28f3rs01xoptzb9ll",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "8qq0hy0o4wgz31ahm1s2jljml",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "zqd3knm2r1af5ynskbigho8ju",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "rol703j7rcx69xfdq3x7pnslo",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "v53hsrkdfu9sswz68x7u75mzb",
+          "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+          "reason": null,
+          "size": 8329
+        },
+        {
+          "eligible": true,
+          "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        }
+      ],
+      "buildCacheBytes": 49289,
+      "containersBytes": 0,
+      "images": [],
+      "imagesBytes": 0,
+      "reclaimableBytes": 49289,
+      "volumesBytes": 0,
+      "warnings": [
+        "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+        "Container and volume automatic cleanup is excluded."
+      ]
+    }
+  },
+  "engine": {
+    "Ok": {
+      "apiVersion": "1.55",
+      "context": "dockslate",
+      "endpoint": "wsl://DockSlate/var/run/docker.sock",
+      "engine": "moby",
+      "message": "Verified independent DockSlate Moby Engine",
+      "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "provider": "DockSlate",
+      "serverVersion": "29.8.2",
+      "state": "connected"
+    }
+  },
+  "images": {
+    "Ok": []
+  },
+  "invalidDiskPreview": {
+    "Ok": {
+      "blockedReasons": [
+        "The requested disk ID does not identify a current supported WSL registration.",
+        "The runtime owner requires a verified disk registration.",
+        "An elevated Windows administrator session is required.",
+        "Running WSL distributions must be stopped manually: DockSlate",
+        "Disk inspection requires verified ownership and elevation.",
+        "Exclusive VHDX lock failed: The original disk registration is not verified.",
+        "Disk identity verification failed: Disk identity approval requires all preceding safety checks to pass."
+      ],
+      "checks": [
+        {
+          "detail": "The requested disk ID does not identify a current supported WSL registration.",
+          "name": "ownership",
+          "status": "blocked"
+        },
+        {
+          "detail": "The runtime owner requires a verified disk registration.",
+          "name": "runtimeOwner",
+          "status": "blocked"
+        },
+        {
+          "detail": "The Windows process token is not elevated.",
+          "name": "administrator",
+          "status": "blocked"
+        },
+        {
+          "detail": "Running WSL distributions must be stopped manually: DockSlate",
+          "name": "wslStopped",
+          "status": "blocked"
+        },
+        {
+          "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+          "name": "runtimeExited",
+          "status": "passed"
+        },
+        {
+          "detail": "Disk inspection requires verified ownership and elevation.",
+          "name": "detachedDynamicVhdx",
+          "status": "blocked"
+        },
+        {
+          "detail": "The original disk registration is not verified.",
+          "name": "exclusiveLock",
+          "status": "blocked"
+        },
+        {
+          "detail": "Disk identity approval requires all preceding safety checks to pass.",
+          "name": "sourceIdentity",
+          "status": "blocked"
+        }
+      ],
+      "diskId": "dockslate-invalid-verification-disk",
+      "distribution": null,
+      "eligible": false,
+      "expiresAt": null,
+      "fileSizeBytes": null,
+      "owner": null,
+      "path": null,
+      "requiresBackup": false,
+      "token": null,
+      "warnings": [
+        "The original VHDX is modified without a backup. DockSlate cannot undo the operation or restore disk data after a failure.",
+        "No runtime is stopped and no disk is mounted or detached automatically.",
+        "Optimize-VHD -Mode Full on a detached VHDX uses the Windows Prezeroed fallback. File size reduction is not guaranteed.",
+        "All safety conditions are checked again immediately before optimization."
+      ]
+    }
+  },
+  "invalidPull": {
+    "Err": "Invalid image reference"
+  },
+  "mode": "read-only; no valid mutation token or approved destructive operation",
+  "runtime": {
+    "Ok": {
+      "blockedReasons": [],
+      "distribution": "DockSlate",
+      "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "keeperVerified": true,
+      "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+      "operation": {
+        "childProcessId": 5772,
+        "childStartedTicks": "639277558936027600",
+        "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+        "processId": 24588,
+        "startedAt": 1792159093488,
+        "startedTicks": "639277558921078331",
+        "state": "completed",
+        "updatedAt": 1792159108918
+      },
+      "state": "running"
+    }
+  },
+  "runtimeInstallPreview": {
+    "Ok": {
+      "blockedReasons": [
+        "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "The runtime target already exists; it will not be overwritten or automatically removed.",
+        "A WSL registration already uses the runtime target directory. Existing registrations will not be changed."
+      ],
+      "eligible": false,
+      "expiresAt": null,
+      "impact": [
+        "Download Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.",
+        "Install pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.",
+        "Create a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.",
+        "Configure systemd and a root-only Unix socket; no Docker TCP listener is created.",
+        "Stop only the newly created DockSlate distribution after setup. It remains stopped until an approved Start action."
+      ],
+      "requirements": [
+        "Windows 11 x64 with working WSL 2.4.10 or later.",
+        "HTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.",
+        "A free DockSlate distribution name and an absent runtime target directory.",
+        "At least 4 GiB of host free space; container images and volumes use additional space.",
+        "Keep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection."
+      ],
+      "targets": [
+        "DockSlate (new WSL 2 distribution)",
+        "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "D:\\Program Files\\DockSlate\\runtime\\ownership.json"
+      ],
+      "token": null
+    }
+  },
+  "unapprovedCompact": {
+    "Err": "Explicit approval is required to modify the selected VHDX."
+  },
+  "unapprovedDelete": {
+    "Err": "Explicit user approval is required"
+  },
+  "unapprovedRuntimeInstall": {
+    "Err": "Explicit approval is required to download and create the separate DockSlate WSL runtime."
+  },
+  "unapprovedRuntimeStart": {
+    "Err": "Explicit approval is required to start the owned DockSlate distribution."
+  },
+  "unapprovedRuntimeStop": {
+    "Err": "Explicit approval is required to stop the owned DockSlate distribution."
+  },
+  "wsl": {
+    "Ok": {
+      "admin": false,
+      "diagnostics": [],
+      "disks": [
+        {
+          "attached": null,
+          "blockedReasons": [
+            "Running WSL distributions must be stopped manually: DockSlate",
+            "An elevated Windows administrator session is required for compaction.",
+            "Disk separation has not been verified by both Get-DiskImage and Get-VHD."
+          ],
+          "compactionStatus": "blocked",
+          "distribution": "DockSlate",
+          "exists": true,
+          "fileSizeBytes": 2844786688,
+          "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+          "owner": "DockSlate",
+          "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+          "running": true
+        }
+      ],
+      "operation": null,
+      "runningDistributions": [
+        "DockSlate"
+      ],
+      "runtimeProcesses": [],
+      "status": "ready"
+    }
+  }
+}

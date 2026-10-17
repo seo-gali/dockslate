@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-10-16T14:23:24.627Z",
+  "initialUserState": "stopped",
+  "observations": {
+    "stopApprovalDialog": "DockSlate 런타임 중지 확인\nDockSlate · Moby 엔진 · 이 엔진의 실행 중 컨테이너\n\n실행 중인 컨테이너와 컨테이너에 연결된 서비스가 중단됩니다. 저장하지 않은 메모리 상태와 연결은 복구되지 않습니다.\n\nDockSlate 배포판을 중지합니다. 저장된 컨테이너·이미지·볼륨은 유지되며 다음 시작 시 다시 사용할 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n중지 승인 및 실행"
+  },
+  "completed": true,
+  "actualDiskCompaction": false,
+  "before": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": true,
+    "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+    "operation": {
+      "childProcessId": 2620,
+      "childStartedTicks": "639277573344541424",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 19180,
+      "startedAt": 1792160534293,
+      "startedTicks": "639277573326164276",
+      "state": "completed",
+      "updatedAt": 1792160551988
+    },
+    "state": "running"
+  },
+  "after": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": false,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "operation": {
+      "childProcessId": 16052,
+      "childStartedTicks": "639277574110482196",
+      "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+      "processId": 24656,
+      "startedAt": 1792160610657,
+      "startedTicks": "639277574089400000",
+      "state": "completed",
+      "updatedAt": 1792160611992
+    },
+    "state": "stopped"
+  },
+  "engine": {
+    "apiVersion": null,
+    "context": "DockSlate",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": null,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "ownerPath": null,
+    "serverVersion": null,
+    "state": "unavailable"
+  }
+}

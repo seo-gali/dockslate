@@ -1,0 +1,122 @@
+{
+  "observedAt": "2026-10-16T14:27:04.229Z",
+  "artifact": "src-tauri/target/release/dockslate.exe",
+  "bytes": 3637760,
+  "sha256": "3769C75A5948380F3F6EA10FE7D2E07D6CB1AB5B6151B07CF9B18E629ACBA01D",
+  "buildExitCode": 0,
+  "releaseBuildElapsed": "3m 02s",
+  "readOnlyExitCode": 0,
+  "checks": {
+    "registrySearch": {
+      "file": "docs/results/registry-search-e2e.json",
+      "checksPassed": 8,
+      "observedAt": "2026-10-16T14:22:55.387Z",
+      "finishedAt": "2026-10-16T14:23:08.211Z",
+      "artifactSha256": "3769C75A5948380F3F6EA10FE7D2E07D6CB1AB5B6151B07CF9B18E629ACBA01D"
+    },
+    "uiPrerequisites": {
+      "file": "docs/results/ui-prerequisites-e2e.json",
+      "checksPassed": 8,
+      "observedAt": "2026-10-16T14:24:30.173Z",
+      "finishedAt": "2026-10-16T14:24:47.297Z",
+      "artifactSha256": "3769C75A5948380F3F6EA10FE7D2E07D6CB1AB5B6151B07CF9B18E629ACBA01D"
+    }
+  },
+  "startupSnapshotCount": 1,
+  "navigationReads": {
+    "dashboard_snapshot": 0,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0,
+    "image_search": 0,
+    "wsl_preview": 0,
+    "desktop_restart_elevated": 0,
+    "image_pull": 0,
+    "container_action": 0,
+    "destructive_execute": 0,
+    "runtime_install": 0,
+    "runtime_start": 0,
+    "runtime_stop": 0,
+    "wsl_compact": 0,
+    "desktop_open_windows_features": 0
+  },
+  "liveDiskTools": {
+    "available": false,
+    "checks": [
+      {
+        "available": true,
+        "detail": "사용 가능",
+        "name": "Storage\\Get-DiskImage"
+      },
+      {
+        "available": false,
+        "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
+        "name": "Hyper-V\\Get-VHD"
+      },
+      {
+        "available": false,
+        "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
+        "name": "Hyper-V\\Optimize-VHD"
+      }
+    ],
+    "missing": [
+      "Hyper-V\\Get-VHD",
+      "Hyper-V\\Optimize-VHD"
+    ]
+  },
+  "previousFullFunctionalVerification": {
+    "file": "docs/results/before-ui-prerequisites/standalone-build-verification.json",
+    "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D",
+    "checks": {
+      "globalRefresh": {
+        "file": "docs/results/global-refresh-e2e.json",
+        "checksPassed": 6,
+        "observedAt": "2026-10-16T13:50:24.875Z",
+        "finishedAt": "2026-10-16T13:50:44.051Z",
+        "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+      },
+      "runtimeRecovery": {
+        "file": "docs/results/runtime-recovery-e2e.json",
+        "checksPassed": 6,
+        "observedAt": "2026-10-16T13:54:02.783Z",
+        "finishedAt": "2026-10-16T13:54:46.076Z",
+        "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+      },
+      "independentEngine": {
+        "file": "docs/results/independent-engine-e2e-final-build.json",
+        "checksPassed": 23,
+        "observedAt": "2026-10-16T13:54:46.238Z",
+        "finishedAt": "2026-10-16T13:58:44.854Z",
+        "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+      },
+      "readOnlyState": {
+        "file": "docs/results/final-native-state-verification.json",
+        "checksPassed": 11,
+        "observedAt": "2026-10-16T13:53:50.382Z",
+        "finishedAt": "2026-10-16T13:54:02.563Z",
+        "artifactSha256": "F6CCE512E922DF0775E2F0CA265924955E28F5C485CE0A4CBA5EEF7AC35C758D"
+      }
+    }
+  },
+  "engineInstalled": true,
+  "runtimePath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+  "restoredRuntimeState": "stopped",
+  "restorationEvidence": "docs/results/restored-original-runtime-state.json",
+  "normalRunEvidence": "docs/results/final-normal-session.json",
+  "harnessCorrectionEvidence": "docs/results/ui-prerequisites-first-harness-failure.json",
+  "newReaMcpCalls": 0,
+  "backupRequired": false,
+  "vhdxBackupCreated": false,
+  "vhdxCompressionExecuted": false,
+  "vhdxCompressionVerified": false,
+  "limitations": [
+    "Approved elevated relaunch and its UAC/new-window handoff were not executed. Confirmation cancellation and unapproved backend rejection passed.",
+    "The Windows Features dialog was not opened and optional components were not installed. The actual Get-VHD and Optimize-VHD commands are unavailable on this PC.",
+    "Real VHDX compaction remains unverified. Ownership, disk tools, stopped/detached state, locking, elevation and explicit approval remain mandatory.",
+    "The earlier 23 functional, 6 global-refresh, 6 lifecycle and 11 read-only checks belong to the previous F6CCE512 artifact and were not rerun in full for this UI change."
+  ]
+}

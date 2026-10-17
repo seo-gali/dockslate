@@ -1,0 +1,22 @@
+﻿{
+    "observedAt":  "2026-10-14T23:30:28.9030801+09:00",
+    "failure":  "PowerShell scriptblock local operation variable shadowed script operation state",
+    "from":  "D:\\Program Files\\DockSlate\\runtime",
+    "preservedAt":  "D:\\Program Files\\DockSlate\\runtime-failed-20261014-232623",
+    "registrationExisted":  false,
+    "files":  [
+                  {
+                      "Name":  "mutation.lock",
+                      "Length":  0
+                  },
+                  {
+                      "Name":  "operation.json",
+                      "Length":  0
+                  },
+                  {
+                      "Name":  "ownership.json",
+                      "Length":  342
+                  }
+              ],
+    "deleted":  false
+}

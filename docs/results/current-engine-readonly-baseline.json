@@ -1,0 +1,15 @@
+{
+  "observedAt": "2026-10-16T10:25:35.392Z",
+  "containers": [],
+  "images": [
+    {
+      "containers": 0,
+      "created": 1774301639,
+      "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+      "size": 25874,
+      "tags": [
+        "hello-world:latest"
+      ]
+    }
+  ]
+}

@@ -35,7 +35,7 @@ ASCII 데이터는 배치 설명용이며 UI에서 실제 값으로 표시해야
 | --- | --- |
 | Overview | 연결 상태와 실행 중/중지된 컨테이너, 이미지, 디스크 요약 + 바로가기 |
 | Containers | 검색·상태 필터·Compose 그룹, 테이블, 우측 상세/로그 패널 |
-| Images | 검색, 이미지명/태그/크기/사용 상태, Pull 및 선택 삭제 |
+| Images | 검색, 이미지명/태그/크기/사용 상태, Pull·Dockerfile 빌드 및 선택 삭제 |
 | Disk Manager | `Docker Usage` / `WSL Disks` 탭, 정리 후보와 VHDX별 압축 가능 상태 |
 | Settings | 현재 Docker context·엔진, 새로고침, 권한 및 환경 안내 |
 
@@ -81,6 +81,7 @@ ASCII 데이터는 배치 설명용이며 UI에서 실제 값으로 표시해야
 - Compose 그룹은 실제 Docker 라벨이 있는 경우에만 제공
 - 로그는 고정폭 폰트, 복사·검색·자동 스크롤 제어 지원
 - 긴 이름은 말줄임 + 전체값 확인 제공, 행 전체가 위험 작업 버튼이 되지 않게 구성
+- 이미지 빌드는 로컬 폴더·Dockerfile·태그 입력과 진행 로그를 같은 화면에 표시하며 메뉴 이동 중 상태를 유지
 
 ### Disk Manager
 

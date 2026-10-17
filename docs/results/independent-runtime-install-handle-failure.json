@@ -1,0 +1,160 @@
+{
+  "observedAt": "2026-10-15T12:12:24.731Z",
+  "approved": true,
+  "target": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+  "succeeded": false,
+  "observations": [
+    {
+      "observedAt": "2026-10-15T12:06:01.825Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "Create a separate DockSlate WSL 2 runtime to use Linux Docker Engine without Docker Desktop or Rancher Desktop.",
+        "operation": null,
+        "state": "not_installed"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:06:02.855Z",
+      "approvedAction": "install",
+      "dialog": "DockSlate 런타임 설치 확인\n\n다음 대상을 새로 설치합니다.\n\nDockSlate (new WSL 2 distribution)\nD:\\Program Files\\DockSlate\\runtime\\wsl\nD:\\Program Files\\DockSlate\\runtime\\ownership.json\n\nDownload Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.\n\nInstall pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.\n\nCreate a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.\n\nConfigure systemd and a root-only Unix socket; no Docker TCP listener is created.\n\nStop only the newly created DockSlate distribution after setup. It remains stopped until an approved Start action.\n\n필요한 환경\n\nWindows 11 x64 with working WSL 2.4.10 or later.\nHTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.\nA free DockSlate distribution name and an absent runtime target directory.\nAt least 4 GiB of host free space; container images and volumes use additional space.\nKeep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection.\n\nDockSlate 전용 WSL 배포판과 저장소에서 컨테이너·이미지·볼륨을 관리합니다. 기존 Docker 데이터는 자동으로 가져오지 않습니다.\n\n승인 정보 만료: 오후 9:08:02\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n설치 승인 및 실행"
+    },
+    {
+      "observedAt": "2026-10-15T12:06:04.520Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "Downloading and verifying the official Ubuntu 24.04.5 WSL rootfs.",
+        "operation": {
+          "childProcessId": null,
+          "childStartedTicks": null,
+          "message": "Downloading and verifying the official Ubuntu 24.04.5 WSL rootfs.",
+          "processId": 3444,
+          "startedAt": 1792065963902,
+          "startedTicks": "639276627628664694",
+          "state": "installing",
+          "updatedAt": 1792065963921
+        },
+        "state": "installing"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:06:59.788Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "Importing only the new DockSlate WSL 2 distribution.",
+        "operation": {
+          "childProcessId": 3560,
+          "childStartedTicks": "639276628166764562",
+          "message": "Importing only the new DockSlate WSL 2 distribution.",
+          "processId": 3444,
+          "startedAt": 1792065963902,
+          "startedTicks": "639276627628664694",
+          "state": "installing",
+          "updatedAt": 1792066016651
+        },
+        "state": "installing"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:07:15.303Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "Installing verified Docker Engine packages and configuring the new owned distribution.",
+        "operation": {
+          "childProcessId": 3560,
+          "childStartedTicks": "639276628166764562",
+          "message": "Installing verified Docker Engine packages and configuring the new owned distribution.",
+          "processId": 3444,
+          "startedAt": 1792065963902,
+          "startedTicks": "639276627628664694",
+          "state": "installing",
+          "updatedAt": 1792066033792
+        },
+        "state": "installing"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:08:33.143Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "The verified DockSlate WSL runtime is installed and stopped.",
+        "operation": {
+          "childProcessId": 24044,
+          "childStartedTicks": "639276629092496548",
+          "message": "The separate DockSlate WSL runtime is installed and stopped. Start it with explicit approval.",
+          "processId": 3444,
+          "startedAt": 1792065963902,
+          "startedTicks": "639276627628664694",
+          "state": "completed",
+          "updatedAt": 1792066110199
+        },
+        "state": "stopped"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:08:33.150Z",
+      "approvedAction": "start",
+      "dialog": "DockSlate 런타임 시작 확인\nDockSlate · Moby 엔진\n\nDockSlate 배포판과 컨테이너 엔진을 시작합니다. 저장된 컨테이너는 재시작 정책에 따라 자동으로 실행될 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n시작 승인 및 실행"
+    },
+    {
+      "observedAt": "2026-10-15T12:08:36.337Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "Starting the owned keepalive and Docker Engine inside DockSlate only.",
+        "operation": {
+          "childProcessId": 21392,
+          "childStartedTicks": "639276629159850351",
+          "message": "Starting the owned keepalive and Docker Engine inside DockSlate only.",
+          "processId": 24096,
+          "startedAt": 1792066115876,
+          "startedTicks": "639276629141951064",
+          "state": "starting",
+          "updatedAt": 1792066115928
+        },
+        "state": "starting"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:08:51.776Z",
+      "status": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 21392,
+          "childStartedTicks": "639276629159850351",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 24096,
+          "startedAt": 1792066115876,
+          "startedTicks": "639276629141951064",
+          "state": "completed",
+          "updatedAt": 1792066129663
+        },
+        "state": "starting"
+      }
+    },
+    {
+      "observedAt": "2026-10-15T12:12:24.731Z",
+      "failure": "Error: CDP timeout: Runtime.evaluate"
+    }
+  ]
+}

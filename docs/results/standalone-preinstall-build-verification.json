@@ -1,0 +1,16 @@
+﻿{
+    "observedAt":  "2026-10-14T23:15:25.8377923+09:00",
+    "artifact":  "src-tauri/target/release/dockslate.exe",
+    "bytes":  3568640,
+    "sha256":  "D6DEB8DAACF4B7AB9ADFBF8FCCC6B24B8E53FB3955A548013C06A01C2CE395B1",
+    "buildExitCode":  0,
+    "releaseBuildElapsed":  "1m 45s",
+    "readOnlyExitCode":  0,
+    "guiCheckCount":  11,
+    "ipcCheckCount":  5,
+    "setupUiCheckCount":  6,
+    "newReaMcpCalls":  0,
+    "approvedWslCreation":  false,
+    "engineInstalled":  false,
+    "engineE2eVerified":  false
+}

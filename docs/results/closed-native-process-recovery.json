@@ -1,0 +1,10 @@
+﻿{
+    "observedAt":  "2026-10-15T22:08:07.9283878+09:00",
+    "processId":  20160,
+    "normalCloseAttempts":  2,
+    "windowHandle":  0,
+    "childProcessCount":  0,
+    "runtimeOperation":  "completed",
+    "reason":  "Native window and WebView closed, but process remained and locked its own EXE",
+    "action":  "Terminate only this verified closed UI process; no engine process or data change"
+}

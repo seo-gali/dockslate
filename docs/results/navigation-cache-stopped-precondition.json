@@ -1,0 +1,39 @@
+{
+  "observedAt": "2026-10-16T10:17:49.963Z",
+  "target": "actual built Windows DockSlate WebView2 window",
+  "mockData": false,
+  "changes": "renderer reload, menu/tab clicks, temporary local filter/backup-input edits and one explicit Images Refresh; no runtime or Docker object mutation",
+  "measurement": "CDP Network.requestWillBeSent records decoded IPC POST command names and local timestamps only; CORS OPTIONS requests are excluded. No headers, payloads, responses, backend functions, or request routing are intercepted or modified.",
+  "checks": [
+    {
+      "name": "halt at first cache criterion failure",
+      "passed": false,
+      "error": "The actual independent owned engine must be running before read-only navigation verification"
+    }
+  ],
+  "startup": {},
+  "navigation": {},
+  "manualRefresh": {},
+  "observations": [],
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\navigation-cache\\failure.png"
+  ],
+  "completed": false,
+  "failure": "Error: The actual independent owned engine must be running before read-only navigation verification\n    at requireFact (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-navigation-cache.mjs:63:61)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-navigation-cache.mjs:144:3",
+  "untested": [
+    "Backend internals beyond actual IPC call counts",
+    "VHDX compaction or deletion"
+  ],
+  "finishedAt": "2026-10-16T10:17:50.798Z",
+  "exceptions": [],
+  "observedReadCounts": {
+    "dashboard_snapshot": 0,
+    "engine_status": 1,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0
+  }
+}

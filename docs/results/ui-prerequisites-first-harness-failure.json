@@ -1,0 +1,76 @@
+{
+  "observedAt": "2026-10-16T14:24:04.554Z",
+  "target": "real built Windows DockSlate WebView2 window with stopped independent runtime",
+  "mockData": false,
+  "changes": "Renderer reload, menu/tab navigation, real CDP pointer drags, read-only VHDX prerequisites and a canceled elevation confirmation. One explicit unapproved elevation request verifies rejection. No engine/data/disk changes or operating-system windows are requested.",
+  "measurement": "Actual IPC POST command names/timestamps and wsl_preview response bodies are observed through CDP. No requests, response values, backend functions or routing are replaced. Text selection uses actual Input.dispatchMouseEvent drags.",
+  "checks": [
+    {
+      "name": "halt at first actual UI/prerequisite failure",
+      "passed": false,
+      "error": "Object reference chain is too long"
+    }
+  ],
+  "selection": [],
+  "navigation": {},
+  "preview": {},
+  "retry": {},
+  "elevation": {},
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\ui-prerequisites\\failure.png"
+  ],
+  "completed": false,
+  "failure": "Error: Object reference chain is too long\n    at WebSocket.<anonymous> (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-ui-prerequisites.mjs:50:37)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)\n    at WebSocket.dispatchEvent (node:internal/event_target:789:26)\n    at fireEvent (node:internal/deps/undici/undici:14403:14)\n    at #onMessage (node:internal/deps/undici/undici:15726:9)\n    at Object.onMessage (node:internal/deps/undici/undici:15433:76)\n    at websocketMessageReceived (node:internal/deps/undici/undici:14407:15)\n    at node:internal/deps/undici/undici:15135:21\n    at node:internal/deps/undici/undici:14915:11\n    at afterWrite (node:internal/streams/writable:708:5)",
+  "untested": [
+    "Approved elevated relaunch, UAC approval, elevated replacement window and original-window closure",
+    "Opening Windows Features or installing optional Windows components",
+    "Real VHDX compaction",
+    "Physical copying from a disabled search input while its engine is disconnected"
+  ],
+  "initialRuntime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": false,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "operation": {
+      "childProcessId": 16052,
+      "childStartedTicks": "639277574110482196",
+      "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+      "processId": 24656,
+      "startedAt": 1792160610657,
+      "startedTicks": "639277574089400000",
+      "state": "completed",
+      "updatedAt": 1792160611992
+    },
+    "state": "stopped"
+  },
+  "settingsBeforeReload": {
+    "badge": "중지됨",
+    "header": "Disconnected",
+    "successBanners": 0
+  },
+  "finishedAt": "2026-10-16T14:24:07.409Z",
+  "exceptions": [],
+  "observedCounts": {
+    "dashboard_snapshot": 1,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 0,
+    "wsl_inventory": 0,
+    "image_search": 0,
+    "wsl_preview": 0,
+    "desktop_restart_elevated": 0,
+    "image_pull": 0,
+    "container_action": 0,
+    "destructive_execute": 0,
+    "runtime_install": 0,
+    "runtime_start": 0,
+    "runtime_stop": 0,
+    "wsl_compact": 0,
+    "desktop_open_windows_features": 0
+  }
+}

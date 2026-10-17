@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-10-17T08:20:25.824Z",
+  "completed": false,
+  "verificationStage": "additional native folder selection automation after the six image-build E2E checks passed",
+  "pickerOpened": true,
+  "pickerCancellationReturnedToEditableForm": true,
+  "exactSelectionVerified": false,
+  "appExit": {
+    "time": "2026-10-17T17:17:50.1328790+09:00",
+    "recordId": 39569,
+    "module": "SHCORE.dll",
+    "exception": "0xc0000005",
+    "processId": 22444
+  },
+  "cause": "Verification helper sent BFFM_SETSELECTIONW (WM_USER+103) with a pointer from another process without custom marshalling. This is a harness error; native folder selection is left unverified.",
+  "reference": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage",
+  "correction": "Removed the cross-process pointer message from the private verification helper. It now only cancels the exact verified app dialog with WM_COMMAND/IDCANCEL. No product source changed and the passing image-build E2E result is preserved."
+}

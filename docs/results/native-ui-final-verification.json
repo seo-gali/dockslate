@@ -1,0 +1,67 @@
+{
+  "target": "built Windows Tauri WebView2",
+  "url": "http://tauri.localhost/",
+  "mockData": false,
+  "destructiveActions": false,
+  "checks": [
+    {
+      "name": "native Tauri backend available",
+      "passed": true
+    },
+    {
+      "name": "Overview native navigation",
+      "passed": true,
+      "text": "Overview\n\n엔진 연결과 Docker 사용량을 한눈에 확인합니다.\n\n새로고침\nDocker Engine\nDisconnected\n\nRancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.\n\n연결 정보\nDocker Engine에 연결되지 않았습니다\n\nRancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.\n\n새로고침"
+    },
+    {
+      "name": "Containers native navigation",
+      "passed": true,
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n새로고침\nDocker Engine에 연결되지 않았습니다\n\nRancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.\n\n새로고침"
+    },
+    {
+      "name": "Images native navigation",
+      "passed": true,
+      "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n새로고침\nPull image\nDocker Engine에 연결되지 않았습니다\n\nRancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.\n\n새로고침"
+    },
+    {
+      "name": "image mutations disabled when offline",
+      "passed": true
+    },
+    {
+      "name": "Disk Manager native navigation",
+      "passed": true,
+      "text": "Disk Manager\n\nDocker 사용량과 WSL VHDX 파일 크기를 구분해 관리합니다.\n\n새로고침\nDocker Usage\nWSL Disks\nDocker Engine에 연결되지 않았습니다\n\nRancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.\n\n새로고침"
+    },
+    {
+      "name": "WSL disk native inventory result",
+      "passed": true,
+      "text": "Disk Manager\n\nDocker 사용량과 WSL VHDX 파일 크기를 구분해 관리합니다.\n\n새로고침\nDocker Usage\nWSL Disks\n등록된 WSL 디스크\n\n관리자 권한: 없음 · 실행 중 배포판: 없음\n\n1개\nDocker Desktop\n\ndocker-desktop\n\n압축 차단\nVHDX 파일 크기\n104 MiB\nWSL 배포판 상태\n중지됨\n디스크 연결 상태\n미확인\n\\\\?\\C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\main\\ext4.vhdx\nAn elevated Windows administrator session is required for compaction.\nDisk separation has not been verified by both Get-DiskImage and Get-VHD.\nA separate byte-identical backup must be selected and verified before compaction.\n안전 조건 검사 후에만 압축을 승인할 수 있습니다.\n백업 및 조건 확인\n압축…\n읽기 전용 탐색\n\nVHDX 파일 크기는 Docker 논리 사용량과 다릅니다. 압축은 확인된 대상에만 적용되며, 다른 WSL 배포판의 종료가 필요하면 해당 배포판의 영향을 확인하고 직접 종료하세요."
+    },
+    {
+      "name": "Settings native navigation",
+      "passed": true,
+      "text": "Settings\n\n현재 엔진 연결 정보와 접근 조건을 확인합니다.\n\n새로고침\nEngine connection\n연결 상태\nDisconnected\nDocker context\n미확인\n엔진 종류\n미확인\nServer version\n미확인\nAPI version\n미확인\nEndpoint\nnpipe:////./pipe/docker_engine\n런타임 확인 경로\n미확인\n진단\nRancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.\n환경 및 권한\nRancher Desktop · Moby\n\nRancher Desktop의 Moby 엔진이 실행 중이어야 합니다. containerd 엔진과 원격 Docker 호스트는 지원하지 않습니다.\n\nDocker context 검증\n\n연결에 사용하는 context와 Windows named pipe를 Rust 백엔드에서 확인합니다. 연결 실패 시 진단 내용을 확인하고 새로고침하세요.\n\nWSL 디스크 압축\n\n검증된 WSL 등록 정보, 별도 백업, 런타임 종료, 디스크 분리 및 관리자 권한이 필요합니다. 확인하지 못한 조건이 있으면 압축이 차단됩니다.\n\n읽기 전용 연결 확인\n\n이 화면의 새로고침은 설치나 런타임 설정 변경 없이 현재 연결 상태를 다시 조회합니다."
+    },
+    {
+      "name": "layout 1200×780",
+      "passed": true,
+      "viewportWidth": 1200,
+      "viewportHeight": 780,
+      "scrollWidth": 1200,
+      "scrollHeight": 780
+    },
+    {
+      "name": "layout 1000×640",
+      "passed": true,
+      "viewportWidth": 1000,
+      "viewportHeight": 640,
+      "scrollWidth": 1000,
+      "scrollHeight": 640
+    },
+    {
+      "name": "unhandled renderer exceptions",
+      "passed": true,
+      "exceptions": []
+    }
+  ]
+}

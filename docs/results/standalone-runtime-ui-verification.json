@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-14T14:15:25.742Z",
+  "target": "actual Windows Tauri runtime setup UI",
+  "mockData": false,
+  "approvedMutation": false,
+  "checks": [
+    {
+      "name": "real backend reports runtime not installed",
+      "passed": true
+    },
+    {
+      "name": "preview identifies the new DockSlate distribution",
+      "passed": true,
+      "text": "DockSlate 런타임 설치 확인\n\n다음 대상을 새로 설치합니다.\n\nDockSlate (new WSL 2 distribution)\nC:\\Users\\user\\AppData\\Local\\DockSlate\\runtime\\wsl\nC:\\Users\\user\\AppData\\Local\\DockSlate\\runtime\\ownership.json\n\nDownload Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.\n\nInstall pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.\n\nCreate a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.\n\nConfigure systemd and a root-only Unix socket; no Docker TCP listener is created.\n\nStop only the newly created DockSlate distribution after setup. It remains stopped until an approved Start action.\n\n필요한 환경\n\nWindows 11 x64 with working WSL 2.4.10 or later.\nHTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.\nA free DockSlate distribution name and an absent runtime target directory.\nAt least 4 GiB of host free space; container images and volumes use additional space.\nKeep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection.\n\nDockSlate 전용 WSL 배포판과 저장소에서 컨테이너·이미지·볼륨을 관리합니다. 기존 Docker 데이터는 자동으로 가져오지 않습니다.\n\n승인 정보 만료: 오후 11:17:24\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n설치 승인 및 실행"
+    },
+    {
+      "name": "preview identifies pinned engine and separate data",
+      "passed": true
+    },
+    {
+      "name": "installation requires unchecked explicit approval",
+      "passed": true
+    },
+    {
+      "name": "long installation preview keeps its title and controls visible",
+      "passed": true
+    },
+    {
+      "name": "cancel preserves runtime not installed",
+      "passed": true
+    }
+  ]
+}

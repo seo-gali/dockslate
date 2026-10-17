@@ -1,0 +1,128 @@
+{
+  "observedAt": "2026-10-15T12:15:04.530Z",
+  "target": "built Windows Tauri EXE and its own real WSL Moby engine",
+  "mockData": false,
+  "explicitIsolatedFixtureApproval": true,
+  "fixtureNamespace": "dockslate-e2e-mv9i4klu",
+  "imageReference": "busybox:1.37.0",
+  "imageTagSource": "https://raw.githubusercontent.com/docker-library/official-images/master/library/busybox",
+  "checks": [
+    {
+      "name": "app and fixed own-distribution CLI verify independent Linux Moby engine",
+      "passed": true
+    },
+    {
+      "name": "real guest Buildx and Compose CLI versions match the approved pins",
+      "passed": true
+    },
+    {
+      "name": "real empty engine and measured baseline; existing objects excluded",
+      "passed": true
+    },
+    {
+      "name": "unapproved deletion, runtime stop and compaction plus invalid image reference denied before mutation",
+      "passed": true
+    },
+    {
+      "name": "halt on the first failed criterion",
+      "passed": false,
+      "error": "Timed out waiting for real image Pull completion; no automatic mutation retry was performed"
+    }
+  ],
+  "observations": {
+    "connection": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 10384,
+          "childStartedTicks": "639276632567099673",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 18732,
+          "startedAt": 1792066456599,
+          "startedTicks": "639276632552289203",
+          "state": "completed",
+          "updatedAt": 1792066472496
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      }
+    },
+    "engineIdentity": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "cliVersions": {
+      "buildx": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5",
+      "compose": "Docker Compose version v5.6.0"
+    },
+    "baseline": {
+      "containers": [],
+      "images": [],
+      "usage": {
+        "buildCache": [],
+        "buildCacheBytes": 0,
+        "containersBytes": 0,
+        "images": [],
+        "imagesBytes": null,
+        "reclaimableBytes": 0,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      },
+      "overview": {
+        "containersRunning": 0,
+        "containersStopped": 0,
+        "dockerBytes": null,
+        "engine": {
+          "apiVersion": "1.55",
+          "context": "dockslate",
+          "endpoint": "wsl://DockSlate/var/run/docker.sock",
+          "engine": "moby",
+          "message": "Verified independent DockSlate Moby Engine",
+          "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+          "provider": "DockSlate",
+          "serverVersion": "29.8.2",
+          "state": "connected"
+        },
+        "images": 0,
+        "reclaimableBytes": 0
+      }
+    },
+    "deleteWithoutApproval": "Explicit user approval is required",
+    "invalidPull": "Invalid image reference",
+    "runtimeStopWithoutApproval": "Explicit approval is required to stop the owned DockSlate distribution.",
+    "compactWithoutApproval": "Explicit approval is required to modify the selected VHDX."
+  },
+  "untested": [
+    "Build cache creation and selective cache deletion",
+    "VHDX compression or deletion",
+    "Existing Docker Desktop data migration"
+  ],
+  "completed": false,
+  "failure": "Error: Timed out waiting for real image Pull completion; no automatic mutation retry was performed\n    at waitFor (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-independent-engine.mjs:59:9)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-independent-engine.mjs:235:18",
+  "failurePolicy": "Stop at the first failed criterion; preserve remaining fixture data for inspection. No global prune, forced delete, WSL shutdown, original-runtime access, or automatic cleanup on failure.",
+  "finishedAt": "2026-10-15T12:19:54.711Z",
+  "exceptions": [],
+  "remainingFixture": {
+    "name": "dockslate-e2e-mv9i4klu-main",
+    "id": null,
+    "imageId": null,
+    "httpName": "dockslate-e2e-mv9i4klu-http",
+    "httpId": null,
+    "windowsBindDirectory": null,
+    "note": "Inspection is required; no automatic cleanup or retry was performed."
+  }
+}

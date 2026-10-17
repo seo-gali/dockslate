@@ -1,0 +1,195 @@
+{
+  "observedAt": "2026-10-16T13:50:44.210Z",
+  "mode": "actual final EXE; read-only engine/disk/CLI comparison and native UI",
+  "mutationExecuted": false,
+  "checks": [
+    {
+      "name": "final EXE connects to the owned D-drive Moby engine without Docker Desktop",
+      "passed": true
+    },
+    {
+      "name": "same real engine identity survives Desktop removal and final app relaunch",
+      "passed": true
+    },
+    {
+      "name": "all four real usage categories match Docker CLI, including omitted-zero fields",
+      "passed": true
+    },
+    {
+      "name": "only actual owned D-drive VHDX is reported and unsafe compaction remains blocked",
+      "passed": true
+    }
+  ],
+  "completed": false,
+  "runtime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": true,
+    "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+    "operation": {
+      "childProcessId": 8488,
+      "childStartedTicks": "639277547794113257",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 25448,
+      "startedAt": 1792157979299,
+      "startedTicks": "639277547779214930",
+      "state": "completed",
+      "updatedAt": 1792157995885
+    },
+    "state": "running"
+  },
+  "engine": {
+    "apiVersion": "1.55",
+    "context": "dockslate",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": "moby",
+    "message": "Verified independent DockSlate Moby Engine",
+    "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "provider": "DockSlate",
+    "serverVersion": "29.8.2",
+    "state": "connected"
+  },
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "usage": {
+    "buildCache": [
+      {
+        "eligible": true,
+        "id": "v53hsrkdfu9sswz68x7u75mzb",
+        "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+        "reason": null,
+        "size": 8329
+      },
+      {
+        "eligible": true,
+        "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+        "label": "local source for context",
+        "reason": null,
+        "size": 4096
+      },
+      {
+        "eligible": true,
+        "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "label": "local source for dockerfile",
+        "reason": null,
+        "size": 8192
+      },
+      {
+        "eligible": true,
+        "id": "rol703j7rcx69xfdq3x7pnslo",
+        "label": "local source for context",
+        "reason": null,
+        "size": 4096
+      },
+      {
+        "eligible": true,
+        "id": "8qq0hy0o4wgz31ahm1s2jljml",
+        "label": "local source for dockerfile",
+        "reason": null,
+        "size": 8192
+      },
+      {
+        "eligible": true,
+        "id": "zqd3knm2r1af5ynskbigho8ju",
+        "label": "local source for context",
+        "reason": null,
+        "size": 8192
+      },
+      {
+        "eligible": true,
+        "id": "phkwnafm28f3rs01xoptzb9ll",
+        "label": "local source for context",
+        "reason": null,
+        "size": 8192
+      }
+    ],
+    "buildCacheBytes": 49289,
+    "containersBytes": 0,
+    "images": [],
+    "imagesBytes": 0,
+    "reclaimableBytes": 49289,
+    "volumesBytes": 0,
+    "warnings": [
+      "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+      "Container and volume automatic cleanup is excluded."
+    ]
+  },
+  "overview": {
+    "containersRunning": 0,
+    "containersStopped": 0,
+    "dockerBytes": 49289,
+    "engine": {
+      "apiVersion": "1.55",
+      "context": "dockslate",
+      "endpoint": "wsl://DockSlate/var/run/docker.sock",
+      "engine": "moby",
+      "message": "Verified independent DockSlate Moby Engine",
+      "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "provider": "DockSlate",
+      "serverVersion": "29.8.2",
+      "state": "connected"
+    },
+    "images": 0,
+    "reclaimableBytes": 49289
+  },
+  "dockerCliDf": [
+    {
+      "Active": "0",
+      "Reclaimable": "0B",
+      "Size": "0B",
+      "TotalCount": "0",
+      "Type": "Images"
+    },
+    {
+      "Active": "0",
+      "Reclaimable": "0B",
+      "Size": "0B",
+      "TotalCount": "0",
+      "Type": "Containers"
+    },
+    {
+      "Active": "0",
+      "Reclaimable": "0B",
+      "Size": "0B",
+      "TotalCount": "0",
+      "Type": "Local Volumes"
+    },
+    {
+      "Active": "0",
+      "Reclaimable": "49.29kB",
+      "Size": "49.29kB",
+      "TotalCount": "7",
+      "Type": "Build Cache"
+    }
+  ],
+  "wsl": {
+    "admin": false,
+    "diagnostics": [],
+    "disks": [
+      {
+        "attached": null,
+        "blockedReasons": [
+          "Running WSL distributions must be stopped manually: DockSlate",
+          "An elevated Windows administrator session is required for compaction.",
+          "Disk separation has not been verified by both Get-DiskImage and Get-VHD."
+        ],
+        "compactionStatus": "blocked",
+        "distribution": "DockSlate",
+        "exists": true,
+        "fileSizeBytes": 2811232256,
+        "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+        "owner": "DockSlate",
+        "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+        "running": true
+      }
+    ],
+    "operation": null,
+    "runningDistributions": [
+      "DockSlate"
+    ],
+    "runtimeProcesses": [],
+    "status": "ready"
+  },
+  "failure": "Error: Final native UI did not reflect the actual backend state\n    at waitFor (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-final-state.mjs:44:9)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-final-state.mjs:105:3",
+  "finishedAt": "2026-10-16T13:52:22.501Z"
+}

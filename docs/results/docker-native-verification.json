@@ -1,0 +1,55 @@
+﻿{
+  "containers": {
+    "Err": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate."
+  },
+  "emptyDeletion": {
+    "Err": "Unsupported or empty destructive selection"
+  },
+  "engine": {
+    "Ok": {
+      "apiVersion": null,
+      "context": null,
+      "endpoint": "npipe:////./pipe/docker_engine",
+      "engine": null,
+      "message": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.",
+      "ownerPath": null,
+      "serverVersion": null,
+      "state": "unavailable"
+    }
+  },
+  "images": {
+    "Err": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate."
+  },
+  "invalidAction": {
+    "Err": "Unsupported container action or ID"
+  },
+  "invalidPull": {
+    "Err": "Invalid image reference"
+  },
+  "mode": "Windows Rust backend read-only and rejected-input verification; no approved mutation",
+  "overview": {
+    "Ok": {
+      "containersRunning": null,
+      "containersStopped": null,
+      "dockerBytes": null,
+      "engine": {
+        "apiVersion": null,
+        "context": null,
+        "endpoint": "npipe:////./pipe/docker_engine",
+        "engine": null,
+        "message": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.",
+        "ownerPath": null,
+        "serverVersion": null,
+        "state": "unavailable"
+      },
+      "images": null,
+      "reclaimableBytes": null
+    }
+  },
+  "unapprovedDelete": {
+    "Err": "Explicit user approval is required"
+  },
+  "usage": {
+    "Err": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate."
+  }
+}

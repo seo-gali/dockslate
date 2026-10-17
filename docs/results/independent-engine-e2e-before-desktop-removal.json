@@ -1,0 +1,744 @@
+{
+  "observedAt": "2026-10-15T12:22:45.998Z",
+  "target": "built Windows Tauri EXE and its own real WSL Moby engine",
+  "mockData": false,
+  "explicitIsolatedFixtureApproval": true,
+  "fixtureNamespace": "dockslate-e2e-mv9iegoe",
+  "imageReference": "busybox:1.37.0",
+  "imageTagSource": "https://raw.githubusercontent.com/docker-library/official-images/master/library/busybox",
+  "checks": [
+    {
+      "name": "app and fixed own-distribution CLI verify independent Linux Moby engine",
+      "passed": true
+    },
+    {
+      "name": "real guest Buildx and Compose CLI versions match the approved pins",
+      "passed": true
+    },
+    {
+      "name": "real empty engine and measured baseline; existing objects excluded",
+      "passed": true
+    },
+    {
+      "name": "unapproved deletion, runtime stop and compaction plus invalid image reference denied before mutation",
+      "passed": true
+    },
+    {
+      "name": "actual Images UI Pull and engine image identity/digest",
+      "passed": true
+    },
+    {
+      "name": "actual container list, Compose group and UI Start",
+      "passed": true
+    },
+    {
+      "name": "Overview counts reflect the real running container and image",
+      "passed": true
+    },
+    {
+      "name": "running container and referenced image deletion are blocked",
+      "passed": true
+    },
+    {
+      "name": "real Docker stdout/stderr framing and visible Logs view",
+      "passed": true
+    },
+    {
+      "name": "UI Restart changes the real container start timestamp",
+      "passed": true
+    },
+    {
+      "name": "actual UI Stop reaches exited state",
+      "passed": true
+    },
+    {
+      "name": "image referenced by a stopped container remains protected",
+      "passed": true
+    },
+    {
+      "name": "real UI exact-target confirmation, required checkbox and approved container deletion",
+      "passed": true
+    },
+    {
+      "name": "real read-only Windows bind mount and dynamically published Windows localhost HTTP",
+      "passed": true
+    },
+    {
+      "name": "actual app published-port table and exact approved HTTP fixture cleanup",
+      "passed": true
+    },
+    {
+      "name": "approved exact image deletion and single-use approval token",
+      "passed": true
+    },
+    {
+      "name": "actual Disk Manager usage and approved selective fixture-image cleanup",
+      "passed": true
+    },
+    {
+      "name": "fixture data removed and unrelated build cache identities retained",
+      "passed": true
+    },
+    {
+      "name": "real owned-runtime Stop/Start, offline state, stable engine identity and preserved cleanup state",
+      "passed": true
+    },
+    {
+      "name": "final connected independent-engine Overview UI",
+      "passed": true
+    },
+    {
+      "name": "unhandled renderer exceptions",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "connection": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 10384,
+          "childStartedTicks": "639276632567099673",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 18732,
+          "startedAt": 1792066456599,
+          "startedTicks": "639276632552289203",
+          "state": "completed",
+          "updatedAt": 1792066472496
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      }
+    },
+    "engineIdentity": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "cliVersions": {
+      "buildx": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5",
+      "compose": "Docker Compose version v5.6.0"
+    },
+    "baseline": {
+      "containers": [],
+      "images": [],
+      "usage": {
+        "buildCache": [],
+        "buildCacheBytes": 0,
+        "containersBytes": 0,
+        "images": [],
+        "imagesBytes": null,
+        "reclaimableBytes": 0,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      },
+      "overview": {
+        "containersRunning": 0,
+        "containersStopped": 0,
+        "dockerBytes": null,
+        "engine": {
+          "apiVersion": "1.55",
+          "context": "dockslate",
+          "endpoint": "wsl://DockSlate/var/run/docker.sock",
+          "engine": "moby",
+          "message": "Verified independent DockSlate Moby Engine",
+          "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+          "provider": "DockSlate",
+          "serverVersion": "29.8.2",
+          "state": "connected"
+        },
+        "images": 0,
+        "reclaimableBytes": 0
+      }
+    },
+    "deleteWithoutApproval": "Explicit user approval is required",
+    "invalidPull": "Invalid image reference",
+    "runtimeStopWithoutApproval": "Explicit approval is required to stop the owned DockSlate distribution.",
+    "compactWithoutApproval": "Explicit approval is required to modify the selected VHDX.",
+    "pulledImage": {
+      "containers": 0,
+      "created": 1727386302,
+      "id": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "size": 6770087,
+      "tags": [
+        "busybox:1.37.0"
+      ]
+    },
+    "imageInspect": [
+      {
+        "Id": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+        "RepoTags": [
+          "busybox:1.37.0"
+        ],
+        "RepoDigests": [
+          "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+        ],
+        "Created": "2024-09-26T21:31:42Z",
+        "Config": {
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "Cmd": [
+            "sh"
+          ]
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 6767335,
+        "RootFS": {
+          "Type": "layers",
+          "Layers": [
+            "sha256:5a9bfd996c6d49c6c3cb4ddfb76e8d09cf16b6b7cf6601d1f2dffbdbc3edb5d4"
+          ]
+        },
+        "Metadata": {
+          "LastTagTime": "2026-10-15T12:23:47.828905774Z"
+        },
+        "Descriptor": {
+          "mediaType": "application/vnd.oci.image.index.v1+json",
+          "digest": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+          "size": 9535
+        },
+        "Identity": {
+          "Pull": [
+            {
+              "Repository": "docker.io/library/busybox"
+            }
+          ]
+        }
+      }
+    ],
+    "fixture": {
+      "id": "324f18062426adbb14197ddb4ba1b1422fe6be7d1c3586ae6cd1f9a0a8debcfb",
+      "name": "dockslate-e2e-mv9iegoe-main",
+      "imageId": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "composeProject": "dockslate-e2e-mv9iegoe"
+    },
+    "overviewRunning": {
+      "containersRunning": 1,
+      "containersStopped": 0,
+      "dockerBytes": 6783718,
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      },
+      "images": 1,
+      "reclaimableBytes": 0
+    },
+    "runningDeleteDenied": "Container deletion blocked: container must be stopped; running, paused and restarting containers are excluded",
+    "referencedImageDeleteDenied": "Cleanup blocked: Referenced by an existing container",
+    "referencedUsage": {
+      "buildCache": [],
+      "buildCacheBytes": 0,
+      "containersBytes": 4096,
+      "images": [
+        {
+          "eligible": false,
+          "estimatedReclaimableBytes": 6770087,
+          "id": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+          "label": "busybox:1.37.0",
+          "reason": "Referenced by an existing container",
+          "size": 6770087
+        }
+      ],
+      "imagesBytes": 6779622,
+      "reclaimableBytes": 0,
+      "volumesBytes": 0,
+      "warnings": [
+        "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+        "Container and volume automatic cleanup is excluded."
+      ]
+    },
+    "logs": {
+      "content": "2026-10-15T12:24:46.481466974Z dockslate-e2e-mv9iegoe-stdout\n2026-10-15T12:24:46.481510320Z dockslate-e2e-mv9iegoe-stderr\n",
+      "follow": false,
+      "tail": 300,
+      "truncated": false
+    },
+    "restart": {
+      "beforeRestart": "2026-10-15T12:24:46.166094165Z",
+      "restarted": "2026-10-15T12:26:08.823920357Z"
+    },
+    "stoppedReferenceDeleteDenied": "Cleanup blocked: Referenced by an existing container",
+    "containerApproval": {
+      "unchecked": true,
+      "disabled": true,
+      "targets": [
+        "324f18062426adbb14197ddb4ba1b1422fe6be7d1c3586ae6cd1f9a0a8debcfb"
+      ]
+    },
+    "windowsBindFixture": {
+      "hostDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\independent-engine-e2e-retry\\dockslate-e2e-mv9iegoe-windows-bind",
+      "guestDirectory": "/mnt/d/01_Programming/08_AI/REA/dockslate/.analysis/independent-engine-e2e-retry/dockslate-e2e-mv9iegoe-windows-bind",
+      "sentinelPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\independent-engine-e2e-retry\\dockslate-e2e-mv9iegoe-windows-bind\\sentinel.txt",
+      "sentinel": "dockslate-e2e-mv9iegoe-windows-bind-mount-and-localhost\n"
+    },
+    "httpFixture": {
+      "id": "8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66",
+      "name": "dockslate-e2e-mv9iegoe-http",
+      "inspect": {
+        "Id": "8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66",
+        "Created": "2026-10-15T12:27:50.277033628Z",
+        "Path": "/bin/busybox",
+        "Args": [
+          "httpd",
+          "-f",
+          "-p",
+          "8080",
+          "-h",
+          "/srv"
+        ],
+        "State": {
+          "Status": "running",
+          "Running": true,
+          "Paused": false,
+          "Restarting": false,
+          "OOMKilled": false,
+          "Dead": false,
+          "Pid": 4297,
+          "ExitCode": 0,
+          "Error": "",
+          "StartedAt": "2026-10-15T12:28:20.465517465Z",
+          "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+        "ResolvConfPath": "/var/lib/docker/containers/8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66/hostname",
+        "HostsPath": "/var/lib/docker/containers/8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66/hosts",
+        "LogPath": "/var/lib/docker/containers/8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66/8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66-json.log",
+        "Name": "/dockslate-e2e-mv9iegoe-http",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+          "Binds": null,
+          "ContainerIDFile": "",
+          "LogConfig": {
+            "Type": "json-file",
+            "Config": {}
+          },
+          "NetworkMode": "bridge",
+          "PortBindings": {
+            "8080/tcp": [
+              {
+                "HostIp": "127.0.0.1",
+                "HostPort": ""
+              }
+            ]
+          },
+          "RestartPolicy": {
+            "Name": "no",
+            "MaximumRetryCount": 0
+          },
+          "AutoRemove": false,
+          "VolumeDriver": "",
+          "VolumesFrom": null,
+          "ConsoleSize": [
+            0,
+            0
+          ],
+          "CapAdd": null,
+          "CapDrop": null,
+          "CgroupnsMode": "private",
+          "Dns": null,
+          "DnsOptions": [],
+          "DnsSearch": [],
+          "ExtraHosts": null,
+          "GroupAdd": null,
+          "IpcMode": "private",
+          "Cgroup": "",
+          "Links": null,
+          "OomScoreAdj": 0,
+          "PidMode": "",
+          "Privileged": false,
+          "PublishAllPorts": false,
+          "ReadonlyRootfs": false,
+          "SecurityOpt": null,
+          "UTSMode": "",
+          "UsernsMode": "",
+          "ShmSize": 67108864,
+          "Runtime": "runc",
+          "Isolation": "",
+          "CpuShares": 0,
+          "Memory": 0,
+          "NanoCpus": 0,
+          "CgroupParent": "",
+          "BlkioWeight": 0,
+          "BlkioWeightDevice": [],
+          "BlkioDeviceReadBps": [],
+          "BlkioDeviceWriteBps": [],
+          "BlkioDeviceReadIOps": [],
+          "BlkioDeviceWriteIOps": [],
+          "CpuPeriod": 0,
+          "CpuQuota": 0,
+          "CpuRealtimePeriod": 0,
+          "CpuRealtimeRuntime": 0,
+          "CpusetCpus": "",
+          "CpusetMems": "",
+          "Devices": [],
+          "DeviceCgroupRules": null,
+          "DeviceRequests": null,
+          "MemoryReservation": 0,
+          "MemorySwap": 0,
+          "MemorySwappiness": null,
+          "OomKillDisable": null,
+          "PidsLimit": null,
+          "Ulimits": null,
+          "CpuCount": 0,
+          "CpuPercent": 0,
+          "IOMaximumIOps": 0,
+          "IOMaximumBandwidth": 0,
+          "Mounts": [
+            {
+              "Type": "bind",
+              "Source": "/mnt/d/01_Programming/08_AI/REA/dockslate/.analysis/independent-engine-e2e-retry/dockslate-e2e-mv9iegoe-windows-bind",
+              "Target": "/srv",
+              "ReadOnly": true
+            }
+          ],
+          "MaskedPaths": [
+            "/proc/acpi",
+            "/proc/asound",
+            "/proc/interrupts",
+            "/proc/kcore",
+            "/proc/keys",
+            "/proc/latency_stats",
+            "/proc/sched_debug",
+            "/proc/scsi",
+            "/proc/timer_list",
+            "/proc/timer_stats",
+            "/sys/devices/virtual/powercap",
+            "/sys/firmware"
+          ],
+          "ReadonlyPaths": [
+            "/proc/bus",
+            "/proc/fs",
+            "/proc/irq",
+            "/proc/sys",
+            "/proc/sysrq-trigger"
+          ]
+        },
+        "Storage": {
+          "RootFS": {
+            "Snapshot": {
+              "Name": "overlayfs"
+            }
+          }
+        },
+        "Mounts": [
+          {
+            "Type": "bind",
+            "Source": "/mnt/d/01_Programming/08_AI/REA/dockslate/.analysis/independent-engine-e2e-retry/dockslate-e2e-mv9iegoe-windows-bind",
+            "Destination": "/srv",
+            "Mode": "",
+            "RW": false,
+            "Propagation": "rprivate"
+          }
+        ],
+        "Config": {
+          "Hostname": "8f2e49235b05",
+          "Domainname": "",
+          "User": "",
+          "AttachStdin": false,
+          "AttachStdout": true,
+          "AttachStderr": true,
+          "ExposedPorts": {
+            "8080/tcp": {}
+          },
+          "Tty": false,
+          "OpenStdin": false,
+          "StdinOnce": false,
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "Cmd": [
+            "/bin/busybox",
+            "httpd",
+            "-f",
+            "-p",
+            "8080",
+            "-h",
+            "/srv"
+          ],
+          "Image": "busybox:1.37.0",
+          "Volumes": null,
+          "WorkingDir": "",
+          "Entrypoint": null,
+          "Labels": {
+            "io.dockslate.e2e": "dockslate-e2e-mv9iegoe"
+          }
+        },
+        "NetworkSettings": {
+          "SandboxID": "a72aec402dc45a0b3d0c36c784cc8c96b35ee4c30ee6d0640c8e9a7384db5f6b",
+          "SandboxKey": "/var/run/docker/netns/a72aec402dc4",
+          "Ports": {
+            "8080/tcp": [
+              {
+                "HostIp": "127.0.0.1",
+                "HostPort": "32768"
+              }
+            ]
+          },
+          "Networks": {
+            "bridge": {
+              "IPAMConfig": null,
+              "Links": null,
+              "Aliases": null,
+              "DriverOpts": null,
+              "GwPriority": 0,
+              "NetworkID": "930a3f49525dfd0fc13f9a3ab86f188a857290d8b2d88eabe160a15c43534d70",
+              "EndpointID": "404866b309ffad569d61789c93c4592ff0b4052d953ffb2a43908e828de63f6c",
+              "Gateway": "172.17.0.1",
+              "IPAddress": "172.17.0.2",
+              "MacAddress": "c6:fa:9a:84:a4:c8",
+              "IPPrefixLen": 16,
+              "IPv6Gateway": "",
+              "GlobalIPv6Address": "",
+              "GlobalIPv6PrefixLen": 0,
+              "DNSNames": null
+            }
+          }
+        },
+        "ImageManifestDescriptor": {
+          "mediaType": "application/vnd.oci.image.manifest.v1+json",
+          "digest": "sha256:66a6306db78bf2dbf3487f293aa8d6990d8e506fdffab9cc43fe422becf886e4",
+          "size": 610,
+          "annotations": {
+            "com.docker.official-images.bashbrew.arch": "amd64",
+            "org.opencontainers.image.base.name": "scratch",
+            "org.opencontainers.image.created": "2026-09-08T23:04:09Z",
+            "org.opencontainers.image.revision": "066dbf90090ab2dbb905310fac2fa10ea39a7ba6",
+            "org.opencontainers.image.source": "https://github.com/docker-library/busybox.git",
+            "org.opencontainers.image.url": "https://hub.docker.com/_/busybox",
+            "org.opencontainers.image.version": "1.37.0-glibc"
+          },
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          }
+        }
+      },
+      "appContainer": {
+        "composeProject": null,
+        "id": "8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66",
+        "image": "busybox:1.37.0",
+        "name": "dockslate-e2e-mv9iegoe-http",
+        "ports": "127.0.0.1:32768 → 8080/tcp",
+        "state": "running",
+        "status": "Up 28 seconds"
+      },
+      "hostUrl": "http://127.0.0.1:32768/sentinel.txt"
+    },
+    "windowsLocalhostHttp": {
+      "status": 200,
+      "body": "dockslate-e2e-mv9iegoe-windows-bind-mount-and-localhost\n",
+      "url": "http://127.0.0.1:32768/sentinel.txt"
+    },
+    "httpFixtureDeletion": {
+      "deleted": [
+        "8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66"
+      ],
+      "failed": [],
+      "message": "container_delete: 1 deleted, 0 failed"
+    },
+    "imageDeletion": {
+      "kind": "image_delete",
+      "targets": [
+        "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+      ],
+      "impact": [
+        "Deletion is irreversible within DockSlate.",
+        "Existing volumes are retained. Force deletion and system-wide prune are excluded.",
+        "Only selected images are requested for deletion; image metadata and unreferenced layers may be removed. Downloading an image again requires its source registry."
+      ],
+      "estimatedBytes": 6770087,
+      "result": {
+        "deleted": [
+          "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+        ],
+        "failed": [],
+        "message": "image_delete: 1 deleted, 0 failed"
+      }
+    },
+    "cleanupUsage": {
+      "buildCache": [],
+      "buildCacheBytes": 0,
+      "containersBytes": 0,
+      "images": [
+        {
+          "eligible": true,
+          "estimatedReclaimableBytes": 6770087,
+          "id": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+          "label": "busybox:1.37.0",
+          "reason": null,
+          "size": 6770087
+        }
+      ],
+      "imagesBytes": 6779622,
+      "reclaimableBytes": 6770087,
+      "volumesBytes": 0,
+      "warnings": [
+        "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+        "Container and volume automatic cleanup is excluded."
+      ]
+    },
+    "selectedCleanup": {
+      "kind": "cleanup",
+      "targets": [
+        "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+      ],
+      "impact": [
+        "Deletion is irreversible within DockSlate.",
+        "Existing volumes are retained. Force deletion and system-wide prune are excluded.",
+        "Only selected images are requested for deletion; image metadata and unreferenced layers may be removed. Downloading an image again requires its source registry."
+      ],
+      "estimatedBytes": 6770087,
+      "result": {
+        "deleted": [
+          "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    "afterCleanup": {
+      "containers": [],
+      "images": [],
+      "usage": {
+        "buildCache": [],
+        "buildCacheBytes": 0,
+        "containersBytes": 0,
+        "images": [],
+        "imagesBytes": null,
+        "reclaimableBytes": 0,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      },
+      "overview": {
+        "containersRunning": 0,
+        "containersStopped": 0,
+        "dockerBytes": null,
+        "engine": {
+          "apiVersion": "1.55",
+          "context": "dockslate",
+          "endpoint": "wsl://DockSlate/var/run/docker.sock",
+          "engine": "moby",
+          "message": "Verified independent DockSlate Moby Engine",
+          "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+          "provider": "DockSlate",
+          "serverVersion": "29.8.2",
+          "state": "connected"
+        },
+        "images": 0,
+        "reclaimableBytes": 0
+      }
+    },
+    "runtimeStopped": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": false,
+        "message": "The verified DockSlate WSL runtime is installed and stopped.",
+        "operation": {
+          "childProcessId": 23484,
+          "childStartedTicks": "639276643562662698",
+          "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+          "processId": 19648,
+          "startedAt": 1792067555891,
+          "startedTicks": "639276643542812235",
+          "state": "completed",
+          "updatedAt": 1792067557410
+        },
+        "state": "stopped"
+      },
+      "engine": {
+        "apiVersion": null,
+        "context": "DockSlate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": null,
+        "message": "The verified DockSlate WSL runtime is installed and stopped.",
+        "ownerPath": null,
+        "serverVersion": null,
+        "state": "unavailable"
+      }
+    },
+    "runtimeRestarted": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 25796,
+          "childStartedTicks": "639276643623384440",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 26532,
+          "startedAt": 1792067562205,
+          "startedTicks": "639276643605205597",
+          "state": "completed",
+          "updatedAt": 1792067579018
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      }
+    }
+  },
+  "untested": [
+    "Build cache creation and selective cache deletion",
+    "VHDX compression or deletion",
+    "Existing Docker Desktop data migration"
+  ],
+  "completed": true,
+  "failure": null,
+  "failurePolicy": "Stop at the first failed criterion; preserve remaining fixture data for inspection. No global prune, forced delete, WSL shutdown, original-runtime access, or automatic cleanup on failure.",
+  "finishedAt": "2026-10-15T12:33:56.447Z",
+  "exceptions": [],
+  "remainingFixture": {
+    "name": "dockslate-e2e-mv9iegoe-main",
+    "id": "324f18062426adbb14197ddb4ba1b1422fe6be7d1c3586ae6cd1f9a0a8debcfb",
+    "imageId": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+    "httpName": "dockslate-e2e-mv9iegoe-http",
+    "httpId": "8f2e49235b056d22cf4729b9cb1e95c8eeff24cf54eb5a36e742f78598508c66",
+    "windowsBindDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\independent-engine-e2e-retry\\dockslate-e2e-mv9iegoe-windows-bind",
+    "note": "No fixture containers or images remain; runtime is running. The tiny workspace sentinel file is retained as evidence."
+  }
+}

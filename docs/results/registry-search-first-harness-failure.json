@@ -1,0 +1,213 @@
+{
+  "observedAt": "2026-10-15T13:33:46.044Z",
+  "target": "actual Windows Tauri WebView and real owned Moby Engine Docker Hub search",
+  "mockData": false,
+  "mutationExecuted": false,
+  "checks": [
+    {
+      "name": "native Docker Hub search returns actual official hello-world with bounded results",
+      "passed": true
+    },
+    {
+      "name": "registry search and local image filter maintain separate values",
+      "passed": true
+    },
+    {
+      "name": "selecting hello-world fills explicit latest reference without executing Pull",
+      "passed": true
+    },
+    {
+      "name": "native navigation preserves registry results, selection, and local filter",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "engine": {
+      "apiVersion": "1.55",
+      "context": "dockslate",
+      "endpoint": "wsl://DockSlate/var/run/docker.sock",
+      "engine": "moby",
+      "message": "Verified independent DockSlate Moby Engine",
+      "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "provider": "DockSlate",
+      "serverVersion": "29.8.2",
+      "state": "connected"
+    },
+    "before": {
+      "images": [],
+      "containers": []
+    },
+    "searchTerm": "hello",
+    "actualResults": [
+      {
+        "name": "circleci/hello",
+        "official": false,
+        "text": "circleci/hello\nThis image is for internal use\n\t0\t선택"
+      },
+      {
+        "name": "hello-world",
+        "official": true,
+        "text": "hello-world\nOfficial\nHello World! (an example of minimal Dockerization)\n\t2,595\t선택"
+      },
+      {
+        "name": "hello-seattle",
+        "official": true,
+        "text": "hello-seattle\nOfficial\nHello from DockerCon 2016 (Seattle)!\n\t14\t선택"
+      },
+      {
+        "name": "nginxdemos/hello",
+        "official": false,
+        "text": "nginxdemos/hello\nNGINX webserver that serves a simple page containing its hostname, IP address and port ...\n\t173\t선택"
+      },
+      {
+        "name": "bihero/hello",
+        "official": false,
+        "text": "bihero/hello\n'Hello' word microservice\n\t1\t선택"
+      },
+      {
+        "name": "cy4n/hello",
+        "official": false,
+        "text": "cy4n/hello\nspringboot hello playground\n\t1\t선택"
+      },
+      {
+        "name": "hellojoechip/hello",
+        "official": false,
+        "text": "hellojoechip/hello\ndocker run -d -p 8090:8090 hellojoechip/hello\n\t0\t선택"
+      },
+      {
+        "name": "silasbw/hello",
+        "official": false,
+        "text": "silasbw/hello\n설명 없음\n\t0\t선택"
+      },
+      {
+        "name": "widdix/hello",
+        "official": false,
+        "text": "widdix/hello\nHello World!\n\t0\t선택"
+      },
+      {
+        "name": "cloudecho/hello",
+        "official": false,
+        "text": "cloudecho/hello\nHello\n\t0\t선택"
+      },
+      {
+        "name": "kelseyhightower/hello",
+        "official": false,
+        "text": "kelseyhightower/hello\n설명 없음\n\t10\t선택"
+      },
+      {
+        "name": "cenkutcom/hello",
+        "official": false,
+        "text": "cenkutcom/hello\ndocker container run -dit --name hello -p 80:80 -e CONAME=hello cenkutcom/hello\n\t0\t선택"
+      },
+      {
+        "name": "mulspace/hello",
+        "official": false,
+        "text": "mulspace/hello\nHello docker for web. It will run python web in port 5000 and print the system info.\n\t0\t선택"
+      },
+      {
+        "name": "2bno2/hello",
+        "official": false,
+        "text": "2bno2/hello\nc hello\n\t0\t선택"
+      },
+      {
+        "name": "johanburati/hello",
+        "official": false,
+        "text": "johanburati/hello\nHttp server for testing traffic between machines\n\t0\t선택"
+      },
+      {
+        "name": "raeffs/hello",
+        "official": false,
+        "text": "raeffs/hello\n설명 없음\n\t0\t선택"
+      },
+      {
+        "name": "cfgarden/hello",
+        "official": false,
+        "text": "cfgarden/hello\n설명 없음\n\t0\t선택"
+      },
+      {
+        "name": "anafomin/hello",
+        "official": false,
+        "text": "anafomin/hello\n설명 없음\n\t0\t선택"
+      },
+      {
+        "name": "lizrice/hello",
+        "official": false,
+        "text": "lizrice/hello\nSimple examples of containerizing Golang code\n\t0\t선택"
+      },
+      {
+        "name": "monopole/hello",
+        "official": false,
+        "text": "monopole/hello\n설명 없음\n\t1\t선택"
+      },
+      {
+        "name": "corticoai/hello",
+        "official": false,
+        "text": "corticoai/hello\n설명 없음\n\t0\t선택"
+      },
+      {
+        "name": "rxmllc/hello",
+        "official": false,
+        "text": "rxmllc/hello\nHello World repo\n\t2\t선택"
+      },
+      {
+        "name": "yudi99/hello",
+        "official": false,
+        "text": "yudi99/hello\nhello app\n\t0\t선택"
+      },
+      {
+        "name": "callmejaehyun/hello",
+        "official": false,
+        "text": "callmejaehyun/hello\nhello node\n\t0\t선택"
+      },
+      {
+        "name": "akleinloog/hello",
+        "official": false,
+        "text": "akleinloog/hello\nA simple Hello in Go, different versions use a different language for versioning experiments\n\t0\t선택"
+      }
+    ],
+    "afterNavigation": {
+      "term": "hello",
+      "reference": "hello-world:latest",
+      "localFilter": "dockslate-local-filter-preserved",
+      "names": [
+        "circleci/hello",
+        "hello-world",
+        "hello-seattle",
+        "nginxdemos/hello",
+        "bihero/hello",
+        "cy4n/hello",
+        "hellojoechip/hello",
+        "silasbw/hello",
+        "widdix/hello",
+        "cloudecho/hello",
+        "kelseyhightower/hello",
+        "cenkutcom/hello",
+        "mulspace/hello",
+        "2bno2/hello",
+        "johanburati/hello",
+        "raeffs/hello",
+        "cfgarden/hello",
+        "anafomin/hello",
+        "lizrice/hello",
+        "monopole/hello",
+        "corticoai/hello",
+        "rxmllc/hello",
+        "yudi99/hello",
+        "callmejaehyun/hello",
+        "akleinloog/hello"
+      ]
+    },
+    "invalidInputs": [],
+    "invokedCommands": [
+      "engine_status",
+      "images_list",
+      "containers_list",
+      "image_search"
+    ]
+  },
+  "completed": false,
+  "failurePolicy": "Stop on actual network, engine, or UI failure; never substitute results or execute Pull/cleanup.",
+  "failure": "Error: Invalid term was not rejected by Rust input validation: \"https://hub.docker.com/search?q=hello\"\n    at fact (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-registry-search.mjs:47:54)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-registry-search.mjs:151:5",
+  "rendererExceptions": [],
+  "finishedAt": "2026-10-15T13:34:08.515Z"
+}

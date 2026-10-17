@@ -1,0 +1,262 @@
+{
+  "checkedAtUtc": "2026-10-13T12:57:40.014Z",
+  "sessionId": "01a13080-4613-79f3-a5cc-3a6f1cf4c680",
+  "source": {
+    "file": "C:/Users/user/.codex/sessions/2026/10/12/rollout-2026-10-12T23-24-35-01a13080-4613-79f3-a5cc-3a6f1cf4c680.jsonl",
+    "snapshotSha256": "8ec96b990ca9053ff81bca3d67509b37dc995d91b61c50b1bbc37faf35dbdcf3",
+    "snapshotBytes": 3566727
+  },
+  "method": "Read existing Codex JSONL exec invocation code and returned tool results; expand map/loop calls using logged results. No REA call made during audit. Tool metadata, source/document mentions, exec waits and REA CLI are excluded.",
+  "serverSideIndependentAuditLog": "not inspected",
+  "totals": {
+    "reaCalls": 20,
+    "responses": 16,
+    "errors": 4,
+    "reaBearingExecWrappers": 14,
+    "newReaCallsForAudit": 0
+  },
+  "byTool": {
+    "mcp__rea__binary_session": {
+      "calls": 2,
+      "responses": 2,
+      "errors": 0
+    },
+    "mcp__rea__analyze_javascript_application": {
+      "calls": 2,
+      "responses": 1,
+      "errors": 1
+    },
+    "mcp__rea__inspect_analysis_view": {
+      "calls": 7,
+      "responses": 7,
+      "errors": 0
+    },
+    "mcp__rea__get_evidence_bundle": {
+      "calls": 1,
+      "responses": 1,
+      "errors": 0
+    },
+    "mcp__rea__recover_javascript_sources": {
+      "calls": 1,
+      "responses": 0,
+      "errors": 1
+    },
+    "mcp__rea__trace_application_feature": {
+      "calls": 5,
+      "responses": 4,
+      "errors": 1
+    },
+    "mcp__rea__trace_javascript_semantics": {
+      "calls": 2,
+      "responses": 1,
+      "errors": 1
+    }
+  },
+  "implementationRequestUtc": "2026-10-13T10:02:05.896Z",
+  "auditRequestUtc": "2026-10-13T12:52:27.080Z",
+  "reaCallsSinceImplementation": 0,
+  "children": [
+    {
+      "agent": "/root/public_source_check",
+      "file": "C:/Users/user/.codex/sessions/2026/10/12/rollout-2026-10-12T23-28-33-01a13083-e95f-79f0-b7dd-12d09f5b92de.jsonl",
+      "reaCallWrappers": 0
+    },
+    {
+      "agent": "/root/frontend",
+      "file": "C:/Users/user/.codex/sessions/2026/10/13/rollout-2026-10-13T19-02-53-01a134b7-0b70-7ee0-830f-bc21f8b75779.jsonl",
+      "reaCallWrappers": 0
+    },
+    {
+      "agent": "/root/wsl_backend",
+      "file": "C:/Users/user/.codex/sessions/2026/10/13/rollout-2026-10-13T19-03-12-01a134b7-554b-76c1-9309-331e3d5cebe8.jsonl",
+      "reaCallWrappers": 0
+    },
+    {
+      "agent": "/root/docker_backend",
+      "file": "C:/Users/user/.codex/sessions/2026/10/13/rollout-2026-10-13T19-06-33-01a134ba-63fe-7283-b226-f3d5d0494c42.jsonl",
+      "reaCallWrappers": 0
+    }
+  ],
+  "calls": [
+    {
+      "tool": "mcp__rea__binary_session",
+      "timestamp": "2026-10-12T14:27:45.389Z",
+      "wrapperCallId": "call_lDEWGI2ggCRQgidI9mRYahjh",
+      "wrapperSourceLine": 39,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__analyze_javascript_application",
+      "timestamp": "2026-10-12T14:33:30.857Z",
+      "wrapperCallId": "call_74297c871b8d42afa0e79759f214e917",
+      "wrapperSourceLine": 144,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "error",
+      "note": "MCP timeout after 300s"
+    },
+    {
+      "tool": "mcp__rea__binary_session",
+      "timestamp": "2026-10-12T14:37:07.296Z",
+      "wrapperCallId": "call_f15085434be44e85aaa380fa062ad0fb",
+      "wrapperSourceLine": 211,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__analyze_javascript_application",
+      "timestamp": "2026-10-12T14:38:40.503Z",
+      "wrapperCallId": "call_853f286f55584d9c89f75e9141c3eabd",
+      "wrapperSourceLine": 240,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": "Partial static analysis"
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:39:26.127Z",
+      "wrapperCallId": "call_a7ccf56e6e8a4a44a9a790e4557f613d",
+      "wrapperSourceLine": 254,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__get_evidence_bundle",
+      "timestamp": "2026-10-12T14:39:42.175Z",
+      "wrapperCallId": "call_fa482e2901ba4a5ca81cd615b3eab526",
+      "wrapperSourceLine": 261,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": "Zero matching records"
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:39:42.175Z",
+      "wrapperCallId": "call_fa482e2901ba4a5ca81cd615b3eab526",
+      "wrapperSourceLine": 261,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:40:06.850Z",
+      "wrapperCallId": "call_6e566f09467d4fd49f64954a938fee1b",
+      "wrapperSourceLine": 271,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:40:06.850Z",
+      "wrapperCallId": "call_6e566f09467d4fd49f64954a938fee1b",
+      "wrapperSourceLine": 271,
+      "ordinalWithinToolInWrapper": 2,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:40:06.850Z",
+      "wrapperCallId": "call_6e566f09467d4fd49f64954a938fee1b",
+      "wrapperSourceLine": 271,
+      "ordinalWithinToolInWrapper": 3,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__recover_javascript_sources",
+      "timestamp": "2026-10-12T14:40:33.698Z",
+      "wrapperCallId": "call_f1747ae3f88a4b418f84be0da8dcdba8",
+      "wrapperSourceLine": 280,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "error",
+      "note": "capability_unavailable: Wakaru missing"
+    },
+    {
+      "tool": "mcp__rea__trace_application_feature",
+      "timestamp": "2026-10-12T14:41:11.481Z",
+      "wrapperCallId": "call_471fe2ac7d0f47368616e6b006a86c25",
+      "wrapperSourceLine": 287,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "error",
+      "note": "Input validation: invalid seed; feature analysis did not execute"
+    },
+    {
+      "tool": "mcp__rea__trace_application_feature",
+      "timestamp": "2026-10-12T14:42:00.908Z",
+      "wrapperCallId": "call_b12e6bfae06a4bb8807fd9cfb2aa6bbe",
+      "wrapperSourceLine": 316,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": "No match"
+    },
+    {
+      "tool": "mcp__rea__trace_javascript_semantics",
+      "timestamp": "2026-10-12T14:42:00.908Z",
+      "wrapperCallId": "call_b12e6bfae06a4bb8807fd9cfb2aa6bbe",
+      "wrapperSourceLine": 316,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "error",
+      "note": "resource_constraint: complete response exceeded MCP stdio budget"
+    },
+    {
+      "tool": "mcp__rea__trace_application_feature",
+      "timestamp": "2026-10-12T14:42:53.205Z",
+      "wrapperCallId": "call_d9aa38494d4f47a0bb754a3ac58acba2",
+      "wrapperSourceLine": 326,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": "Partial trace"
+    },
+    {
+      "tool": "mcp__rea__trace_javascript_semantics",
+      "timestamp": "2026-10-12T14:43:04.139Z",
+      "wrapperCallId": "call_1b109b6f453b4adbad1dc1097684220f",
+      "wrapperSourceLine": 334,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": "Partial trace"
+    },
+    {
+      "tool": "mcp__rea__trace_application_feature",
+      "timestamp": "2026-10-12T14:43:23.162Z",
+      "wrapperCallId": "call_31bd3a0b91514f01b869236fb9110f2c",
+      "wrapperSourceLine": 341,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": "Partial traces"
+    },
+    {
+      "tool": "mcp__rea__trace_application_feature",
+      "timestamp": "2026-10-12T14:43:23.162Z",
+      "wrapperCallId": "call_31bd3a0b91514f01b869236fb9110f2c",
+      "wrapperSourceLine": 341,
+      "ordinalWithinToolInWrapper": 2,
+      "outcome": "response",
+      "note": "Partial traces"
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:43:56.813Z",
+      "wrapperCallId": "call_346a66e9866f4f1d924ccdcdb18e27f1",
+      "wrapperSourceLine": 349,
+      "ordinalWithinToolInWrapper": 1,
+      "outcome": "response",
+      "note": null
+    },
+    {
+      "tool": "mcp__rea__inspect_analysis_view",
+      "timestamp": "2026-10-12T14:43:56.813Z",
+      "wrapperCallId": "call_346a66e9866f4f1d924ccdcdb18e27f1",
+      "wrapperSourceLine": 349,
+      "ordinalWithinToolInWrapper": 2,
+      "outcome": "response",
+      "note": null
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "observedAt": "2026-10-17T08:13:56.597Z",
+  "runtime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": false,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "operation": {
+      "childProcessId": 26796,
+      "childStartedTicks": "639277605108460284",
+      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+      "processId": 23616,
+      "startedAt": 1792163710742,
+      "startedTicks": "639277605096488006",
+      "state": "completed",
+      "updatedAt": 1792163725547
+    },
+    "state": "stopped"
+  },
+  "engine": {
+    "apiVersion": null,
+    "context": "DockSlate",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": null,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "ownerPath": null,
+    "serverVersion": null,
+    "state": "unavailable"
+  }
+}

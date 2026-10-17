@@ -1,0 +1,131 @@
+{
+  "containers": {
+    "Err": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate."
+  },
+  "diskUsage": {
+    "Err": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate."
+  },
+  "engine": {
+    "Ok": {
+      "apiVersion": null,
+      "context": null,
+      "endpoint": "npipe:////./pipe/docker_engine",
+      "engine": null,
+      "message": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate.",
+      "ownerPath": null,
+      "serverVersion": null,
+      "state": "unavailable"
+    }
+  },
+  "images": {
+    "Err": "Rancher Desktop installation was not found. Install and run Rancher Desktop with its Moby engine outside DockSlate."
+  },
+  "invalidDiskPreview": {
+    "Ok": {
+      "backupPath": null,
+      "backupSha256": null,
+      "blockedReasons": [
+        "The requested disk ID does not identify a current supported WSL registration.",
+        "The runtime owner requires a verified disk registration.",
+        "An elevated Windows administrator session is required.",
+        "Disk inspection requires verified ownership and elevation.",
+        "Exclusive VHDX lock failed: The original disk registration is not verified.",
+        "Backup verification failed: Select an existing separate VHDX backup file."
+      ],
+      "checks": [
+        {
+          "detail": "The requested disk ID does not identify a current supported WSL registration.",
+          "name": "ownership",
+          "status": "blocked"
+        },
+        {
+          "detail": "The runtime owner requires a verified disk registration.",
+          "name": "runtimeOwner",
+          "status": "blocked"
+        },
+        {
+          "detail": "The Windows process token is not elevated.",
+          "name": "administrator",
+          "status": "blocked"
+        },
+        {
+          "detail": "WSL reports no running distribution. No shutdown command is issued.",
+          "name": "wslStopped",
+          "status": "passed"
+        },
+        {
+          "detail": "No supported runtime or helper process is running.",
+          "name": "runtimeExited",
+          "status": "passed"
+        },
+        {
+          "detail": "Disk inspection requires verified ownership and elevation.",
+          "name": "detachedDynamicVhdx",
+          "status": "blocked"
+        },
+        {
+          "detail": "The original disk registration is not verified.",
+          "name": "exclusiveLock",
+          "status": "blocked"
+        },
+        {
+          "detail": "Select an existing separate VHDX backup file.",
+          "name": "verifiedBackup",
+          "status": "blocked"
+        }
+      ],
+      "diskId": "dockslate-invalid-verification-disk",
+      "distribution": null,
+      "eligible": false,
+      "expiresAt": null,
+      "fileSizeBytes": null,
+      "owner": null,
+      "path": null,
+      "token": null,
+      "warnings": [
+        "The operation modifies the registered VHDX. Recovery requires the verified backup.",
+        "No runtime is stopped, no disk is mounted or detached, and no backup is created by DockSlate.",
+        "Optimize-VHD -Mode Full on a detached VHDX uses the Windows Prezeroed fallback. File size reduction is not guaranteed.",
+        "All safety conditions are checked again immediately before optimization."
+      ]
+    }
+  },
+  "invalidPull": {
+    "Err": "Invalid image reference"
+  },
+  "mode": "read-only; no valid mutation token or approved destructive operation",
+  "unapprovedCompact": {
+    "Err": "Explicit approval is required to modify the selected VHDX."
+  },
+  "unapprovedDelete": {
+    "Err": "Explicit user approval is required"
+  },
+  "wsl": {
+    "Ok": {
+      "admin": false,
+      "diagnostics": [],
+      "disks": [
+        {
+          "attached": null,
+          "blockedReasons": [
+            "An elevated Windows administrator session is required for compaction.",
+            "Disk separation has not been verified by both Get-DiskImage and Get-VHD.",
+            "A separate byte-identical backup must be selected and verified before compaction."
+          ],
+          "compactionStatus": "blocked",
+          "distribution": "docker-desktop",
+          "exists": true,
+          "fileSizeBytes": 109051904,
+          "id": "{0864a004-b3b1-4157-8d54-186ec6a3d252}",
+          "owner": "Docker Desktop",
+          "path": "\\\\?\\C:\\Users\\user\\AppData\\Local\\Docker\\wsl\\main\\ext4.vhdx",
+          "running": false
+        }
+      ],
+      "operation": null,
+      "runningDistributions": [],
+      "runtimeProcesses": [],
+      "status": "ready"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "target": "React frontend in Chrome; Tauri is unavailable; not native app E2E",
+  "url": "http://127.0.0.1:1420/",
+  "mockData": false,
+  "destructiveActions": false,
+  "checks": [
+    {
+      "name": "browser has no injected Tauri backend",
+      "passed": true
+    },
+    {
+      "name": "Overview browser navigation",
+      "passed": true,
+      "text": "Overview\n\n엔진 연결과 Docker 사용량을 한눈에 확인합니다.\n\n새로고침\nDocker Engine\n백엔드 연결 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n연결 정보\n조회 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\nDocker Engine에 연결되지 않았습니다\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n새로고침"
+    },
+    {
+      "name": "Containers browser navigation",
+      "passed": true,
+      "text": "Containers\n\n컨테이너 상태를 확인하고 작업과 로그를 관리합니다.\n\n새로고침\n조회 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\nDocker Engine에 연결되지 않았습니다\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n새로고침"
+    },
+    {
+      "name": "Images browser navigation",
+      "passed": true,
+      "text": "Images\n\n로컬 이미지를 조회하고 Pull 또는 선택 삭제합니다.\n\n새로고침\nPull image\n조회 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\nDocker Engine에 연결되지 않았습니다\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n새로고침"
+    },
+    {
+      "name": "image mutations disabled when offline",
+      "passed": true
+    },
+    {
+      "name": "Disk Manager browser navigation",
+      "passed": true,
+      "text": "Disk Manager\n\nDocker 사용량과 WSL VHDX 파일 크기를 구분해 관리합니다.\n\n새로고침\nDocker Usage\nWSL Disks\n조회 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\nDocker Engine에 연결되지 않았습니다\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n새로고침"
+    },
+    {
+      "name": "WSL browser reports desktop backend unavailable",
+      "passed": true,
+      "text": "Disk Manager\n\nDocker 사용량과 WSL VHDX 파일 크기를 구분해 관리합니다.\n\n조회 중…\nDocker Usage\nWSL Disks\n조회 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n다시 시도"
+    },
+    {
+      "name": "Settings browser navigation",
+      "passed": true,
+      "text": "Settings\n\n현재 엔진 연결 정보와 접근 조건을 확인합니다.\n\n새로고침\n조회 실패\n\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n\n다시 시도\nEngine connection\n연결 상태\n백엔드 연결 실패\nDocker context\n미확인\n엔진 종류\n미확인\nServer version\n미확인\nAPI version\n미확인\nEndpoint\n미확인\n런타임 확인 경로\n미확인\n진단\n데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.\n환경 및 권한\nRancher Desktop · Moby\n\nRancher Desktop의 Moby 엔진이 실행 중이어야 합니다. containerd 엔진과 원격 Docker 호스트는 지원하지 않습니다.\n\nDocker context 검증\n\n연결에 사용하는 context와 Windows named pipe를 Rust 백엔드에서 확인합니다. 연결 실패 시 진단 내용을 확인하고 새로고침하세요.\n\nWSL 디스크 압축\n\n검증된 WSL 등록 정보, 별도 백업, 런타임 종료, 디스크 분리 및 관리자 권한이 필요합니다. 확인하지 못한 조건이 있으면 압축이 차단됩니다.\n\n읽기 전용 연결 확인\n\n이 화면의 새로고침은 설치나 런타임 설정 변경 없이 현재 연결 상태를 다시 조회합니다."
+    },
+    {
+      "name": "layout 1200×780",
+      "passed": true,
+      "viewportWidth": 1200,
+      "viewportHeight": 780,
+      "scrollWidth": 1200,
+      "scrollHeight": 780
+    },
+    {
+      "name": "layout 1000×640",
+      "passed": true,
+      "viewportWidth": 1000,
+      "viewportHeight": 640,
+      "scrollWidth": 1000,
+      "scrollHeight": 640
+    },
+    {
+      "name": "unhandled renderer exceptions",
+      "passed": true,
+      "exceptions": []
+    }
+  ]
+}
