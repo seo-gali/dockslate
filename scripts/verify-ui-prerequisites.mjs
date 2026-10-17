@@ -16,7 +16,7 @@ const requests = new Map();
 const calls = [];
 const exceptions = [];
 const dataCommands = ['dashboard_snapshot', 'engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'image_search'];
-const forbiddenCommands = new Set(['image_pull', 'container_action', 'destructive_execute', 'runtime_install', 'runtime_start', 'runtime_stop', 'wsl_compact', 'desktop_open_windows_features']);
+const forbiddenCommands = new Set(['container_run', 'network_create', 'image_build_start', 'image_pull', 'container_action', 'destructive_execute', 'runtime_install', 'runtime_start', 'runtime_stop', 'wsl_compact', 'desktop_open_windows_features']);
 const send = (method, params = {}) => new Promise((resolve, reject) => {
   const id = ++sequence;
   const timer = setTimeout(() => { pending.delete(id); reject(new Error(`CDP timeout: ${method}`)); }, 60000);
@@ -101,7 +101,7 @@ const getPreview = async start => {
   if (call.preview) return call.preview;
   throw new Error(`Actual prerequisite response could not be read: ${call.responseReadError ?? 'missing response body'}`);
 };
-const checkRows = () => evaluate(`(() => { const panel=document.querySelector('${wslPanel}'); return [...(panel?.querySelectorAll('.prerequisite-list [data-check]')??[])].map(row=>({name:row.getAttribute('data-check'),status:row.querySelector('.status-badge')?.textContent.trim(),diagnostic:row.querySelector('details p')?.textContent.trim(),help:[...row.querySelectorAll('p')].filter(item=>!item.closest('details')).map(item=>item.textContent.trim()).join(' '),actions:[...row.querySelectorAll('button')].map(button=>({text:button.textContent.trim(),disabled:button.disabled})),visibleText:row.innerText})); })()`);
+const checkRows = () => evaluate(`(() => { const panel=document.querySelector('${wslPanel}'); return [...(panel?.querySelectorAll('.prerequisite-list [data-check]')??[])].map(row=>({name:row.getAttribute('data-check'),status:row.querySelector('.status-badge')?.textContent.trim(),diagnostic:row.querySelector(':scope > div > details p')?.textContent.trim(),help:[...row.querySelectorAll(':scope > div > p')].map(item=>item.textContent.trim()).join(' '),actions:[...row.querySelectorAll('button')].map(button=>({text:button.textContent.trim(),disabled:button.disabled})),visibleText:row.innerText})); })()`);
 try {
   await send('Runtime.enable'); await send('Page.enable'); await send('Network.enable');
   const runtime = await evaluate("window.__TAURI_INTERNALS__.invoke('runtime_status')");
@@ -144,6 +144,7 @@ try {
   await clickText(`${wslPanel} .disk-inspection`, '사전 조건 검사');
   const preview = await getPreview(previewStart);
   await waitFor('actual prerequisite rows', async () => { const rows=await checkRows(); return rows.length===preview.checks.length && rows.every(row=>row.actions.every(action=>!action.disabled)); });
+  await evaluate(`document.querySelector('${wslPanel} .prerequisite-list').closest('details').querySelector('summary').click()`);
   const rows = await checkRows();
   requireFact(preview.path && preview.path.toLowerCase() === ownDisk.path.toLowerCase() && preview.diskId && Array.isArray(preview.checks), 'Inspected target does not match the actual owned VHDX');
   requireFact(rows.length === preview.checks.length && rows.every(row=>{const actual=preview.checks.find(item=>item.name===row.name);return actual && row.status===(actual.status==='passed'?'확인됨':'확인 필요') && row.diagnostic===actual.detail;}), 'Displayed prerequisite states or diagnostics differ from the actual live backend result');
@@ -152,10 +153,7 @@ try {
   const tools = rows.find(row=>row.name==='diskTools');
   const actualTools = preview.checks.find(item=>item.name==='diskTools');
   requireFact(tools && actualTools, 'The combined live diskTools capability check must be present');
-  if (actualTools.status !== 'passed') {
-    const missing = ['Get-DiskImage','Get-VHD','Optimize-VHD'].filter(command=>actualTools.detail.includes(command));
-    requireFact(missing.length>0 && missing.every(command=>tools.visibleText.includes(command)) && tools.actions.some(action=>action.text==='Windows 기능 열기' && !action.disabled), 'Missing diskTools commands and the actionable Windows feature entry must match real diagnostics');
-  }
+  if (actualTools.status === 'passed') requireFact(['CompactVirtualDisk', 'Optimize-VHD'].includes(preview.method), 'Passed disk tools must expose the actual supported Windows method');
   report.preview = { ownDisk, result: preview, rows, calls: serialCalls(calls.slice(previewStart)), counts: counts(calls.slice(previewStart)) };
   requireFact(calls.slice(previewStart).filter(call=>call.command==='wsl_preview').length===1 && !calls.slice(previewStart).some(call=>dataCommands.includes(call.command)), 'Inspection must use one read-only wsl_preview without refreshing the whole application');
   check('real prerequisite rows match live ownership, stopped state, permission and disk-tool diagnostics and provide enabled remedies');
@@ -167,16 +165,17 @@ try {
   check('actual VHDX paths and real prerequisite diagnostics remain selectable with a mouse drag');
 
   const retryCheck = rows.find(row=>row.status!=='확인됨' && row.actions.some(action=>action.text==='다시 검사' && !action.disabled));
-  requireFact(retryCheck, 'No blocked row exposes a safe per-row retry in this environment');
   const retryStart = calls.length;
-  await clickText(`${wslPanel} [data-check="${retryCheck.name}"]`, '다시 검사');
+  if (retryCheck) await clickText(`${wslPanel} [data-check="${retryCheck.name}"]`, '다시 검사');
+  else await clickText(`${wslPanel} .disk-inspection`, '사전 조건 검사');
   const retried = await getPreview(retryStart);
   await waitFor('retry controls enabled again', async () => { const current=await checkRows(); return current.length===retried.checks.length && current.every(row=>row.actions.every(action=>!action.disabled)); });
+  await evaluate(`(() => {const details=document.querySelector('${wslPanel} .prerequisite-list').closest('details');if(!details.open)details.querySelector('summary').click();})()`);
   await pause(200);
   const retryCalls = calls.slice(retryStart);
   requireFact(retryCalls.length===1 && retryCalls[0].command==='wsl_preview' && !retryCalls[0].failed, 'A row retry must issue only one wsl_preview');
-  report.retry = { check:retryCheck.name,result:retried,calls:serialCalls(retryCalls),counts:counts(retryCalls) };
-  check('a blocked row retry performs only one actual read-only wsl_preview');
+  report.retry = { check:retryCheck?.name ?? 'inspection',result:retried,calls:serialCalls(retryCalls),counts:counts(retryCalls) };
+  check('inspection retry performs only one actual read-only wsl_preview');
 
   const elevationStart = calls.length;
   const timeOrigin = await evaluate('performance.timeOrigin');

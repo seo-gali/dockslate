@@ -1,0 +1,88 @@
+{
+  "observedAt": "2026-10-17T08:37:20.261Z",
+  "target": "real built Windows DockSlate WebView2 window with stopped independent runtime",
+  "mockData": false,
+  "changes": "Menu navigation, search collapse/expansion, image build discovery and read-only built-in API VHDX prerequisites. No engine, image, container or disk mutations.",
+  "measurement": "Actual IPC POST command names/timestamps and wsl_preview response bodies are observed through CDP. No requests, response values, backend functions or routing are replaced. Text selection uses actual Input.dispatchMouseEvent drags.",
+  "checks": [
+    {
+      "name": "stopped runtime search explains its engine dependency and opens Settings",
+      "passed": true
+    },
+    {
+      "name": "search collapse and expansion preserve state across menus and perform zero backend reads",
+      "passed": true
+    },
+    {
+      "name": "image build is available from the Images header while the runtime is stopped",
+      "passed": true
+    },
+    {
+      "name": "halt at real native UI failure",
+      "passed": false,
+      "error": "Expanded diagnostics do not match the actual backend checks"
+    }
+  ],
+  "selection": [],
+  "navigation": {},
+  "preview": {},
+  "retry": {},
+  "elevation": {},
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\image-workflow-ui\\failure.png"
+  ],
+  "completed": false,
+  "failure": "Error: Expanded diagnostics do not match the actual backend checks\n    at requireFact (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-image-workflow-ui.mjs:57:61)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-image-workflow-ui.mjs:152:3",
+  "untested": [
+    "Approved elevated relaunch, UAC approval, elevated replacement window and original-window closure",
+    "Opening Windows Features or installing optional Windows components",
+    "Real VHDX compaction",
+    "Physical copying from a disabled search input while its engine is disconnected"
+  ],
+  "initialRuntime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": false,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "operation": {
+      "childProcessId": 20164,
+      "childStartedTicks": "639278224085082038",
+      "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+      "processId": 4132,
+      "startedAt": 1792225608283,
+      "startedTicks": "639278224073142210",
+      "state": "completed",
+      "updatedAt": 1792225609145
+    },
+    "state": "stopped"
+  },
+  "disconnectedSearch": {
+    "text": "Docker Hub 이미지 검색\n접기\n\nDocker Hub 검색은 DockSlate 엔진을 통해 실행합니다. Settings에서 런타임을 시작해 주세요. 엔진 설정\n\nDocker Hub 검색어\nDocker Hub 검색",
+    "disabled": true,
+    "hasSettings": true
+  },
+  "finishedAt": "2026-10-17T08:37:23.459Z",
+  "exceptions": [],
+  "observedCounts": {
+    "dashboard_snapshot": 0,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 1,
+    "wsl_inventory": 0,
+    "image_search": 0,
+    "wsl_preview": 1,
+    "desktop_restart_elevated": 0,
+    "image_pull": 0,
+    "container_action": 0,
+    "destructive_execute": 0,
+    "runtime_install": 0,
+    "runtime_start": 0,
+    "runtime_stop": 0,
+    "wsl_compact": 0,
+    "desktop_open_windows_features": 0
+  }
+}

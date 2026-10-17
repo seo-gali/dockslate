@@ -1,4 +1,5 @@
 use crate::runtime::Transport;
+use serde::Deserialize;
 use serde_json::{json, Value};
 use std::{
     collections::{HashMap, HashSet},
@@ -491,6 +492,398 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
     client.json("POST", &format!("/containers/{id}/{action}{query}"))?;
     Ok(json!({"message":format!("Container {action} completed")}))
 }
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ContainerPort {
+    container_port: u16,
+    host_port: Option<u16>,
+    protocol: String,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "kebab-case")]
+enum RestartPolicy {
+    No,
+    OnFailure,
+    Always,
+    UnlessStopped,
+}
+impl RestartPolicy {
+    fn name(&self) -> &'static str {
+        match self {
+            Self::No => "no",
+            Self::OnFailure => "on-failure",
+            Self::Always => "always",
+            Self::UnlessStopped => "unless-stopped",
+        }
+    }
+}
+
+#[derive(Default, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields, default)]
+pub struct ContainerOptions {
+    env: Vec<String>,
+    command: Vec<String>,
+    entrypoint: Vec<String>,
+    working_dir: String,
+    restart_policy: Option<RestartPolicy>,
+    network_id: Option<String>,
+    memory_bytes: Option<u64>,
+    nano_cpus: Option<u64>,
+}
+impl ContainerOptions {
+    fn validate(&self) -> Result<(), String> {
+        fn bounded(values: &[String], each: usize, total: usize) -> bool {
+            values.len() <= 64
+                && values
+                    .iter()
+                    .all(|value| value.len() <= each && !value.contains('\0'))
+                && values.iter().map(String::len).sum::<usize>() <= total
+        }
+        if !bounded(&self.env, 8192, 32 * 1024) {
+            return Err("환경 변수는 최대 64개, 각 8192바이트, 합계 32KB까지 입력할 수 있습니다. NUL 문자는 사용할 수 없습니다.".into());
+        }
+        let mut keys = HashSet::new();
+        for entry in &self.env {
+            let (key, _) = entry
+                .split_once('=')
+                .ok_or("환경 변수는 KEY=value 형식으로 입력하세요.")?;
+            if key.is_empty()
+                || !(key.as_bytes()[0].is_ascii_alphabetic() || key.starts_with('_'))
+                || !key
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || byte == b'_')
+                || !keys.insert(key)
+            {
+                return Err("환경 변수 이름은 영문 또는 밑줄로 시작하며 영문·숫자·밑줄만 사용할 수 있습니다. 같은 이름은 한 번만 입력하세요.".into());
+            }
+        }
+        if !bounded(&self.command, 4096, 16 * 1024) || !bounded(&self.entrypoint, 4096, 16 * 1024) {
+            return Err("명령 인수와 Entrypoint는 각각 최대 64개, 인수당 4096바이트, 합계 16KB까지 입력할 수 있습니다. NUL 문자는 사용할 수 없습니다.".into());
+        }
+        if !self.working_dir.is_empty()
+            && (self.working_dir.len() > 4096
+                || !self.working_dir.starts_with('/')
+                || self.working_dir.contains('\0'))
+        {
+            return Err("작업 폴더는 /로 시작하는 컨테이너 내부 절대 경로를 입력하세요. 최대 4096바이트입니다.".into());
+        }
+        if self
+            .network_id
+            .as_ref()
+            .is_some_and(|id| !id.is_empty() && !container_id(id))
+        {
+            return Err("선택한 Docker 네트워크 ID가 올바르지 않습니다.".into());
+        }
+        if self
+            .memory_bytes
+            .is_some_and(|bytes| !(16_000_000..=1_000_000_000_000).contains(&bytes))
+        {
+            return Err("메모리 제한은 16MB부터 1TB까지 입력하세요.".into());
+        }
+        if self
+            .nano_cpus
+            .is_some_and(|cpus| !(100_000_000..=128_000_000_000).contains(&cpus))
+        {
+            return Err("CPU 제한은 0.1개부터 128개까지 입력하세요.".into());
+        }
+        Ok(())
+    }
+}
+
+fn supported_network(network: &Value) -> bool {
+    container_id(text(network, "Id"))
+        && network["Scope"].as_str() == Some("local")
+        && network["ConfigOnly"].as_bool() == Some(false)
+        && network["Ingress"].as_bool() != Some(true)
+        && network["Internal"].as_bool().is_some()
+        && (text(network, "Driver") == "bridge"
+            || (text(network, "Driver") == "null" && text(network, "Name") == "none"))
+}
+
+pub fn networks_list() -> Result<Value, String> {
+    let client = connected()?;
+    let networks = client.json("GET", "/networks")?;
+    let networks = networks
+        .as_array()
+        .ok_or("Docker 네트워크 목록을 확인하지 못했습니다.")?;
+    let mut result: Vec<_> = networks
+        .iter()
+        .filter(|network| supported_network(network))
+        .map(|network| {
+            json!({
+                "id":network["Id"],"name":network["Name"],"driver":network["Driver"],
+                "internal":network["Internal"],
+                "builtin":matches!(text(network,"Name"),"bridge"|"none")
+            })
+        })
+        .collect();
+    result.sort_by(|left, right| text(left, "name").cmp(text(right, "name")));
+    Ok(json!(result))
+}
+
+pub fn network_create(name: String, internal: bool) -> Result<Value, String> {
+    let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
+    let name = name.trim();
+    if name.is_empty()
+        || name.len() > 63
+        || !name.as_bytes()[0].is_ascii_alphanumeric()
+        || !name
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte))
+        || ["bridge", "host", "none", "default", "ingress"].contains(&name)
+    {
+        return Err("네트워크 이름은 영문·숫자로 시작하는 1~63자의 영문·숫자·밑줄·마침표·하이픈을 사용하세요. 기본 네트워크 이름은 사용할 수 없습니다.".into());
+    }
+    let client = connected()?;
+    let networks = client.json("GET", "/networks")?;
+    let networks = networks
+        .as_array()
+        .ok_or("Docker 네트워크 목록을 확인하지 못했습니다.")?;
+    if networks.iter().any(|network| text(network, "Name") == name) {
+        return Err("같은 이름의 Docker 네트워크가 이미 있습니다. 다른 이름을 입력하세요.".into());
+    }
+    let body = serde_json::to_vec(&json!({
+        "Name":name,"Driver":"bridge","Scope":"local","Internal":internal,
+        "Attachable":false,"Ingress":false,"ConfigOnly":false
+    }))
+    .map_err(|_| "네트워크 생성 요청을 구성하지 못했습니다.")?;
+    let response =
+        client
+            .transport
+            .create_network(&client.api, &body, REQUEST_TIMEOUT, BODY_LIMIT)?;
+    let response: Value = serde_json::from_slice(&response)
+        .map_err(|_| "네트워크 생성 응답을 읽지 못했습니다. 네트워크 목록을 새로고침하세요.")?;
+    let id = text(&response, "Id");
+    if !container_id(id) {
+        return Err(
+            "생성된 네트워크 ID를 확인하지 못했습니다. 네트워크 목록을 새로고침하세요.".into(),
+        );
+    }
+    let network = client
+        .json("GET", &format!("/networks/{id}"))
+        .map_err(|error| format!("네트워크 {name} ({id})를 생성했지만 설정 확인을 완료하지 못했습니다. 네트워크 목록을 새로고침하세요. {error}"))?;
+    if !supported_network(&network)
+        || text(&network, "Id") != id
+        || text(&network, "Name") != name
+        || text(&network, "Driver") != "bridge"
+        || network["Internal"] != internal
+    {
+        return Err(format!(
+            "네트워크 {name} ({id})의 설정이 요청과 다릅니다. 네트워크 목록을 새로고침하세요."
+        ));
+    }
+    Ok(json!({"id":id,"name":name,"internal":internal}))
+}
+
+fn local_image(client: &Client, id: &str) -> Result<Value, String> {
+    if !image_id(id) {
+        return Err("로컬 이미지 ID가 올바르지 않습니다.".into());
+    }
+    let image = client.json("GET", &format!("/images/{}/json", encode(id)))?;
+    if text(&image, "Id") != id || image["Os"].as_str() != Some("linux") {
+        return Err("선택한 로컬 Linux 이미지의 ID를 확인하지 못했습니다.".into());
+    }
+    Ok(image)
+}
+
+pub fn image_details(id: String) -> Result<Value, String> {
+    if !image_id(&id) {
+        return Err("로컬 이미지 ID가 올바르지 않습니다.".into());
+    }
+    let client = connected()?;
+    let image = local_image(&client, &id)?;
+    let config = &image["Config"];
+    let mut ports: Vec<_> = config["ExposedPorts"]
+        .as_object()
+        .into_iter()
+        .flat_map(|ports| ports.keys())
+        .filter(|key| {
+            key.split_once('/').is_some_and(|(port, protocol)| {
+                port.parse::<u16>().is_ok_and(|port| port > 0) && ["tcp", "udp"].contains(&protocol)
+            })
+        })
+        .cloned()
+        .collect();
+    ports.sort();
+    let strings = |value: &Value| -> Vec<String> {
+        value
+            .as_array()
+            .into_iter()
+            .flatten()
+            .filter_map(Value::as_str)
+            .map(str::to_owned)
+            .collect()
+    };
+    Ok(json!({
+        "id":id,
+        "tags":strings(&image["RepoTags"]),
+        "exposedPorts":ports,
+        "entrypoint":strings(&config["Entrypoint"]),
+        "command":strings(&config["Cmd"])
+    }))
+}
+
+pub fn container_run(
+    image_id_value: String,
+    name: String,
+    ports: Vec<ContainerPort>,
+    options: Option<ContainerOptions>,
+) -> Result<Value, String> {
+    let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
+    if !image_id(&image_id_value) {
+        return Err("로컬 이미지 ID가 올바르지 않습니다.".into());
+    }
+    let name = name.trim();
+    if !name.is_empty()
+        && (name.len() > 128
+            || !name.as_bytes()[0].is_ascii_alphanumeric()
+            || !name
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte)))
+    {
+        return Err("컨테이너 이름은 영문·숫자로 시작하며 영문·숫자·밑줄·마침표·하이픈을 사용할 수 있습니다. 최대 128자입니다.".into());
+    }
+    if ports.len() > 8 {
+        return Err("포트 연결은 최대 8개까지 추가할 수 있습니다.".into());
+    }
+    let options = options.unwrap_or_default();
+    options.validate()?;
+    let mut seen = HashSet::new();
+    let mut host_ports = HashSet::new();
+    let mut exposed = serde_json::Map::new();
+    let mut bindings = serde_json::Map::new();
+    for port in ports {
+        if port.container_port == 0
+            || port.host_port == Some(0)
+            || !["tcp", "udp"].contains(&port.protocol.as_str())
+        {
+            return Err("포트는 1~65535, 프로토콜은 TCP 또는 UDP를 사용하세요.".into());
+        }
+        let key = format!("{}/{}", port.container_port, port.protocol);
+        if !seen.insert(key.clone())
+            || port
+                .host_port
+                .is_some_and(|host| !host_ports.insert((host, port.protocol.clone())))
+        {
+            return Err("같은 컨테이너 포트 또는 호스트 포트를 중복 연결할 수 없습니다.".into());
+        }
+        exposed.insert(key.clone(), json!({}));
+        bindings.insert(
+            key,
+            json!([{"HostIp":"127.0.0.1","HostPort":port.host_port.map(|host| host.to_string()).unwrap_or_default()}]),
+        );
+    }
+    let client = connected()?;
+    let _ = local_image(&client, &image_id_value)?;
+    let mut config = json!({
+        "Image":image_id_value,
+        "ExposedPorts":exposed,
+        "HostConfig":{
+            "PortBindings":bindings,
+            "AutoRemove":false,
+            "Privileged":false,
+            "PublishAllPorts":false
+        }
+    });
+    if !options.env.is_empty() {
+        config["Env"] = json!(options.env);
+    }
+    if !options.command.is_empty() {
+        config["Cmd"] = json!(options.command);
+    }
+    if !options.entrypoint.is_empty() {
+        config["Entrypoint"] = json!(options.entrypoint);
+    }
+    if !options.working_dir.is_empty() {
+        config["WorkingDir"] = json!(options.working_dir);
+    }
+    if let Some(policy) = options.restart_policy {
+        config["HostConfig"]["RestartPolicy"] = json!({"Name":policy.name(),"MaximumRetryCount":0});
+    }
+    if let Some(memory) = options.memory_bytes {
+        config["HostConfig"]["Memory"] = json!(memory);
+    }
+    if let Some(cpus) = options.nano_cpus {
+        config["HostConfig"]["NanoCpus"] = json!(cpus);
+    }
+    if let Some(network_id) = options.network_id.filter(|id| !id.is_empty()) {
+        let network = client.json("GET", &format!("/networks/{network_id}"))?;
+        if text(&network, "Id") != network_id || !supported_network(&network) {
+            return Err("선택한 네트워크가 변경되었거나 지원되지 않습니다. 로컬 bridge 또는 기본 none 네트워크만 사용할 수 있습니다.".into());
+        }
+        let mode = if text(&network, "Driver") == "null" {
+            if !bindings.is_empty() {
+                return Err("none 네트워크에서는 포트를 연결할 수 없습니다. 포트 연결을 지우거나 다른 네트워크를 선택하세요.".into());
+            }
+            "none"
+        } else {
+            &network_id
+        };
+        config["HostConfig"]["NetworkMode"] = json!(mode);
+    }
+    let body =
+        serde_json::to_vec(&config).map_err(|_| "컨테이너 생성 요청을 구성하지 못했습니다.")?;
+    if body.len() > 64 * 1024 {
+        return Err("컨테이너 설정은 합계 64KB까지 입력할 수 있습니다.".into());
+    }
+    let created =
+        client
+            .transport
+            .create_container(&client.api, name, &body, REQUEST_TIMEOUT, BODY_LIMIT)?;
+    let created: Value = serde_json::from_slice(&created).map_err(|_| {
+        "컨테이너 생성 응답을 읽지 못했습니다. Containers에서 생성 여부를 확인하세요."
+    })?;
+    let id = text(&created, "Id");
+    if !container_id(id) {
+        return Err(
+            "생성된 컨테이너 ID를 확인하지 못했습니다. Containers에서 생성 여부를 확인하세요."
+                .into(),
+        );
+    }
+    let warnings: Vec<_> = array(&created, "Warnings")
+        .into_iter()
+        .filter_map(|warning| warning.as_str().map(str::to_owned))
+        .collect();
+    if let Err(error) = client.json("POST", &format!("/containers/{id}/start")) {
+        let inspected = client
+            .json("GET", &format!("/containers/{id}/json"))
+            .ok()
+            .filter(|container| text(container, "Id") == id);
+        let state = inspected
+            .as_ref()
+            .and_then(|container| container["State"]["Status"].as_str())
+            .unwrap_or("unknown");
+        let actual_name = inspected
+            .as_ref()
+            .map(|container| text(container, "Name").trim_start_matches('/'))
+            .filter(|name| !name.is_empty())
+            .unwrap_or(name);
+        return Ok(json!({
+            "id":id,"name":actual_name,"state":state,"started":false,"warnings":warnings,
+            "message":format!("컨테이너를 생성했지만 시작 요청을 완료하지 못했습니다. Containers에서 상태와 로그를 확인하세요. {error}")
+        }));
+    }
+    match client.json("GET", &format!("/containers/{id}/json")) {
+        Ok(container) if text(&container, "Id") == id => {
+            let state = container["State"]["Status"].as_str().unwrap_or("unknown");
+            let message = match state {
+                "running" => "컨테이너를 시작했습니다.",
+                "exited" => "컨테이너를 시작했으며 이미지의 실행 명령이 종료되었습니다. Containers에서 종료 코드와 로그를 확인하세요.",
+                _ => "시작 요청을 완료했습니다. Containers에서 현재 상태와 로그를 확인하세요.",
+            };
+            Ok(
+                json!({"id":id,"name":text(&container,"Name").trim_start_matches('/'),"state":state,"started":true,"message":message,"warnings":warnings}),
+            )
+        }
+        _ => Ok(json!({
+            "id":id,"name":name,"state":"unknown","started":true,"warnings":warnings,
+            "message":"시작 요청을 완료했지만 현재 상태를 확인하지 못했습니다. Containers에서 확인하세요."
+        })),
+    }
+}
+
 pub fn container_logs(id: String) -> Result<Value, String> {
     if !container_id(&id) {
         return Err("Invalid container ID".into());

@@ -1,6 +1,26 @@
 # DockSlate 독립 엔진 구현·실행 검증
 
-## 2026-10-17 Dockerfile 이미지 빌드 (최신)
+## 2026-10-17 컨테이너 실행·고급 설정·네트워크·검색 접기 (최신)
+
+최신 Windows EXE는 3,801,600 B, SHA-256 `974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE`다. `.\scripts\desktop.ps1 -Mode build`는 exit 0, MSVC release 1분 54초로 완료됐다. 프런트엔드 빌드, 오프라인 Cargo check와 Rust format 검사도 통과했다. 의존성·lock 파일 변경과 새 REA MCP 호출은 없다. 이번 기능은 DockSlate 독자 설계이며 [Docker 실행 옵션](https://docs.docker.com/engine/containers/run/), [bridge 네트워크](https://docs.docker.com/engine/network/drivers/bridge/)와 공식 Moby API 명세를 참고했다.
+
+로컬 이미지 행에 실행 버튼을 추가했다. 생성·시작 후 전체 공유 데이터를 갱신하고 Containers의 해당 컨테이너 로그를 연다. 더보기에는 환경 변수, CMD·ENTRYPOINT, 작업 디렉터리, 재시작 정책, 메모리·CPU 제한과 네트워크 선택·bridge 생성이 있다. 기본으로 접고 네트워크는 최초 열기와 명시적 새로고침에서만 조회한다. 입력 문자열은 셸 구문으로 해석하지 않고 제한된 Docker API 요청 본문에 전달한다. Docker Hub 검색은 중지 상태에 엔진 의존성과 설정 바로가기를 표시하고, 접어도 검색 결과를 유지한다.
+
+압축 지원은 Windows 내장 [CompactVirtualDisk API](https://learn.microsoft.com/en-us/windows/win32/api/virtdisk/nf-virtdisk-compactvirtualdisk)를 우선한다. Hyper-V 모듈 누락으로 차단하지 않는다. Windows API로 VHDX 형식·동적 디스크·분리·식별 정보를 확인하며, 선택 방법과 디스크 ID도 승인 지문에 묶었다. 기존 소유권·관리자 권한·WSL 종료·배타적 파일 잠금·실행 직전 재검사는 유지한다. UI는 우선 해결할 조건을 표시하고 9개 검사 결과를 접는다. 실제 중지 상태에서 8개 통과, 관리자 권한만 차단됐으며 VHDX 크기·수정 시각은 검사 전후 같았다. 백업 입력·생성·검증은 요구하지 않는다.
+
+| 최신 실제 Windows EXE 검사 | 결과 |
+| --- | --- |
+| `verify-image-run.mjs <port> --approved-isolated-fixtures <engine-id>` | 기본 실행 6개 통과. 실제 hello-world 생성·시작·종료 코드 0·CLI/UI 로그, 자동 Containers 이동, 전체 참조 수 갱신, 메뉴·대기 시 추가 조회 0회, 정확한 테스트 컨테이너 삭제. [결과](image-run-e2e.json). |
+| 위 명령에 `--advanced` 추가 | 고급 설정 10개 통과. 실제 내부 전용 bridge 생성·선택, 환경 변수의 리터럴 값, CMD·ENTRYPOINT, 작업 경로, on-failure, 64MB, 0.5 CPU를 Docker inspect와 대조했다. 더보기·메뉴 이동·줄바꿈 입력 유지, 요청 시에만 네트워크 갱신, none 선택 시 포트 비움, 잘못된 설정 거부도 확인했다. [결과](image-run-advanced-e2e.json). |
+| `verify-registry-search.mjs` / `verify-registry-collapse.mjs` | 8개와 1개 통과. 실제 Hub 검색·선택·입력 분리·객체 불변과 검색 결과 25개 접기·펼치기·보존·추가 조회 0회를 확인했다. [검색](registry-search-e2e.json), [접기](registry-collapse-e2e.json). |
+| `verify-image-workflow-ui.mjs` / `verify-ui-prerequisites.mjs` | 4개와 8개 통과. 중지 안내·설정 이동·빌드 진입, 내장 API 검사, 상세 접기, 초기 snapshot 1회, 메뉴·대기 추가 조회 0회, 실제 드래그, 권한 확인 취소·미승인 거부와 중지 상태의 성공 배너 없음을 확인했다. [흐름](image-workflow-ui-e2e.json), [검사](ui-prerequisites-e2e.json). |
+| 일반 앱 재실행 및 읽기 전용 진단 | exit 0. 디버깅 없는 일반 창, 원래 엔진 중지 상태, 같은 설치·기존 데이터 유지. [복원](restored-original-runtime-state.json), [일반 실행](final-normal-session.json), [진단](native-verification.json). |
+
+검사 37개는 현재 EXE에서 수행했다. 테스트 컨테이너 2개와 새 내부 bridge 1개만 만들고 정확한 ID로 삭제했다. 기존 이미지·컨테이너·캐시·볼륨 사용량·네트워크 3개는 유지했다. 전체 prune, 기존 네트워크 변경, 실제 디스크 압축과 UAC 승인은 실행하지 않았다. 여러 컨테이너 간 DNS 통신과 CPU·메모리 부하 측정은 이번 검사에 포함하지 않았다. 이전 Dockerfile 빌드 6개와 전체 기능 23개는 당시 해시의 결과다. [현재 빌드별 검사 해시](standalone-build-verification.json), [이전 빌드](before-image-run/standalone-build-verification.json).
+
+초기 검증 도구는 접힌 상세의 도움말을 진단으로 읽거나 기본 type이 submit인 폼 밖 닫기 버튼을 선택했다. 실제 생성 요청 전에 중단됐으며 범위를 지정한 선택자로 수정했다. 재실행 때 남은 접기 상태도 초기화했다. 제품 결과를 대체하거나 요청을 모의 처리하지 않았다. [최초 상세 선택자 오류](image-workflow-ui-first-harness-failure.json).
+
+## 2026-10-17 Dockerfile 이미지 빌드 (28DD5627 빌드)
 
 최신 Windows EXE는 3,701,760 B, SHA-256 `28DD56273C714E7F59E15EF155754A6606E3FD89CF7B063903D5A37D72949FA1`다. `.\scripts\desktop.ps1 -Mode build`는 exit 0, MSVC release 1분 56초로 완료됐다. `npm run build`, 오프라인 `cargo check --release`, `cargo fmt`도 통과했다. 새 의존성이나 lock 파일 갱신은 없고 새 REA MCP 호출도 0회다.
 
@@ -18,7 +38,7 @@ Images의 이미지 빌드에서 Windows 프로젝트 폴더·폴더 기준 Dock
 
 추가 네이티브 폴더 선택 검사에서 창 열기·취소·입력 편집 복귀를 확인했다. 이어서 검증 helper가 다른 프로세스의 포인터를 BFFM_SETSELECTIONW 메시지에 직접 전달했고 Windows SHCORE.dll 접근 위반으로 앱이 종료됐다. 이 메시지는 사용자 메시지 범위로 별도 마샬링이 필요하다는 [Microsoft SendMessage 문서](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage)와 일치하므로 helper 오류로 진단했다. 해당 명령을 제거하고 앱을 다시 열었다. 폴더 선택 확정은 미검증이며 경로 직접 입력을 이용한 빌드 검증 6개는 보존한다. [추가 검사 오류](image-build-picker-harness-failure.json).
 
-실제 디스크 압축과 관리자 UAC 재실행은 이번에도 실행하지 않았다. 이전 16개 UI 검사와 전체 기능 23개 검사는 아래의 이전 빌드 결과다. [현재 빌드와 검사 해시](standalone-build-verification.json), [이전 UI 빌드 기록](before-image-build/standalone-build-verification.json).
+실제 디스크 압축과 관리자 UAC 재실행은 이번에도 실행하지 않았다. 이전 16개 UI 검사와 전체 기능 23개 검사는 아래의 이전 빌드 결과다. [당시 빌드와 검사 해시](before-image-run/standalone-build-verification.json), [이전 UI 빌드 기록](before-image-build/standalone-build-verification.json).
 
 ## 2026-10-16 검색 표시·드래그 선택·압축 검사 조치 (3769C75A 빌드)
 
@@ -31,7 +51,7 @@ Images에 Docker Hub 검색을 항상 표시한다. 검색 버튼을 눌러 결�
 | 최신 실제 Windows EXE 검사 | 결과 |
 | --- | --- |
 | `node scripts/verify-registry-search.mjs <DevToolsActivePort>` | 8개 통과. 상시 검색 표시, 실제 공식 hello-world 결과, 입력의 실제 드래그 선택, 결과 선택·태그, 독립 로컬 필터, 메뉴 상태 유지, 잘못된 입력 거부, 실제 객체 불변. [결과](registry-search-e2e.json). |
-| `node scripts/verify-ui-prerequisites.mjs <DevToolsActivePort>` | 8개 통과. 시작 스냅샷 1회, 메뉴 이동·6초 대기 중 추가 조회 0회, 실제 제목·부제·내비게이션 드래그 선택 방지, 경로·진단 선택, 실제 사전 검사 9개 행과 응답 대조, 행별 재검사, 권한 확인창 취소·미승인 요청 거부, 중지 상태의 성공 배너 없음. [결과](ui-prerequisites-e2e.json). |
+| `node scripts/verify-ui-prerequisites.mjs <DevToolsActivePort>` | 8개 통과. 시작 스냅샷 1회, 메뉴 이동·6초 대기 중 추가 조회 0회, 실제 제목·부제·내비게이션 드래그 선택 방지, 경로·진단 선택, 실제 사전 검사 9개 행과 응답 대조, 행별 재검사, 권한 확인창 취소·미승인 요청 거부, 중지 상태의 성공 배너 없음. [결과](before-image-run/ui-prerequisites-e2e.json). |
 | `.\scripts\desktop.ps1 -Mode verify` | exit 0. 중지 상태 유지, 승인 없는 관리자 재실행·삭제·압축·런타임 변경 거부. [결과](before-image-build/native-verification.json). |
 
 관리자 재실행은 현재 EXE만 Windows runas로 실행하며 실행 파일·권한·프로세스·새 창을 확인한 뒤 기존 창을 닫는다. 새 관리자 창은 별도 WebView 프로필을 사용하고 상속된 WebView 디버깅 환경 변수를 제거한다. Windows 기능 버튼은 고정된 시스템 optionalfeatures.exe만 연다. 구현은 [Microsoft ShellExecuteExW 문서](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecuteexw)를 참고했다. 실제 UAC 승인·새 창 교체와 Windows 기능 창 실행·도구 설치는 검증하지 않았다. 기능 제공 여부는 [Microsoft의 Hyper-V 설치 조건](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/get-started/install-hyper-v?pivots=windows&tabs=gui)에 따라 다르다.

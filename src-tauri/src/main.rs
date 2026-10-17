@@ -72,12 +72,33 @@ async fn container_action(id: String, action: String) -> Result<Value, String> {
     mutate(move || docker::container_action(id, action)).await
 }
 #[tauri::command]
+async fn container_run(
+    image_id: String,
+    name: String,
+    ports: Vec<docker::ContainerPort>,
+    options: Option<docker::ContainerOptions>,
+) -> Result<Value, String> {
+    mutate(move || docker::container_run(image_id, name, ports, options)).await
+}
+#[tauri::command]
+async fn networks_list() -> Result<Value, String> {
+    read(docker::networks_list).await
+}
+#[tauri::command]
+async fn network_create(name: String, internal: bool) -> Result<Value, String> {
+    mutate(move || docker::network_create(name, internal)).await
+}
+#[tauri::command]
 async fn container_logs(id: String) -> Result<Value, String> {
     read(move || docker::container_logs(id)).await
 }
 #[tauri::command]
 async fn images_list() -> Result<Value, String> {
     read(docker::images_list).await
+}
+#[tauri::command]
+async fn image_details(id: String) -> Result<Value, String> {
+    read(move || docker::image_details(id)).await
 }
 #[tauri::command]
 async fn image_search(term: String) -> Result<Value, String> {
@@ -227,8 +248,12 @@ fn main() {
             overview,
             containers_list,
             container_action,
+            container_run,
+            networks_list,
+            network_create,
             container_logs,
             images_list,
+            image_details,
             image_search,
             image_pull,
             image_build_start,

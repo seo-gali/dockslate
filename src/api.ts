@@ -97,6 +97,7 @@ export interface WslInventory {
 }
 export interface WslPreview {
   diskId: string;
+  method?: string | null;
   path: string | null;
   eligible: boolean;
   blockedReasons: string[];

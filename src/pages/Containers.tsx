@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { EngineGate, type EngineProps } from '../App';
+import { EngineGate, type EngineProps, type ContainerOpenRequest } from '../App';
 import { backend, refreshDashboardAfterMutation, type ActionResult, type Container, type ContainerLogs, useBackendQuery } from '../api';
 import { OperationNotice, useDestructiveAction, type Operation } from '../actions';
 import { DetailPanel, ErrorNotice, Icon, PageHeader, RefreshButton, SearchInput, StatePanel, StatusBadge, errorMessage } from '../components';
@@ -66,7 +66,7 @@ function Logs({ container }: { container: Container }) {
   return <><div className="log-controls"><SearchInput value={search} onChange={setSearch} placeholder="로그 검색…" /><label className="checkbox-control"><input type="checkbox" checked={autoScroll} onChange={event => setAutoScroll(event.target.checked)} />자동 스크롤</label><button className="button small subtle" disabled={!visible} onClick={() => void copy()}><Icon name="copy" size={14} />복사</button></div>{query.error && <div className="detail-content"><ErrorNotice message={query.error} onRetry={() => void query.reload()} /></div>}{copyOperation && <div className="detail-content" style={{ paddingBottom: 0 }}><OperationNotice operation={copyOperation} onDismiss={() => setCopyOperation(null)} /></div>}<pre className="logs" ref={logsRef} tabIndex={0} aria-label="컨테이너 로그">{visible || (query.loading && !query.data ? '로그 조회 중…' : query.error ? '로그를 조회할 수 없습니다.' : search && content ? '검색과 일치하는 로그가 없습니다.' : '기록된 로그가 없습니다.')}</pre><div className="log-status"><span>{query.data?.truncated ? '최근 로그 · 일부 잘림' : '최근 최대 300줄'} · 2초 간격 갱신</span><span>{lastRead ? `${lastRead} 조회` : '미조회'}</span></div></>;
 }
 
-export default function Containers(props: EngineProps) {
+export default function Containers(props: EngineProps & { openRequest?: ContainerOpenRequest | null }) {
   const query = useBackendQuery<Container[]>('containers_list', undefined, props.engine?.state === 'connected');
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'running' | 'stopped'>('all');
@@ -77,6 +77,11 @@ export default function Containers(props: EngineProps) {
   const [operation, setOperation] = useState<Operation>(null);
   const destructive = useDestructiveAction(() => {});
   const busy = working || destructive.busy || !!props.mutationBlocked;
+  useEffect(() => {
+    if (!props.openRequest) return;
+    setSearch(''); setFilter('all'); setSelectedId(props.openRequest.id); setDetailTab('logs');
+    setOperation({ tone: props.openRequest.started ? 'success' : 'danger', message: props.openRequest.message });
+  }, [props.openRequest?.sequence]);
   const selected = query.data?.find(container => container.id === selectedId) ?? null;
   const hasCompose = query.data?.some(container => container.composeProject) ?? false;
   const filtered = useMemo(() => (query.data ?? []).filter(container => {

@@ -1,44 +1,70 @@
 {
-  "observedAt": "2026-10-17T08:22:30.028Z",
+  "observedAt": "2026-10-17T08:52:43.895Z",
   "artifact": "src-tauri/target/release/dockslate.exe",
-  "bytes": 3701760,
-  "sha256": "28DD56273C714E7F59E15EF155754A6606E3FD89CF7B063903D5A37D72949FA1",
+  "bytes": 3801600,
+  "sha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE",
   "buildExitCode": 0,
-  "releaseBuildElapsed": "1m 56s",
+  "releaseBuildElapsed": "1m 54s",
   "readOnlyExitCode": 0,
   "checks": {
-    "imageBuild": {
-      "file": "docs/results/image-build-e2e.json",
+    "registrySearch": {
+      "file": "docs/results/registry-search-e2e.json",
+      "checksPassed": 8,
+      "observedAt": "2026-10-17T08:46:23.128Z",
+      "finishedAt": "2026-10-17T08:46:33.580Z",
+      "artifactSha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE"
+    },
+    "registryCollapse": {
+      "file": "docs/results/registry-collapse-e2e.json",
+      "checksPassed": 1,
+      "observedAt": "2026-10-17T08:51:39.354Z",
+      "artifactSha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE"
+    },
+    "imageRun": {
+      "file": "docs/results/image-run-e2e.json",
       "checksPassed": 6,
-      "observedAt": "2026-10-17T08:14:50.043Z",
-      "finishedAt": "2026-10-17T08:15:57.227Z",
-      "artifactSha256": "28DD56273C714E7F59E15EF155754A6606E3FD89CF7B063903D5A37D72949FA1"
+      "observedAt": "2026-10-17T08:47:44.742Z",
+      "finishedAt": "2026-10-17T08:48:54.338Z",
+      "artifactSha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE"
+    },
+    "imageRunAdvanced": {
+      "file": "docs/results/image-run-advanced-e2e.json",
+      "checksPassed": 10,
+      "observedAt": "2026-10-17T08:49:03.706Z",
+      "finishedAt": "2026-10-17T08:50:57.898Z",
+      "artifactSha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE"
+    },
+    "imageWorkflowUi": {
+      "file": "docs/results/image-workflow-ui-e2e.json",
+      "checksPassed": 4,
+      "observedAt": "2026-10-17T08:52:03.252Z",
+      "finishedAt": "2026-10-17T08:52:07.462Z",
+      "artifactSha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE"
+    },
+    "uiPrerequisites": {
+      "file": "docs/results/ui-prerequisites-e2e.json",
+      "checksPassed": 8,
+      "observedAt": "2026-10-17T08:52:07.589Z",
+      "finishedAt": "2026-10-17T08:52:18.605Z",
+      "artifactSha256": "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE"
     }
   },
   "engineInstalled": true,
   "runtimePath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
   "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
-  "previousUiVerification": "docs/results/before-image-build/standalone-build-verification.json",
-  "previousFullFunctionalVerification": "docs/results/before-ui-prerequisites/standalone-build-verification.json",
+  "previousImageBuildVerification": "docs/results/before-image-run/standalone-build-verification.json",
   "restoredRuntimeState": "stopped",
   "restorationEvidence": "docs/results/restored-original-runtime-state.json",
   "normalRunEvidence": "docs/results/final-normal-session.json",
-  "pickerHarnessFailure": "docs/results/image-build-picker-harness-failure.json",
   "newReaMcpCalls": 0,
   "backupRequired": false,
   "vhdxBackupCreated": false,
   "vhdxCompressionExecuted": false,
   "vhdxCompressionVerified": false,
-  "retainedFixtureCacheIds": [
-    "6y412t96uqj7ycn8zplpc1w3b",
-    "four8i3guaiha8ng02lb7pfnz",
-    "oxqi7paywdhoe5gousysdyjzt",
-    "g21tij0o6hbdarn4kf189svvh"
-  ],
   "limitations": [
-    "Native folder dialog opened and cancellation restored editable inputs; confirming a selected folder remains unverified after a private test helper caused a cross-process pointer marshalling fault. The invalid helper command was removed.",
-    "Build cancellation is not supported. Input fields and latest build logs are retained during menu navigation, not across app exit.",
-    "Actual VHDX compaction and approved elevated relaunch remain unverified.",
-    "Previous full functional and UI suites were not rerun in full; this artifact passed the six real image-build E2E checks and final read-only verification."
+    "Real VHDX compaction and approved elevated relaunch remain unverified.",
+    "Advanced network inspection and selected container options were verified with hello-world fixtures; communication between multiple custom-network containers was not exercised.",
+    "Previous complete functional suite and Dockerfile build suite were not repeated on this artifact; their previous hashes remain in the archived records.",
+    "Build cancellation and confirming a selection in the native build-folder dialog remain unverified/unsupported as described in the previous build record."
   ]
 }

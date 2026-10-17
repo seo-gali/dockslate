@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-16T14:24:30.173Z",
+  "observedAt": "2026-10-17T08:52:07.589Z",
   "target": "real built Windows DockSlate WebView2 window with stopped independent runtime",
   "mockData": false,
   "changes": "Renderer reload, menu/tab navigation, real CDP pointer drags, read-only VHDX prerequisites and a canceled elevation confirmation. One explicit unapproved elevation request verifies rejection. No engine/data/disk changes or operating-system windows are requested.",
@@ -26,7 +26,7 @@
       "passed": true
     },
     {
-      "name": "a blocked row retry performs only one actual read-only wsl_preview",
+      "name": "inspection retry performs only one actual read-only wsl_preview",
       "passed": true
     },
     {
@@ -69,7 +69,7 @@
     {
       "selector": "main [data-page]:not([hidden]) [data-tab=\"wsl\"]:not([hidden]) .disk-card .disk-path code",
       "x": 251.60000610351562,
-      "y": 435.6000123023987,
+      "y": 382.00000619888306,
       "endX": 667.6000061035156,
       "text": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
       "userSelect": "text",
@@ -78,7 +78,7 @@
     {
       "selector": "main [data-page]:not([hidden]) [data-tab=\"wsl\"]:not([hidden]) [data-check=\"ownership\"] details p",
       "x": 260.8000183105469,
-      "y": 416.2499942779541,
+      "y": 372.1500186920166,
       "endX": 676.8000183105469,
       "text": "WSL 2 registration: DockSlate; owner: DockSlate",
       "userSelect": "text",
@@ -108,6 +108,9 @@
       "image_search": 0,
       "wsl_preview": 0,
       "desktop_restart_elevated": 0,
+      "container_run": 0,
+      "network_create": 0,
+      "image_build_start": 0,
       "image_pull": 0,
       "container_action": 0,
       "destructive_execute": 0,
@@ -125,10 +128,10 @@
     },
     "result": {
       "blockedReasons": [
-        "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
         "An elevated Windows administrator session is required.",
-        "Disk inspection requires verified ownership and elevation.",
-        "Disk identity verification failed: Disk identity approval requires all preceding safety checks to pass."
+        "\"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\"",
+        "Exclusive VHDX lock failed: \"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
+        "Disk identity verification failed: Disk identity inspection requires the verified owner and an exclusive file handle."
       ],
       "checks": [
         {
@@ -142,9 +145,9 @@
           "status": "passed"
         },
         {
-          "detail": "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
+          "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
           "name": "diskTools",
-          "status": "blocked"
+          "status": "passed"
         },
         {
           "detail": "The Windows process token is not elevated.",
@@ -162,50 +165,39 @@
           "status": "passed"
         },
         {
-          "detail": "Disk inspection requires verified ownership and elevation.",
+          "detail": "\"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\"",
           "name": "detachedDynamicVhdx",
           "status": "blocked"
         },
         {
-          "detail": "An exclusive read handle acquired the registered VHDX without creating or modifying it.",
+          "detail": "\"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
           "name": "exclusiveLock",
-          "status": "passed"
+          "status": "blocked"
         },
         {
-          "detail": "Disk identity approval requires all preceding safety checks to pass.",
+          "detail": "Disk identity inspection requires the verified owner and an exclusive file handle.",
           "name": "sourceIdentity",
           "status": "blocked"
         }
       ],
       "diskId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
       "diskTools": {
-        "available": false,
+        "available": true,
         "checks": [
           {
             "available": true,
-            "detail": "사용 가능",
-            "name": "Storage\\Get-DiskImage"
-          },
-          {
-            "available": false,
-            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
-            "name": "Hyper-V\\Get-VHD"
-          },
-          {
-            "available": false,
-            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
-            "name": "Hyper-V\\Optimize-VHD"
+            "detail": "Windows 내장 디스크 조회·압축 API",
+            "name": "Windows Virtual Disk API"
           }
         ],
-        "missing": [
-          "Hyper-V\\Get-VHD",
-          "Hyper-V\\Optimize-VHD"
-        ]
+        "method": "CompactVirtualDisk",
+        "missing": []
       },
       "distribution": "DockSlate",
       "eligible": false,
       "expiresAt": null,
-      "fileSizeBytes": 2854223872,
+      "fileSizeBytes": null,
+      "method": "CompactVirtualDisk",
       "owner": "DockSlate",
       "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
       "requiresBackup": false,
@@ -213,7 +205,7 @@
       "warnings": [
         "백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.",
         "엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.",
-        "Windows Optimize-VHD로 압축하며 파일 크기가 줄어들지 않을 수 있습니다.",
+        "Windows 내장 압축으로 0이 채워진 빈 블록을 회수합니다. 파일 크기가 줄어들지 않을 수 있습니다.",
         "실행 직전에 모든 안전 조건을 다시 확인합니다."
       ]
     },
@@ -236,16 +228,11 @@
       },
       {
         "name": "diskTools",
-        "status": "확인 필요",
-        "diagnostic": "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
-        "help": "Windows 기능에서 Hyper-V 관리 도구의 Windows PowerShell용 Hyper-V 모듈을 확인하세요. 이 항목이 제공되지 않는 Windows에서는 현재 압축 방식을 사용할 수 없습니다. 기능을 변경했다면 Windows의 안내를 따르고 다시 검사하세요. Windows 디스크 관리 도구가 없습니다: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
-        "actions": [
-          {
-            "text": "Windows 기능 열기",
-            "disabled": false
-          }
-        ],
-        "visibleText": "Windows 디스크 관리 도구\n확인 필요\n\nWindows 기능에서 Hyper-V 관리 도구의 Windows PowerShell용 Hyper-V 모듈을 확인하세요. 이 항목이 제공되지 않는 Windows에서는 현재 압축 방식을 사용할 수 없습니다. 기능을 변경했다면 Windows의 안내를 따르고 다시 검사하세요.\n\nWindows 디스크 관리 도구가 없습니다: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD\n\nWindows 기능 열기\n검사 진단"
+        "status": "확인됨",
+        "diagnostic": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
+        "help": "",
+        "actions": [],
+        "visibleText": "Windows 디스크 관리 도구\n확인됨\n검사 진단"
       },
       {
         "name": "administrator",
@@ -279,7 +266,7 @@
       {
         "name": "detachedDynamicVhdx",
         "status": "확인 필요",
-        "diagnostic": "Disk inspection requires verified ownership and elevation.",
+        "diagnostic": "\"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\"",
         "help": "관리자 권한으로 다시 실행하면 분리 상태를 검사할 수 있습니다.",
         "actions": [
           {
@@ -291,16 +278,21 @@
       },
       {
         "name": "exclusiveLock",
-        "status": "확인됨",
-        "diagnostic": "An exclusive read handle acquired the registered VHDX without creating or modifying it.",
-        "help": "",
-        "actions": [],
-        "visibleText": "디스크 파일 잠금\n확인됨\n검사 진단"
+        "status": "확인 필요",
+        "diagnostic": "\"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
+        "help": "엔진과 VHDX 파일을 사용하는 프로그램을 종료한 뒤 다시 검사하세요. 계속 잠겨 있으면 압축할 수 없습니다.",
+        "actions": [
+          {
+            "text": "다시 검사",
+            "disabled": false
+          }
+        ],
+        "visibleText": "디스크 파일 잠금\n확인 필요\n\n엔진과 VHDX 파일을 사용하는 프로그램을 종료한 뒤 다시 검사하세요. 계속 잠겨 있으면 압축할 수 없습니다.\n\n다시 검사\n검사 진단"
       },
       {
         "name": "sourceIdentity",
         "status": "확인 필요",
-        "diagnostic": "Disk identity approval requires all preceding safety checks to pass.",
+        "diagnostic": "Disk identity inspection requires the verified owner and an exclusive file handle.",
         "help": "앞의 조건을 모두 충족한 뒤 다시 검사하면 파일 식별 정보와 변경 여부를 확인합니다.",
         "actions": [
           {
@@ -314,9 +306,9 @@
     "calls": [
       {
         "command": "wsl_preview",
-        "observedAt": 1792160679737,
-        "finishedAt": 1792160683174,
-        "durationMs": 3437
+        "observedAt": 1792227135766,
+        "finishedAt": 1792227136880,
+        "durationMs": 1114
       }
     ],
     "counts": {
@@ -331,6 +323,9 @@
       "image_search": 0,
       "wsl_preview": 1,
       "desktop_restart_elevated": 0,
+      "container_run": 0,
+      "network_create": 0,
+      "image_build_start": 0,
       "image_pull": 0,
       "container_action": 0,
       "destructive_execute": 0,
@@ -342,13 +337,13 @@
     }
   },
   "retry": {
-    "check": "sourceIdentity",
+    "check": "exclusiveLock",
     "result": {
       "blockedReasons": [
-        "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
         "An elevated Windows administrator session is required.",
-        "Disk inspection requires verified ownership and elevation.",
-        "Disk identity verification failed: Disk identity approval requires all preceding safety checks to pass."
+        "\"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\"",
+        "Exclusive VHDX lock failed: \"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
+        "Disk identity verification failed: Disk identity inspection requires the verified owner and an exclusive file handle."
       ],
       "checks": [
         {
@@ -362,9 +357,9 @@
           "status": "passed"
         },
         {
-          "detail": "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
+          "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
           "name": "diskTools",
-          "status": "blocked"
+          "status": "passed"
         },
         {
           "detail": "The Windows process token is not elevated.",
@@ -382,50 +377,39 @@
           "status": "passed"
         },
         {
-          "detail": "Disk inspection requires verified ownership and elevation.",
+          "detail": "\"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\"",
           "name": "detachedDynamicVhdx",
           "status": "blocked"
         },
         {
-          "detail": "An exclusive read handle acquired the registered VHDX without creating or modifying it.",
+          "detail": "\"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
           "name": "exclusiveLock",
-          "status": "passed"
+          "status": "blocked"
         },
         {
-          "detail": "Disk identity approval requires all preceding safety checks to pass.",
+          "detail": "Disk identity inspection requires the verified owner and an exclusive file handle.",
           "name": "sourceIdentity",
           "status": "blocked"
         }
       ],
       "diskId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
       "diskTools": {
-        "available": false,
+        "available": true,
         "checks": [
           {
             "available": true,
-            "detail": "사용 가능",
-            "name": "Storage\\Get-DiskImage"
-          },
-          {
-            "available": false,
-            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
-            "name": "Hyper-V\\Get-VHD"
-          },
-          {
-            "available": false,
-            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
-            "name": "Hyper-V\\Optimize-VHD"
+            "detail": "Windows 내장 디스크 조회·압축 API",
+            "name": "Windows Virtual Disk API"
           }
         ],
-        "missing": [
-          "Hyper-V\\Get-VHD",
-          "Hyper-V\\Optimize-VHD"
-        ]
+        "method": "CompactVirtualDisk",
+        "missing": []
       },
       "distribution": "DockSlate",
       "eligible": false,
       "expiresAt": null,
-      "fileSizeBytes": 2854223872,
+      "fileSizeBytes": null,
+      "method": "CompactVirtualDisk",
       "owner": "DockSlate",
       "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
       "requiresBackup": false,
@@ -433,16 +417,16 @@
       "warnings": [
         "백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.",
         "엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.",
-        "Windows Optimize-VHD로 압축하며 파일 크기가 줄어들지 않을 수 있습니다.",
+        "Windows 내장 압축으로 0이 채워진 빈 블록을 회수합니다. 파일 크기가 줄어들지 않을 수 있습니다.",
         "실행 직전에 모든 안전 조건을 다시 확인합니다."
       ]
     },
     "calls": [
       {
         "command": "wsl_preview",
-        "observedAt": 1792160683291,
-        "finishedAt": 1792160686778,
-        "durationMs": 3487
+        "observedAt": 1792227137043,
+        "finishedAt": 1792227138154,
+        "durationMs": 1111
       }
     ],
     "counts": {
@@ -457,6 +441,9 @@
       "image_search": 0,
       "wsl_preview": 1,
       "desktop_restart_elevated": 0,
+      "container_run": 0,
+      "network_create": 0,
+      "image_build_start": 0,
       "image_pull": 0,
       "container_action": 0,
       "destructive_execute": 0,
@@ -482,9 +469,9 @@
     "calls": [
       {
         "command": "desktop_restart_elevated",
-        "observedAt": 1792160687189,
-        "finishedAt": 1792160687193,
-        "durationMs": 4
+        "observedAt": 1792227138535,
+        "finishedAt": 1792227138538,
+        "durationMs": 3
       }
     ],
     "counts": {
@@ -499,6 +486,9 @@
       "image_search": 0,
       "wsl_preview": 0,
       "desktop_restart_elevated": 1,
+      "container_run": 0,
+      "network_create": 0,
+      "image_build_start": 0,
       "image_pull": 0,
       "container_action": 0,
       "destructive_execute": 0,
@@ -530,14 +520,14 @@
     "keeperVerified": false,
     "message": "The verified DockSlate WSL runtime is installed and stopped.",
     "operation": {
-      "childProcessId": 16052,
-      "childStartedTicks": "639277574110482196",
+      "childProcessId": 22892,
+      "childStartedTicks": "639278239041166032",
       "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
-      "processId": 24656,
-      "startedAt": 1792160610657,
-      "startedTicks": "639277574089400000",
+      "processId": 24188,
+      "startedAt": 1792227103850,
+      "startedTicks": "639278239026559486",
       "state": "completed",
-      "updatedAt": 1792160611992
+      "updatedAt": 1792227104738
     },
     "state": "stopped"
   },
@@ -550,14 +540,14 @@
     "calls": [
       {
         "command": "dashboard_snapshot",
-        "observedAt": 1792160671466,
-        "finishedAt": 1792160673293,
-        "durationMs": 1827
+        "observedAt": 1792227128385,
+        "finishedAt": 1792227129399,
+        "durationMs": 1014
       },
       {
         "command": "plugin:event|listen",
-        "observedAt": 1792160671466,
-        "finishedAt": 1792160671471,
+        "observedAt": 1792227128385,
+        "finishedAt": 1792227128390,
         "durationMs": 5
       }
     ],
@@ -573,6 +563,9 @@
       "image_search": 0,
       "wsl_preview": 0,
       "desktop_restart_elevated": 0,
+      "container_run": 0,
+      "network_create": 0,
+      "image_build_start": 0,
       "image_pull": 0,
       "container_action": 0,
       "destructive_execute": 0,
@@ -590,7 +583,7 @@
     "neutralMessage": true,
     "rawDiagnostics": true
   },
-  "finishedAt": "2026-10-16T14:24:47.297Z",
+  "finishedAt": "2026-10-17T08:52:18.605Z",
   "exceptions": [],
   "observedCounts": {
     "dashboard_snapshot": 1,
@@ -604,6 +597,9 @@
     "image_search": 0,
     "wsl_preview": 2,
     "desktop_restart_elevated": 1,
+    "container_run": 0,
+    "network_create": 0,
+    "image_build_start": 0,
     "image_pull": 0,
     "container_action": 0,
     "destructive_execute": 0,
@@ -612,6 +608,5 @@
     "runtime_stop": 0,
     "wsl_compact": 0,
     "desktop_open_windows_features": 0
-  },
-  "artifactSha256": "3769C75A5948380F3F6EA10FE7D2E07D6CB1AB5B6151B07CF9B18E629ACBA01D"
+  }
 }

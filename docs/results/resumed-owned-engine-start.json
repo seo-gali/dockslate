@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-17T08:14:04.348Z",
+  "observedAt": "2026-10-17T08:38:05.427Z",
   "observations": {
     "startApprovalDialog": "DockSlate 런타임 시작 확인\nDockSlate · Moby 엔진\n\nDockSlate 배포판과 컨테이너 엔진을 시작합니다. 저장된 컨테이너는 재시작 정책에 따라 자동으로 실행될 수 있습니다.\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\n시작 승인 및 실행"
   },
@@ -11,14 +11,14 @@
     "keeperVerified": false,
     "message": "The verified DockSlate WSL runtime is installed and stopped.",
     "operation": {
-      "childProcessId": 26796,
-      "childStartedTicks": "639277605108460284",
-      "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
-      "processId": 23616,
-      "startedAt": 1792163710742,
-      "startedTicks": "639277605096488006",
+      "childProcessId": 20164,
+      "childStartedTicks": "639278224085082038",
+      "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+      "processId": 4132,
+      "startedAt": 1792225608283,
+      "startedTicks": "639278224073142210",
       "state": "completed",
-      "updatedAt": 1792163725547
+      "updatedAt": 1792225609145
     },
     "state": "stopped"
   },
@@ -29,14 +29,14 @@
     "keeperVerified": true,
     "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
     "operation": {
-      "childProcessId": 3196,
-      "childStartedTicks": "639278216470259637",
+      "childProcessId": 23760,
+      "childStartedTicks": "639278230883140557",
       "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
-      "processId": 14748,
-      "startedAt": 1792224846931,
-      "startedTicks": "639278216459224597",
+      "processId": 23564,
+      "startedAt": 1792226288216,
+      "startedTicks": "639278230870831502",
       "state": "completed",
-      "updatedAt": 1792224863668
+      "updatedAt": 1792226303714
     },
     "state": "running"
   },

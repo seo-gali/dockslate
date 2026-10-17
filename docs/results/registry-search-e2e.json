@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-16T14:22:55.387Z",
+  "observedAt": "2026-10-17T08:46:23.128Z",
   "target": "actual Windows Tauri WebView and real owned Moby Engine Docker Hub search",
   "mockData": false,
   "mutationExecuted": false,
@@ -50,7 +50,14 @@
       "state": "connected"
     },
     "before": {
-      "images": [],
+      "images": [
+        {
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
       "containers": []
     },
     "searchTerm": "hello",
@@ -242,7 +249,14 @@
       }
     ],
     "after": {
-      "images": [],
+      "images": [
+        {
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
       "containers": []
     },
     "invokedCommands": [
@@ -261,6 +275,5 @@
   "completed": true,
   "failurePolicy": "Stop on actual network, engine, or UI failure; never substitute results or execute Pull/cleanup.",
   "rendererExceptions": [],
-  "finishedAt": "2026-10-16T14:23:08.211Z",
-  "artifactSha256": "3769C75A5948380F3F6EA10FE7D2E07D6CB1AB5B6151B07CF9B18E629ACBA01D"
+  "finishedAt": "2026-10-17T08:46:33.580Z"
 }

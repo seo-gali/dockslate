@@ -25,6 +25,14 @@ function Get-Admin {
 function Get-DiskTools {
     $checks = [Collections.Generic.List[object]]::new()
     $missing = [Collections.Generic.List[string]]::new()
+    try {
+        Initialize-FileIdentity
+        [DockSlateVirtualDisk]::AssertSupported()
+        $checks.Add([pscustomobject]@{ name = 'Windows Virtual Disk API'; available = $true; detail = 'Windows 내장 디스크 조회·압축 API' })
+        return [pscustomobject]@{ available = $true; method = 'CompactVirtualDisk'; checks = @($checks.ToArray()); missing = @() }
+    } catch {
+        $checks.Add([pscustomobject]@{ name = 'Windows Virtual Disk API'; available = $false; detail = $_.Exception.Message })
+    }
     foreach ($name in @('Storage\Get-DiskImage', 'Hyper-V\Get-VHD', 'Hyper-V\Optimize-VHD')) {
         try {
             $command = Get-Command $name -CommandType Cmdlet,Function -ErrorAction Stop
@@ -35,7 +43,7 @@ function Get-DiskTools {
             $checks.Add([pscustomobject]@{ name = $name; available = $false; detail = 'Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.' })
         }
     }
-    return [pscustomobject]@{ available = ($missing.Count -eq 0); checks = @($checks.ToArray()); missing = @($missing.ToArray()) }
+    return [pscustomobject]@{ available = ($missing.Count -eq 0); method = $(if ($missing.Count -eq 0) { 'Optimize-VHD' } else { $null }); checks = @($checks.ToArray()); missing = @($missing.ToArray()) }
 }
 
 function Get-LocalPath([string]$path, [bool]$allowExtended = $true) {
@@ -287,9 +295,12 @@ function Get-RuntimeProcesses($installations = @(), [bool]$strict = $false) {
     return @($running.ToArray())
 }
 
-function Get-DetachedState([string]$path) {
+function Get-DetachedState([string]$path, $diskTools = $null) {
     $file = Get-Item -LiteralPath $path -Force -ErrorAction Stop
     if (($file.Attributes -band ([IO.FileAttributes]::SparseFile -bor [IO.FileAttributes]::Compressed -bor [IO.FileAttributes]::Encrypted)) -ne 0) { throw 'Sparse, compressed, or encrypted host files require a separately verified compaction method and are not supported.' }
+    if (!$diskTools) { $diskTools = Get-DiskTools }
+    if (!$diskTools.available) { throw 'Windows virtual disk inspection and compaction support is unavailable.' }
+    if ($diskTools.method -ceq 'CompactVirtualDisk') { return [DockSlateVirtualDisk]::Inspect($path) }
     $null = Get-Command Storage\Get-DiskImage -ErrorAction Stop
     $null = Get-Command Hyper-V\Get-VHD -ErrorAction Stop
     $null = Get-Command Hyper-V\Optimize-VHD -ErrorAction Stop
@@ -300,7 +311,9 @@ function Get-DetachedState([string]$path) {
     if ($diskImage[0].Attached -or $vhd[0].Attached) { throw 'The VHDX is attached. Detach it using the owning runtime before retrying.' }
     if ([string]$vhd[0].VhdFormat -ne 'VHDX' -or [string]$vhd[0].VhdType -ne 'Dynamic') { throw 'Only a detached, dynamically expanding VHDX is supported.' }
     if ($vhd[0].ParentPath) { throw 'Differencing disks and parent disk chains are not supported.' }
-    return $vhd[0]
+    $identifier = [guid]::Parse([string]$vhd[0].DiskIdentifier)
+    if ($identifier -eq [guid]::Empty) { throw 'The virtual disk identifier is empty.' }
+    return [pscustomobject]@{ Provider = 'Hyper-V PowerShell'; Identifier = $identifier.ToString('D'); Attached = $false; VhdFormat = 'VHDX'; VhdType = 'Dynamic' }
 }
 
 function Add-Check($checks, [string]$name, [string]$status, [string]$detail) {
@@ -374,6 +387,105 @@ public static class DockSlateFileIdentity {
         return info.AllocationSize;
     }
 }
+public static class DockSlateVirtualDisk {
+    [StructLayout(LayoutKind.Sequential)] private struct StorageType {
+        public uint DeviceId; public Guid VendorId;
+    }
+    [StructLayout(LayoutKind.Sequential)] private struct OpenParameters {
+        public uint Version; public uint RWDepth;
+    }
+    [StructLayout(LayoutKind.Sequential)] private struct CompactParameters {
+        public uint Version; public uint Reserved;
+    }
+    [StructLayout(LayoutKind.Explicit, Size=32)] private struct DiskInfo {
+        [FieldOffset(0)] public uint Version;
+        [FieldOffset(8)] public uint Value;
+        [FieldOffset(8)] public Guid Identifier;
+        [FieldOffset(12)] public Guid VendorId;
+    }
+    public sealed class Inspection {
+        public string Provider = "Windows Virtual Disk API";
+        public string Identifier;
+        public bool Attached = false;
+        public string VhdFormat = "VHDX";
+        public string VhdType = "Dynamic";
+    }
+    private static readonly Guid MicrosoftVendor = new Guid("ec984aec-a0f9-47e9-901f-71415a66345b");
+    private const uint GetInfo = 0x00080000;
+    private const uint MetaOps = 0x00200000;
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)] private static extern IntPtr LoadLibraryEx(string path, IntPtr file, uint flags);
+    [DllImport("kernel32.dll", CharSet=CharSet.Ansi, ExactSpelling=true, SetLastError=true)] private static extern IntPtr GetProcAddress(IntPtr module, string name);
+    [DllImport("kernel32.dll", SetLastError=true)] private static extern bool FreeLibrary(IntPtr module);
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [DllImport("virtdisk.dll", CharSet=CharSet.Unicode, ExactSpelling=true)] private static extern uint OpenVirtualDisk(ref StorageType storageType, string path, uint access, uint flags, ref OpenParameters parameters, out SafeFileHandle handle);
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [DllImport("virtdisk.dll", ExactSpelling=true)] private static extern uint GetVirtualDiskInformation(SafeFileHandle handle, ref uint size, ref DiskInfo info, out uint used);
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [DllImport("virtdisk.dll", CharSet=CharSet.Unicode, ExactSpelling=true)] private static extern uint GetVirtualDiskPhysicalPath(SafeFileHandle handle, ref uint bytes, System.Text.StringBuilder path);
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [DllImport("virtdisk.dll", ExactSpelling=true)] private static extern uint CompactVirtualDisk(SafeFileHandle handle, uint flags, ref CompactParameters parameters, IntPtr overlapped);
+    private static void Check(uint status, string operation) {
+        if (status != 0) throw new Win32Exception((int)status, operation + " failed (" + status.ToString() + "): " + new Win32Exception((int)status).Message);
+    }
+    public static void AssertSupported() {
+        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "virtdisk.dll");
+        IntPtr module = LoadLibraryEx(path, IntPtr.Zero, 0x00000800);
+        if (module == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error(), "Windows Virtual Disk API cannot be loaded.");
+        try {
+            foreach (string name in new string[] { "OpenVirtualDisk", "GetVirtualDiskInformation", "GetVirtualDiskPhysicalPath", "CompactVirtualDisk" }) {
+                if (GetProcAddress(module, name) == IntPtr.Zero) throw new NotSupportedException("Windows Virtual Disk API is unavailable: " + name);
+            }
+        } finally { FreeLibrary(module); }
+    }
+    private static SafeFileHandle Open(string path, bool writable) {
+        var storageType = new StorageType { DeviceId = 3, VendorId = MicrosoftVendor };
+        var parameters = new OpenParameters { Version = 1, RWDepth = writable ? 1u : 0u };
+        SafeFileHandle handle;
+        uint status = OpenVirtualDisk(ref storageType, path, GetInfo | (writable ? MetaOps : 0), 1, ref parameters, out handle);
+        if (status != 0) {
+            if (handle != null) handle.Dispose();
+            Check(status, "OpenVirtualDisk");
+        }
+        if (handle == null || handle.IsInvalid) { if (handle != null) handle.Dispose(); throw new IOException("Windows returned no virtual disk handle."); }
+        return handle;
+    }
+    private static DiskInfo Query(SafeFileHandle handle, uint version) {
+        var info = new DiskInfo { Version = version };
+        uint size = (uint)Marshal.SizeOf(typeof(DiskInfo));
+        uint used;
+        Check(GetVirtualDiskInformation(handle, ref size, ref info, out used), "GetVirtualDiskInformation");
+        uint required = version == 6 ? 28u : (version == 2 ? 24u : 12u);
+        if (info.Version != version || size > Marshal.SizeOf(typeof(DiskInfo)) || used < required || used > size) throw new IOException("Windows returned an unsupported virtual disk information layout.");
+        return info;
+    }
+    private static Inspection InspectHandle(SafeFileHandle handle) {
+        var storageType = Query(handle, 6);
+        if (storageType.Value != 3 || storageType.VendorId != MicrosoftVendor) throw new IOException("Only a Microsoft VHDX is supported.");
+        if (Query(handle, 7).Value != 3) throw new IOException("Only a dynamic VHDX without a parent disk is supported.");
+        uint loaded = Query(handle, 13).Value;
+        if (loaded != 0) throw new IOException("The VHDX is attached or its attachment state is unknown. Keep the owning engine stopped and retry.");
+        var physicalPath = new System.Text.StringBuilder(512);
+        uint bytes = 1024;
+        uint status = GetVirtualDiskPhysicalPath(handle, ref bytes, physicalPath);
+        if (status == 0) throw new IOException("The VHDX is attached to a Windows physical disk device.");
+        if (status != 55) Check(status, "GetVirtualDiskPhysicalPath");
+        Guid identifier = Query(handle, 2).Identifier;
+        if (identifier == Guid.Empty) throw new IOException("The virtual disk identifier is empty.");
+        return new Inspection { Identifier = identifier.ToString("D") };
+    }
+    public static Inspection Inspect(string path) {
+        using (var handle = Open(path, false)) { return InspectHandle(handle); }
+    }
+    public static void Compact(string path, string expectedIdentifier) {
+        using (var handle = Open(path, true)) {
+            var disk = InspectHandle(handle);
+            if (!String.Equals(disk.Identifier, expectedIdentifier, StringComparison.Ordinal)) throw new IOException("The approved virtual disk identifier changed.");
+            var parameters = new CompactParameters { Version = 1, Reserved = 0 };
+            Check(CompactVirtualDisk(handle, 0, ref parameters, IntPtr.Zero), "CompactVirtualDisk");
+            if (!String.Equals(InspectHandle(handle).Identifier, expectedIdentifier, StringComparison.Ordinal)) throw new IOException("The virtual disk state changed during compaction.");
+        }
+    }
+}
 '@ -ErrorAction Stop
 }
 
@@ -387,6 +499,7 @@ function Get-StreamHash($stream) {
 function Get-Inventory {
     $diagnostics = [Collections.Generic.List[string]]::new()
     $admin = Get-Admin
+    $diskTools = Get-DiskTools
     $running = @()
     $runningKnown = $false
     try { $running = @(Invoke-WslList $true); $runningKnown = $true }
@@ -420,10 +533,10 @@ function Get-Inventory {
         elseif ($runtime.Count -gt 0) { $reasons.Add('Container runtime processes must be exited manually: ' + ($runtime -join ', ')) }
         if (!$admin) { $reasons.Add('An elevated Windows administrator session is required for compaction.') }
         $attached = $null
-        if ($exists -and $admin) {
-            try { $null = Get-DetachedState $entry.path; $attached = $false }
+        if ($exists -and ($admin -or $diskTools.method -ceq 'CompactVirtualDisk')) {
+            try { $null = Get-DetachedState $entry.path $diskTools; $attached = $false }
             catch { $reasons.Add('Disk separation cannot be verified: ' + $_.Exception.Message) }
-        } else { $reasons.Add('Disk separation has not been verified by both Get-DiskImage and Get-VHD.') }
+        } else { $reasons.Add('Disk separation has not been verified by the Windows Virtual Disk API.') }
         $disks.Add([pscustomobject]@{ id = $entry.id; distribution = $entry.distribution; owner = $entry.owner; path = $entry.path; exists = $exists; fileSizeBytes = $size; running = $isRunning; attached = $attached; compactionStatus = 'blocked'; blockedReasons = @($reasons.ToArray()) })
     }
     if ($registrations.Count -eq 0) { $diagnostics.Add('No DockSlate, Rancher Desktop, or Docker Desktop WSL disk registration was found. Unregistered disks are not guessed or scanned.') }
@@ -439,6 +552,7 @@ function Get-Preflight {
     $sourceParents = @()
     $installations = @()
     $runtimeOwner = $null
+    $diskState = $null
     $diskTools = Get-DiskTools
     try {
         $entries = @(Get-Registrations)
@@ -463,7 +577,7 @@ function Get-Preflight {
             Add-Check $checks 'runtimeOwner' 'passed' ('The owning runtime executable and installation directory were verified from Windows registration: ' + $runtimeOwner.owner)
         }
     } catch { $reasons.Add($_.Exception.Message); Add-Check $checks 'runtimeOwner' 'blocked' $_.Exception.Message }
-    if ($diskTools.available) { Add-Check $checks 'diskTools' 'passed' 'Windows 디스크 조회·압축 도구를 사용할 수 있습니다.' }
+    if ($diskTools.available) { Add-Check $checks 'diskTools' 'passed' ('Windows 디스크 조회·압축을 사용할 수 있습니다: ' + $diskTools.method) }
     else {
         $detail = 'Required Windows disk tools are unavailable: ' + ($diskTools.missing -join ', ')
         $reasons.Add($detail)
@@ -485,9 +599,10 @@ function Get-Preflight {
         Add-Check $checks 'runtimeExited' 'passed' 'No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.'
     } catch { $reasons.Add($_.Exception.Message); Add-Check $checks 'runtimeExited' 'blocked' $_.Exception.Message }
     try {
-        if (!$entry -or !$admin) { throw 'Disk inspection requires verified ownership and elevation.' }
-        $null = Get-DetachedState $entry.path
-        Add-Check $checks 'detachedDynamicVhdx' 'passed' 'Get-DiskImage and Get-VHD both report a detached dynamic VHDX without a parent.'
+        if (!$entry -or $checks[0].status -ne 'passed') { throw 'Disk inspection requires verified ownership.' }
+        if (!$admin -and $diskTools.method -cne 'CompactVirtualDisk') { throw 'Disk inspection requires an elevated Windows administrator session.' }
+        $diskState = Get-DetachedState $entry.path $diskTools
+        Add-Check $checks 'detachedDynamicVhdx' 'passed' ($diskState.Provider + ': detached dynamic VHDX without a parent; disk ID ' + $diskState.Identifier)
     } catch { $reasons.Add($_.Exception.Message); Add-Check $checks 'detachedDynamicVhdx' 'blocked' $_.Exception.Message }
     try {
         if (!$entry -or $checks[0].status -ne 'passed') { throw 'The original disk registration is not verified.' }
@@ -497,16 +612,18 @@ function Get-Preflight {
         Add-Check $checks 'exclusiveLock' 'passed' 'An exclusive read handle acquired the registered VHDX without creating or modifying it.'
     } catch { $reasons.Add('Exclusive VHDX lock failed: ' + $_.Exception.Message); Add-Check $checks 'exclusiveLock' 'blocked' $_.Exception.Message }
     try {
-        if (!$source -or !$entry -or !$runtimeOwner -or $reasons.Count -gt 0) { throw 'Disk identity approval requires all preceding safety checks to pass.' }
+        if (!$source -or !$entry -or !$runtimeOwner) { throw 'Disk identity inspection requires the verified owner and an exclusive file handle.' }
         if ($source.Length -le 0) { throw 'The original disk is empty.' }
         $sourceId = [DockSlateFileIdentity]::Get($source)
-        $fingerprint = [pscustomobject]@{ diskId = $entry.id; distribution = $entry.distribution; owner = $entry.owner; runtimePath = $runtimeOwner.path; path = $entry.path; sourceIdentity = $sourceId; fileSizeBytes = [long]$source.Length; sourceLastWriteUtc = [IO.File]::GetLastWriteTimeUtc($entry.path).Ticks.ToString(); registryBasePath = $entry.basePath; registryVhdFileName = $entry.vhdFileName; backupPolicy = 'none' }
-        if ($entry.owner -ceq 'DockSlate') {
-            foreach ($field in @('ownerId', 'markerPath', 'markerIdentity', 'markerSha256', 'operationIdentity', 'operationSha256', 'mutationIdentity')) { $fingerprint | Add-Member -NotePropertyName $field -NotePropertyValue $runtimeOwner.($field) }
+        if ($reasons.Count -eq 0) {
+            $fingerprint = [pscustomobject]@{ diskId = $entry.id; distribution = $entry.distribution; owner = $entry.owner; runtimePath = $runtimeOwner.path; path = $entry.path; sourceIdentity = $sourceId; fileSizeBytes = [long]$source.Length; sourceLastWriteUtc = [IO.File]::GetLastWriteTimeUtc($entry.path).Ticks.ToString(); registryBasePath = $entry.basePath; registryVhdFileName = $entry.vhdFileName; backupPolicy = 'none'; compactionMethod = $diskTools.method; virtualDiskId = $diskState.Identifier }
+            if ($entry.owner -ceq 'DockSlate') {
+                foreach ($field in @('ownerId', 'markerPath', 'markerIdentity', 'markerSha256', 'operationIdentity', 'operationSha256', 'mutationIdentity')) { $fingerprint | Add-Member -NotePropertyName $field -NotePropertyValue $runtimeOwner.($field) }
+            }
         }
         Add-Check $checks 'sourceIdentity' 'passed' 'The exclusively locked original disk identity, length and last-write timestamp bind this approval to the registered VHDX.'
     } catch { $reasons.Add('Disk identity verification failed: ' + $_.Exception.Message); Add-Check $checks 'sourceIdentity' 'blocked' $_.Exception.Message }
-    return [pscustomobject]@{ diskId = [string]$request.diskId; path = $(if ($entry) { $entry.path } else { $null }); distribution = $(if ($entry) { $entry.distribution } else { $null }); owner = $(if ($entry) { $entry.owner } else { $null }); eligible = ($reasons.Count -eq 0); requiresBackup = $false; diskTools = $diskTools; blockedReasons = @($reasons.ToArray()); checks = @($checks.ToArray()); warnings = @('백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.', '엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.', 'Windows Optimize-VHD로 압축하며 파일 크기가 줄어들지 않을 수 있습니다.', '실행 직전에 모든 안전 조건을 다시 확인합니다.'); fileSizeBytes = $(if ($source) { [long]$source.Length } else { $null }); fingerprint = $fingerprint; sourceStream = $source; sourceParents = $sourceParents; ownedRuntime = $(if ($entry -and $entry.owner -ceq 'DockSlate') { $runtimeOwner } else { $null }) }
+    return [pscustomobject]@{ diskId = [string]$request.diskId; path = $(if ($entry) { $entry.path } else { $null }); distribution = $(if ($entry) { $entry.distribution } else { $null }); owner = $(if ($entry) { $entry.owner } else { $null }); eligible = ($reasons.Count -eq 0); requiresBackup = $false; method = $diskTools.method; diskTools = $diskTools; blockedReasons = @($reasons.ToArray()); checks = @($checks.ToArray()); warnings = @('백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.', '엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.', 'Windows 내장 압축으로 0이 채워진 빈 블록을 회수합니다. 파일 크기가 줄어들지 않을 수 있습니다.', '실행 직전에 모든 안전 조건을 다시 확인합니다.'); fileSizeBytes = $(if ($source) { [long]$source.Length } else { $null }); fingerprint = $fingerprint; sourceStream = $source; sourceParents = $sourceParents; ownedRuntime = $(if ($entry -and $entry.owner -ceq 'DockSlate') { $runtimeOwner } else { $null }) }
 }
 
 function Close-Preflight($preflight) {
@@ -516,7 +633,7 @@ function Close-Preflight($preflight) {
 }
 
 function Get-PublicPreflight($preflight) {
-    return $preflight | Select-Object diskId, path, distribution, owner, eligible, requiresBackup, diskTools, blockedReasons, checks, warnings, fileSizeBytes, fingerprint
+    return $preflight | Select-Object diskId, path, distribution, owner, eligible, requiresBackup, method, diskTools, blockedReasons, checks, warnings, fileSizeBytes, fingerprint
 }
 
 function Invoke-Compaction {
@@ -550,12 +667,17 @@ function Invoke-Compaction {
         $preflight.sourceStream = $null
         $guard = [DockSlateFileIdentity]::OpenRegular($preflight.path, [IO.FileShare]::ReadWrite)
         if ([DockSlateFileIdentity]::Get($guard) -cne $preflight.fingerprint.sourceIdentity -or $guard.Length -ne $before -or [IO.File]::GetLastWriteTimeUtc($preflight.path).Ticks.ToString() -cne $preflight.fingerprint.sourceLastWriteUtc) { throw 'The disk changed while handing the lock to the Windows virtual disk service.' }
-        $null = Get-DetachedState $preflight.path
-        Hyper-V\Optimize-VHD -Path $preflight.path -Mode Full -ErrorAction Stop -Confirm:$false
+        $diskState = Get-DetachedState $preflight.path $preflight.diskTools
+        if ($diskState.Identifier -cne $preflight.fingerprint.virtualDiskId) { throw 'The virtual disk identifier changed before compaction.' }
+        if ($preflight.fingerprint.compactionMethod -ceq 'CompactVirtualDisk') {
+            [DockSlateVirtualDisk]::Compact($preflight.path, $preflight.fingerprint.virtualDiskId)
+        } elseif ($preflight.fingerprint.compactionMethod -ceq 'Optimize-VHD') {
+            Hyper-V\Optimize-VHD -Path $preflight.path -Mode Full -ErrorAction Stop -Confirm:$false
+        } else { throw 'The approved Windows compaction method is unsupported.' }
         if ([DockSlateFileIdentity]::Get($guard) -cne $preflight.fingerprint.sourceIdentity) { throw 'Disk file identity changed during optimization. The result cannot be verified.' }
         $after = [long]$guard.Length
         $allocatedAfter = [DockSlateFileIdentity]::Allocation($guard)
-        return [pscustomobject]@{ status = 'completed'; diskId = $preflight.diskId; path = $preflight.path; beforeBytes = $before; afterBytes = $after; vhdxReductionBytes = ($before - $after); allocatedBeforeBytes = $allocatedBefore; allocatedAfterBytes = $allocatedAfter; reclaimedBytes = ($allocatedBefore - $allocatedAfter); method = 'Optimize-VHD -Mode Full (detached VHDX: Windows Prezeroed fallback)'; warnings = @($preflight.warnings) + @('회수량은 이 파일의 Windows 할당 크기 감소량입니다. 다른 앱의 여유 공간 변화나 SSD 물리 블록 회수량과는 다릅니다.'); backupCreated = $false }
+        return [pscustomobject]@{ status = 'completed'; diskId = $preflight.diskId; path = $preflight.path; beforeBytes = $before; afterBytes = $after; vhdxReductionBytes = ($before - $after); allocatedBeforeBytes = $allocatedBefore; allocatedAfterBytes = $allocatedAfter; reclaimedBytes = ($allocatedBefore - $allocatedAfter); method = $preflight.method; warnings = @($preflight.warnings) + @('회수량은 이 파일의 Windows 할당 크기 감소량입니다. 다른 앱의 여유 공간 변화나 SSD 물리 블록 회수량과는 다릅니다.'); backupCreated = $false }
     } finally {
         if ($guard) { $guard.Dispose() }
         Close-Preflight $preflight

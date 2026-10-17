@@ -2,11 +2,11 @@ import { useRef, useState } from 'react';
 import { backend, refreshDashboardAfterMutation, type DestructivePreview, type DestructiveRequest, type DestructiveResult } from './api';
 import { ConfirmDialog, Icon, errorMessage, formatBytes } from './components';
 
-export type Operation = { tone: 'accent' | 'success' | 'danger'; message: string } | null;
+export type Operation = { tone: 'accent' | 'success' | 'warning' | 'danger'; message: string } | null;
 
 export function OperationNotice({ operation, onDismiss }: { operation: Operation; onDismiss?: () => void }) {
   if (!operation) return null;
-  return <div className={`operation-banner ${operation.tone}`} role={operation.tone === 'danger' ? 'alert' : 'status'}><Icon name={operation.tone === 'danger' ? 'warning' : operation.tone === 'success' ? 'check' : 'refresh'} /><span>{operation.message}</span>{onDismiss && operation.tone !== 'accent' && <button className="icon-button" onClick={onDismiss} title="알림 닫기" aria-label="알림 닫기"><Icon name="close" size={16} /></button>}</div>;
+  return <div className={`operation-banner ${operation.tone}`} role={operation.tone === 'danger' ? 'alert' : 'status'}><Icon name={operation.tone === 'danger' || operation.tone === 'warning' ? 'warning' : operation.tone === 'success' ? 'check' : 'refresh'} /><span>{operation.message}</span>{onDismiss && operation.tone !== 'accent' && <button className="icon-button" onClick={onDismiss} title="알림 닫기" aria-label="알림 닫기"><Icon name="close" size={16} /></button>}</div>;
 }
 
 export function useDestructiveAction(onComplete: (result: DestructiveResult) => void | Promise<void>) {

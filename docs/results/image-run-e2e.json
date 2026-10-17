@@ -1,0 +1,708 @@
+{
+  "observedAt": "2026-10-17T08:47:44.742Z",
+  "target": "actual built Windows DockSlate native window and its verified owned running Moby engine",
+  "mockData": false,
+  "explicitIsolatedFixtureApproval": true,
+  "fixture": {
+    "name": "dockslate-e2e-run-1792226864742",
+    "root": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-run-1792226864742",
+    "expectedEngineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "advanced": false,
+    "networkName": null,
+    "image": {
+      "containers": 0,
+      "created": 1774301639,
+      "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+      "size": 25874,
+      "tags": [
+        "hello-world:latest"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "name": "verified expected owned engine identity, exact image/container/cache baseline and existing volume-free hello-world default command",
+      "passed": true
+    },
+    {
+      "name": "invalid name, image ID, zero/out-of-range and duplicate ports reject before any container creation",
+      "passed": true
+    },
+    {
+      "name": "local image row exposes an actual run form and preserves its name and image details across menu navigation",
+      "passed": true
+    },
+    {
+      "name": "Images run creates and starts exactly one real container, then opens its selected Containers logs and shows actual successful hello-world output",
+      "passed": true
+    },
+    {
+      "name": "image reference and shared overview counts update automatically; later unrelated menu navigation and idle issue zero data reads",
+      "passed": true
+    },
+    {
+      "name": "approved cleanup removes only the exact stopped fixture, preserving every original image, tag, container, cache ID, volume usage",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "baseline": {
+      "images": [
+        {
+          "containers": 0,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "containers": [],
+      "usage": {
+        "buildCache": [
+          {
+            "eligible": true,
+            "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "oxqi7paywdhoe5gousysdyjzt",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "phkwnafm28f3rs01xoptzb9ll",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "rol703j7rcx69xfdq3x7pnslo",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "8qq0hy0o4wgz31ahm1s2jljml",
+            "label": "local source for dockerfile",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "zqd3knm2r1af5ynskbigho8ju",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "g21tij0o6hbdarn4kf189svvh",
+            "label": "[1/1] COPY . /dockslate-e2e-context/",
+            "reason": null,
+            "size": 509576
+          },
+          {
+            "eligible": true,
+            "id": "v53hsrkdfu9sswz68x7u75mzb",
+            "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+            "reason": null,
+            "size": 8329
+          },
+          {
+            "eligible": true,
+            "id": "four8i3guaiha8ng02lb7pfnz",
+            "label": "local source for context",
+            "reason": null,
+            "size": 8192
+          },
+          {
+            "eligible": true,
+            "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+            "label": "local source for context",
+            "reason": null,
+            "size": 4096
+          },
+          {
+            "eligible": true,
+            "id": "6y412t96uqj7ycn8zplpc1w3b",
+            "label": "local source for context",
+            "reason": null,
+            "size": 503808
+          }
+        ],
+        "buildCacheBytes": 1079057,
+        "containersBytes": 0,
+        "images": [
+          {
+            "eligible": true,
+            "estimatedReclaimableBytes": 25874,
+            "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "label": "hello-world:latest",
+            "reason": null,
+            "size": 25874
+          }
+        ],
+        "imagesBytes": 36936,
+        "reclaimableBytes": 1104931,
+        "volumesBytes": 0,
+        "warnings": [
+          "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+          "Container and volume automatic cleanup is excluded."
+        ]
+      },
+      "overview": {
+        "containersRunning": 0,
+        "containersStopped": 0,
+        "dockerBytes": 1115993,
+        "engine": {
+          "apiVersion": "1.55",
+          "context": "dockslate",
+          "endpoint": "wsl://DockSlate/var/run/docker.sock",
+          "engine": "moby",
+          "message": "Verified independent DockSlate Moby Engine",
+          "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+          "provider": "DockSlate",
+          "serverVersion": "29.8.2",
+          "state": "connected"
+        },
+        "images": 1,
+        "reclaimableBytes": 1104931
+      }
+    },
+    "ownership": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 23760,
+          "childStartedTicks": "639278230883140557",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 23564,
+          "startedAt": 1792226288216,
+          "startedTicks": "639278230870831502",
+          "state": "completed",
+          "updatedAt": 1792226303714
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      },
+      "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5"
+    },
+    "imageConfig": {
+      "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+      "os": "linux",
+      "command": [
+        "/hello"
+      ],
+      "volumes": null
+    },
+    "validation": [
+      {
+        "name": "shell metacharacters in container name",
+        "args": {
+          "imageId": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "dockslate-e2e-run-1792226864742;echo invalid",
+          "ports": []
+        },
+        "result": {
+          "rejected": true,
+          "error": "컨테이너 이름은 영문·숫자로 시작하며 영문·숫자·밑줄·마침표·하이픈을 사용할 수 있습니다. 최대 128자입니다."
+        }
+      },
+      {
+        "name": "invalid image ID",
+        "args": {
+          "imageId": "hello-world:latest;echo invalid",
+          "name": "dockslate-e2e-run-1792226864742",
+          "ports": []
+        },
+        "result": {
+          "rejected": true,
+          "error": "로컬 이미지 ID가 올바르지 않습니다."
+        }
+      },
+      {
+        "name": "container port zero",
+        "args": {
+          "imageId": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "dockslate-e2e-run-1792226864742",
+          "ports": [
+            {
+              "containerPort": 0,
+              "hostPort": null,
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "result": {
+          "rejected": true,
+          "error": "포트는 1~65535, 프로토콜은 TCP 또는 UDP를 사용하세요."
+        }
+      },
+      {
+        "name": "host port out of range",
+        "args": {
+          "imageId": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "dockslate-e2e-run-1792226864742",
+          "ports": [
+            {
+              "containerPort": 80,
+              "hostPort": 65536,
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "result": {
+          "rejected": true,
+          "error": "invalid args `ports` for command `container_run`: invalid value: integer `65536`, expected u16"
+        }
+      },
+      {
+        "name": "duplicate container port",
+        "args": {
+          "imageId": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "dockslate-e2e-run-1792226864742",
+          "ports": [
+            {
+              "containerPort": 80,
+              "hostPort": null,
+              "protocol": "tcp"
+            },
+            {
+              "containerPort": 80,
+              "hostPort": null,
+              "protocol": "tcp"
+            }
+          ]
+        },
+        "result": {
+          "rejected": true,
+          "error": "같은 컨테이너 포트 또는 호스트 포트를 중복 연결할 수 없습니다."
+        }
+      }
+    ],
+    "created": {
+      "durationMs": 12274,
+      "fixture": {
+        "composeProject": null,
+        "id": "de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184",
+        "image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+        "name": "dockslate-e2e-run-1792226864742",
+        "ports": "",
+        "state": "exited",
+        "status": "Exited (0) 3 seconds ago"
+      },
+      "response": {
+        "id": "de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184",
+        "message": "컨테이너를 시작했으며 이미지의 실행 명령이 종료되었습니다. Containers에서 종료 코드와 로그를 확인하세요.",
+        "name": "dockslate-e2e-run-1792226864742",
+        "started": true,
+        "state": "exited",
+        "warnings": []
+      },
+      "inspected": {
+        "Id": "de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184",
+        "Created": "2026-10-17T08:48:08.678096464Z",
+        "Path": "/hello",
+        "Args": [],
+        "State": {
+          "Status": "exited",
+          "Running": false,
+          "Paused": false,
+          "Restarting": false,
+          "OOMKilled": false,
+          "Dead": false,
+          "Pid": 0,
+          "ExitCode": 0,
+          "Error": "",
+          "StartedAt": "2026-10-17T08:48:09.776103648Z",
+          "FinishedAt": "2026-10-17T08:48:10.104276735Z"
+        },
+        "Image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+        "ResolvConfPath": "/var/lib/docker/containers/de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184/hostname",
+        "HostsPath": "/var/lib/docker/containers/de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184/hosts",
+        "LogPath": "/var/lib/docker/containers/de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184/de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184-json.log",
+        "Name": "/dockslate-e2e-run-1792226864742",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+          "Binds": null,
+          "ContainerIDFile": "",
+          "LogConfig": {
+            "Type": "json-file",
+            "Config": {}
+          },
+          "NetworkMode": "bridge",
+          "PortBindings": {},
+          "RestartPolicy": {
+            "Name": "no",
+            "MaximumRetryCount": 0
+          },
+          "AutoRemove": false,
+          "VolumeDriver": "",
+          "VolumesFrom": null,
+          "ConsoleSize": [
+            0,
+            0
+          ],
+          "CapAdd": null,
+          "CapDrop": null,
+          "CgroupnsMode": "private",
+          "Dns": null,
+          "DnsOptions": null,
+          "DnsSearch": null,
+          "ExtraHosts": null,
+          "GroupAdd": null,
+          "IpcMode": "private",
+          "Cgroup": "",
+          "Links": null,
+          "OomScoreAdj": 0,
+          "PidMode": "",
+          "Privileged": false,
+          "PublishAllPorts": false,
+          "ReadonlyRootfs": false,
+          "SecurityOpt": null,
+          "UTSMode": "",
+          "UsernsMode": "",
+          "ShmSize": 67108864,
+          "Runtime": "runc",
+          "Isolation": "",
+          "CpuShares": 0,
+          "Memory": 0,
+          "NanoCpus": 0,
+          "CgroupParent": "",
+          "BlkioWeight": 0,
+          "BlkioWeightDevice": null,
+          "BlkioDeviceReadBps": null,
+          "BlkioDeviceWriteBps": null,
+          "BlkioDeviceReadIOps": null,
+          "BlkioDeviceWriteIOps": null,
+          "CpuPeriod": 0,
+          "CpuQuota": 0,
+          "CpuRealtimePeriod": 0,
+          "CpuRealtimeRuntime": 0,
+          "CpusetCpus": "",
+          "CpusetMems": "",
+          "Devices": null,
+          "DeviceCgroupRules": null,
+          "DeviceRequests": null,
+          "MemoryReservation": 0,
+          "MemorySwap": 0,
+          "MemorySwappiness": null,
+          "OomKillDisable": null,
+          "PidsLimit": null,
+          "Ulimits": null,
+          "CpuCount": 0,
+          "CpuPercent": 0,
+          "IOMaximumIOps": 0,
+          "IOMaximumBandwidth": 0,
+          "MaskedPaths": [
+            "/proc/acpi",
+            "/proc/asound",
+            "/proc/interrupts",
+            "/proc/kcore",
+            "/proc/keys",
+            "/proc/latency_stats",
+            "/proc/sched_debug",
+            "/proc/scsi",
+            "/proc/timer_list",
+            "/proc/timer_stats",
+            "/sys/devices/virtual/powercap",
+            "/sys/firmware"
+          ],
+          "ReadonlyPaths": [
+            "/proc/bus",
+            "/proc/fs",
+            "/proc/irq",
+            "/proc/sys",
+            "/proc/sysrq-trigger"
+          ]
+        },
+        "Storage": {
+          "RootFS": {
+            "Snapshot": {
+              "Name": "overlayfs"
+            }
+          }
+        },
+        "Mounts": [],
+        "Config": {
+          "Hostname": "de44d7c60036",
+          "Domainname": "",
+          "User": "",
+          "AttachStdin": false,
+          "AttachStdout": false,
+          "AttachStderr": false,
+          "Tty": false,
+          "OpenStdin": false,
+          "StdinOnce": false,
+          "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ],
+          "Cmd": [
+            "/hello"
+          ],
+          "Image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "Volumes": null,
+          "WorkingDir": "/",
+          "Entrypoint": null,
+          "Labels": {}
+        },
+        "NetworkSettings": {
+          "SandboxID": "",
+          "SandboxKey": "",
+          "Ports": {},
+          "Networks": {
+            "bridge": {
+              "IPAMConfig": null,
+              "Links": null,
+              "Aliases": null,
+              "DriverOpts": null,
+              "GwPriority": 0,
+              "NetworkID": "d3f75c85089140980c48fb644f83a53fbf1a9d79fe89763a0fd7cc7353ca733a",
+              "EndpointID": "",
+              "Gateway": "",
+              "IPAddress": "",
+              "MacAddress": "",
+              "IPPrefixLen": 0,
+              "IPv6Gateway": "",
+              "GlobalIPv6Address": "",
+              "GlobalIPv6PrefixLen": 0,
+              "DNSNames": null
+            }
+          }
+        },
+        "ImageManifestDescriptor": {
+          "mediaType": "application/vnd.oci.image.manifest.v1+json",
+          "digest": "sha256:d1a8d0a4eeb63aff09f5f34d4d80505e0ba81905f36158cc3970d8e07179e59e",
+          "size": 1023,
+          "annotations": {
+            "com.docker.official-images.bashbrew.arch": "amd64",
+            "org.opencontainers.image.base.name": "scratch",
+            "org.opencontainers.image.created": "2026-03-23T21:33:57Z",
+            "org.opencontainers.image.revision": "0b0efba82b82ace81ab2fb42d25116f9488e6cb4",
+            "org.opencontainers.image.source": "https://github.com/docker-library/hello-world.git#0b0efba82b82ace81ab2fb42d25116f9488e6cb4:amd64",
+            "org.opencontainers.image.url": "https://hub.docker.com/_/hello-world",
+            "org.opencontainers.image.version": "linux"
+          },
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          }
+        }
+      },
+      "actualLogs": "2026-10-17T08:48:10.103242080Z \n2026-10-17T08:48:10.103286225Z Hello from Docker!\n2026-10-17T08:48:10.103288829Z This message shows that your installation appears to be working correctly.\n2026-10-17T08:48:10.103290755Z \n2026-10-17T08:48:10.103292391Z To generate this message, Docker took the following steps:\n2026-10-17T08:48:10.103294266Z  1. The Docker client contacted the Docker daemon.\n2026-10-17T08:48:10.103295902Z  2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n2026-10-17T08:48:10.103297708Z     (amd64)\n2026-10-17T08:48:10.103299314Z  3. The Docker daemon created a new container from that image which runs the\n2026-10-17T08:48:10.103301100Z     executable that produces the output you are currently reading.\n2026-10-17T08:48:10.103302746Z  4. The Docker daemon streamed that output to the Docker client, which sent it\n2026-10-17T08:48:10.103304382Z     to your terminal.\n2026-10-17T08:48:10.103305979Z \n2026-10-17T08:48:10.103307535Z To try something more ambitious, you can run an Ubuntu container with:\n2026-10-17T08:48:10.103309181Z  $ docker run -it ubuntu bash\n2026-10-17T08:48:10.103310777Z \n2026-10-17T08:48:10.103312324Z Share images, automate workflows, and more with a free Docker ID:\n2026-10-17T08:48:10.103313920Z  https://hub.docker.com/\n2026-10-17T08:48:10.103315526Z \n2026-10-17T08:48:10.103317112Z For more examples and ideas, visit:\n2026-10-17T08:48:10.103318728Z  https://docs.docker.com/get-started/\n2026-10-17T08:48:10.103320335Z \n",
+      "selected": {
+        "name": "dockslate-e2e-run-1792226864742",
+        "id": "de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184",
+        "logs": "2026-10-17T08:48:10.103242080Z \n2026-10-17T08:48:10.103286225Z Hello from Docker!\n2026-10-17T08:48:10.103288829Z This message shows that your installation appears to be working correctly.\n2026-10-17T08:48:10.103290755Z \n2026-10-17T08:48:10.103292391Z To generate this message, Docker took the following steps:\n2026-10-17T08:48:10.103294266Z  1. The Docker client contacted the Docker daemon.\n2026-10-17T08:48:10.103295902Z  2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n2026-10-17T08:48:10.103297708Z     (amd64)\n2026-10-17T08:48:10.103299314Z  3. The Docker daemon created a new container from that image which runs the\n2026-10-17T08:48:10.103301100Z     executable that produces the output you are currently reading.\n2026-10-17T08:48:10.103302746Z  4. The Docker daemon streamed that output to the Docker client, which sent it\n2026-10-17T08:48:10.103304382Z     to your terminal.\n2026-10-17T08:48:10.103305979Z \n2026-10-17T08:48:10.103307535Z To try something more ambitious, you can run an Ubuntu container with:\n2026-10-17T08:48:10.103309181Z  $ docker run -it ubuntu bash\n2026-10-17T08:48:10.103310777Z \n2026-10-17T08:48:10.103312324Z Share images, automate workflows, and more with a free Docker ID:\n2026-10-17T08:48:10.103313920Z  https://hub.docker.com/\n2026-10-17T08:48:10.103315526Z \n2026-10-17T08:48:10.103317112Z For more examples and ideas, visit:\n2026-10-17T08:48:10.103318728Z  https://docs.docker.com/get-started/\n2026-10-17T08:48:10.103320335Z \n",
+        "activeLogTab": true
+      },
+      "calls": [
+        {
+          "command": "container_run",
+          "observedAt": 1792226886228,
+          "finishedAt": 1792226890452,
+          "durationMs": 4224
+        },
+        {
+          "command": "dashboard_snapshot",
+          "observedAt": 1792226890458,
+          "finishedAt": 1792226892005,
+          "durationMs": 1547
+        },
+        {
+          "command": "container_logs",
+          "observedAt": 1792226892025,
+          "finishedAt": 1792226893915,
+          "durationMs": 1890
+        },
+        {
+          "command": "containers_list",
+          "observedAt": 1792226892162,
+          "finishedAt": 1792226893696,
+          "durationMs": 1534
+        }
+      ],
+      "counts": {
+        "dashboard_snapshot": 1,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 1,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0,
+        "image_search": 0,
+        "networks_list": 0,
+        "image_details": 0,
+        "container_run": 1,
+        "network_create": 0,
+        "container_logs": 1,
+        "destructive_preview": 0,
+        "destructive_execute": 0
+      }
+    },
+    "sharedData": {
+      "overview": {
+        "containersRunning": 0,
+        "containersStopped": 1,
+        "dockerBytes": 1120089,
+        "engine": {
+          "apiVersion": "1.55",
+          "context": "dockslate",
+          "endpoint": "wsl://DockSlate/var/run/docker.sock",
+          "engine": "moby",
+          "message": "Verified independent DockSlate Moby Engine",
+          "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+          "provider": "DockSlate",
+          "serverVersion": "29.8.2",
+          "state": "connected"
+        },
+        "images": 1,
+        "reclaimableBytes": 1079057
+      },
+      "imageReferenceCount": 1
+    },
+    "navigation": {
+      "calls": [],
+      "counts": {
+        "dashboard_snapshot": 0,
+        "engine_status": 0,
+        "overview": 0,
+        "containers_list": 0,
+        "images_list": 0,
+        "disk_usage": 0,
+        "runtime_status": 0,
+        "wsl_inventory": 0,
+        "image_search": 0,
+        "networks_list": 0,
+        "image_details": 0,
+        "container_run": 0,
+        "network_create": 0,
+        "container_logs": 0,
+        "destructive_preview": 0,
+        "destructive_execute": 0
+      }
+    },
+    "cleanup": {
+      "container": {
+        "target": "de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184",
+        "impact": [
+          "Deletion is irreversible within DockSlate.",
+          "Existing volumes are retained. Force deletion and system-wide prune are excluded.",
+          "The stopped container writable layer and configuration will be removed; its image and named/anonymous volumes are retained."
+        ],
+        "result": {
+          "deleted": [
+            "de44d7c600362537fa3f3b61ea9dbed1e9a7ca5519c78e18e4b8f601bd76a184"
+          ],
+          "failed": [],
+          "message": "container_delete: 1 deleted, 0 failed"
+        }
+      },
+      "network": null,
+      "remainingImages": [
+        {
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "remainingContainers": [],
+      "preservedCacheIds": [
+        "6y412t96uqj7ycn8zplpc1w3b",
+        "8qq0hy0o4wgz31ahm1s2jljml",
+        "b9joos2g2rkxz1e8pvdl6zpx9",
+        "four8i3guaiha8ng02lb7pfnz",
+        "g21tij0o6hbdarn4kf189svvh",
+        "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "oxqi7paywdhoe5gousysdyjzt",
+        "phkwnafm28f3rs01xoptzb9ll",
+        "rol703j7rcx69xfdq3x7pnslo",
+        "v53hsrkdfu9sswz68x7u75mzb",
+        "zqd3knm2r1af5ynskbigho8ju"
+      ]
+    }
+  },
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-run-1792226864742\\image-row-run-settings.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-run-1792226864742\\created-container-selected-real-logs.png"
+  ],
+  "completed": true,
+  "failure": null,
+  "failureConditions": [
+    "Wrong or changed engine ownership or engine ID",
+    "Existing hello-world image missing or declares volumes or a different default command",
+    "Invalid input creates a container or network",
+    "Any original image/tag/container/cache/network ID changes",
+    "Created fixture uses another image, does not exit successfully or lacks actual Hello from Docker logs",
+    "UI does not navigate to the created container with logs and coherent shared data",
+    "Advanced settings differ from actual Docker configuration",
+    "Cleanup selection contains a preexisting, running or unverified container/network"
+  ],
+  "failurePolicy": "Record failure before any best-effort cleanup. Delete only an exact newly created and verified stopped fixture container and, in advanced mode, its exact empty local bridge network with unchanged engine identity and preserved baseline. Never stop containers, change runtime state, pull, prune, remove images or compact disks.",
+  "untested": [
+    "Long-running images",
+    "Published port connectivity",
+    "Create succeeds but start fails",
+    "WSL lifecycle changes",
+    "Real disk compaction"
+  ],
+  "artifact": {
+    "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe",
+    "bytes": 3801600,
+    "modifiedAt": "2026-10-17T08:46:04.748Z",
+    "sha256": "974a6202aa05f445e63e55603cb5eae3d4ef70d2e00412e60ec16fb248481dce"
+  },
+  "finishedAt": "2026-10-17T08:48:54.338Z",
+  "exceptions": [],
+  "observedCounts": {
+    "dashboard_snapshot": 2,
+    "engine_status": 7,
+    "overview": 5,
+    "containers_list": 7,
+    "images_list": 5,
+    "disk_usage": 5,
+    "runtime_status": 7,
+    "wsl_inventory": 0,
+    "image_search": 0,
+    "networks_list": 0,
+    "image_details": 1,
+    "container_run": 6,
+    "network_create": 0,
+    "container_logs": 4,
+    "destructive_preview": 1,
+    "destructive_execute": 1
+  },
+  "remaining": "Exact new fixture container removed. Original images, containers, build cache, volumes retained. Workspace screenshots retained."
+}

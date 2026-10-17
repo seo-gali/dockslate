@@ -168,6 +168,14 @@ button.metric:hover { border-color: #40516a; background: #192330; }
 .log-controls .checkbox-control { font-size: 11px; }
 .logs { color: #bccadb; background: #0e141c; font-size: 11px; line-height: 1.7; font-family: Consolas, 'Cascadia Mono', monospace; padding: 14px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; overflow: auto; height: 360px; }
 .image-build-panel { margin-bottom: 16px; }
+.image-run-panel { margin-bottom: 16px; }
+.run-advanced { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.run-advanced > summary { cursor: pointer; font-size: 13px; padding: 4px 0 12px; }
+.run-advanced > summary .muted { margin-left: 8px; font-size: 12px; }
+.run-advanced > .field, .run-advanced > .toolbar { margin-top: 12px; }
+.run-advanced textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+.run-network-create { border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-top: 12px; }
+.run-network-create .checkbox-control, .run-network-create > button { margin-top: 12px; }
 .image-build-panel .field { min-width: 200px; }
 .image-build-panel .section-heading h2 { margin-bottom: 0; }
 .build-result { margin-top: 18px; }
@@ -196,6 +204,7 @@ button.metric:hover { border-color: #40516a; background: #192330; }
 .operation-banner .icon-button { margin-left: auto; }
 .operation-banner.success { background: #11251f; color: var(--success); border-color: #2b5545; }
 .operation-banner.danger { background: #251923; color: var(--danger); border-color: #704049; }
+.operation-banner.warning { background: #262219; color: var(--warning); border-color: #5b4a2c; }
 
 .page-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--border); margin-bottom: 22px; margin-top: -5px; }
 .page-tabs button { display: flex; align-items: center; gap: 8px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 10px 2px 12px; font-size: 12px; }

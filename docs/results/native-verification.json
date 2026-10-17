@@ -25,11 +25,10 @@
       "blockedReasons": [
         "The requested disk ID does not identify a current supported WSL registration.",
         "The runtime owner requires a verified disk registration.",
-        "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
         "An elevated Windows administrator session is required.",
-        "Disk inspection requires verified ownership and elevation.",
+        "Disk inspection requires verified ownership.",
         "Exclusive VHDX lock failed: The original disk registration is not verified.",
-        "Disk identity verification failed: Disk identity approval requires all preceding safety checks to pass."
+        "Disk identity verification failed: Disk identity inspection requires the verified owner and an exclusive file handle."
       ],
       "checks": [
         {
@@ -43,9 +42,9 @@
           "status": "blocked"
         },
         {
-          "detail": "Required Windows disk tools are unavailable: Hyper-V\\Get-VHD, Hyper-V\\Optimize-VHD",
+          "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
           "name": "diskTools",
-          "status": "blocked"
+          "status": "passed"
         },
         {
           "detail": "The Windows process token is not elevated.",
@@ -63,7 +62,7 @@
           "status": "passed"
         },
         {
-          "detail": "Disk inspection requires verified ownership and elevation.",
+          "detail": "Disk inspection requires verified ownership.",
           "name": "detachedDynamicVhdx",
           "status": "blocked"
         },
@@ -73,40 +72,29 @@
           "status": "blocked"
         },
         {
-          "detail": "Disk identity approval requires all preceding safety checks to pass.",
+          "detail": "Disk identity inspection requires the verified owner and an exclusive file handle.",
           "name": "sourceIdentity",
           "status": "blocked"
         }
       ],
       "diskId": "dockslate-invalid-verification-disk",
       "diskTools": {
-        "available": false,
+        "available": true,
         "checks": [
           {
             "available": true,
-            "detail": "사용 가능",
-            "name": "Storage\\Get-DiskImage"
-          },
-          {
-            "available": false,
-            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
-            "name": "Hyper-V\\Get-VHD"
-          },
-          {
-            "available": false,
-            "detail": "Windows 관리 도구가 설치되어 있지 않거나 사용할 수 없습니다.",
-            "name": "Hyper-V\\Optimize-VHD"
+            "detail": "Windows 내장 디스크 조회·압축 API",
+            "name": "Windows Virtual Disk API"
           }
         ],
-        "missing": [
-          "Hyper-V\\Get-VHD",
-          "Hyper-V\\Optimize-VHD"
-        ]
+        "method": "CompactVirtualDisk",
+        "missing": []
       },
       "distribution": null,
       "eligible": false,
       "expiresAt": null,
       "fileSizeBytes": null,
+      "method": "CompactVirtualDisk",
       "owner": null,
       "path": null,
       "requiresBackup": false,
@@ -114,7 +102,7 @@
       "warnings": [
         "백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.",
         "엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.",
-        "Windows Optimize-VHD로 압축하며 파일 크기가 줄어들지 않을 수 있습니다.",
+        "Windows 내장 압축으로 0이 채워진 빈 블록을 회수합니다. 파일 크기가 줄어들지 않을 수 있습니다.",
         "실행 직전에 모든 안전 조건을 다시 확인합니다."
       ]
     }
@@ -131,14 +119,14 @@
       "keeperVerified": false,
       "message": "The verified DockSlate WSL runtime is installed and stopped.",
       "operation": {
-        "childProcessId": 15724,
-        "childStartedTicks": "639278220343181223",
+        "childProcessId": 22892,
+        "childStartedTicks": "639278239041166032",
         "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
-        "processId": 9636,
-        "startedAt": 1792225233973,
-        "startedTicks": "639278220327126674",
+        "processId": 24188,
+        "startedAt": 1792227103850,
+        "startedTicks": "639278239026559486",
         "state": "completed",
-        "updatedAt": 1792225234994
+        "updatedAt": 1792227104738
       },
       "state": "stopped"
     }
@@ -201,12 +189,12 @@
           "attached": null,
           "blockedReasons": [
             "An elevated Windows administrator session is required for compaction.",
-            "Disk separation has not been verified by both Get-DiskImage and Get-VHD."
+            "Disk separation cannot be verified: \"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\""
           ],
           "compactionStatus": "blocked",
           "distribution": "DockSlate",
           "exists": true,
-          "fileSizeBytes": 2900361216,
+          "fileSizeBytes": 2934964224,
           "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
           "owner": "DockSlate",
           "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",

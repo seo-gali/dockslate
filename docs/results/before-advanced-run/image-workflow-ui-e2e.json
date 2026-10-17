@@ -1,0 +1,256 @@
+{
+  "observedAt": "2026-10-17T08:37:53.012Z",
+  "target": "real built Windows DockSlate WebView2 window with stopped independent runtime",
+  "mockData": false,
+  "changes": "Menu navigation, search collapse/expansion, image build discovery and read-only built-in API VHDX prerequisites. No engine, image, container or disk mutations.",
+  "measurement": "Actual IPC POST command names/timestamps and wsl_preview response bodies are observed through CDP. No requests, response values, backend functions or routing are replaced. Text selection uses actual Input.dispatchMouseEvent drags.",
+  "checks": [
+    {
+      "name": "stopped runtime search explains its engine dependency and opens Settings",
+      "passed": true
+    },
+    {
+      "name": "search collapse and expansion preserve state across menus and perform zero backend reads",
+      "passed": true
+    },
+    {
+      "name": "image build is available from the Images header while the runtime is stopped",
+      "passed": true
+    },
+    {
+      "name": "real built-in Windows API preflight avoids Hyper-V modules, preserves file metadata and keeps all safety results in collapsed details",
+      "passed": true
+    }
+  ],
+  "selection": [],
+  "navigation": {},
+  "preview": {
+    "result": {
+      "blockedReasons": [
+        "An elevated Windows administrator session is required."
+      ],
+      "checks": [
+        {
+          "detail": "WSL 2 registration: DockSlate; owner: DockSlate",
+          "name": "ownership",
+          "status": "passed"
+        },
+        {
+          "detail": "DockSlate ownership marker, installation ID, completed operation, WSL registration ID, and dedicated BasePath were verified. Metadata and the existing runtime mutation lock remain read-locked.",
+          "name": "runtimeOwner",
+          "status": "passed"
+        },
+        {
+          "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
+          "name": "diskTools",
+          "status": "passed"
+        },
+        {
+          "detail": "The Windows process token is not elevated.",
+          "name": "administrator",
+          "status": "blocked"
+        },
+        {
+          "detail": "WSL reports no running distribution. No shutdown command is issued.",
+          "name": "wslStopped",
+          "status": "passed"
+        },
+        {
+          "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+          "name": "runtimeExited",
+          "status": "passed"
+        },
+        {
+          "detail": "Windows Virtual Disk API: detached dynamic VHDX without a parent; disk ID 94cd24bd-2987-401f-b4fd-3cf6ea2b3409",
+          "name": "detachedDynamicVhdx",
+          "status": "passed"
+        },
+        {
+          "detail": "An exclusive read handle acquired the registered VHDX without creating or modifying it.",
+          "name": "exclusiveLock",
+          "status": "passed"
+        },
+        {
+          "detail": "The exclusively locked original disk identity, length and last-write timestamp bind this approval to the registered VHDX.",
+          "name": "sourceIdentity",
+          "status": "passed"
+        }
+      ],
+      "diskId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+      "diskTools": {
+        "available": true,
+        "checks": [
+          {
+            "available": true,
+            "detail": "Windows 내장 디스크 조회·압축 API",
+            "name": "Windows Virtual Disk API"
+          }
+        ],
+        "method": "CompactVirtualDisk",
+        "missing": []
+      },
+      "distribution": "DockSlate",
+      "eligible": false,
+      "expiresAt": null,
+      "fileSizeBytes": 2901409792,
+      "method": "CompactVirtualDisk",
+      "owner": "DockSlate",
+      "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+      "requiresBackup": false,
+      "token": null,
+      "warnings": [
+        "백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.",
+        "엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.",
+        "Windows 내장 압축으로 0이 채워진 빈 블록을 회수합니다. 파일 크기가 줄어들지 않을 수 있습니다.",
+        "실행 직전에 모든 안전 조건을 다시 확인합니다."
+      ]
+    },
+    "summary": {
+      "open": false,
+      "summary": "검사 상세 보기 (8/9 확인)",
+      "text": "DockSlate\n\nDockSlate\n\n압축 준비 필요\nVHDX 파일 크기\n2.9 GB\nWSL 배포판 상태\n중지됨\n디스크 연결 상태\n분리 확인됨\nD:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx\n압축 준비\n엔진과 배포판 중지\n\n실행 중인 컨테이너와 서비스가 중단됩니다. 저장된 데이터는 유지됩니다.\n\nDockSlate 엔진 중지 상태를 확인했습니다.\n\n관리자 권한과 디스크 지원 확인\n\n디스크 검사와 압축에는 관리자 권한이 필요합니다. Windows 내장 디스크 API로 연결 상태와 압축 지원을 확인합니다.\n\n관리자 권한으로 다시 실행\n\n백업 파일 없이 원본 VHDX를 압축합니다. 아래 검사는 파일을 변경하지 않으며, 모든 조건을 통과한 뒤 실행을 승인합니다.\n\n사전 조건 검사\n관리자 권한\n\n아래 버튼으로 앱을 다시 열고 Windows 권한 요청을 승인하세요. 엔진 상태와 데이터는 유지됩니다.\n\n관리자 권한으로 다시 실행\n검사 상세 보기 (8/9 확인)\n전체 검사 진단\n압축 방법과 주의사항\n안전 조건 검사 후에만 압축을 승인할 수 있습니다.\n준비 패널 닫기\n압축…"
+    },
+    "rows": [
+      {
+        "name": "ownership",
+        "status": "확인됨",
+        "diagnostic": "WSL 2 registration: DockSlate; owner: DockSlate",
+        "help": "",
+        "actions": [],
+        "visibleText": "WSL 등록 정보\n확인됨\n검사 진단"
+      },
+      {
+        "name": "runtimeOwner",
+        "status": "확인됨",
+        "diagnostic": "DockSlate ownership marker, installation ID, completed operation, WSL registration ID, and dedicated BasePath were verified. Metadata and the existing runtime mutation lock remain read-locked.",
+        "help": "",
+        "actions": [],
+        "visibleText": "엔진 소유 정보\n확인됨\n검사 진단"
+      },
+      {
+        "name": "diskTools",
+        "status": "확인됨",
+        "diagnostic": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
+        "help": "",
+        "actions": [],
+        "visibleText": "Windows 디스크 관리 도구\n확인됨\n검사 진단"
+      },
+      {
+        "name": "administrator",
+        "status": "확인 필요",
+        "diagnostic": "The Windows process token is not elevated.",
+        "help": "",
+        "actions": [
+          {
+            "text": "관리자 권한으로 다시 실행",
+            "disabled": false
+          }
+        ],
+        "visibleText": "관리자 권한\n확인 필요\n\n아래 버튼으로 앱을 다시 열고 Windows 권한 요청을 승인하세요. 엔진 상태와 데이터는 유지됩니다.\n\n관리자 권한으로 다시 실행\n검사 진단"
+      },
+      {
+        "name": "wslStopped",
+        "status": "확인됨",
+        "diagnostic": "WSL reports no running distribution. No shutdown command is issued.",
+        "help": "",
+        "actions": [],
+        "visibleText": "WSL 배포판 종료\n확인됨\n검사 진단"
+      },
+      {
+        "name": "runtimeExited",
+        "status": "확인됨",
+        "diagnostic": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+        "help": "",
+        "actions": [],
+        "visibleText": "엔진·보조 프로세스 종료\n확인됨\n검사 진단"
+      },
+      {
+        "name": "detachedDynamicVhdx",
+        "status": "확인됨",
+        "diagnostic": "Windows Virtual Disk API: detached dynamic VHDX without a parent; disk ID 94cd24bd-2987-401f-b4fd-3cf6ea2b3409",
+        "help": "",
+        "actions": [],
+        "visibleText": "VHDX 분리 상태\n확인됨\n검사 진단"
+      },
+      {
+        "name": "exclusiveLock",
+        "status": "확인됨",
+        "diagnostic": "An exclusive read handle acquired the registered VHDX without creating or modifying it.",
+        "help": "",
+        "actions": [],
+        "visibleText": "디스크 파일 잠금\n확인됨\n검사 진단"
+      },
+      {
+        "name": "sourceIdentity",
+        "status": "확인됨",
+        "diagnostic": "The exclusively locked original disk identity, length and last-write timestamp bind this approval to the registered VHDX.",
+        "help": "",
+        "actions": [],
+        "visibleText": "원본 디스크 확인\n확인됨\n검사 진단"
+      }
+    ],
+    "fileUnchanged": {
+      "size": 2901409792,
+      "mtimeMs": 1792225669343.8706
+    }
+  },
+  "retry": {},
+  "elevation": {},
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\image-workflow-ui\\builtin-api-inspection-details.png"
+  ],
+  "completed": true,
+  "failure": null,
+  "untested": [
+    "Approved elevated relaunch, UAC approval, elevated replacement window and original-window closure",
+    "Opening Windows Features or installing optional Windows components",
+    "Real VHDX compaction",
+    "Physical copying from a disabled search input while its engine is disconnected"
+  ],
+  "initialRuntime": {
+    "blockedReasons": [],
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "keeperVerified": false,
+    "message": "The verified DockSlate WSL runtime is installed and stopped.",
+    "operation": {
+      "childProcessId": 20164,
+      "childStartedTicks": "639278224085082038",
+      "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
+      "processId": 4132,
+      "startedAt": 1792225608283,
+      "startedTicks": "639278224073142210",
+      "state": "completed",
+      "updatedAt": 1792225609145
+    },
+    "state": "stopped"
+  },
+  "disconnectedSearch": {
+    "text": "Docker Hub 이미지 검색\n접기\n\nDocker Hub 검색은 DockSlate 엔진을 통해 실행합니다. Settings에서 런타임을 시작해 주세요. 엔진 설정\n\nDocker Hub 검색어\nDocker Hub 검색",
+    "disabled": true,
+    "hasSettings": true
+  },
+  "finishedAt": "2026-10-17T08:37:57.063Z",
+  "exceptions": [],
+  "observedCounts": {
+    "dashboard_snapshot": 1,
+    "engine_status": 0,
+    "overview": 0,
+    "containers_list": 0,
+    "images_list": 0,
+    "disk_usage": 0,
+    "runtime_status": 1,
+    "wsl_inventory": 0,
+    "image_search": 0,
+    "wsl_preview": 1,
+    "desktop_restart_elevated": 0,
+    "image_pull": 0,
+    "container_action": 0,
+    "destructive_execute": 0,
+    "runtime_install": 0,
+    "runtime_start": 0,
+    "runtime_stop": 0,
+    "wsl_compact": 0,
+    "desktop_open_windows_features": 0
+  }
+}

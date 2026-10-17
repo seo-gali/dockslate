@@ -1003,6 +1003,80 @@ impl Transport {
         timeout: Duration,
         limit: usize,
     ) -> Result<Vec<u8>, String> {
+        self.request_inner(method, path, None, timeout, limit)
+    }
+
+    pub(crate) fn create_container(
+        &self,
+        api: &str,
+        name: &str,
+        body: &[u8],
+        timeout: Duration,
+        limit: usize,
+    ) -> Result<Vec<u8>, String> {
+        self.create_json(api, "containers", name, body, timeout, limit)
+    }
+
+    pub(crate) fn create_network(
+        &self,
+        api: &str,
+        body: &[u8],
+        timeout: Duration,
+        limit: usize,
+    ) -> Result<Vec<u8>, String> {
+        self.create_json(api, "networks", "", body, timeout, limit)
+    }
+
+    fn create_json(
+        &self,
+        api: &str,
+        resource: &str,
+        name: &str,
+        body: &[u8],
+        timeout: Duration,
+        limit: usize,
+    ) -> Result<Vec<u8>, String> {
+        let valid_api = api
+            .strip_prefix("1.")
+            .and_then(|minor| minor.parse::<u32>().ok())
+            .is_some_and(|minor| (41..=55).contains(&minor));
+        let valid_name = name.is_empty()
+            || (name.len() <= 128
+                && name.as_bytes()[0].is_ascii_alphanumeric()
+                && name
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte)));
+        if !valid_api
+            || !valid_name
+            || !["containers", "networks"].contains(&resource)
+            || (resource == "networks" && !name.is_empty())
+            || body.is_empty()
+            || body.len() > 64 * 1024
+        {
+            return Err("Invalid internal Docker create request.".into());
+        }
+        let query = if name.is_empty() {
+            String::new()
+        } else {
+            format!("?name={name}")
+        };
+        self.request_inner(
+            "POST",
+            &format!("/v{api}/{resource}/create{query}"),
+            Some(body),
+            timeout,
+            limit,
+        )
+    }
+
+    fn request_inner(
+        &self,
+        method: &str,
+        path: &str,
+        body: Option<&[u8]>,
+        timeout: Duration,
+        limit: usize,
+    ) -> Result<Vec<u8>, String> {
         if !["GET", "POST", "DELETE"].contains(&method)
             || !path.starts_with('/')
             || path.len() > 4096
@@ -1018,7 +1092,7 @@ impl Transport {
         self.verify(method != "GET")?;
         let program = system_directory()?.join("wsl.exe");
         let seconds = timeout.as_secs_f64().max(0.1).to_string();
-        let args = [
+        let mut args = vec![
             "--distribution".into(),
             "DockSlate".into(),
             "--user".into(),
@@ -1042,13 +1116,20 @@ impl Transport {
             limit.to_string(),
             "--write-out".into(),
             "\n%{http_code}".into(),
-            "--".into(),
-            format!("http://localhost{path}"),
         ];
+        if body.is_some() {
+            args.extend([
+                "--header".into(),
+                "Content-Type: application/json".into(),
+                "--data-binary".into(),
+                "@-".into(),
+            ]);
+        }
+        args.extend(["--".into(), format!("http://localhost{path}")]);
         let output = crate::process::execute(
             &program,
             &args,
-            None,
+            body,
             timeout + Duration::from_secs(2),
             limit.saturating_add(4096),
         )?;

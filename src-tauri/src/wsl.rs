@@ -390,6 +390,20 @@ pub fn compact(token: String, approved: bool) -> Result<Value, String> {
     {
         return Err("Create a new preview for the current compaction policy.".into());
     }
+    if !matches!(
+        approval
+            .fingerprint
+            .get("compactionMethod")
+            .and_then(Value::as_str),
+        Some("CompactVirtualDisk" | "Optimize-VHD")
+    ) || approval
+        .fingerprint
+        .get("virtualDiskId")
+        .and_then(Value::as_str)
+        .is_none_or(str::is_empty)
+    {
+        return Err("Create a new preview for the supported Windows disk method.".into());
+    }
     COMPACTION_ACTIVE.store(true, Ordering::Release);
     let command = match start(
         json!({"mode":"compact", "diskId":disk_id, "approved":true, "expected":approval.fingerprint}),
