@@ -1,0 +1,90 @@
+{
+  "observedAt": "2026-10-17T13:14:22.600Z",
+  "completed": true,
+  "mockData": false,
+  "checks": [
+    {
+      "name": "Seven menus retain cached data without backend calls",
+      "passed": true
+    },
+    {
+      "name": "Manual refresh uses one shared dashboard snapshot",
+      "passed": true
+    },
+    {
+      "name": "Image run creates a container with the chosen persistent volume",
+      "passed": true
+    },
+    {
+      "name": "Active volume reference blocks destructive approval",
+      "passed": true
+    }
+  ],
+  "timings": [
+    {
+      "menu": "Overview",
+      "clickToTwoFramesMs": 6.700000002980232
+    },
+    {
+      "menu": "Containers",
+      "clickToTwoFramesMs": 10.399999998509884
+    },
+    {
+      "menu": "Images",
+      "clickToTwoFramesMs": 15.300000000745058
+    },
+    {
+      "menu": "Volumes",
+      "clickToTwoFramesMs": 8.300000000745058
+    },
+    {
+      "menu": "Builds",
+      "clickToTwoFramesMs": 19.100000001490116
+    },
+    {
+      "menu": "Disk Manager",
+      "clickToTwoFramesMs": 17.800000000745058
+    },
+    {
+      "menu": "Settings",
+      "clickToTwoFramesMs": 33
+    },
+    {
+      "menu": "Volumes",
+      "clickToTwoFramesMs": 11.700000002980232
+    },
+    {
+      "menu": "Builds",
+      "clickToTwoFramesMs": 12.799999997019768
+    },
+    {
+      "menu": "Containers",
+      "clickToTwoFramesMs": 12.699999999254942
+    }
+  ],
+  "failureConditions": [
+    "Owned engine ID mismatch",
+    "Existing object identity or state changes",
+    "Fixture name collision",
+    "Extra data reads during menu navigation",
+    "Uncaught renderer exception"
+  ],
+  "untested": [
+    "Real VHDX compaction",
+    "Remote builder connections"
+  ],
+  "initialRuntimeState": "running",
+  "fixture": ".analysis/workbench-fixture.json",
+  "harnessInitialFailure": "Error: Error: Select unavailable\n    at <anonymous>:1:77\n    at <anonymous>:1:289\n    at evaluate (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/native-verification.mjs:43:40)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-workbench.mjs:66:3",
+  "harnessInitialFailures": [
+    "Error: New running fixture required\n    at assert (file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/continue-workbench.mjs:2:237)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/continue-workbench.mjs:11:3"
+  ],
+  "containerId": "1a70ff8992a5372ea50a83d477f88207afebe372133996864cd8550cddaa4143",
+  "imageId": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+  "exceptions": [],
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "FA03B6679D6315FA48FAF0C589962ADCE9AD119785E7F81D126508FF1EC3348D",
+    "appPid": 23476
+  }
+}

@@ -1,10 +1,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod builds;
+mod container_tools;
 mod desktop;
 mod docker;
 mod image_build;
 mod process;
 mod runtime;
+mod volumes;
 mod wsl;
 
 use serde_json::Value;
@@ -43,12 +46,143 @@ where
         if runtime::is_mutating() {
             return Err("엔진 설치 또는 상태 변경이 진행 중입니다".into());
         }
+        if volumes::is_busy() || builds::is_busy() {
+            return Err("파일 전송 작업이 진행 중입니다. 완료 후 다시 시도하세요.".into());
+        }
         if image_build::is_building() {
             return Err("이미지 빌드가 진행 중입니다. 완료 후 다시 시도하세요.".into());
         }
         operation()
     })
     .await
+}
+
+#[tauri::command]
+async fn container_files(id: String, path: String) -> Result<Value, String> {
+    read(move || container_tools::files(id, path)).await
+}
+#[tauri::command]
+async fn container_file_preview(id: String, path: String) -> Result<Value, String> {
+    read(move || container_tools::file_preview(id, path)).await
+}
+#[tauri::command]
+async fn terminal_open(id: String, shell: String, cols: u16, rows: u16) -> Result<Value, String> {
+    read(move || container_tools::terminal_open(id, shell, cols, rows)).await
+}
+#[tauri::command]
+async fn terminal_read(session_id: String, cursor: u64) -> Result<Value, String> {
+    read(move || container_tools::terminal_read(session_id, cursor)).await
+}
+#[tauri::command]
+async fn terminal_input(session_id: String, data: String) -> Result<Value, String> {
+    read(move || container_tools::terminal_input(session_id, data)).await
+}
+#[tauri::command]
+async fn terminal_resize(session_id: String, cols: u16, rows: u16) -> Result<Value, String> {
+    read(move || container_tools::terminal_resize(session_id, cols, rows)).await
+}
+#[tauri::command]
+async fn terminal_close(session_id: String) -> Result<Value, String> {
+    read(move || container_tools::terminal_close(session_id)).await
+}
+
+#[tauri::command]
+async fn volumes_list() -> Result<Value, String> {
+    read(volumes::list).await
+}
+#[tauri::command]
+async fn volume_inspect(name: String) -> Result<Value, String> {
+    read(move || volumes::inspect(name)).await
+}
+#[tauri::command]
+async fn volume_create(name: String) -> Result<Value, String> {
+    mutate(move || volumes::create(name)).await
+}
+#[tauri::command]
+async fn volume_clone(name: String, destination: String) -> Result<Value, String> {
+    mutate(move || volumes::clone_volume(name, destination)).await
+}
+#[tauri::command]
+async fn volume_browse(name: String, path: String) -> Result<Value, String> {
+    read(move || volumes::browse(name, path)).await
+}
+#[tauri::command]
+async fn volume_file_preview(name: String, path: String) -> Result<Value, String> {
+    read(move || volumes::file_preview(name, path)).await
+}
+#[tauri::command]
+async fn volume_pick_archive(purpose: String) -> Result<Value, String> {
+    read(move || volumes::pick_archive(purpose)).await
+}
+#[tauri::command]
+async fn volume_export(name: String, archive_token: String) -> Result<Value, String> {
+    mutate(move || volumes::export(name, archive_token)).await
+}
+#[tauri::command]
+async fn volume_import_preview(
+    name: String,
+    archive_token: String,
+    mode: String,
+) -> Result<Value, String> {
+    read(move || volumes::import_preview(name, archive_token, mode)).await
+}
+#[tauri::command]
+async fn volume_destructive_preview(kind: String, name: String) -> Result<Value, String> {
+    read(move || volumes::destructive_preview(kind, name)).await
+}
+#[tauri::command]
+async fn volume_execute(token: String, approved: bool) -> Result<Value, String> {
+    mutate(move || volumes::execute(token, approved)).await
+}
+#[tauri::command]
+async fn volume_discard_preview(token: String) -> Result<Value, String> {
+    read(move || volumes::discard_preview(token)).await
+}
+#[tauri::command]
+async fn volume_job_status(id: String) -> Result<Value, String> {
+    read(move || volumes::job_status(id)).await
+}
+#[tauri::command]
+async fn builds_snapshot() -> Result<Value, String> {
+    read(builds::snapshot).await
+}
+#[tauri::command]
+async fn builds_builder_inspect(name: String) -> Result<Value, String> {
+    read(move || builds::builder_inspect(name)).await
+}
+#[tauri::command]
+async fn builds_history_list(builder: String) -> Result<Value, String> {
+    read(move || builds::history_list(builder)).await
+}
+#[tauri::command]
+async fn builds_history_detail(
+    builder: String,
+    reference: String,
+    imported_id: Option<String>,
+) -> Result<Value, String> {
+    read(move || builds::history_detail(builder, reference, imported_id)).await
+}
+#[tauri::command]
+async fn builds_builder_change(
+    request: builds::BuilderRequest,
+    approved: bool,
+) -> Result<Value, String> {
+    mutate(move || builds::builder_change(request, approved)).await
+}
+#[tauri::command]
+async fn builds_transfer_start(
+    request: builds::TransferRequest,
+    approved: bool,
+) -> Result<Value, String> {
+    mutate(move || builds::transfer_start(request, approved)).await
+}
+#[tauri::command]
+async fn builds_transfer_status(id: String) -> Result<Value, String> {
+    read(move || builds::transfer_status(id)).await
+}
+#[tauri::command]
+async fn builds_pick_file(save: bool) -> Result<Value, String> {
+    read(move || builds::pick_file(save)).await
 }
 
 #[tauri::command]
@@ -66,6 +200,26 @@ async fn overview() -> Result<Value, String> {
 #[tauri::command]
 async fn containers_list() -> Result<Value, String> {
     read(docker::containers_list).await
+}
+#[tauri::command]
+async fn container_inspect(id: String) -> Result<Value, String> {
+    read(move || docker::container_inspect(id)).await
+}
+#[tauri::command]
+async fn container_stats(id: String) -> Result<Value, String> {
+    read(move || docker::container_stats(id)).await
+}
+#[tauri::command]
+async fn containers_metrics(ids: Vec<String>) -> Result<Value, String> {
+    read(move || docker::containers_metrics(ids)).await
+}
+#[tauri::command]
+async fn container_open_port(
+    id: String,
+    private_port: u16,
+    public_port: u16,
+) -> Result<Value, String> {
+    read(move || docker::container_open_port(id, private_port, public_port)).await
 }
 #[tauri::command]
 async fn container_action(id: String, action: String) -> Result<Value, String> {
@@ -168,6 +322,9 @@ async fn runtime_start(approved: bool) -> Result<Value, String> {
 }
 #[tauri::command]
 async fn runtime_stop(approved: bool) -> Result<Value, String> {
+    if approved {
+        container_tools::close_all();
+    }
     mutate(move || runtime::stop(approved)).await
 }
 
@@ -243,10 +400,20 @@ fn main() {
     }
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
+            volumes_list, volume_inspect, volume_create, volume_clone, volume_browse, volume_file_preview,
+            volume_pick_archive, volume_export, volume_import_preview, volume_destructive_preview, volume_execute, volume_discard_preview, volume_job_status,
+            builds_snapshot, builds_builder_inspect, builds_history_list, builds_history_detail, builds_builder_change, builds_transfer_start, builds_transfer_status, builds_pick_file,
+            container_files,
+            container_file_preview,
+            terminal_open, terminal_read, terminal_input, terminal_resize, terminal_close,
             engine_status,
             dashboard_snapshot,
             overview,
             containers_list,
+            container_inspect,
+            container_stats,
+            containers_metrics,
+            container_open_port,
             container_action,
             container_run,
             networks_list,
@@ -278,6 +445,9 @@ fn main() {
                 if image_build::is_building() {
                     api.prevent_close();
                     let _ = window.emit("close-blocked", "이미지 빌드가 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.");
+                } else if volumes::is_busy() || builds::is_busy() {
+                    api.prevent_close();
+                    let _ = window.emit("close-blocked", "파일 전송 중입니다. 완료 후 앱을 종료할 수 있습니다.");
                 } else if wsl::is_compacting() {
                     api.prevent_close();
                     let _ = window.emit(
@@ -290,7 +460,7 @@ fn main() {
                         "close-blocked",
                         "엔진 설치 또는 상태 변경이 진행 중입니다. 완료 결과를 확인할 때까지 앱을 종료할 수 없습니다.",
                     );
-                }
+                } else { container_tools::close_all(); }
             }
         })
         .run(tauri::generate_context!())

@@ -1,0 +1,168 @@
+{
+  "observedAt": "2026-10-17T14:06:05.002Z",
+  "completed": true,
+  "removed": {
+    "containers": [
+      "1a70ff8992a5372ea50a83d477f88207afebe372133996864cd8550cddaa4143"
+    ],
+    "volumes": [
+      "dockslate-e2e-workbench-1792242870842-data"
+    ],
+    "images": [
+      "sha256:4ac643519f3d31a282e9137bac4212e5aea0e3757e172a43e3c7e0e4a3e38b73",
+      "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"
+    ],
+    "history": [
+      "default/default/wdxxpmr8rsbhro4vm747gan2d"
+    ],
+    "cache": [
+      "m1ih7vjsuja5otkqne3ltpm9e",
+      "wlqc2wswxotslt36e8hqgmblp",
+      "nkjfci0jfp21wv01jjotttaiq",
+      "yczbverplmjwgj6ftvrhwyuzp",
+      "3xe1f3ibyy9u1w5x7qujlrj3l",
+      "t1y1s3j4qb8egi3u4ynvp2ry5"
+    ]
+  },
+  "newCacheBefore": [
+    {
+      "eligible": false,
+      "id": "yczbverplmjwgj6ftvrhwyuzp",
+      "label": "[3/3] COPY marker.txt /dockslate-build-marker",
+      "reason": "Build cache is shared with an image or its sharing state is unknown",
+      "size": 8336
+    },
+    {
+      "eligible": true,
+      "id": "m1ih7vjsuja5otkqne3ltpm9e",
+      "label": "local source for dockerfile",
+      "reason": null,
+      "size": 8192
+    },
+    {
+      "eligible": false,
+      "id": "t1y1s3j4qb8egi3u4ynvp2ry5",
+      "label": "t1y1s3j4qb8egi3u4ynvp2ry5",
+      "reason": "Build cache is shared with an image or its sharing state is unknown",
+      "size": 6766266
+    },
+    {
+      "eligible": false,
+      "id": "3xe1f3ibyy9u1w5x7qujlrj3l",
+      "label": "mount / from exec /bin/sh -c echo DOCKSLATE_BUILD_STARTED_dockslate-e2e-workbench-1792242870842 && sleep 4",
+      "reason": "Build cache is shared with an image or its sharing state is unknown",
+      "size": 16493
+    },
+    {
+      "eligible": true,
+      "id": "wlqc2wswxotslt36e8hqgmblp",
+      "label": "local source for context",
+      "reason": null,
+      "size": 8192
+    },
+    {
+      "eligible": true,
+      "id": "nkjfci0jfp21wv01jjotttaiq",
+      "label": "local source for context",
+      "reason": null,
+      "size": 4096
+    }
+  ],
+  "persistedAfterContainerDeletion": true,
+  "resumptions": [
+    {
+      "observedAt": "2026-10-17T14:07:08.716Z",
+      "priorFailure": "Error: Fixture persisted volume marker changed\n    at fact (file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/cleanup-workbench.mjs:8:40)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/cleanup-workbench.mjs:28:3",
+      "reason": "Harness used content instead of the actual text response field"
+    },
+    {
+      "observedAt": "2026-10-17T14:07:56.792Z",
+      "priorFailure": "Error: invalid args `id` for command `volume_job_status`: command volume_job_status missing required key id\n    at evaluate (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/native-verification.mjs:43:40)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/cleanup-workbench.mjs:36:83\n    at async waitFor (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/native-verification.mjs:6:47)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/cleanup-workbench.mjs:36:16",
+      "reason": "Continue exact fixture cleanup after checking actual response fields"
+    },
+    {
+      "observedAt": "2026-10-17T14:09:03.673Z",
+      "priorFailure": "Error: Exact cache cleanup failed\n    at fact (file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/cleanup-workbench.mjs:8:40)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/cleanup-workbench.mjs:53:87",
+      "reason": "Recheck exact remaining cache IDs and retain engine refusal details"
+    }
+  ],
+  "reconciledSynchronousDelete": true,
+  "cacheAttempts": [
+    {
+      "id": "t1y1s3j4qb8egi3u4ynvp2ry5",
+      "result": {
+        "deleted": [],
+        "failed": [
+          {
+            "error": "Selected cache was not deleted; it may have become referenced",
+            "id": "t1y1s3j4qb8egi3u4ynvp2ry5"
+          }
+        ],
+        "message": "cleanup: 0 deleted, 1 failed"
+      }
+    },
+    {
+      "id": "m1ih7vjsuja5otkqne3ltpm9e",
+      "result": {
+        "deleted": [
+          "m1ih7vjsuja5otkqne3ltpm9e"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    {
+      "id": "wlqc2wswxotslt36e8hqgmblp",
+      "result": {
+        "deleted": [
+          "wlqc2wswxotslt36e8hqgmblp"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    {
+      "id": "nkjfci0jfp21wv01jjotttaiq",
+      "result": {
+        "deleted": [
+          "nkjfci0jfp21wv01jjotttaiq"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    {
+      "id": "yczbverplmjwgj6ftvrhwyuzp",
+      "result": {
+        "deleted": [
+          "yczbverplmjwgj6ftvrhwyuzp"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    {
+      "id": "3xe1f3ibyy9u1w5x7qujlrj3l",
+      "result": {
+        "deleted": [
+          "3xe1f3ibyy9u1w5x7qujlrj3l"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    },
+    {
+      "id": "t1y1s3j4qb8egi3u4ynvp2ry5",
+      "result": {
+        "deleted": [
+          "t1y1s3j4qb8egi3u4ynvp2ry5"
+        ],
+        "failed": [],
+        "message": "cleanup: 1 deleted, 0 failed"
+      }
+    }
+  ],
+  "remainingNewCache": [],
+  "originalCachePreserved": 11,
+  "runtimeState": "running"
+}

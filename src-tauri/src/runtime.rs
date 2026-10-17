@@ -903,13 +903,22 @@ impl Transport {
         Ok(path.into())
     }
 
-    pub(crate) fn spawn_image_build(
+    pub(crate) fn spawn_configured_image_build(
         &self,
         context: &str,
         dockerfile: &str,
         tag: &str,
         no_cache: bool,
+        builder: &str,
     ) -> Result<Child, String> {
+        if builder.is_empty()
+            || builder.len() > 128
+            || !builder
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b"_.-".contains(&b))
+        {
+            return Err("Invalid internal Buildx builder name.".into());
+        }
         self.verify(true)?;
         let mut command = Command::new(system_directory()?.join("wsl.exe"));
         command.args([
@@ -924,7 +933,7 @@ impl Transport {
             "buildx",
             "build",
             "--builder",
-            "default",
+            builder,
             "--load",
             "--progress=plain",
             "--file",
@@ -1006,6 +1015,97 @@ impl Transport {
         self.request_inner(method, path, None, timeout, limit)
     }
 
+    pub(crate) fn archive_stat(&self, api: &str, id: &str, path: &str) -> Result<Vec<u8>, String> {
+        let valid_api = api
+            .strip_prefix("1.")
+            .and_then(|minor| minor.parse::<u32>().ok())
+            .is_some_and(|minor| (41..=55).contains(&minor));
+        if !valid_api
+            || id.len() != 64
+            || !id
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
+            || !path.starts_with('/')
+            || path.len() > 4096
+            || path.contains('\0')
+            || path.split('/').any(|part| matches!(part, "." | ".."))
+            || path.split('/').filter(|part| !part.is_empty()).count() > 32
+        {
+            return Err("Invalid internal container archive metadata request.".into());
+        }
+        self.verify(false)?;
+        let encoded: String = path
+            .bytes()
+            .map(|byte| {
+                if byte.is_ascii_alphanumeric() || b"-._~".contains(&byte) {
+                    (byte as char).to_string()
+                } else {
+                    format!("%{byte:02X}")
+                }
+            })
+            .collect();
+        let args = [
+            "--distribution".into(),
+            "DockSlate".into(),
+            "--user".into(),
+            "root".into(),
+            "--exec".into(),
+            "/usr/bin/curl".into(),
+            "--disable".into(),
+            "--silent".into(),
+            "--show-error".into(),
+            "--noproxy".into(),
+            "*".into(),
+            "--unix-socket".into(),
+            "/var/run/docker.sock".into(),
+            "--proto".into(),
+            "=http".into(),
+            "--head".into(),
+            "--max-time".into(),
+            "5".into(),
+            "--write-out".into(),
+            "\n%{http_code}".into(),
+            "--".into(),
+            format!("http://localhost/v{api}/containers/{id}/archive?path={encoded}"),
+        ];
+        let output = crate::process::execute(
+            &system_directory()?.join("wsl.exe"),
+            &args,
+            None,
+            Duration::from_secs(7),
+            8192,
+        )?;
+        if !output.status.success() {
+            return Err("컨테이너 경로 정보를 읽지 못했거나 응답 시간이 초과되었습니다.".into());
+        }
+        let text = std::str::from_utf8(&output.stdout)
+            .map_err(|_| "컨테이너 경로 응답 형식이 올바르지 않습니다.")?;
+        let (headers, status) = text
+            .rsplit_once('\n')
+            .ok_or("컨테이너 경로 응답 상태를 확인하지 못했습니다.")?;
+        let code = status
+            .parse::<u16>()
+            .map_err(|_| "컨테이너 경로 응답 상태를 확인하지 못했습니다.")?;
+        if !(200..300).contains(&code) {
+            return Err(format!(
+                "컨테이너 경로를 확인하지 못했습니다 (Docker HTTP {code})."
+            ));
+        }
+        let mut values = headers
+            .lines()
+            .filter_map(|line| line.split_once(':'))
+            .filter(|(key, _)| key.eq_ignore_ascii_case("X-Docker-Container-Path-Stat"))
+            .map(|(_, value)| value.trim());
+        let metadata = values
+            .next()
+            .filter(|value| !value.is_empty())
+            .ok_or("컨테이너 경로 정보 헤더가 없습니다.")?;
+        if values.next().is_some() {
+            return Err("컨테이너 경로 정보 헤더가 중복되었습니다.".into());
+        }
+        Ok(metadata.as_bytes().to_vec())
+    }
+
     pub(crate) fn create_container(
         &self,
         api: &str,
@@ -1025,6 +1125,128 @@ impl Transport {
         limit: usize,
     ) -> Result<Vec<u8>, String> {
         self.create_json(api, "networks", "", body, timeout, limit)
+    }
+
+    pub(crate) fn create_volume(
+        &self,
+        api: &str,
+        body: &[u8],
+        timeout: Duration,
+        limit: usize,
+    ) -> Result<Vec<u8>, String> {
+        self.create_json(api, "volumes", "", body, timeout, limit)
+    }
+
+    pub(crate) fn verify_tool_session(&self) -> Result<(), String> {
+        self.verify(false)
+    }
+    pub(crate) fn verify_tool_start(&self) -> Result<(), String> {
+        self.verify(true)
+    }
+
+    pub(crate) fn buildx_command(
+        &self,
+        arguments: &[String],
+        mutation: bool,
+        input: Option<&[u8]>,
+        timeout: Duration,
+        limit: usize,
+    ) -> Result<std::process::Output, String> {
+        if arguments.is_empty() || arguments.iter().any(|arg| arg.contains('\0')) {
+            return Err("Invalid internal Buildx request.".into());
+        }
+        self.verify(mutation)?;
+        let mut args: Vec<String> = [
+            "--distribution",
+            "DockSlate",
+            "--user",
+            "root",
+            "--exec",
+            "/usr/bin/env",
+            "-u",
+            "DOCKER_HOST",
+            "-u",
+            "DOCKER_CONTEXT",
+            "-u",
+            "DOCKER_CONFIG",
+            "-u",
+            "BUILDX_BUILDER",
+            "-u",
+            "BUILDX_CONFIG",
+            "/usr/bin/docker",
+            "--host",
+            "unix:///var/run/docker.sock",
+            "buildx",
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect();
+        args.extend_from_slice(arguments);
+        crate::process::execute(
+            &system_directory()?.join("wsl.exe"),
+            &args,
+            input,
+            timeout,
+            limit,
+        )
+    }
+
+    pub(crate) fn spawn_volume_files(
+        &self,
+        request: &Value,
+        mutation: bool,
+    ) -> Result<Child, String> {
+        self.verify(mutation)?;
+        let serialized =
+            serde_json::to_string(request).map_err(|_| "Invalid internal volume request.")?;
+        if serialized.len() > 16384 {
+            return Err("Volume request is too large.".into());
+        }
+        let mut command = Command::new(system_directory()?.join("wsl.exe"));
+        command.args([
+            "--distribution",
+            "DockSlate",
+            "--user",
+            "root",
+            "--exec",
+            "/usr/bin/timeout",
+            "--signal=TERM",
+            "--kill-after=5s",
+            "910s",
+            "/usr/bin/python3",
+            "-I",
+            "-",
+            &serialized,
+        ]);
+        command
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::CommandExt;
+            command.creation_flags(0x08000000);
+        }
+        let mut child = command.spawn().map_err(|_| {
+            "볼륨 파일 작업을 시작할 수 없습니다. DockSlate 엔진과 Python 3을 확인하세요."
+        })?;
+        let mut input = child
+            .stdin
+            .take()
+            .ok_or("Volume helper input is unavailable.")?;
+        if input
+            .write_all(include_bytes!("../scripts/volume-files.py"))
+            .is_err()
+        {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err(
+                "볼륨 파일 도구를 시작하지 못했습니다. 전용 WSL의 Python 3 지원을 확인하세요."
+                    .into(),
+            );
+        }
+        drop(input);
+        Ok(child)
     }
 
     fn create_json(
@@ -1048,8 +1270,8 @@ impl Transport {
                     .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte)));
         if !valid_api
             || !valid_name
-            || !["containers", "networks"].contains(&resource)
-            || (resource == "networks" && !name.is_empty())
+            || !["containers", "networks", "volumes"].contains(&resource)
+            || (resource != "containers" && !name.is_empty())
             || body.is_empty()
             || body.len() > 64 * 1024
         {

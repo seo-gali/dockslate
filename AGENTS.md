@@ -25,7 +25,8 @@
 - Docker Desktop/Rancher Desktop의 실행 파일·엔진·디스크에 런타임 의존성을 두지 않습니다. 기존 데이터와 배포판은 보존합니다.
 - 엔진 설치는 별도 대상·영향을 보여주고 승인받습니다. 2026-10-14 사용자는 전용 WSL 엔진 설치·검증과 Docker Desktop 제거·소유 VHDX 삭제를 승인했습니다. 새 런타임 저장 위치는 사용자 지정 `D:\Program Files\DockSlate\runtime\wsl`입니다. 기존 Docker Desktop 제거는 자체 엔진 확인 후 수행하며 다른 배포판과 디스크를 변경하지 않습니다.
 - 연결할 전용 배포판의 소유권·엔진 종류·API·엔진 ID를 검증합니다. containerd를 Docker Engine으로 간주하지 않습니다.
-- 핵심 메뉴는 Overview / Containers / Images / Disk Manager / Settings로 제한합니다.
+- 2026-10-17 사용자의 범위 확대 지시에 따라 메뉴는 Overview / Containers / Images / Volumes / Builds / Disk Manager / Settings로 구성합니다. 컨테이너 통계·Inspect·터미널·파일, 볼륨 생성·복제·탐색·내보내기·가져오기·비우기, 빌드 이력·활성 작업·빌더 설정을 구현 범위에 포함합니다.
+- 무거운 조회는 목록 렌더링과 분리합니다. 시작·수동 새로고침 결과를 공유하며 메뉴 이동만으로 다시 조회하거나 유휴 폴링하지 않습니다. 열린 로그·터미널과 진행 중 작업만 필요한 갱신을 수행합니다.
 - Compose는 컨테이너의 프로젝트별 그룹 표시까지만 지원합니다.
 - Docker API 호출·시스템 명령·파일 조작은 Rust 백엔드에서 제한된 명령으로 수행합니다.
 - 렌더러에 임의 셸 명령 실행·무제한 파일 접근·소켓 직접 접근 권한을 제공하지 않습니다.

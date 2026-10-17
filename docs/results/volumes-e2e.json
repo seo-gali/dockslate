@@ -1,0 +1,1105 @@
+{
+  "observedAt": "2026-10-17T13:44:11.109Z",
+  "namespace": "dockslate-e2e-volumes-mvcg6vc8",
+  "expectedEngineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "appPid": 304,
+  "target": "actual built DockSlate Tauri window, native file picker and independently owned WSL Moby engine",
+  "mockData": false,
+  "explicitIsolatedFixtureApproval": true,
+  "checks": [
+    {
+      "name": "verified expected owned engine, unchanged baseline and rejection of invalid or unapproved requests",
+      "passed": true
+    },
+    {
+      "name": "actual UI creation, root-confined file browser, UTF-8 preview and traversal/symlink rejection",
+      "passed": true
+    },
+    {
+      "name": "actual background clone creates a distinct volume without altering the source",
+      "passed": true
+    },
+    {
+      "name": "empty, delete and import refuse references from a never-started container",
+      "passed": true
+    },
+    {
+      "name": "real preflight rejects traversal and link tar entries before replacement can delete data",
+      "passed": true
+    },
+    {
+      "name": "actual native Save picker and background export create an archive without changing source contents",
+      "passed": true
+    },
+    {
+      "name": "actual native Open picker, collision disclosure and approved merge overwrite only exact archive paths",
+      "passed": true
+    },
+    {
+      "name": "an approved token is rejected after its volume tree changes",
+      "passed": true
+    },
+    {
+      "name": "approved replace removes disclosed old contents while preserving the independent clone",
+      "passed": true
+    },
+    {
+      "name": "actual approved UI empty removes contents while retaining the volume",
+      "passed": true
+    },
+    {
+      "name": "approved UI deletion cleans only exact new fixtures and preserves the original image/container/volume baseline",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "pythonVersion": [
+      3,
+      12,
+      3
+    ],
+    "baseline": {
+      "volumes": 1,
+      "images": 2,
+      "containers": 1
+    },
+    "calls": [
+      {
+        "command": "runtime_status",
+        "durationMs": 976,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1294,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 950,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1374,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 946,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1324,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1693,
+        "failed": false
+      },
+      {
+        "command": "images_list",
+        "durationMs": 1692,
+        "failed": false
+      },
+      {
+        "command": "containers_list",
+        "durationMs": 1533,
+        "failed": false
+      },
+      {
+        "command": "volume_create",
+        "durationMs": 1321,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_create",
+        "durationMs": 2615,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2093,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 1889,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 2776,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1848,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 946,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1296,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 947,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1342,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1007,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1538,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1042,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1387,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1821,
+        "failed": false
+      },
+      {
+        "command": "volume_browse",
+        "durationMs": 1646,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1683,
+        "failed": false
+      },
+      {
+        "command": "volume_browse",
+        "durationMs": 1,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 826,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1293,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 916,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1367,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 946,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1321,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 979,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1324,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1760,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 978,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1320,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1008,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1418,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 948,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1373,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 886,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1289,
+        "failed": false
+      },
+      {
+        "command": "volume_clone",
+        "durationMs": 1708,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 1,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 1897,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1888,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 1877,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 2736,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1840,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1683,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 917,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1292,
+        "failed": false
+      },
+      {
+        "command": "volume_destructive_preview",
+        "durationMs": 1690,
+        "failed": false
+      },
+      {
+        "command": "volume_destructive_preview",
+        "durationMs": 1665,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 553,
+        "failed": false
+      },
+      {
+        "command": "volume_import_preview",
+        "durationMs": 1631,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 917,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1292,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 885,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1239,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 549,
+        "failed": false
+      },
+      {
+        "command": "volume_import_preview",
+        "durationMs": 2025,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1662,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 427,
+        "failed": false
+      },
+      {
+        "command": "volume_import_preview",
+        "durationMs": 1860,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1452,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive"
+      }
+    ],
+    "retainedReference": null,
+    "resumedBaseline": {
+      "volumes": [
+        {
+          "name": "dockslate-e2e-workbench-1792242870842-data",
+          "driver": "local",
+          "scope": "local",
+          "mountpoint": "/var/lib/docker/volumes/dockslate-e2e-workbench-1792242870842-data/_data",
+          "createdAt": "2026-10-17T22:14:45+09:00",
+          "labels": {
+            "io.dockslate.creation": "9d07a3e0318a1c3d9e432c8375aa8c977b8edf619e16f518"
+          },
+          "options": null,
+          "containers": [
+            "1a70ff8992a5372ea50a83d477f88207afebe372133996864cd8550cddaa4143"
+          ]
+        }
+      ],
+      "images": [
+        {
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "tags": [
+            "hello-world:latest"
+          ]
+        },
+        {
+          "id": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+          "tags": [
+            "busybox:1.37.0"
+          ]
+        }
+      ],
+      "containers": [
+        {
+          "id": "1a70ff8992a5372ea50a83d477f88207afebe372133996864cd8550cddaa4143",
+          "name": "dockslate-e2e-workbench-1792242870842",
+          "image": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+          "state": "running"
+        }
+      ],
+      "fixtureCreationLabels": {
+        "dockslate-e2e-volumes-mvcg6vc8-source": "de50c2d1413cd100158d0b2f5b2f9cab53338a7749fafe03",
+        "dockslate-e2e-volumes-mvcg6vc8-clone": "3a867d3b91f2572688674bce31145a1adbadc0638cf2ed23"
+      }
+    },
+    "export": {
+      "bytes": 10240,
+      "sha256": "5e2d01130faed822384b2e4b23e1d5b2676e9615be960f172a4a14ab835a172c"
+    },
+    "mergeApproval": "tar 가져오기 확인\n\n대상 볼륨\n\ndockslate-e2e-volumes-mvcg6vc8-source\n\n가져오기 방식: 병합\n\ntar와 경로가 같은 파일을 덮어쓰고 폴더 속성을 적용합니다. 나머지 파일은 유지합니다.\n\n현재 파일·폴더 2개 · 71 B\n\nD:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-volumes-mvcg6vc8\\merge-source.tar\n\n가져올 파일·폴더 3개 · 110 B\n\n기존 파일 1개 덮어쓰기 · 새 파일 2개 추가\n\n덮어쓸 파일 경로\n\nDockSlate에서 이 작업을 되돌릴 수 없습니다.\n\n실행 직전에 볼륨과 컨테이너 참조를 다시 확인합니다.\n\n승인 만료: 오후 10:53:18\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\ntar 가져오기 실행",
+    "replaceApproval": "tar 가져오기 확인\n\n대상 볼륨\n\ndockslate-e2e-volumes-mvcg6vc8-source\n\n가져오기 방식: 전체 교체\n\n기존 파일과 폴더를 모두 삭제한 뒤 tar 파일을 가져옵니다.\n\n현재 파일·폴더 6개 · 183 B\n\nD:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-volumes-mvcg6vc8\\merge-source.tar\n\n가져올 파일·폴더 3개 · 110 B\n\n기존 항목 6개 · 183 B 삭제 후 가져옵니다.\n\nDockSlate에서 이 작업을 되돌릴 수 없습니다.\n\n실행 직전에 볼륨과 컨테이너 참조를 다시 확인합니다.\n\n승인 만료: 오후 10:53:58\n\n대상과 영향을 확인했으며 이 작업을 승인합니다.\n취소\ntar 가져오기 실행",
+    "remainingFixtures": [],
+    "resumedCalls": [
+      {
+        "command": "runtime_status",
+        "durationMs": 1072,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1493,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1983,
+        "failed": false
+      },
+      {
+        "command": "containers_list",
+        "durationMs": 1760,
+        "failed": false
+      },
+      {
+        "command": "images_list",
+        "durationMs": 1985,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1036,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1557,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2018,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2093,
+        "failed": false
+      },
+      {
+        "command": "volume_browse",
+        "durationMs": 2006,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1100,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1667,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2055,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2037,
+        "failed": false
+      },
+      {
+        "command": "volume_browse",
+        "durationMs": 1952,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1007,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1425,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2084,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2314,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3145,
+        "failed": false
+      },
+      {
+        "command": "volume_inspect",
+        "durationMs": 2249,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 1211,
+        "failed": false
+      },
+      {
+        "command": "volume_export",
+        "durationMs": 2049,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2652,
+        "failed": false
+      },
+      {
+        "command": "volume_inspect",
+        "durationMs": 2637,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2331,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3156,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 1051,
+        "failed": false
+      },
+      {
+        "command": "volume_import_preview",
+        "durationMs": 2666,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 2184,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 6,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 4,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2340,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2340,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2519,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3175,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2482,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2085,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 936,
+        "failed": false
+      },
+      {
+        "command": "volume_import_preview",
+        "durationMs": 2467,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1014,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1519,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1038,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1568,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 1142,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1538,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 954,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1543,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 2199,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 9,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 1,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1999,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2433,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2670,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3400,
+        "failed": false
+      },
+      {
+        "command": "volume_inspect",
+        "durationMs": 2549,
+        "failed": false
+      },
+      {
+        "command": "volume_pick_archive",
+        "durationMs": 997,
+        "failed": false
+      },
+      {
+        "command": "volume_import_preview",
+        "durationMs": 3096,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 2037,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 6,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2310,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2478,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2361,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3257,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2341,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 2023,
+        "failed": false
+      },
+      {
+        "command": "volume_file_preview",
+        "durationMs": 1969,
+        "failed": false
+      },
+      {
+        "command": "volume_inspect",
+        "durationMs": 1925,
+        "failed": false
+      },
+      {
+        "command": "volume_destructive_preview",
+        "durationMs": 2250,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 2122,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 3,
+        "failed": false
+      },
+      {
+        "command": "volume_job_status",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2500,
+        "failed": false
+      },
+      {
+        "command": "volume_browse",
+        "durationMs": 2440,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2448,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3235,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 2334,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1992,
+        "failed": false
+      },
+      {
+        "command": "images_list",
+        "durationMs": 2099,
+        "failed": false
+      },
+      {
+        "command": "containers_list",
+        "durationMs": 1737,
+        "failed": false
+      },
+      {
+        "command": "volume_inspect",
+        "durationMs": 1992,
+        "failed": false
+      },
+      {
+        "command": "volume_destructive_preview",
+        "durationMs": 1976,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 3311,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2368,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2489,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3264,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 2460,
+        "failed": false
+      },
+      {
+        "command": "volume_inspect",
+        "durationMs": 2262,
+        "failed": false
+      },
+      {
+        "command": "volume_destructive_preview",
+        "durationMs": 2006,
+        "failed": false
+      },
+      {
+        "command": "volume_execute",
+        "durationMs": 3342,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 2349,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 2470,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 3327,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 2441,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1829,
+        "failed": false
+      },
+      {
+        "command": "images_list",
+        "durationMs": 1967,
+        "failed": false
+      },
+      {
+        "command": "containers_list",
+        "durationMs": 1696,
+        "failed": false
+      },
+      {
+        "command": "runtime_status",
+        "durationMs": 978,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 1446,
+        "failed": false
+      },
+      {
+        "command": "volumes_list",
+        "durationMs": 1812,
+        "failed": false
+      }
+    ]
+  },
+  "failureConditions": [
+    "Engine or ownership changes",
+    "A preexisting image, container or volume changes",
+    "Unapproved destructive action succeeds",
+    "A referenced volume changes",
+    "Path escape or unsafe tar is accepted",
+    "Merge loses unrelated files",
+    "Replace retains unrelated files",
+    "Clone changes its source",
+    "Stale preview is accepted",
+    "An actual UI action does not update the shared snapshot"
+  ],
+  "failurePolicy": "Stop at the first failed criterion. Preserve remaining fixture data and evidence. Never globally prune, force-delete or retry mutations.",
+  "completed": true,
+  "failure": null,
+  "resumptions": [
+    {
+      "observedAt": "2026-10-17T13:50:32.784Z",
+      "appPid": 304,
+      "fromCheckCount": 5,
+      "priorFailure": "Error: Command failed: D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\native-picker.exe select 304 D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-volumes-mvcg6vc8\\native-export.tar\n\nthread 'main' (3024) panicked at .analysis/native-picker.rs:61:5:\nassertion `left == right` failed: exactly one own filename picker required\n  left: 0\n right: 1\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)",
+      "checkpoint": "Retained original source/clone before native export; no creation, clone, reference or unsafe-tar steps repeated"
+    }
+  ],
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "3004A2E656819B74DC4CA642F11916D710774AD6F3B99A221AB39B1CC9F13897",
+    "appPid": 304
+  }
+}

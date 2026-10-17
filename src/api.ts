@@ -27,6 +27,7 @@ export interface Container {
   state: string;
   status: string;
   ports: string;
+  publishedPorts?: { privatePort: number; publicPort: number; protocol: string; ip: string }[];
   composeProject: string | null;
 }
 export interface DockerImage {
@@ -74,6 +75,14 @@ export interface DestructiveResult extends ActionResult {
   failed: { id: string; error: string }[];
 }
 export interface ContainerLogs { content: string; truncated: boolean }
+export interface ContainerMetric {
+  id: string; cpuPercent: number | null; memoryUsageBytes: number | null;
+  memoryLimitBytes: number | null; memoryPercent: number | null;
+  readAt: string | null; cpuReason: string | null; memoryReason: string | null;
+}
+export interface ContainerMetrics {
+  samples: ContainerMetric[]; engineCpuCount: number | null; memoryTotalBytes: number | null; measuredAt: number;
+}
 export interface WslDisk {
   id: string;
   distribution: string;
@@ -127,11 +136,13 @@ export async function backend<T>(command: string, args?: Record<string, unknown>
   return invoke<T>(command, args);
 }
 
-const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory']);
+const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list']);
+const deferredCommands = new Set(['builds_snapshot']);
 type CommandResult = { Ok?: unknown; Err?: string };
-type DashboardState = { values: Record<string, unknown>; errors: Record<string, string>; loading: boolean; initialized: boolean; revision: number };
+type DashboardState = { values: Record<string, unknown>; errors: Record<string, string>; loading: boolean; initialized: boolean; revision: number; metrics?: ContainerMetrics | null; metricsLoading?: boolean; metricsError?: string | null; deferredLoading?: Record<string, boolean> };
 let dashboard: DashboardState = { values: {}, errors: {}, loading: true, initialized: false, revision: 0 };
 let dashboardRequest: Promise<void> | null = null;
+let metricsGeneration = 0;
 const dashboardListeners = new Set<() => void>();
 const commandVersions = new Map<string, number>();
 const commandRequests = new Map<string, Promise<void>>();
@@ -139,8 +150,68 @@ const subscribeDashboard = (listener: () => void) => { dashboardListeners.add(li
 const getDashboard = () => dashboard;
 function publishDashboard(value: DashboardState) { dashboard = value; dashboardListeners.forEach(listener => listener()); }
 
+let metricPending: { values: Record<string, unknown>; generation: number } | null = null;
+let metricRunning = false;
+async function measureContainers(values: Record<string, unknown>, generation: number) {
+  if ((values.engine_status as EngineStatus | undefined)?.state !== 'connected') {
+    metricPending = null;
+    publishDashboard({ ...dashboard, metrics: null, metricsLoading: false, metricsError: null });
+    return;
+  }
+  metricPending = { values, generation };
+  publishDashboard({ ...dashboard, metricsLoading: true, metricsError: null });
+  if (metricRunning) return;
+  metricRunning = true;
+  try {
+    while (metricPending) {
+      const job = metricPending; metricPending = null;
+      const containers = (job.values.containers_list as Container[] | undefined) ?? [];
+      const ids = containers.filter(container => ['running', 'paused', 'restarting'].includes(container.state)).map(container => container.id);
+      const samples: ContainerMetric[] = [];
+      try {
+        for (let offset = 0; offset < Math.max(ids.length, 1); offset += 16) {
+          if (job.generation !== metricsGeneration) break;
+          const part = await backend<ContainerMetrics>('containers_metrics', { ids: ids.slice(offset, offset + 16) });
+          if (job.generation !== metricsGeneration) break;
+          samples.push(...part.samples);
+          publishDashboard({ ...dashboard, metrics: { ...part, samples: [...samples] }, metricsLoading: offset + 16 < ids.length });
+        }
+      } catch (failure) {
+        if (job.generation === metricsGeneration) publishDashboard({ ...dashboard, metricsLoading: false, metricsError: errorMessage(failure) });
+      }
+    }
+  } finally { metricRunning = false; }
+}
+let buildsPending: number | null = null;
+let buildsRunning = false;
+async function refreshBuilds(generation: number) {
+  buildsPending = generation;
+  publishDashboard({ ...dashboard, deferredLoading: { ...dashboard.deferredLoading, builds_snapshot: true } });
+  if (buildsRunning) return;
+  buildsRunning = true;
+  try {
+    while (buildsPending !== null) {
+      const current = buildsPending; buildsPending = null;
+      try {
+        const value = await backend('builds_snapshot');
+        if (current !== metricsGeneration) continue;
+        const errors = { ...dashboard.errors }; delete errors.builds_snapshot;
+        publishDashboard({ ...dashboard, values: { ...dashboard.values, builds_snapshot: value }, errors, deferredLoading: { ...dashboard.deferredLoading, builds_snapshot: false } });
+      } catch (failure) {
+        if (current === metricsGeneration) publishDashboard({ ...dashboard, errors: { ...dashboard.errors, builds_snapshot: errorMessage(failure) }, deferredLoading: { ...dashboard.deferredLoading, builds_snapshot: false } });
+      }
+    }
+  } finally { buildsRunning = false; }
+}
+
+export function useContainerMetrics() {
+  const value = useSyncExternalStore(subscribeDashboard, getDashboard, getDashboard);
+  return { data: value.metrics ?? null, loading: value.metricsLoading ?? false, error: value.metricsError ?? null };
+}
+
 export function refreshDashboard(): Promise<void> {
   if (dashboardRequest) return dashboardRequest;
+  const measurement = ++metricsGeneration;
   dashboardCommands.forEach(command => commandVersions.set(command, (commandVersions.get(command) ?? 0) + 1));
   publishDashboard({ ...dashboard, loading: true, errors: {} });
   dashboardRequest = (async () => {
@@ -153,10 +224,13 @@ export function refreshDashboard(): Promise<void> {
         if (!result || result.Err !== undefined || !Object.prototype.hasOwnProperty.call(result, 'Ok')) errors[command] = result?.Err ?? '전체 조회 결과에 이 항목이 없습니다.';
         else values[command] = result.Ok;
       });
-      publishDashboard({ values, errors, loading: false, initialized: true, revision: dashboard.revision + 1 });
+      publishDashboard({ ...dashboard, values, errors, loading: false, initialized: true, revision: dashboard.revision + 1 });
+      void refreshBuilds(measurement);
+      if (!errors.engine_status && !errors.containers_list) void measureContainers(values, measurement);
+      else publishDashboard({ ...dashboard, metricsLoading: false, metricsError: errors.engine_status ?? errors.containers_list });
     } catch (failure) {
       const message = errorMessage(failure);
-      publishDashboard({ ...dashboard, errors: Object.fromEntries([...dashboardCommands].map(command => [command, message])), loading: false, initialized: true });
+      publishDashboard({ ...dashboard, errors: Object.fromEntries([...dashboardCommands].map(command => [command, message])), loading: false, initialized: true, metricsLoading: false, metricsError: message });
     } finally { dashboardRequest = null; }
   })();
   return dashboardRequest;
@@ -195,7 +269,7 @@ export function useBackendQuery<T>(command: string, args: Record<string, unknown
   const [polling, setPolling] = useState(false);
   const generation = useRef(0);
   const argsKey = JSON.stringify(args ?? {});
-  const shared = dashboardCommands.has(command) && argsKey === '{}';
+  const shared = (dashboardCommands.has(command) || deferredCommands.has(command)) && argsKey === '{}';
   const snapshot = useSyncExternalStore(subscribeDashboard, getDashboard, getDashboard);
   const reload = useCallback(async () => {
     if (shared) return refreshDashboard();
@@ -225,6 +299,6 @@ export function useBackendQuery<T>(command: string, args: Record<string, unknown
     return () => { generation.current += 1; };
   }, [reload, shared]);
   return shared
-    ? { data: enabled ? (snapshot.values[command] as T | undefined) ?? null : null, loading: snapshot.loading || polling, error: enabled ? snapshot.errors[command] ?? null : null, reload, poll, revision: snapshot.revision }
+    ? { data: enabled ? (snapshot.values[command] as T | undefined) ?? null : null, loading: snapshot.loading || polling || !!snapshot.deferredLoading?.[command], error: enabled ? snapshot.errors[command] ?? null : null, reload, poll, revision: snapshot.revision }
     : { data, loading, error, reload, poll, revision: 0 };
 }

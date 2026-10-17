@@ -29,6 +29,7 @@ struct Job {
     truncated: bool,
     error: Option<String>,
     image_id: Option<String>,
+    builder: Option<String>,
 }
 fn store() -> &'static Mutex<Option<Job>> {
     JOB.get_or_init(|| Mutex::new(None))
@@ -212,7 +213,7 @@ fn snapshot(job: &Job, version: Option<u64>) -> Value {
     } else {
         Some(String::from_utf8_lossy(&job.logs.iter().copied().collect::<Vec<_>>()).into_owned())
     };
-    json!({"id":job.id,"state":job.state,"contextPath":job.context,"dockerfile":job.dockerfile,"tag":job.tag,"noCache":job.no_cache,"logs":logs,"logVersion":job.version,"truncated":job.truncated,"error":job.error,"imageId":job.image_id})
+    json!({"id":job.id,"state":job.state,"contextPath":job.context,"dockerfile":job.dockerfile,"tag":job.tag,"noCache":job.no_cache,"logs":logs,"logVersion":job.version,"truncated":job.truncated,"error":job.error,"imageId":job.image_id,"builder":job.builder})
 }
 pub fn status(id: String, log_version: Option<u64>) -> Result<Value, String> {
     let guard = store()
@@ -277,6 +278,9 @@ pub fn start(
     tag: String,
     no_cache: bool,
 ) -> Result<Value, String> {
+    if crate::builds::is_busy() {
+        return Err("빌드 기록 전송을 마친 뒤 이미지를 빌드하세요.".into());
+    }
     let tag = tag.trim();
     if !valid_tag(tag) {
         return Err("이미지 이름과 태그를 확인하세요. 예: my-app:latest".into());
@@ -317,6 +321,7 @@ pub fn start(
         truncated: false,
         error: None,
         image_id: None,
+        builder: None,
     };
     let initial = snapshot(&job, None);
     match store().lock() {
@@ -337,9 +342,16 @@ pub fn start(
                     "DockSlate 엔진과 빌드 경로를 확인합니다.\n".as_bytes(),
                 );
                 let engine = crate::docker::prepare_image_build()?;
+                let builder = crate::builds::selected_builder()?;
+                if let Ok(mut guard) = store().lock() {
+                    if let Some(job) = guard.as_mut().filter(|job| job.id == worker_id) {
+                        job.builder = Some(builder.clone());
+                    }
+                }
+                append(&worker_id, format!("빌더: {builder}\n").as_bytes());
                 let context = engine.path(&context)?;
                 let dockerfile = engine.path(&file)?;
-                let mut child = engine.spawn(&context, &dockerfile, &tag, no_cache)?;
+                let mut child = engine.spawn_on(&context, &dockerfile, &tag, no_cache, &builder)?;
                 let stdout = capture(
                     worker_id.clone(),
                     child

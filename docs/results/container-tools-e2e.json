@@ -1,0 +1,76 @@
+{
+  "observedAt": "2026-10-17T13:41:43.002Z",
+  "mockData": false,
+  "fixtureId": "1a70ff8992a5372ea50a83d477f88207afebe372133996864cd8550cddaa4143",
+  "checks": [
+    {
+      "name": "Inspect matches Docker configuration and volume mounts",
+      "passed": true
+    },
+    {
+      "name": "CPU and cache-adjusted memory use actual Engine samples",
+      "passed": true,
+      "details": {
+        "sample": {
+          "cpuPercent": 0,
+          "cpuReason": null,
+          "cpuUsageDelta": 0,
+          "id": "1a70ff8992a5372ea50a83d477f88207afebe372133996864cd8550cddaa4143",
+          "memoryCacheBytes": 61440,
+          "memoryLimitBytes": 10427236352,
+          "memoryPercent": 0.005342316805671655,
+          "memoryRawUsageBytes": 618496,
+          "memoryReason": null,
+          "memoryUsageBytes": 557056,
+          "onlineCpus": 16,
+          "readAt": "2026-10-17T13:41:47.296630857Z",
+          "systemUsageDelta": 16060000000
+        },
+        "engineCpuCount": 16,
+        "memoryTotalBytes": 10427236352
+      }
+    },
+    {
+      "name": "Running file browser previews UTF8 and rejects traversal/symlinks",
+      "passed": true
+    },
+    {
+      "name": "Inspect sections and tab cache work in actual UI",
+      "passed": true
+    },
+    {
+      "name": "Interactive shell accepts UTF8, Ctrl+C and preserves output without hidden polling",
+      "passed": true
+    },
+    {
+      "name": "Pause and unpause affect only the exact fixture",
+      "passed": true
+    },
+    {
+      "name": "Stopped files work through archive and stopped volume references remain protected",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "failureConditions": [
+    "Wrong engine/fixture identity",
+    "Inspect differs from CLI",
+    "Invented metric value",
+    "Path traversal or symlink followed",
+    "Stopped-container files unavailable",
+    "Terminal input executes outside fixture",
+    "Inactive view keeps polling",
+    "Renderer exception"
+  ],
+  "untested": [
+    "Terminal full-screen applications",
+    "Remote engines",
+    "Real VHDX compaction"
+  ],
+  "exceptions": [],
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "3004A2E656819B74DC4CA642F11916D710774AD6F3B99A221AB39B1CC9F13897",
+    "appPid": 304
+  }
+}

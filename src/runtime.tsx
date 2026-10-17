@@ -185,7 +185,6 @@ export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSl
   return <section className="settings-panel" style={{ marginBottom: 18 }} aria-busy={runtime.busy || runtime.preparing}>
     <h2>DockSlate 런타임</h2>
     <div className="settings-help">
-      <p>DockSlate 전용 WSL 2 환경에서 Moby 엔진을 실행합니다. Docker Desktop 또는 Rancher Desktop 설치 없이 컨테이너를 사용할 수 있습니다.</p>
       <OperationNotice operation={runtime.operation} onDismiss={() => runtime.setOperation(null)} />
       {query.error && <ErrorNotice message={query.error} onRetry={() => void query.reload()} />}
       {query.loading && !status ? <StatePanel busy icon="settings" title="런타임 상태 확인 중" description="DockSlate 배포판과 엔진의 현재 상태를 조회합니다." /> : status && <>
@@ -205,7 +204,7 @@ export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSl
           {isWorking(status.state) && <span className="muted" role="status">{stateLabels[status.state]}… 완료 상태를 확인하고 있습니다.</span>}
           {status.state === 'failed' && <span className="muted">실패 원인을 해결한 뒤 상태를 새로고침하세요.</span>}
           {status.state === 'unsupported' && <span className="muted">필요한 환경을 확인한 뒤 상태를 새로고침하세요.</span>}
-          {(status.state === 'running' || status.state === 'stopped') && <span className="muted" style={{ fontSize: 12 }}>{status.state === 'running' ? '중지하면 이 엔진의 컨테이너와 서비스가 중단됩니다. 저장된 데이터는 유지됩니다.' : '저장된 컨테이너·이미지·볼륨은 다음 시작 시 다시 사용할 수 있습니다.'}</span>}
+          {(status.state === 'running' || status.state === 'stopped') && <span className="muted" style={{ fontSize: '0.923077rem' }}>{status.state === 'running' ? '중지하면 이 엔진의 컨테이너와 서비스가 중단됩니다. 저장된 데이터는 유지됩니다.' : '저장된 컨테이너·이미지·볼륨은 다음 시작 시 다시 사용할 수 있습니다.'}</span>}
         </div>
       </>}
       {runtime.busy && query.error && <p role="status">작업 결과를 확인하지 못했습니다. 다시 조회하여 실제 완료 상태를 확인하세요.</p>}

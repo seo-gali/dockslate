@@ -1,66 +1,16 @@
 ﻿{
-    "observedAt":  "2026-10-17T17:52:43.6979077+09:00",
+    "observedAt":  "2026-10-18T03:36:41.5303291+09:00",
     "artifact":  "src-tauri/target/release/dockslate.exe",
-    "sha256":  "974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE",
+    "sha256":  "4868BF5E7DB5B7EB14C37332C56DAB30AC0BA191BC47297D06DE24AD7A307044",
+    "bytes":  4411392,
     "normalCloseCompleted":  true,
-    "verificationProcessExitCode":  null,
-    "resumedMeasurement":  false,
     "normalLaunchWindowReady":  true,
-    "processId":  18740,
-    "startedTicks":  "639278239548972620",
+    "processId":  2380,
+    "startedTicks":  "639278590013015070",
     "webViewDebuggingArgumentsSupplied":  false,
     "customWebViewProfileSupplied":  false,
-    "runtimeState":  "stopped",
-    "engineId":  null,
-    "engineVersion":  null,
-    "lastVerifiedEngineId":  "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
-    "memory":  {
-                   "processes":  [
-                                     {
-                                         "processId":  18740,
-                                         "name":  "dockslate",
-                                         "privateCommittedBytes":  5853184,
-                                         "workingSetBytes":  27361280
-                                     },
-                                     {
-                                         "processId":  24092,
-                                         "name":  "msedgewebview2",
-                                         "privateCommittedBytes":  36208640,
-                                         "workingSetBytes":  119857152
-                                     },
-                                     {
-                                         "processId":  20028,
-                                         "name":  "msedgewebview2",
-                                         "privateCommittedBytes":  2568192,
-                                         "workingSetBytes":  10027008
-                                     },
-                                     {
-                                         "processId":  23672,
-                                         "name":  "msedgewebview2",
-                                         "privateCommittedBytes":  95137792,
-                                         "workingSetBytes":  75452416
-                                     },
-                                     {
-                                         "processId":  17068,
-                                         "name":  "msedgewebview2",
-                                         "privateCommittedBytes":  11943936,
-                                         "workingSetBytes":  39297024
-                                     },
-                                     {
-                                         "processId":  4028,
-                                         "name":  "msedgewebview2",
-                                         "privateCommittedBytes":  7692288,
-                                         "workingSetBytes":  20090880
-                                     },
-                                     {
-                                         "processId":  6124,
-                                         "name":  "msedgewebview2",
-                                         "privateCommittedBytes":  34766848,
-                                         "workingSetBytes":  74862592
-                                     }
-                                 ],
-                   "sumPrivateCommittedBytes":  194170880,
-                   "sumWorkingSetBytes":  366948352,
-                   "scope":  "One observed native app and its WebView2 descendants. Private commit and summed working sets are not physical RAM usage; working sets may share pages. WSL VM, engine and OS memory are excluded."
-               }
+    "runtimeState":  "running",
+    "engineId":  "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "readOnlyVerificationPassed":  true,
+    "userContainersChanged":  false
 }

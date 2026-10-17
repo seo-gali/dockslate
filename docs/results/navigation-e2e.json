@@ -1,0 +1,82 @@
+{
+  "observedAt": "2026-10-17T18:36:01.501Z",
+  "mockData": false,
+  "completed": true,
+  "timings": [
+    {
+      "menu": "Overview",
+      "clickToTwoFramesMs": 5.5
+    },
+    {
+      "menu": "Containers",
+      "clickToTwoFramesMs": 13.399999998509884
+    },
+    {
+      "menu": "Images",
+      "clickToTwoFramesMs": 10.700000002980232
+    },
+    {
+      "menu": "Volumes",
+      "clickToTwoFramesMs": 11.899999998509884
+    },
+    {
+      "menu": "Builds",
+      "clickToTwoFramesMs": 11.100000001490116
+    },
+    {
+      "menu": "Disk Manager",
+      "clickToTwoFramesMs": 13.899999998509884
+    },
+    {
+      "menu": "Settings",
+      "clickToTwoFramesMs": 9.100000001490116
+    },
+    {
+      "menu": "Builds",
+      "clickToTwoFramesMs": 11.200000002980232
+    },
+    {
+      "menu": "Volumes",
+      "clickToTwoFramesMs": 11.5
+    },
+    {
+      "menu": "Containers",
+      "clickToTwoFramesMs": 12
+    }
+  ],
+  "checks": [
+    {
+      "name": "Seven-menu navigation uses cached data",
+      "passed": true
+    },
+    {
+      "name": "One global refresh updates all menus",
+      "passed": true
+    },
+    {
+      "name": "Active builds tab displays actual cached state",
+      "passed": true
+    }
+  ],
+  "navigationCalls": [],
+  "refreshCalls": [
+    {
+      "command": "dashboard_snapshot",
+      "durationMs": 1312
+    },
+    {
+      "command": "builds_snapshot",
+      "durationMs": 1544
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 1311
+    }
+  ],
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "4868BF5E7DB5B7EB14C37332C56DAB30AC0BA191BC47297D06DE24AD7A307044",
+    "appPid": 22084,
+    "bytes": 4411392
+  }
+}

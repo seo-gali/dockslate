@@ -1,24 +1,145 @@
 {
   "containers": {
-    "Err": "The verified DockSlate WSL runtime is installed and stopped."
+    "Ok": [
+      {
+        "composeProject": null,
+        "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+        "image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+        "name": "adoring_black",
+        "ports": "",
+        "publishedPorts": [],
+        "state": "exited",
+        "status": "Exited (0) 4 hours ago"
+      }
+    ]
   },
   "diskUsage": {
-    "Err": "The verified DockSlate WSL runtime is installed and stopped."
+    "Ok": {
+      "buildCache": [
+        {
+          "eligible": true,
+          "id": "ipsuyk5jz0pqxtmry3fj3qy9p",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "rol703j7rcx69xfdq3x7pnslo",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "oxqi7paywdhoe5gousysdyjzt",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "zqd3knm2r1af5ynskbigho8ju",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "g21tij0o6hbdarn4kf189svvh",
+          "label": "[1/1] COPY . /dockslate-e2e-context/",
+          "reason": null,
+          "size": 509576
+        },
+        {
+          "eligible": true,
+          "id": "b9joos2g2rkxz1e8pvdl6zpx9",
+          "label": "local source for context",
+          "reason": null,
+          "size": 4096
+        },
+        {
+          "eligible": true,
+          "id": "phkwnafm28f3rs01xoptzb9ll",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "v53hsrkdfu9sswz68x7u75mzb",
+          "label": "[1/1] COPY payload.txt /dockslate-e2e-marker",
+          "reason": null,
+          "size": 8329
+        },
+        {
+          "eligible": true,
+          "id": "6y412t96uqj7ycn8zplpc1w3b",
+          "label": "local source for context",
+          "reason": null,
+          "size": 503808
+        },
+        {
+          "eligible": true,
+          "id": "8qq0hy0o4wgz31ahm1s2jljml",
+          "label": "local source for dockerfile",
+          "reason": null,
+          "size": 8192
+        },
+        {
+          "eligible": true,
+          "id": "four8i3guaiha8ng02lb7pfnz",
+          "label": "local source for context",
+          "reason": null,
+          "size": 8192
+        }
+      ],
+      "buildCacheBytes": 1079057,
+      "containersBytes": 4096,
+      "images": [
+        {
+          "eligible": false,
+          "estimatedReclaimableBytes": 25874,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "label": "hello-world:latest",
+          "reason": "Referenced by an existing container",
+          "size": 25874
+        }
+      ],
+      "imagesBytes": 36936,
+      "reclaimableBytes": 1079057,
+      "volumesBytes": 0,
+      "warnings": [
+        "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.",
+        "Container and volume automatic cleanup is excluded."
+      ]
+    }
   },
   "engine": {
     "Ok": {
-      "apiVersion": null,
-      "context": "DockSlate",
+      "apiVersion": "1.55",
+      "context": "dockslate",
       "endpoint": "wsl://DockSlate/var/run/docker.sock",
-      "engine": null,
-      "message": "The verified DockSlate WSL runtime is installed and stopped.",
-      "ownerPath": null,
-      "serverVersion": null,
-      "state": "unavailable"
+      "engine": "moby",
+      "message": "Verified independent DockSlate Moby Engine",
+      "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+      "provider": "DockSlate",
+      "serverVersion": "29.8.2",
+      "state": "connected"
     }
   },
   "images": {
-    "Err": "The verified DockSlate WSL runtime is installed and stopped."
+    "Ok": [
+      {
+        "containers": 1,
+        "created": 1774301639,
+        "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+        "size": 25874,
+        "tags": [
+          "hello-world:latest"
+        ]
+      }
+    ]
   },
   "invalidDiskPreview": {
     "Ok": {
@@ -26,6 +147,7 @@
         "The requested disk ID does not identify a current supported WSL registration.",
         "The runtime owner requires a verified disk registration.",
         "An elevated Windows administrator session is required.",
+        "Running WSL distributions must be stopped manually: DockSlate",
         "Disk inspection requires verified ownership.",
         "Exclusive VHDX lock failed: The original disk registration is not verified.",
         "Disk identity verification failed: Disk identity inspection requires the verified owner and an exclusive file handle."
@@ -52,9 +174,9 @@
           "status": "blocked"
         },
         {
-          "detail": "WSL reports no running distribution. No shutdown command is issued.",
+          "detail": "Running WSL distributions must be stopped manually: DockSlate",
           "name": "wslStopped",
-          "status": "passed"
+          "status": "blocked"
         },
         {
           "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
@@ -116,25 +238,25 @@
       "blockedReasons": [],
       "distribution": "DockSlate",
       "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
-      "keeperVerified": false,
-      "message": "The verified DockSlate WSL runtime is installed and stopped.",
+      "keeperVerified": true,
+      "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
       "operation": {
-        "childProcessId": 22892,
-        "childStartedTicks": "639278239041166032",
-        "message": "The owned DockSlate runtime is stopped. Containers, images and volumes are preserved.",
-        "processId": 24188,
-        "startedAt": 1792227103850,
-        "startedTicks": "639278239026559486",
+        "childProcessId": 22164,
+        "childStartedTicks": "639278379110741390",
+        "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+        "processId": 11736,
+        "startedAt": 1792241110989,
+        "startedTicks": "639278379099750940",
         "state": "completed",
-        "updatedAt": 1792227104738
+        "updatedAt": 1792241125845
       },
-      "state": "stopped"
+      "state": "running"
     }
   },
   "runtimeInstallPreview": {
     "Ok": {
       "blockedReasons": [
-        "The verified DockSlate WSL runtime is installed and stopped.",
+        "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
         "The runtime target already exists; it will not be overwritten or automatically removed.",
         "A WSL registration already uses the runtime target directory. Existing registrations will not be changed."
       ],
@@ -188,21 +310,24 @@
         {
           "attached": null,
           "blockedReasons": [
+            "Running WSL distributions must be stopped manually: DockSlate",
             "An elevated Windows administrator session is required for compaction.",
             "Disk separation cannot be verified: \"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\""
           ],
           "compactionStatus": "blocked",
           "distribution": "DockSlate",
           "exists": true,
-          "fileSizeBytes": 2934964224,
+          "fileSizeBytes": 2993684480,
           "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
           "owner": "DockSlate",
           "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
-          "running": false
+          "running": true
         }
       ],
       "operation": null,
-      "runningDistributions": [],
+      "runningDistributions": [
+        "DockSlate"
+      ],
       "runtimeProcesses": [],
       "status": "ready"
     }

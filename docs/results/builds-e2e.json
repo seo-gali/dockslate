@@ -1,0 +1,137 @@
+{
+  "observedAt": "2026-10-17T13:54:19.680Z",
+  "mockData": false,
+  "checks": [
+    {
+      "name": "Real local builder inspection and default selection",
+      "passed": true
+    },
+    {
+      "name": "Actual image build remains active across menu changes and loads its output",
+      "passed": true,
+      "details": {
+        "id": "304-1792245268097-1",
+        "builder": "default",
+        "imageId": "sha256:4ac643519f3d31a282e9137bac4212e5aea0e3757e172a43e3c7e0e4a3e38b73"
+      }
+    },
+    {
+      "name": "History and build log detail read genuine BuildKit records",
+      "passed": true,
+      "details": {
+        "reference": "default/default/wdxxpmr8rsbhro4vm747gan2d",
+        "mismatchedBuilderAndNodeRejected": true
+      }
+    },
+    {
+      "name": "Native Save picker exports a genuine BuildKit archive",
+      "passed": true,
+      "details": {
+        "bytes": 11439,
+        "sha256": "7ca076d78c38a98ce41df0c614729408579a946a85a65c7491171be1200f904c"
+      }
+    },
+    {
+      "name": "Rust parser imports the genuine archive and preserves its build log",
+      "passed": true
+    },
+    {
+      "name": "Custom builder create/select/platform update/remove preserve existing builders without starting a daemon",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "failureConditions": [
+    "Engine changed",
+    "Builder selection/endpoint changed without approval",
+    "Existing image or builder changes",
+    "Build output not loaded to owned engine",
+    "History/log/archive mismatch",
+    "Unapproved transfer succeeds"
+  ],
+  "untested": [
+    "Remote BuildKit connection",
+    "TLS/SSH/Kubernetes builder setup",
+    "Real VHDX compaction"
+  ],
+  "originalBuilders": [
+    {
+      "name": "default",
+      "driver": "docker"
+    }
+  ],
+  "failure": null,
+  "initialNativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "3004A2E656819B74DC4CA642F11916D710774AD6F3B99A221AB39B1CC9F13897",
+    "appPid": 304
+  },
+  "resumptions": [
+    {
+      "observedAt": "2026-10-17T14:04:35.323Z",
+      "appPid": 16288,
+      "fromCheckCount": 2,
+      "priorFailure": "Error: ERROR: no record found for ref \"default/default/wdxxpmr8rsbhro4vm747gan2d\"\n    at evaluate (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/native-verification.mjs:43:40)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-builds.mjs:58:67",
+      "checkpoint": "Completed image build retained; only history/detail/export/import and isolated builder registration continue",
+      "baseline": {
+        "builders": [
+          {
+            "name": "default",
+            "driver": "docker",
+            "nodes": [
+              {
+                "endpoint": "default",
+                "error": null,
+                "name": "default",
+                "platforms": [
+                  "linux/amd64",
+                  "linux/amd64/v2",
+                  "linux/amd64/v3",
+                  "linux/amd64/v4"
+                ],
+                "status": "running",
+                "version": "v0.33.1"
+              }
+            ]
+          }
+        ],
+        "images": [
+          {
+            "id": "sha256:4ac643519f3d31a282e9137bac4212e5aea0e3757e172a43e3c7e0e4a3e38b73",
+            "tags": [
+              "dockslate-e2e-workbench-1792242870842:latest"
+            ]
+          },
+          {
+            "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "tags": [
+              "hello-world:latest"
+            ]
+          },
+          {
+            "id": "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+            "tags": [
+              "busybox:1.37.0"
+            ]
+          }
+        ],
+        "imported": []
+      }
+    }
+  ],
+  "archive": {
+    "bytes": 11439,
+    "sha256": "7ca076d78c38a98ce41df0c614729408579a946a85a65c7491171be1200f904c"
+  },
+  "importResult": {
+    "archiveId": "7ca076d78c38a98ce41df0c614729408579a946a85a65c7491171be1200f904c",
+    "message": "빌드 기록 1개를 가져왔습니다. 엔진의 빌드·이미지·캐시는 변경하지 않았습니다.",
+    "records": 1
+  },
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "2B79B8BA4F57AA3F8602D631DED33823ADC61885F494F2DD5A0146785159F24B",
+    "appPid": 16288,
+    "bytes": 4411392
+  }
+}

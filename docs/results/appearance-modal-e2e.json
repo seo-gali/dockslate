@@ -1,0 +1,124 @@
+{
+  "observedAt": "2026-10-17T18:35:41.710Z",
+  "completed": true,
+  "mockData": false,
+  "engineMutations": false,
+  "checks": [
+    {
+      "name": "Font controls scale rendered text and light theme updates semantic colors",
+      "passed": true,
+      "details": {
+        "before": "20.3077px",
+        "after": "22px",
+        "light": {
+          "theme": "light",
+          "bg": "#f6f8fb",
+          "color": "rgb(28, 40, 56)",
+          "stored": {
+            "theme": "light",
+            "fontSize": 13
+          }
+        }
+      }
+    },
+    {
+      "name": "Appearance persists after actual native WebView reload",
+      "passed": true
+    },
+    {
+      "name": "Build tabs share the app underline style",
+      "passed": true,
+      "details": [
+        {
+          "text": "진행 중",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "1.6px",
+          "top": 148.21250915527344
+        },
+        {
+          "text": "빌드 기록",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "1.6px",
+          "top": 148.21250915527344
+        },
+        {
+          "text": "빌더",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "1.6px",
+          "top": 148.21250915527344
+        },
+        {
+          "text": "가져온 기록",
+          "bg": "rgba(0, 0, 0, 0)",
+          "border": "1.6px",
+          "top": 148.21250915527344
+        }
+      ]
+    },
+    {
+      "name": "Popup Inspect loads real data and nested deletion confirmation cancels without executing",
+      "passed": true
+    },
+    {
+      "name": "Container name opens a centered popup without shrinking the table; Escape restores focus",
+      "passed": true,
+      "details": {
+        "modal": {
+          "left": 100,
+          "right": 1100,
+          "width": 1000,
+          "viewport": 1200,
+          "focusedInside": true,
+          "title": "adoring_black"
+        },
+        "tabs": [
+          "Details",
+          "Logs",
+          "Inspect",
+          "Mounts",
+          "Terminal",
+          "Files",
+          "Stats"
+        ]
+      }
+    }
+  ],
+  "priorAttempts": [
+    {
+      "observedAt": "2026-10-17T18:28:50.411Z",
+      "checks": 2,
+      "failure": "Error: TypeError: Cannot read properties of null (reading 'querySelectorAll')\n    at <anonymous>:1:81\n    at <anonymous>:1:259\n    at evaluate (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/native-verification.mjs:43:40)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-appearance.mjs:23:14",
+      "reason": "Wait for deferred real BuildKit snapshot before reading its tabs"
+    },
+    {
+      "observedAt": "2026-10-17T18:29:09.227Z",
+      "checks": 2,
+      "failure": "Error: Styled tabs missing or wrapping\n    at fact (file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-appearance.mjs:6:40)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-appearance.mjs:26:3",
+      "reason": "Use visible real tabs after deferred load; allow fractional borders at Windows display scaling"
+    },
+    {
+      "observedAt": "2026-10-17T18:29:35.319Z",
+      "checks": 3,
+      "failure": "Error: Escape or focus return failed\n    at fact (file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-appearance.mjs:6:40)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-appearance.mjs:36:3",
+      "reason": "Use visible real tabs after deferred load; allow fractional borders at Windows display scaling"
+    },
+    {
+      "observedAt": "2026-10-17T18:30:03.005Z",
+      "checks": 4,
+      "reason": "Use visible real tabs after deferred load; allow fractional borders at Windows display scaling"
+    },
+    {
+      "observedAt": "2026-10-17T18:34:13.272Z",
+      "checks": 3,
+      "failure": "Error: Timed out: actual Inspect data inside popup\n    at waitFor (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/native-verification.mjs:7:9)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-appearance.mjs:37:3",
+      "reason": "Use visible real tabs after deferred load; allow fractional borders at Windows display scaling"
+    }
+  ],
+  "originalPreference": "{\"theme\":\"dark\",\"fontSize\":12}",
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "4868BF5E7DB5B7EB14C37332C56DAB30AC0BA191BC47297D06DE24AD7A307044",
+    "appPid": 22084,
+    "bytes": 4411392
+  }
+}

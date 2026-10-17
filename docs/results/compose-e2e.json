@@ -1,0 +1,49 @@
+{
+  "observedAt": "2026-10-17T18:27:36.114Z",
+  "completed": true,
+  "project": "dockslate-e2e-compose-1792261656114",
+  "checks": [
+    {
+      "name": "Compose-format deployment.yaml builds both actual services with the owned local builder",
+      "passed": true
+    },
+    {
+      "name": "Only two isolated images, build records and new cache removed; existing containers/images/history/cache preserved",
+      "passed": true
+    }
+  ],
+  "createdImages": [
+    {
+      "id": "sha256:0838f07b2c0d963e3aea1c6697f2785b0d1379264d51aaef92ce34d8c63e06c7",
+      "tag": "dockslate-e2e-compose-1792261656114-alpha:latest"
+    },
+    {
+      "id": "sha256:18caea33a744a4ad0e5914f15b75bf5012e8664bbf6bee089e09f72e8a57aaf8",
+      "tag": "dockslate-e2e-compose-1792261656114-beta:latest"
+    }
+  ],
+  "removedImages": [
+    "sha256:0838f07b2c0d963e3aea1c6697f2785b0d1379264d51aaef92ce34d8c63e06c7",
+    "sha256:18caea33a744a4ad0e5914f15b75bf5012e8664bbf6bee089e09f72e8a57aaf8"
+  ],
+  "removedHistory": [
+    "default/default/tq1riwhq8jvbewp7q8m38avxd",
+    "default/default/gml271mi8vjp9wulrfdpwbjp7"
+  ],
+  "removedCache": [
+    "6h1gg5b8jajb9gw1pc09vyryk",
+    "dhtt50ffjiuymftzl5b51120f",
+    "wb9k8qfmdg7hdncuow0832sn7",
+    "kgdfjnnmkge4sanx6p8f7u4by",
+    "50w18sig5kt0kr618etjzidhx",
+    "ye3vacq3mtdzfxdobzy2j4fcz",
+    "arsjwx7ka6k4j8t3qrxe8p3io"
+  ],
+  "version": "Docker Compose version v5.6.0",
+  "resumption": {
+    "observedAt": "2026-10-17T18:28:31.725Z",
+    "priorFailure": "Error: Unexpected build history changes\n    at fact (file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-compose.mjs:9:46)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/verify-compose.mjs:27:87\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+    "reason": "Harness normalizes actual lowercase Buildx ref field; completed builds retained, not repeated"
+  },
+  "remainingFixtureCache": []
+}

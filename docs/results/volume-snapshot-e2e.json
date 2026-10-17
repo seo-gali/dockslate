@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-10-17T14:05:29.553Z",
+  "completed": true,
+  "mockData": false,
+  "checks": [
+    {
+      "name": "Shared snapshot and direct volume list match actual Docker disk usage and fixture references",
+      "passed": true,
+      "volume": "dockslate-e2e-workbench-1792242870842-data",
+      "bytes": 18,
+      "referenceCount": 1
+    }
+  ],
+  "nativeArtifact": {
+    "path": "src-tauri/target/release/dockslate.exe",
+    "sha256": "2B79B8BA4F57AA3F8602D631DED33823ADC61885F494F2DD5A0146785159F24B",
+    "appPid": 16288,
+    "bytes": 4411392
+  }
+}

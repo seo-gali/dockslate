@@ -26,8 +26,8 @@ export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 }
 
-export function PageHeader({ title, description, children }: { title: string; description: string; children?: ReactNode }) {
-  return <div className="page-header"><div><h1>{title}</h1><p>{description}</p></div><div className="header-actions">{children}</div></div>;
+export function PageHeader({ title, description, children }: { title: string; description?: string; children?: ReactNode }) {
+  return <div className="page-header"><div><h1>{title}</h1>{description && <p>{description}</p>}</div><div className="header-actions">{children}</div></div>;
 }
 
 export function StatusBadge({ tone = 'muted', children }: { tone?: 'success' | 'warning' | 'danger' | 'muted' | 'accent'; children: ReactNode }) {
@@ -48,6 +48,13 @@ export function SearchInput({ value, onChange, placeholder }: { value: string; o
 
 export function RefreshButton({ busy, onClick }: { busy: boolean; onClick: () => void }) {
   return <button className="button" disabled={busy} onClick={onClick} title="모든 화면의 데이터를 함께 새로고침합니다"><Icon name="refresh" />{busy ? '전체 조회 중…' : '전체 새로고침'}</button>;
+}
+
+export function Pagination({ page, count, size = 50, onPage }: { page: number; count: number; size?: number; onPage: (page: number) => void }) {
+  const pages = Math.max(1, Math.ceil(count / size));
+  const current = Math.min(page, pages - 1);
+  if (pages === 1) return null;
+  return <div className="pagination"><span>{current * size + 1}~{Math.min(count, (current + 1) * size)} / {count.toLocaleString()}개</span><button className="button small" disabled={current === 0} onClick={() => onPage(current - 1)}>이전</button><span>{current + 1} / {pages}</span><button className="button small" disabled={current + 1 === pages} onClick={() => onPage(current + 1)}>다음</button></div>;
 }
 
 export function DetailPanel({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {

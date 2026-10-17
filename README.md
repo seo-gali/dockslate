@@ -2,7 +2,9 @@
 
 > Docker Desktop 없이 사용하는 Windows용 독립 Moby 엔진과 컨테이너 관리 앱
 
-**현재 상태: Docker Desktop 제거 후 독립 엔진 연결·실제 기능 E2E 확인.** `D:\Program Files\DockSlate\runtime\wsl`의 전용 WSL 2 배포판에서 Moby 29.8.2 / API 1.55가 실행됩니다. Windows 앱에서 컨테이너·이미지·로그·선택 정리, Windows bind mount와 localhost 접근, 엔진 중지·재시작을 검증했습니다. 초기 일괄 조회·메뉴 캐시·수동 새로고침, Docker Hub 검색과 십진 단위 표시를 실제 EXE로 확인했습니다. 메뉴·탭 이동 중 추가 데이터 조회는 0회였습니다. VHDX 압축은 실제 실행하지 않았으며 안전 조건 미충족 시 차단합니다. [현재 검증과 제한](docs/results/standalone-runtime-verification.md).
+**현재 상태: 독립 엔진과 확장 기능의 실제 동작을 검증했습니다.** `D:\Program Files\DockSlate\runtime\wsl`의 전용 WSL 2 배포판에서 Moby 29.8.2 / API 1.55를 사용합니다. 공용 화면·이미지 실행 4개, 컨테이너 상세 7개, 볼륨 작업 11개, 빌드 작업 6개 검사가 통과했습니다. 최종 EXE의 메뉴·전체 새로고침 검사 3개, 글자 크기·테마·중앙 팝업 검사 5개, Compose 두 서비스 실제 빌드·정리 검사도 통과했습니다. 실제 VHDX 압축과 원격 BuildKit 연결은 검증하지 않았습니다. [검증 범위·실행 파일·제한](docs/results/workbench-verification.md), [기존 독립 엔진 검증](docs/results/standalone-runtime-verification.md).
+
+[사용 안내](USER_GUIDE.md): 실행·볼륨·빌드·Compose·앱 교체 시 WSL 데이터와 성능 관련 설명.
 
 ## 프로젝트
 
@@ -20,14 +22,16 @@
 | 화면 | 기능 |
 | --- | --- |
 | Overview | 엔진 연결 상태, 실행 중 컨테이너 수, 이미지 수, 저장 공간 요약 |
-| Containers | 목록·검색·상태, 시작·중지·재시작·삭제, 로그, Compose 프로젝트별 그룹 |
-| Images | 로컬 목록·필터, Docker Hub 검색·이미지 선택, Pull·Dockerfile 빌드·컨테이너 실행·삭제 |
+| Containers | 목록·검색·상태·CPU·메모리, 시작·중지·재시작·일시정지, 로그·Inspect·터미널·파일, Compose 프로젝트별 그룹 |
+| Images | 로컬 목록·필터, Docker Hub 검색·이미지 선택, Pull·실행 설정·컨테이너 생성·삭제 |
+| Volumes | 생성·복제·참조 컨테이너, 파일·텍스트 보기, tar 내보내기·병합/교체 가져오기, 승인 후 비우기·삭제 |
+| Builds | 이미지 빌드·진행 중 탭·로그·이력, 빌더 검사·선택·생성·플랫폼 설정, 빌드 기록 내보내기·가져오기 |
 | Disk Manager | Docker 사용량·정리 대상 분석, 미사용 이미지·빌드 캐시 선택 정리, WSL VHDX 탐색·크기 확인·조건부 압축 |
-| Settings | 독립 엔진 설치·시작·중지·승인, 엔진 정보, 디스크 작업 전제 조건 안내 |
+| Settings | 글자 크기·다크/라이트 테마, 독립 엔진 설치·시작·중지, 엔진 정보 |
 
-Compose 그룹은 Docker 메타데이터를 이용한 표시 기능입니다. Compose 파일 편집·배포, 터미널 Exec, Kubernetes, 원격 호스트, 계정 기능은 MVP에서 제외합니다.
+Compose 그룹은 Docker 메타데이터를 이용한 표시 기능입니다. Compose 파일 편집·배포, Kubernetes, 원격 Docker Engine과 계정 기능은 지원하지 않습니다. 사용자 빌더는 DockSlate 엔진의 BuildKit 컨테이너 또는 지정한 원격 BuildKit을 지원합니다. 원격 빌더에 소스를 전송하려면 해당 빌더를 명시적으로 선택해야 합니다.
 
-앱 시작 시 엔진·컨테이너·이미지·Docker 사용량·런타임·WSL 디스크를 하나의 스냅샷으로 조회합니다. 메뉴·탭 이동은 저장된 결과와 입력 상태를 즉시 표시하며 추가 조회를 하지 않습니다. 어느 화면에서든 **새로고침**을 누르면 앱 전체 데이터를 함께 갱신합니다. Pull·삭제·컨테이너 변경 뒤에도 전체 결과를 갱신해 Overview와 상세 화면을 일치시킵니다. 평상시 자동 폴링은 없고, 실행한 작업의 완료 추적과 열어 둔 컨테이너 로그 갱신은 별도로 동작합니다. 갱신 중에도 기존 목록을 유지합니다.
+앱 시작 시 엔진·컨테이너·이미지·볼륨·Docker 사용량·런타임·WSL 디스크를 공용 스냅샷으로 조회합니다. CPU·메모리와 빌드 이력은 기본 화면을 지연시키지 않도록 백그라운드에서 별도로 읽습니다. 메뉴 이동은 저장된 결과와 입력 상태를 표시합니다. 어느 화면에서든 **전체 새로고침**을 누르면 앱 전체 데이터를 함께 갱신합니다. Pull·삭제·컨테이너 변경 뒤에도 전체 결과를 갱신해 Overview와 상세 화면을 일치시킵니다. 평상시 자동 폴링은 없고 실행 중인 작업, 열어 둔 로그·터미널, 사용자가 켠 실시간 통계만 추적합니다. 갱신 중에도 기존 목록을 유지합니다. 상세 파일과 Inspect는 처음 열 때 읽고 보관합니다. 목록은 50개씩, 큰 Inspect JSON은 화면에 보이는 줄만 렌더링합니다.
 
 용량은 1,000 기준 KB·MB·GB로 표시합니다. Overview의 **정리 대상 보기**에서 Docker Usage로 이동해 미사용 이미지·빌드 캐시를 선택하고 삭제 내용을 승인할 수 있습니다. Images에는 **Docker Hub 이미지 검색**이 항상 표시됩니다. 검색 버튼으로 결과를 조회하고 이미지를 선택하면 Pull 입력이 열립니다. 태그를 확인한 뒤 Pull을 실행합니다. 검색 영역의 접기·펼치기 상태와 로컬 필터·검색 결과는 메뉴를 이동해도 유지됩니다. 검색은 엔진의 Docker Hub API를 사용하므로 런타임이 중지돼 있으면 이유와 엔진 설정 바로가기를 표시합니다.
 
@@ -38,6 +42,12 @@ Compose 그룹은 Docker 메타데이터를 이용한 표시 기능입니다. Co
 실행 설정의 **더보기**에서 Docker 네트워크, 환경 변수, 명령·ENTRYPOINT, 작업 디렉터리, 재시작 정책, 메모리(MB)·CPU 제한을 지정합니다. 네트워크 목록은 더보기를 처음 열 때와 목록 새로고침 시에만 조회합니다. 사용자 bridge 네트워크를 만들면 즉시 선택하고, 내부 전용 설정도 지원합니다. 기본 bridge와 네트워크를 사용하지 않는 none을 선택할 수도 있습니다. none 선택 시 포트 연결을 비웁니다. 환경 변수는 한 줄에 KEY=value, 명령과 ENTRYPOINT는 한 줄에 인수 하나를 입력합니다. 빈 항목은 이미지 기본값을 사용합니다. 생성한 네트워크는 실행 설정을 닫아도 유지됩니다.
 
 메뉴·제목·버튼의 드래그 선택을 막고 입력·로그·표 데이터·경로·진단은 복사할 수 있게 했습니다. Settings는 현재 런타임 상태를 표시하며 중지 완료 후 초록색 성공 알림을 남기지 않습니다.
+
+Containers의 이름이나 작업 메뉴에서 상세 기능을 엽니다. Inspect는 실제 JSON을 항목별로 표시하고 Mounts에서 볼륨 연결을 확인합니다. Terminal은 선택한 컨테이너 안의 `/bin/sh` 또는 `/bin/bash`에 연결합니다. 메뉴를 옮기면 출력과 연결을 보관하고 조회를 멈추며, 엔진 중지와 앱 종료 시 연결을 닫습니다. Files는 실행 중이거나 중지된 컨테이너를 지원합니다. 폴더는 256개 항목, 텍스트는 512KB까지 표시합니다. 중지 상태는 Docker archive API의 16MB 제한을 적용하므로 큰 폴더는 하위 경로를 직접 입력해야 합니다. Stats의 실시간 조회는 사용자가 켤 때만 동작합니다.
+
+Volumes에서는 이름을 영문·숫자로 시작하고 이후 영문·숫자·`_-.`를 사용할 수 있습니다. 실행 설정의 더보기에서 볼륨을 연결할 수 있습니다. 파일 작업은 드라이버 옵션이 없는 local 볼륨을 지원하며 약 2.15GB(2GiB)·50,000개 항목으로 제한합니다. UTF-8 본문은 65,536바이트까지 표시합니다. tar 가져오기는 같은 경로만 덮어쓰는 병합과 기존 내용을 지우는 전체 교체를 구분해 승인받습니다. 중지된 컨테이너의 참조도 비우기·가져오기·삭제를 차단합니다. 작업 중 새 참조가 확인되면 중단합니다. 참조 검사와 파일 변경을 하나의 원자적 작업으로 묶거나 이미 적용한 내용을 되돌리지는 않습니다.
+
+Builds의 진행 중 탭에서 앱 빌드의 상태·로그와 마지막 조회 시 실행 중이던 BuildKit 작업을 구분합니다. 앱에서는 한 번에 하나씩 빌드하며 외부 작업 상태는 전체 새로고침으로 갱신합니다. 빌더 선택은 현재 앱에만 적용하고 재시작 시 검증된 로컬 기본 빌더를 사용합니다. 원격 BuildKit은 TCP 또는 WSL 내부 Unix 소켓을 지원하며 TLS·SSH·Kubernetes 설정은 제공하지 않습니다. `.dockerbuild` 내보내기는 Buildx를 사용하고 가져오기는 제품 내부 Rust 파서로 기록·로그를 보관합니다. Docker Desktop이나 PowerShell 파서에 의존하지 않으며 이미지·캐시를 복원하는 기능은 아닙니다. 입력 64MB, 압축 해제 128MB, 처리 15초와 보관 메타데이터 크기 제한을 적용합니다.
 
 ## 디스크 관리 범위
 
@@ -94,7 +104,7 @@ Windows 제품 빌드 및 읽기 전용 진단:
 
 `npm run dev`도 sandbox 밖에서 의존성 변환과 HTTP 응답을 확인했습니다. 분석·도구·Rust·검증 디렉터리를 Vite 파일 감시에서 제외해 잠긴 분석 파일의 EBUSY 종료를 수정했습니다. Tauri 개발 모드(`.\scripts\desktop.ps1 -Mode dev`)는 별도로 검증하지 않았습니다.
 
-[최신 독립 엔진 구현·실행 검증](docs/results/standalone-runtime-verification.md), [기존 클라이언트 검증](docs/results/mvp-verification.md), [추가 구현 근거](docs/results/rea-analysis.md), [세션 REA MCP 호출 감사](docs/results/rea-mcp-call-audit.md)를 참고하세요.
+[확장 기능의 현재 검증](docs/results/workbench-verification.md), [독립 엔진 구현·실행 검증](docs/results/standalone-runtime-verification.md), [기존 클라이언트 검증](docs/results/mvp-verification.md), [추가 구현 근거](docs/results/rea-analysis.md), [세션 REA MCP 호출 감사](docs/results/rea-mcp-call-audit.md)를 참고하세요.
 
 로컬 의존성의 라이선스와 확보한 원문은 [Third-party notices](THIRD_PARTY_NOTICES.md)에 기록했습니다. 누락 원문과 SDK·Rust 표준 라이브러리 고지가 남아 있어 외부 배포 고지는 확정하지 않았습니다.
 

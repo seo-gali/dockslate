@@ -14,14 +14,16 @@ static MUTATION: Mutex<()> = Mutex::new(());
 static PREVIEWS: OnceLock<Mutex<HashMap<String, Preview>>> = OnceLock::new();
 
 #[derive(Clone)]
-struct Client {
-    transport: Transport,
+pub(crate) struct Client {
+    pub(crate) transport: Transport,
     context: String,
     owner: String,
-    api: String,
+    pub(crate) api: String,
     server: String,
-    identity: String,
+    pub(crate) identity: String,
     cache_api_supported: bool,
+    engine_cpu_count: Option<u64>,
+    memory_total_bytes: Option<u64>,
 }
 #[derive(Clone)]
 struct Preview {
@@ -134,6 +136,8 @@ fn probe_transport(
             server: server.clone(),
             identity: String::new(),
             cache_api_supported: min_api <= 51 && max_api >= 51,
+            engine_cpu_count: None,
+            memory_total_bytes: None,
         };
         let info = client.json("GET", "/info")?;
         if info["OSType"].as_str() != Some("linux")
@@ -148,6 +152,8 @@ fn probe_transport(
             .filter(|id| !id.is_empty())
             .ok_or("Engine identity unavailable; operation blocked")?
             .to_owned();
+        client.engine_cpu_count = info["NCPU"].as_u64().filter(|count| *count > 0);
+        client.memory_total_bytes = info["MemTotal"].as_u64().filter(|bytes| *bytes > 0);
         Ok((
             json!({"state":"connected","context":context,"endpoint":ENDPOINT,"engine":"moby","provider":"DockSlate","serverVersion":server,"apiVersion":api,"ownerPath":owner,"message":"Verified independent DockSlate Moby Engine"}),
             Some(client),
@@ -168,7 +174,7 @@ fn probe_transport(
 }
 
 impl Client {
-    fn bytes(
+    pub(crate) fn bytes(
         &self,
         method: &str,
         path: &str,
@@ -189,14 +195,14 @@ impl Client {
             if method != "GET" && !message.starts_with("Docker HTTP") && !message.starts_with("Invalid internal Docker request") { format!("{message}. The operation outcome is unknown; refresh the engine state before retrying.") } else { message }
         })
     }
-    fn json(&self, method: &str, path: &str) -> Result<Value, String> {
+    pub(crate) fn json(&self, method: &str, path: &str) -> Result<Value, String> {
         let body = self.bytes(method, path, REQUEST_TIMEOUT, BODY_LIMIT)?;
         if body.is_empty() {
             return Ok(Value::Null);
         }
         serde_json::from_slice(&body).map_err(|_| "Invalid Docker JSON response".into())
     }
-    fn containers(&self) -> Result<Vec<Value>, String> {
+    pub(crate) fn containers(&self) -> Result<Vec<Value>, String> {
         self.json("GET", "/containers/json?all=1")?
             .as_array()
             .cloned()
@@ -208,7 +214,7 @@ impl Client {
             .cloned()
             .ok_or_else(|| "Invalid Docker image list".into())
     }
-    fn usage(&self) -> Result<Value, String> {
+    pub(crate) fn usage(&self) -> Result<Value, String> {
         let usage = self.json("GET", "/system/df")?;
         for key in ["Images", "Containers", "Volumes", "BuildCache"] {
             if !usage
@@ -238,7 +244,7 @@ impl Client {
             .map_err(|_| "Invalid Docker cache cleanup response; outcome may be unknown".into())
     }
 }
-fn connected() -> Result<Client, String> {
+pub(crate) fn connected() -> Result<Client, String> {
     let (state, client) = probe()?;
     client.ok_or_else(|| text(&state, "message").to_owned())
 }
@@ -257,17 +263,18 @@ impl BuildEngine {
         }
         Ok(())
     }
-    pub(crate) fn spawn(
+    pub(crate) fn spawn_on(
         &self,
         context: &str,
         dockerfile: &str,
         tag: &str,
         no_cache: bool,
+        builder: &str,
     ) -> Result<std::process::Child, String> {
         self.verify_identity()?;
         self.0
             .transport
-            .spawn_image_build(context, dockerfile, tag, no_cache)
+            .spawn_configured_image_build(context, dockerfile, tag, no_cache, builder)
     }
     pub(crate) fn image_id(&self, tag: &str) -> Result<String, String> {
         self.verify_identity()?;
@@ -317,7 +324,7 @@ pub fn engine_status() -> Result<Value, String> {
 }
 fn unavailable_snapshot(engine: Result<Value, String>, message: String) -> Value {
     let error: Result<Value, String> = Err(message);
-    json!({"engine_status":engine,"overview":error,"containers_list":error,"images_list":error,"disk_usage":error})
+    json!({"engine_status":engine,"overview":error,"containers_list":error,"images_list":error,"disk_usage":error,"volumes_list":error})
 }
 pub fn dashboard_snapshot() -> Result<Value, String> {
     std::thread::scope(|scope| {
@@ -371,6 +378,10 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
                 .unwrap_or_else(|_| Err("Docker usage snapshot worker failed.".into())),
         )
     });
+    let volumes = match (&usage, &containers) {
+        (Ok(usage), Ok(containers)) => crate::volumes::list_from_snapshot(usage, containers),
+        (Err(message), _) | (_, Err(message)) => Err(message.clone()),
+    };
     let container_list = containers
         .as_ref()
         .map(|items| normalize_containers(items))
@@ -390,7 +401,7 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
         (Err(message), _, _) | (_, Err(message), _) | (_, _, Err(message)) => Err(message.clone()),
     };
     let engine_status: Result<Value, String> = Ok(engine);
-    json!({"engine_status":engine_status,"overview":overview,"containers_list":container_list,"images_list":image_list,"disk_usage":disk_usage})
+    json!({"engine_status":engine_status,"overview":overview,"containers_list":container_list,"images_list":image_list,"disk_usage":disk_usage,"volumes_list":volumes})
 }
 pub fn overview() -> Result<Value, String> {
     let (engine, client) = probe()?;
@@ -461,13 +472,15 @@ fn normalize_containers(containers: &[Value]) -> Value {
             if let Some(public) = p["PublicPort"].as_u64() { format!("{}:{public} → {private}/{kind}", p["IP"].as_str().unwrap_or("IP unavailable")) } else { format!("{private}/{kind}") }
         }).collect::<Vec<_>>().join(", ");
         let name = c["Names"].as_array().and_then(|names| names.first()).and_then(Value::as_str).unwrap_or("").trim_start_matches('/');
-        json!({"id":c["Id"],"name":name,"image":c["Image"],"state":c["State"],"status":c["Status"],"ports":ports,"composeProject":c["Labels"]["com.docker.compose.project"].as_str()})
+        json!({"id":c["Id"],"name":name,"image":c["Image"],"state":c["State"],"status":c["Status"],"ports":ports,"publishedPorts":array(c,"Ports").iter().filter(|p|p["PublicPort"].as_u64().is_some()).map(|p|json!({"privatePort":p["PrivatePort"],"publicPort":p["PublicPort"],"protocol":p["Type"],"ip":p["IP"]})).collect::<Vec<_>>(),"composeProject":c["Labels"]["com.docker.compose.project"].as_str()})
     }).collect();
     json!(items)
 }
 pub fn container_action(id: String, action: String) -> Result<Value, String> {
     let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
-    if !container_id(&id) || !["start", "stop", "restart"].contains(&action.as_str()) {
+    if !container_id(&id)
+        || !["start", "stop", "restart", "pause", "unpause"].contains(&action.as_str())
+    {
         return Err("Unsupported container action or ID".into());
     }
     let client = connected()?;
@@ -484,10 +497,16 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
     {
         return Err("Container is already stopped".into());
     }
-    let query = if action == "start" {
-        String::new()
-    } else {
+    if action == "pause" && text(&container, "State") != "running" {
+        return Err("실행 중인 컨테이너만 일시정지할 수 있습니다.".into());
+    }
+    if action == "unpause" && text(&container, "State") != "paused" {
+        return Err("일시정지된 컨테이너만 다시 실행할 수 있습니다.".into());
+    }
+    let query = if ["stop", "restart"].contains(&action.as_str()) {
         "?t=10".into()
+    } else {
+        String::new()
     };
     client.json("POST", &format!("/containers/{id}/{action}{query}"))?;
     Ok(json!({"message":format!("Container {action} completed")}))
@@ -531,6 +550,15 @@ pub struct ContainerOptions {
     network_id: Option<String>,
     memory_bytes: Option<u64>,
     nano_cpus: Option<u64>,
+    mounts: Vec<VolumeMount>,
+}
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct VolumeMount {
+    name: String,
+    target: String,
+    #[serde(default)]
+    read_only: bool,
 }
 impl ContainerOptions {
     fn validate(&self) -> Result<(), String> {
@@ -587,6 +615,34 @@ impl ContainerOptions {
             .is_some_and(|cpus| !(100_000_000..=128_000_000_000).contains(&cpus))
         {
             return Err("CPU 제한은 0.1개부터 128개까지 입력하세요.".into());
+        }
+        let mut targets = HashSet::new();
+        if self.mounts.len() > 8 {
+            return Err("볼륨은 최대 8개까지 연결할 수 있습니다.".into());
+        }
+        for mount in &self.mounts {
+            if mount.name.is_empty()
+                || mount.name.len() > 255
+                || !mount.name.as_bytes()[0].is_ascii_alphanumeric()
+                || !mount
+                    .name
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte))
+            {
+                return Err("선택한 볼륨 이름이 올바르지 않습니다.".into());
+            }
+            if !mount.target.starts_with('/')
+                || mount.target == "/"
+                || mount.target.len() > 4096
+                || mount.target.contains('\0')
+                || mount
+                    .target
+                    .split('/')
+                    .any(|part| part == ".." || part == ".")
+                || !targets.insert(mount.target.trim_end_matches('/'))
+            {
+                return Err("볼륨 대상은 중복되지 않는 컨테이너 내부 절대 경로를 지정하세요. 루트 경로와 상위 경로는 사용할 수 없습니다.".into());
+            }
         }
         Ok(())
     }
@@ -777,6 +833,20 @@ pub fn container_run(
     }
     let client = connected()?;
     let _ = local_image(&client, &image_id_value)?;
+    let mut mounts = Vec::new();
+    for mount in &options.mounts {
+        let volume = client.json("GET", &format!("/volumes/{}", encode(&mount.name)))?;
+        if text(&volume, "Name") != mount.name
+            || volume["Driver"].as_str() != Some("local")
+            || volume["Scope"].as_str() != Some("local")
+            || volume["Options"]
+                .as_object()
+                .is_some_and(|options| !options.is_empty())
+        {
+            return Err("기본 local 드라이버의 기존 볼륨만 연결할 수 있습니다. Volumes에서 볼륨을 먼저 만드세요.".into());
+        }
+        mounts.push(json!({"Type":"volume","Source":mount.name,"Target":mount.target,"ReadOnly":mount.read_only,"VolumeOptions":{"NoCopy":true}}));
+    }
     let mut config = json!({
         "Image":image_id_value,
         "ExposedPorts":exposed,
@@ -789,6 +859,9 @@ pub fn container_run(
     });
     if !options.env.is_empty() {
         config["Env"] = json!(options.env);
+    }
+    if !mounts.is_empty() {
+        config["HostConfig"]["Mounts"] = json!(mounts);
     }
     if !options.command.is_empty() {
         config["Cmd"] = json!(options.command);
@@ -881,6 +954,273 @@ pub fn container_run(
             "id":id,"name":name,"state":"unknown","started":true,"warnings":warnings,
             "message":"시작 요청을 완료했지만 현재 상태를 확인하지 못했습니다. Containers에서 확인하세요."
         })),
+    }
+}
+
+pub fn container_inspect(id: String) -> Result<Value, String> {
+    if !container_id(&id) {
+        return Err("컨테이너 ID가 올바르지 않습니다.".into());
+    }
+    inspect_container(&connected()?, &id)
+}
+
+fn inspect_container(client: &Client, id: &str) -> Result<Value, String> {
+    let bytes = client.bytes(
+        "GET",
+        &format!("/containers/{id}/json?size=false"),
+        REQUEST_TIMEOUT,
+        2 * 1024 * 1024,
+    )?;
+    let value: Value =
+        serde_json::from_slice(&bytes).map_err(|_| "컨테이너 Inspect 응답을 읽지 못했습니다.")?;
+    if text(&value, "Id") != id {
+        return Err("컨테이너 Inspect 응답의 ID가 요청과 다릅니다.".into());
+    }
+    Ok(value)
+}
+
+fn unavailable_stats(id: &str, reason: &str) -> Value {
+    json!({
+        "id":id,"cpuPercent":null,"memoryUsageBytes":null,"memoryLimitBytes":null,
+        "memoryPercent":null,"readAt":null,"cpuReason":reason,"memoryReason":reason,
+        "cpuUsageDelta":null,"systemUsageDelta":null,"onlineCpus":null,
+        "memoryRawUsageBytes":null,"memoryCacheBytes":null
+    })
+}
+
+fn stats_with_client(client: &Client, id: &str, state: Option<&str>) -> Value {
+    if !matches!(state, Some("running" | "paused")) {
+        let reason = if state.is_some() {
+            "실행 중이거나 일시정지된 컨테이너의 사용량만 조회합니다."
+        } else {
+            "컨테이너가 더 이상 존재하지 않습니다."
+        };
+        return unavailable_stats(id, reason);
+    }
+    let result: Result<Value, String> = (|| {
+        let bytes = client.bytes(
+            "GET",
+            &format!("/containers/{id}/stats?stream=false"),
+            Duration::from_secs(5),
+            1024 * 1024,
+        )?;
+        let stats: Value = serde_json::from_slice(&bytes)
+            .map_err(|_| "컨테이너 사용량 응답을 읽지 못했습니다.")?;
+        if stats["id"].as_str() != Some(id) {
+            return Err("컨테이너 사용량 응답의 ID가 요청과 다릅니다.".into());
+        }
+        Ok(normalize_stats(id, &stats))
+    })();
+    result.unwrap_or_else(|reason| unavailable_stats(id, &reason))
+}
+
+fn normalize_stats(id: &str, stats: &Value) -> Value {
+    let timestamp = |field: &str| {
+        stats[field]
+            .as_str()
+            .filter(|value| !value.is_empty() && value.len() <= 128 && !value.starts_with("0001-"))
+    };
+    let read_at = timestamp("read");
+    let previous_at = timestamp("preread");
+    let current = &stats["cpu_stats"];
+    let previous = &stats["precpu_stats"];
+    let cpu_delta = current["cpu_usage"]["total_usage"]
+        .as_u64()
+        .zip(previous["cpu_usage"]["total_usage"].as_u64())
+        .and_then(|(current, previous)| current.checked_sub(previous));
+    let system_delta = current["system_cpu_usage"]
+        .as_u64()
+        .zip(previous["system_cpu_usage"].as_u64())
+        .and_then(|(current, previous)| {
+            (previous > 0)
+                .then(|| current.checked_sub(previous))
+                .flatten()
+        })
+        .filter(|delta| *delta > 0);
+    let cpus = current["online_cpus"]
+        .as_u64()
+        .filter(|count| *count > 0)
+        .or_else(|| {
+            current["cpu_usage"]["percpu_usage"]
+                .as_array()
+                .map(|values| values.len() as u64)
+                .filter(|count| *count > 0)
+        });
+    let cpu_percent = cpu_delta
+        .zip(system_delta)
+        .zip(cpus)
+        .filter(|_| read_at.is_some() && previous_at.is_some() && read_at != previous_at)
+        .map(|((cpu, system), cpus)| cpu as f64 / system as f64 * cpus as f64 * 100.0)
+        .filter(|percent| percent.is_finite());
+    let memory = &stats["memory_stats"];
+    let raw_usage = memory["usage"].as_u64();
+    let cache = memory["stats"]["total_inactive_file"]
+        .as_u64()
+        .or_else(|| memory["stats"]["inactive_file"].as_u64());
+    let usage = raw_usage
+        .zip(cache)
+        .and_then(|(usage, cache)| usage.checked_sub(cache));
+    let limit = memory["limit"].as_u64().filter(|bytes| *bytes > 0);
+    let memory_percent = usage
+        .zip(limit)
+        .map(|(usage, limit)| usage as f64 / limit as f64 * 100.0)
+        .filter(|percent| percent.is_finite());
+    let cpu_reason = cpu_percent
+        .is_none()
+        .then_some("CPU 사용량 계산에 필요한 두 시점의 샘플 또는 CPU 수를 확인하지 못했습니다.");
+    let memory_reason = if usage.is_none() {
+        Some("메모리 사용량 또는 Linux 캐시 값을 확인하지 못했습니다.")
+    } else if limit.is_none() {
+        Some("메모리 제한을 확인하지 못했습니다.")
+    } else {
+        None
+    };
+    json!({
+        "id":id,"cpuPercent":cpu_percent,"memoryUsageBytes":usage,"memoryLimitBytes":limit,
+        "memoryPercent":memory_percent,"readAt":read_at,"cpuReason":cpu_reason,"memoryReason":memory_reason,
+        "cpuUsageDelta":cpu_delta,"systemUsageDelta":system_delta,"onlineCpus":cpus,
+        "memoryRawUsageBytes":raw_usage,"memoryCacheBytes":cache
+    })
+}
+
+pub fn container_stats(id: String) -> Result<Value, String> {
+    if !container_id(&id) {
+        return Err("컨테이너 ID가 올바르지 않습니다.".into());
+    }
+    let client = connected()?;
+    let containers = client.containers()?;
+    let state = containers
+        .iter()
+        .find(|container| text(container, "Id") == id)
+        .map(|container| text(container, "State"));
+    Ok(stats_with_client(&client, &id, state))
+}
+
+pub fn containers_metrics(ids: Vec<String>) -> Result<Value, String> {
+    let mut unique = HashSet::new();
+    if ids.len() > 256 || ids.iter().any(|id| !container_id(id) || !unique.insert(id)) {
+        return Err(
+            "사용량을 조회할 컨테이너 ID는 중복 없이 최대 256개까지 지정할 수 있습니다.".into(),
+        );
+    }
+    let client = connected()?;
+    let containers = client.containers();
+    let samples = match containers {
+        Err(reason) => ids
+            .iter()
+            .map(|id| unavailable_stats(id, &reason))
+            .collect::<Vec<_>>(),
+        Ok(containers) => {
+            let states: HashMap<_, _> = containers
+                .iter()
+                .map(|container| (text(container, "Id"), text(container, "State")))
+                .collect();
+            let next = std::sync::atomic::AtomicUsize::new(0);
+            let batches = std::thread::scope(|scope| {
+                let mut workers = Vec::new();
+                for _ in 0..ids.len().min(4) {
+                    workers.push(scope.spawn(|| {
+                        let mut values = Vec::new();
+                        loop {
+                            let index = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                            let Some(id) = ids.get(index) else { break };
+                            values.push((
+                                index,
+                                stats_with_client(&client, id, states.get(id.as_str()).copied()),
+                            ));
+                        }
+                        values
+                    }));
+                }
+                workers
+                    .into_iter()
+                    .flat_map(|worker| worker.join().unwrap_or_default())
+                    .collect::<Vec<_>>()
+            });
+            let mut samples: Vec<_> = ids
+                .iter()
+                .map(|id| unavailable_stats(id, "사용량 조회 작업을 완료하지 못했습니다."))
+                .collect();
+            for (index, sample) in batches {
+                samples[index] = sample;
+            }
+            samples
+        }
+    };
+    Ok(json!({
+        "samples":samples,"engineCpuCount":client.engine_cpu_count,
+        "memoryTotalBytes":client.memory_total_bytes,"measuredAt":now_ms()
+    }))
+}
+
+pub fn container_open_port(
+    id: String,
+    private_port: u16,
+    public_port: u16,
+) -> Result<Value, String> {
+    if !container_id(&id) || private_port == 0 || public_port == 0 {
+        return Err("컨테이너 ID와 포트를 확인하세요.".into());
+    }
+    let container = inspect_container(&connected()?, &id)?;
+    if container["State"]["Running"].as_bool() != Some(true) {
+        return Err("실행 중인 컨테이너의 포트만 열 수 있습니다.".into());
+    }
+    let bindings = &container["NetworkSettings"]["Ports"][format!("{private_port}/tcp")];
+    let verified = bindings.as_array().is_some_and(|bindings| {
+        bindings.iter().any(|binding| {
+            binding["HostPort"]
+                .as_str()
+                .and_then(|port| port.parse::<u16>().ok())
+                == Some(public_port)
+                && matches!(binding["HostIp"].as_str(), Some("127.0.0.1" | "0.0.0.0"))
+        })
+    });
+    if !verified {
+        return Err(
+            "선택한 포트의 로컬 TCP 연결을 확인하지 못했습니다. 전체 새로고침 후 다시 시도하세요."
+                .into(),
+        );
+    }
+    let url = format!("http://127.0.0.1:{public_port}/");
+    #[cfg(windows)]
+    {
+        use std::{ffi::c_void, os::windows::ffi::OsStrExt};
+        #[link(name = "shell32")]
+        unsafe extern "system" {
+            fn ShellExecuteW(
+                window: *mut c_void,
+                operation: *const u16,
+                file: *const u16,
+                parameters: *const u16,
+                directory: *const u16,
+                show: i32,
+            ) -> *mut c_void;
+        }
+        let file: Vec<_> = std::ffi::OsStr::new(&url)
+            .encode_wide()
+            .chain(Some(0))
+            .collect();
+        let operation: Vec<_> = "open".encode_utf16().chain(Some(0)).collect();
+        let result = unsafe {
+            ShellExecuteW(
+                std::ptr::null_mut(),
+                operation.as_ptr(),
+                file.as_ptr(),
+                std::ptr::null(),
+                std::ptr::null(),
+                1,
+            )
+        };
+        if result as isize <= 32 {
+            return Err(
+                "기본 브라우저를 열지 못했습니다. Windows의 기본 앱 설정을 확인하세요.".into(),
+            );
+        }
+        Ok(json!({"url":url}))
+    }
+    #[cfg(not(windows))]
+    {
+        Err("컨테이너 포트 열기는 Windows에서 지원합니다.".into())
     }
 }
 

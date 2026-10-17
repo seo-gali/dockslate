@@ -1,0 +1,86 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { connectNative } from './native-verification.mjs';
+
+const [portFile, approval, expectedEngineId] = process.argv.slice(2);
+if (!portFile || approval !== '--approved-isolated-fixtures' || !expectedEngineId) throw new Error('Actual native port, isolated fixture approval and expected owned engine ID required');
+const native = await connectNative(portFile);
+const { invoke, evaluate, nav, setInput, setSelect, waitFor, pause, send } = native;
+const run = promisify(execFile);
+const assert = (value, text) => { if (!value) throw new Error(text); };
+const command = async args => (await run(path.join(process.env.SystemRoot, 'System32/wsl.exe'), ['--distribution','DockSlate','--user','root','--exec','/usr/bin/docker','--host','unix:///var/run/docker.sock',...args], { windowsHide:true,encoding:'utf8',maxBuffer:8*1024*1024,timeout:120000 })).stdout;
+const report = { observedAt:new Date().toISOString(), completed:false, mockData:false, checks:[], timings:[], failureConditions:['Owned engine ID mismatch','Existing object identity or state changes','Fixture name collision','Extra data reads during menu navigation','Uncaught renderer exception'], untested:['Real VHDX compaction','Remote builder connections'] };
+const check = (name, details) => { report.checks.push({name,passed:true,...(details?{details}: {})}); console.log(JSON.stringify({check:name,passed:true})); };
+const snapshot = async () => ({ images:await invoke('images_list'),containers:await invoke('containers_list'),volumes:await invoke('volumes_list'),usage:await invoke('disk_usage'),networks:await invoke('networks_list') });
+const save = () => fs.writeFileSync('docs/results/workbench-e2e.json',JSON.stringify(report,null,2));
+try {
+  const initial=await invoke('runtime_status');
+  assert(initial.distribution==='DockSlate' && initial.keeperVerified!==false && initial.blockedReasons.length===0,'Owned runtime required');
+  report.initialRuntimeState=initial.state;
+  if(initial.state==='stopped') {
+    await nav('Settings');
+    await evaluate(`(()=>{const b=[...document.querySelectorAll('[data-page="Settings"] button')].find(b=>b.textContent.trim()==='런타임 시작…');if(!b||b.disabled)throw Error('Start unavailable');b.click()})()`);
+    await waitFor('owned runtime approval',()=>evaluate(`!!document.querySelector('[role="dialog"] input[type="checkbox"]')`));
+    await evaluate(`document.querySelector('[role="dialog"] input[type="checkbox"]').click()`);
+    await evaluate(`(()=>{const b=[...document.querySelectorAll('[role="dialog"] button')].find(b=>b.textContent.trim()==='시작 승인 및 실행');if(!b||b.disabled)throw Error('Approval unavailable');b.click()})()`);
+    await waitFor('owned runtime started',async()=>{const s=await invoke('runtime_status'); return s.state==='running';});
+    await waitFor('runtime approval closed',()=>evaluate(`!document.querySelector('[role="dialog"]')`));
+  } else assert(initial.state==='running','Unexpected runtime state');
+  assert((await command(['info','--format','{{.ID}}'])).trim()===expectedEngineId,'Engine ID mismatch');
+  const baseline=await snapshot();
+  const fixture={name:`dockslate-e2e-workbench-${Date.now()}`,engineId:expectedEngineId,initialRuntimeState:initial.state,baseline,containers:[],volumes:[],images:[],root:null};
+  fixture.root=path.resolve('.analysis',fixture.name);fs.mkdirSync(fixture.root,{recursive:true});
+  const fixtureFile='.analysis/workbench-fixture.json'; const saveFixture=()=>fs.writeFileSync(fixtureFile,JSON.stringify(fixture,null,2));saveFixture();
+  report.fixture=fixtureFile;
+  await pause(5000);
+  const mark=native.calls.length;
+  for (const name of ['Overview','Containers','Images','Volumes','Builds','Disk Manager','Settings','Volumes','Builds','Containers']) {
+    const timing=await evaluate(`new Promise(resolve=>{const b=[...document.querySelectorAll('nav button')].find(b=>b.textContent.trim()===${JSON.stringify(name)});const start=performance.now();b.click();requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(performance.now()-start)))})`);
+    report.timings.push({menu:name,clickToTwoFramesMs:timing});
+  }
+  await pause(2000);
+  const extra=native.calls.slice(mark).filter(c=>!['plugin:event|listen','plugin:event|unlisten'].includes(c.command));
+  assert(extra.length===0,`Unexpected navigation reads: ${extra.map(c=>c.command).join(',')}`);
+  check('Seven menus retain cached data without backend calls');
+  const beforeRefresh=native.calls.length;
+  await evaluate(`(()=>{const b=[...document.querySelectorAll('main [data-page]:not([hidden]) .page-header button')].find(b=>b.textContent.includes('전체 새로고침'));if(!b||b.disabled)throw Error('Refresh unavailable');b.click()})()`);
+  await waitFor('global snapshot',()=>native.calls.slice(beforeRefresh).some(c=>c.command==='dashboard_snapshot'&&c.durationMs!=null));
+  assert(native.calls.slice(beforeRefresh).filter(c=>c.command==='dashboard_snapshot').length===1,'Refresh should use a single global snapshot');
+  check('Manual refresh uses one shared dashboard snapshot');
+  await command(['pull','busybox:1.37.0']);
+  const image=JSON.parse(await command(['image','inspect','busybox:1.37.0']))[0];
+  fixture.imageId=image.Id;
+  if(!baseline.images.some(old=>old.id===image.Id))fixture.images.push(image.Id);
+  saveFixture();
+  await invoke('volume_create',{name:`${fixture.name}-data`});fixture.volumes.push(`${fixture.name}-data`);saveFixture();
+  await evaluate(`(()=>{const b=[...document.querySelectorAll('main [data-page]:not([hidden]) .page-header button')].find(b=>b.textContent.includes('전체 새로고침'));if(!b||b.disabled)throw Error('Refresh unavailable');b.click()})()`);
+  await waitFor('pulled image shared cache',()=>evaluate(`!![...document.querySelectorAll('[data-page="Images"] table tbody tr')].find(r=>r.innerText.includes('busybox:1.37.0'))`));
+  await nav('Images');
+  await evaluate(`(()=>{const row=[...document.querySelectorAll('[data-page="Images"] table tbody tr')].find(r=>r.innerText.includes('busybox:1.37.0'));const b=[...row.querySelectorAll('button')].find(b=>b.textContent.trim()==='실행');if(!b||b.disabled)throw Error('Run unavailable');b.click()})()`);
+  await waitFor('run image details',()=>evaluate(`!!document.querySelector('#run-name') && !document.querySelector('#run-name').disabled`));
+  await setInput('#run-name',fixture.name);
+  await evaluate(`document.querySelector('section[aria-label="컨테이너 실행"] details').open=true`);
+  await waitFor('named volume option',()=>evaluate(`!!document.querySelector('#run-volume option[value="${fixture.volumes[0]}"]') && !document.querySelector('#run-volume').disabled`));
+  await setSelect('#run-volume',fixture.volumes[0]);
+  await setInput('#run-volume-target','/data');
+  await setInput('#run-command',`sh\n-c\nmkdir -p /work; printf 'DockSlate fixture 파일\\n' > /work/note.txt; ln -s /etc /work/link; printf 'persistent volume\\n' > /data/persist.txt; exec sleep 1800`);
+  await evaluate(`document.querySelector('section[aria-label="컨테이너 실행"] form button[type="submit"]').click()`);
+  const created=await waitFor('fixture container created',async()=>{const containers=await invoke('containers_list');return containers.find(c=>c.name===fixture.name && c.state==='running');});
+  fixture.containers.push(created.id);saveFixture();
+  assert(!baseline.containers.some(c=>c.id===created.id)&&created.state==='running','New running fixture required');
+  const actual=JSON.parse(await command(['container','inspect',created.id]))[0];
+  assert(actual.Image===image.Id && actual.Mounts.some(m=>m.Name===fixture.volumes[0]&&m.Destination==='/data'),'Named volume mapping differs from actual Docker configuration');
+  await waitFor('UI navigates to new container logs',()=>evaluate(`document.querySelector('main [data-page]:not([hidden])')?.getAttribute('data-page')==='Containers' && !!document.querySelector('[data-page="Containers"] .detail-panel')`));
+  check('Image run creates a container with the chosen persistent volume');
+  const volume=await invoke('volume_inspect',{name:fixture.volumes[0]});
+  assert(volume.referenceCount===1 && volume.activeReferences===1,'Volume reference count differs');
+  const preview=await invoke('volume_destructive_preview',{kind:'empty',name:fixture.volumes[0]});
+  assert(preview.eligible===false && preview.token===null,'Referenced volume may not be emptied');
+  check('Active volume reference blocks destructive approval');
+  report.completed=true;report.containerId=created.id;report.imageId=image.Id;report.exceptions=native.exceptions;
+  assert(native.exceptions.length===0,'Renderer exception');
+  const screen=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(fixture.root,'container-workbench.png'),Buffer.from(screen.data,'base64'));
+} catch(error) { report.failure=String(error.stack??error); console.error(report.failure);process.exitCode=1; }
+finally { save();native.close(); }
