@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-10-18T09:23:39.801Z",
+  "completed": true,
+  "targets": [
+    "n6ymfjilb5mf4tww7v6w8zqoj",
+    "qn5v4l5a9nkkyulbbiqh0f1za",
+    "v75d62gww9mva7a2dsjibw1uc",
+    "xf0sdlwyeu07gxp6jyp0wzh0l"
+  ],
+  "deleted": [
+    "n6ymfjilb5mf4tww7v6w8zqoj",
+    "qn5v4l5a9nkkyulbbiqh0f1za",
+    "v75d62gww9mva7a2dsjibw1uc",
+    "xf0sdlwyeu07gxp6jyp0wzh0l"
+  ],
+  "failure": null,
+  "preservedCacheIds": [
+    "6y412t96uqj7ycn8zplpc1w3b",
+    "8qq0hy0o4wgz31ahm1s2jljml",
+    "b9joos2g2rkxz1e8pvdl6zpx9",
+    "four8i3guaiha8ng02lb7pfnz",
+    "g21tij0o6hbdarn4kf189svvh",
+    "ipsuyk5jz0pqxtmry3fj3qy9p",
+    "oxqi7paywdhoe5gousysdyjzt",
+    "phkwnafm28f3rs01xoptzb9ll",
+    "rol703j7rcx69xfdq3x7pnslo",
+    "v53hsrkdfu9sswz68x7u75mzb",
+    "zqd3knm2r1af5ynskbigho8ju"
+  ]
+}

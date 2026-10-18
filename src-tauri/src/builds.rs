@@ -1054,3 +1054,7 @@ mod picker {
             .map_err(|_| "파일 선택 창이 종료되었습니다.".to_owned())?
     }
 }
+
+pub(crate) fn content_sha256(bytes: &[u8]) -> Result<String, String> {
+    archive::sha256(bytes)
+}

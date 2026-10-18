@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { errorMessage } from './components';
 
 export interface EngineStatus {
@@ -70,6 +70,7 @@ export interface DestructivePreview {
   estimatedBytes: number | null;
 }
 export interface ActionResult { message: string }
+export interface ContainerActionResult extends ActionResult { state: string; exitCode: number | null }
 export interface DestructiveResult extends ActionResult {
   deleted: string[];
   failed: { id: string; error: string }[];
@@ -136,7 +137,7 @@ export async function backend<T>(command: string, args?: Record<string, unknown>
   return invoke<T>(command, args);
 }
 
-const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list']);
+const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list', 'networks_list']);
 const deferredCommands = new Set(['builds_snapshot']);
 type CommandResult = { Ok?: unknown; Err?: string };
 type DashboardState = { values: Record<string, unknown>; errors: Record<string, string>; loading: boolean; initialized: boolean; revision: number; metrics?: ContainerMetrics | null; metricsLoading?: boolean; metricsError?: string | null; deferredLoading?: Record<string, boolean> };
@@ -147,7 +148,20 @@ const dashboardListeners = new Set<() => void>();
 const commandVersions = new Map<string, number>();
 const commandRequests = new Map<string, Promise<void>>();
 const subscribeDashboard = (listener: () => void) => { dashboardListeners.add(listener); return () => { dashboardListeners.delete(listener); }; };
-const getDashboard = () => dashboard;
+type QueryView = { data: unknown; loading: boolean; error: string | null; revision: number };
+const queryViews = new Map<string, QueryView>();
+const emptyQuery: QueryView = { data: null, loading: false, error: null, revision: 0 };
+const idleSubscribe = () => () => {};
+function queryView(command: string): QueryView {
+  const previous = queryViews.get(command);
+  const data = dashboard.values[command] ?? null;
+  const loading = dashboard.loading || !!dashboard.deferredLoading?.[command];
+  const error = dashboard.errors[command] ?? null;
+  if (previous && previous.data === data && previous.loading === loading && previous.error === error && previous.revision === dashboard.revision) return previous;
+  const value = { data, loading, error, revision: dashboard.revision };
+  queryViews.set(command, value);
+  return value;
+}
 function publishDashboard(value: DashboardState) { dashboard = value; dashboardListeners.forEach(listener => listener()); }
 
 let metricPending: { values: Record<string, unknown>; generation: number } | null = null;
@@ -204,9 +218,19 @@ async function refreshBuilds(generation: number) {
   } finally { buildsRunning = false; }
 }
 
-export function useContainerMetrics() {
-  const value = useSyncExternalStore(subscribeDashboard, getDashboard, getDashboard);
-  return { data: value.metrics ?? null, loading: value.metricsLoading ?? false, error: value.metricsError ?? null };
+let metricView: { data: ContainerMetrics | null; loading: boolean; error: string | null } = { data: null, loading: false, error: null };
+function getMetricView() {
+  const data = dashboard.metrics ?? null, loading = dashboard.metricsLoading ?? false, error = dashboard.metricsError ?? null;
+  if (metricView.data !== data || metricView.loading !== loading || metricView.error !== error) metricView = { data, loading, error };
+  return metricView;
+}
+export function useContainerMetrics() { return useSyncExternalStore(subscribeDashboard, getMetricView, getMetricView); }
+
+export function updateContainerStatus(id: string, state: string) {
+  const rows = (dashboard.values.containers_list as Container[] | undefined)?.map(row => row.id === id ? { ...row, state, status: state } : row);
+  if (!rows) return;
+  const overview = dashboard.values.overview as OverviewData | undefined;
+  publishDashboard({ ...dashboard, values: { ...dashboard.values, containers_list: rows, ...(overview ? { overview: { ...overview, containersRunning: rows.filter(row => row.state === 'running').length, containersStopped: rows.filter(row => ['exited','created','dead'].includes(row.state)).length } } : {}) } });
 }
 
 export function refreshDashboard(): Promise<void> {
@@ -270,7 +294,8 @@ export function useBackendQuery<T>(command: string, args: Record<string, unknown
   const generation = useRef(0);
   const argsKey = JSON.stringify(args ?? {});
   const shared = (dashboardCommands.has(command) || deferredCommands.has(command)) && argsKey === '{}';
-  const snapshot = useSyncExternalStore(subscribeDashboard, getDashboard, getDashboard);
+  const getSnapshot = useCallback(() => shared ? queryView(command) : emptyQuery, [shared, command]);
+  const snapshot = useSyncExternalStore(shared ? subscribeDashboard : idleSubscribe, getSnapshot, getSnapshot);
   const reload = useCallback(async () => {
     if (shared) return refreshDashboard();
     const current = ++generation.current;
@@ -298,7 +323,7 @@ export function useBackendQuery<T>(command: string, args: Record<string, unknown
     else void reload();
     return () => { generation.current += 1; };
   }, [reload, shared]);
-  return shared
-    ? { data: enabled ? (snapshot.values[command] as T | undefined) ?? null : null, loading: snapshot.loading || polling || !!snapshot.deferredLoading?.[command], error: enabled ? snapshot.errors[command] ?? null : null, reload, poll, revision: snapshot.revision }
-    : { data, loading, error, reload, poll, revision: 0 };
+  return useMemo(() => shared
+    ? { data: enabled ? snapshot.data as T | null : null, loading: snapshot.loading || polling, error: enabled ? snapshot.error : null, reload, poll, revision: snapshot.revision }
+    : { data, loading, error, reload, poll, revision: 0 }, [shared, enabled, snapshot, polling, data, loading, error, reload, poll]);
 }

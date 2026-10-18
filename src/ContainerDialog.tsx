@@ -1,6 +1,8 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from './components';
+import { t } from "./i18n";
+
 
 export function ContainerDialog({ title, active, onClose, children }: { title: string; active: boolean; onClose: () => void; children: ReactNode }) {
   const titleId = useId();
@@ -27,5 +29,5 @@ export function ContainerDialog({ title, active, onClose, children }: { title: s
       if (previous?.isConnected && !previous.closest('[hidden]')) previous.focus();
     };
   }, [active]);
-  return createPortal(<div className="container-modal-backdrop" hidden={!active} onPointerDown={event => { if (event.target === event.currentTarget && !document.querySelector('[aria-labelledby="confirm-title"]')) onClose(); }}><div ref={dialog} className="container-dialog detail-panel" role="dialog" aria-modal="true" aria-labelledby={titleId}><header className="detail-heading"><h2 id={titleId}>{title}</h2><button ref={closeButton} className="icon-button" onClick={onClose} title="컨테이너 상세 닫기" aria-label="컨테이너 상세 닫기"><Icon name="close" /></button></header><div className="container-dialog-body">{children}</div></div></div>, document.body);
+  return createPortal(<div className="container-modal-backdrop" hidden={!active} onPointerDown={event => { if (event.target === event.currentTarget && !document.querySelector('[aria-labelledby="confirm-title"]')) onClose(); }}><div ref={dialog} className="container-dialog detail-panel" role="dialog" aria-modal="true" aria-labelledby={titleId}><header className="detail-heading"><h2 id={titleId}>{title}</h2><button ref={closeButton} className="icon-button" onClick={onClose} title={t("컨테이너 상세 닫기")} aria-label={t("컨테이너 상세 닫기")}><Icon name="close" /></button></header><div className="container-dialog-body">{children}</div></div></div>, document.body);
 }

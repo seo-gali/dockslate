@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-10-18T18:41:15.3525233+09:00",
+  "artifact": "src-tauri/target/release/dockslate.exe",
+  "sha256": "4B80EBEEF6A03A92BB3BE854F7FC53622515BD80CD7D840527BF95C9678B1234",
+  "bytes": 4671488,
+  "signature": "NotSigned",
+  "windowsReleaseBuildPassed": true,
+  "frontendTypecheckPassed": true,
+  "rustCheckOfflinePassed": true,
+  "rustFormatCheckPassed": true,
+  "nativeLaunchedAfterBrowsingDataAlert": false,
+  "launchDeferredReason": "Awaiting the protected file target of the browsing-data access warning; no antivirus allowlist, trust or service changes",
+  "frontendOnlyReport": "frontend-refinements-e2e.json",
+  "earlierNativeReport": "workbench-refinements-e2e.json",
+  "earlierResourceReport": "resource-actions-e2e.json",
+  "engineChangedByBuild": false
+}

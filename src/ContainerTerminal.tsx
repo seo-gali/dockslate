@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { backend, type Container } from './api';
 import { errorMessage } from './components';
+import { t } from "./i18n";
+
 
 type Cell = { text: string; fg: string; bg: string; bold: boolean; inverse: boolean };
 type Output = { bytes: number[]; cursor: number; truncated: boolean; exited: boolean; exitCode: number | null };
@@ -241,15 +243,15 @@ export function ContainerTerminal({ container, active }: { container: Container;
     else if (event.altKey && event.key.length === 1) { event.preventDefault(); send(`\x1b${event.key}`); }
   };
   const terminal = screen.current;
-  return <section aria-label="컨테이너 터미널" style={{ display: 'grid', gap: 12 }}>
-    <div className="toolbar"><label className="muted">셸 <select aria-label="컨테이너 셸" value={shell} onChange={event => setShell(event.target.value)} disabled={busy || !!sessionId}><option value="sh">/bin/sh</option><option value="bash">/bin/bash</option></select></label>{sessionId ? <><button className="button" onClick={() => send('\x03')}>Ctrl+C</button><button className="button" onClick={() => void close()}>터미널 종료</button></> : <button className="button primary" disabled={busy || container.state !== 'running'} onClick={() => void open()}>{busy ? '연결 중…' : '터미널 연결'}</button>}</div>
-    <p className="muted">{container.name} 내부의 대화형 셸입니다. 입력한 명령은 이 컨테이너에서 실행됩니다. 셸이 없는 이미지는 연결할 수 없습니다.</p>
+  return <section className="terminal-panel" aria-label={t("컨테이너 터미널")}>
+    <div className="toolbar"><label className="muted">{t("셸") + " "}<select className="text-input terminal-shell" aria-label={t("컨테이너 셸")} value={shell} onChange={event => setShell(event.target.value)} disabled={busy || !!sessionId}><option value="sh">/bin/sh</option><option value="bash">/bin/bash</option></select></label>{sessionId ? <><button className="button" onClick={() => send('\x03')}>Ctrl+C</button><button className="button" onClick={() => void close()}>{t("터미널 종료")}</button></> : <button className="button primary" disabled={busy || container.state !== 'running'} onClick={() => void open()}>{busy ? t("연결 중…") : t("터미널 연결")}</button>}</div>
+
     {failure && <div className="notice error" role="alert">{failure}</div>}{ended && <p role="status" className="muted">{ended}</p>}
-    <div ref={viewport} onClick={() => input.current?.focus()} style={{ position: 'relative', overflow: 'auto', maxHeight: 520, minHeight: 390, background: '#090d12', color: '#d8e0ec', border: '1px solid #2b3b4f', borderRadius: 6, padding: 12, fontFamily: 'Consolas, "Cascadia Mono", monospace', fontSize: '1rem', lineHeight: 1.4, cursor: 'text', userSelect: 'text' }} aria-label="터미널 화면" role="log" aria-live="off">
+    <div className="terminal-viewport" ref={viewport} onClick={() => input.current?.focus()} style={{ position: 'relative', overflow: 'auto', maxHeight: 520, minHeight: 390, background: '#090d12', color: '#d8e0ec', border: '1px solid #2b3b4f', borderRadius: 6, padding: 12, fontFamily: 'Consolas, "Cascadia Mono", monospace', fontSize: '1rem', lineHeight: 1.4, cursor: 'text', userSelect: 'text' }} aria-label={t("터미널 화면")} role="log" aria-live="off">
       {!terminal.alternate && terminal.history.map((line, index) => renderLine(line, index - terminal.history.length, null))}
       {terminal.lines.map((line, index) => renderLine(line, index, sessionId && active && terminal.cursorVisible && index === terminal.row ? Math.min(terminal.col, terminal.cols - 1) : null))}
-      <textarea ref={input} aria-label="터미널 입력" disabled={!sessionId || !active} autoComplete="off" autoCapitalize="off" spellCheck={false} onKeyDown={keyDown} onChange={event => { if (!(event.nativeEvent as InputEvent).isComposing && event.target.value) { send(event.target.value); event.target.value = ''; } }} onCompositionEnd={event => { if (event.currentTarget.value) { send(event.currentTarget.value); event.currentTarget.value = ''; } }} onPaste={event => { event.preventDefault(); const text = event.clipboardData.getData('text'); if (text.length > 65536) { setFailure('붙여넣기는 한 번에 64KB까지 사용할 수 있습니다.'); return; } send(screen.current.bracketedPaste ? `\x1b[200~${text}\x1b[201~` : text); }} style={{ position: 'absolute', left: 12, bottom: 0, opacity: 0, width: 1, height: 1, padding: 0 }} />
+      <textarea ref={input} aria-label={t("터미널 입력")} disabled={!sessionId || !active} autoComplete="off" autoCapitalize="off" spellCheck={false} onKeyDown={keyDown} onChange={event => { if (!(event.nativeEvent as InputEvent).isComposing && event.target.value) { send(event.target.value); event.target.value = ''; } }} onCompositionEnd={event => { if (event.currentTarget.value) { send(event.currentTarget.value); event.currentTarget.value = ''; } }} onPaste={event => { event.preventDefault(); const text = event.clipboardData.getData('text'); if (text.length > 65536) { setFailure('붙여넣기는 한 번에 64KB까지 사용할 수 있습니다.'); return; } send(screen.current.bracketedPaste ? `\x1b[200~${text}\x1b[201~` : text); }} style={{ position: 'absolute', left: 12, bottom: 0, opacity: 0, width: 1, height: 1, padding: 0 }} />
     </div>
-    <p className="muted">화면을 누른 뒤 입력하세요. Enter·방향키·Backspace·Ctrl+C를 사용할 수 있습니다. 보관 범위는 출력 1MB, 화면 기록 200줄입니다.</p>
+    {container.state !== 'running' && <p className="usage-note">{t("실행 중인 컨테이너에 연결할 수 있습니다.")}</p>}
   </section>;
 }

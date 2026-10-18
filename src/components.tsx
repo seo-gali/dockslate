@@ -1,4 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { getLocale, t } from "./i18n";
+
 
 export type IconName = 'overview' | 'containers' | 'images' | 'disk' | 'settings' | 'refresh' | 'search' | 'close' | 'arrow' | 'check' | 'warning' | 'copy' | 'play' | 'stop' | 'trash' | 'more' | 'download';
 
@@ -39,26 +41,26 @@ export function StatePanel({ icon = 'containers', title, description, children, 
 }
 
 export function ErrorNotice({ message, onRetry }: { message: string; onRetry?: () => void }) {
-  return <div className="notice error" role="alert"><Icon name="warning" /><div><strong>조회 실패</strong><p>{message}</p></div>{onRetry && <button className="button subtle" onClick={onRetry}>다시 시도</button>}</div>;
+  return <div className="notice error" role="alert"><Icon name="warning" /><div><strong>{t("조회 실패")}</strong><p>{message}</p></div>{onRetry && <button className="button subtle" onClick={onRetry}>{t("다시 시도")}</button>}</div>;
 }
 
 export function SearchInput({ value, onChange, placeholder }: { value: string; onChange: (value: string) => void; placeholder: string }) {
-  return <label className="search-input"><Icon name="search" /><input type="search" value={value} onChange={event => onChange(event.target.value)} placeholder={placeholder} aria-label={placeholder} />{value && <button type="button" className="icon-button" onClick={() => onChange('')} title="검색 지우기" aria-label="검색 지우기"><Icon name="close" size={15} /></button>}</label>;
+  return <label className="search-input"><Icon name="search" /><input type="search" value={value} onChange={event => onChange(event.target.value)} placeholder={placeholder} aria-label={placeholder} />{value && <button type="button" className="icon-button" onClick={() => onChange('')} title={t("검색 지우기")} aria-label={t("검색 지우기")}><Icon name="close" size={15} /></button>}</label>;
 }
 
 export function RefreshButton({ busy, onClick }: { busy: boolean; onClick: () => void }) {
-  return <button className="button" disabled={busy} onClick={onClick} title="모든 화면의 데이터를 함께 새로고침합니다"><Icon name="refresh" />{busy ? '전체 조회 중…' : '전체 새로고침'}</button>;
+  return <button className="button" disabled={busy} onClick={onClick} title={t("모든 화면의 데이터를 함께 새로고침합니다")}><Icon name="refresh" />{busy ? t("전체 조회 중…") : t("전체 새로고침")}</button>;
 }
 
 export function Pagination({ page, count, size = 50, onPage }: { page: number; count: number; size?: number; onPage: (page: number) => void }) {
   const pages = Math.max(1, Math.ceil(count / size));
   const current = Math.min(page, pages - 1);
   if (pages === 1) return null;
-  return <div className="pagination"><span>{current * size + 1}~{Math.min(count, (current + 1) * size)} / {count.toLocaleString()}개</span><button className="button small" disabled={current === 0} onClick={() => onPage(current - 1)}>이전</button><span>{current + 1} / {pages}</span><button className="button small" disabled={current + 1 === pages} onClick={() => onPage(current + 1)}>다음</button></div>;
+  return <div className="pagination"><span>{current * size + 1}~{Math.min(count, (current + 1) * size)} / {count.toLocaleString()}{t("개")}</span><button className="button small" disabled={current === 0} onClick={() => onPage(current - 1)}>{t("이전")}</button><span>{current + 1} / {pages}</span><button className="button small" disabled={current + 1 === pages} onClick={() => onPage(current + 1)}>{t("다음")}</button></div>;
 }
 
 export function DetailPanel({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
-  return <aside className="detail-panel" aria-label={title}><header><h2 title={title}>{title}</h2><button className="icon-button" onClick={onClose} title="상세 패널 닫기" aria-label="상세 패널 닫기"><Icon name="close" /></button></header>{children}</aside>;
+  return <aside className="detail-panel" aria-label={title}><header><h2 title={title}>{title}</h2><button className="icon-button" onClick={onClose} title={t("상세 패널 닫기")} aria-label={t("상세 패널 닫기")}><Icon name="close" /></button></header>{children}</aside>;
 }
 
 export function ConfirmDialog({ title, children, label, busy, ready = true, error, acknowledged, onAcknowledge, onCancel, onConfirm }: { title: string; children: ReactNode; label: string; busy: boolean; ready?: boolean; error: string | null; acknowledged: boolean; onAcknowledge: (value: boolean) => void; onCancel: () => void; onConfirm: () => void }) {
@@ -84,19 +86,19 @@ export function ConfirmDialog({ title, children, label, busy, ready = true, erro
     window.addEventListener('keydown', listener);
     return () => window.removeEventListener('keydown', listener);
   }, [busy, onCancel]);
-  return <div className="modal-backdrop"><div className="confirm-dialog" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div className="dialog-heading"><span className="danger"><Icon name="warning" size={22} /></span><h2 id="confirm-title">{title}</h2></div><div className="dialog-content">{children}</div><label className="acknowledgement"><input type="checkbox" checked={acknowledged} disabled={busy || !ready} onChange={event => onAcknowledge(event.target.checked)} /><span>대상과 영향을 확인했으며 이 작업을 승인합니다.</span></label>{error && <div className="dialog-error" role="alert">{error}</div>}<footer><button ref={cancelRef} className="button" disabled={busy} onClick={onCancel}>취소</button><button className="button danger-button" disabled={busy || !ready || !acknowledged} onClick={onConfirm}>{busy ? '처리 중…' : !ready ? '검사 대기' : label}</button></footer></div></div>;
+  return <div className="modal-backdrop"><div className="confirm-dialog" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div className="dialog-heading"><span className="danger"><Icon name="warning" size={22} /></span><h2 id="confirm-title">{title}</h2></div><div className="dialog-content">{children}</div><label className="acknowledgement"><input type="checkbox" checked={acknowledged} disabled={busy || !ready} onChange={event => onAcknowledge(event.target.checked)} /><span>{t("대상과 영향을 확인했으며 이 작업을 승인합니다.")}</span></label>{error && <div className="dialog-error" role="alert">{error}</div>}<footer><button ref={cancelRef} className="button" disabled={busy} onClick={onCancel}>{t("취소")}</button><button className="button danger-button" disabled={busy || !ready || !acknowledged} onClick={onConfirm}>{busy ? t("처리 중…") : !ready ? t("검사 대기") : t(label)}</button></footer></div></div>;
 }
 
 export function formatBytes(bytes?: number | null): string {
-  if (bytes == null || !Number.isFinite(bytes)) return '미확인';
+  if (bytes == null || !Number.isFinite(bytes)) return t('미확인');
   const absolute = Math.abs(bytes);
-  if (absolute < 1000) return `${bytes.toLocaleString()} B`;
+  if (absolute < 1000) return `${bytes.toLocaleString(getLocale())} B`;
   const index = Math.min(Math.floor(Math.log(absolute) / Math.log(1000)), 4);
-  return `${(bytes / 1000 ** index).toLocaleString(undefined, { maximumFractionDigits: 1 })} ${['B', 'KB', 'MB', 'GB', 'TB'][index]}`;
+  return `${(bytes / 1000 ** index).toLocaleString(getLocale(), { maximumFractionDigits: 1 })} ${['B', 'KB', 'MB', 'GB', 'TB'][index]}`;
 }
 
 export function formatDate(seconds: number): string {
-  return new Date(seconds * 1000).toLocaleString();
+  return new Date(seconds * 1000).toLocaleString(getLocale());
 }
 
 export function errorMessage(error: unknown): string {

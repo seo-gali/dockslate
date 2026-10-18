@@ -57,7 +57,7 @@ fn main() {
     for _ in 0..100 {eligible.clear();state.dialogs.clear();unsafe{EnumWindows(window,&mut state as *mut _ as isize)};
         for dialog in state.dialogs.clone(){state.edits.clear();state.controls=0;unsafe{EnumChildWindows(dialog,child,&mut state as *mut _ as isize)};
             let ok=unsafe{GetDlgItem(dialog,1)};let cancel=unsafe{GetDlgItem(dialog,2)};
-            let known=matches!(title(dialog).as_str(),"볼륨에 가져올 tar 파일 선택"|"볼륨 내보내기 파일 선택"|"빌드 기록을 저장할 새 파일 선택"|"가져올 빌드 기록 선택");
+            let known=matches!(title(dialog).as_str(),"볼륨에 가져올 tar 파일 선택"|"볼륨 내보내기 파일 선택"|"빌드 기록을 저장할 새 파일 선택"|"가져올 빌드 기록 선택"|"빌드할 Compose 파일 선택"|"빌드할 Dockerfile 선택");
             if known&&state.edits.len()==1&&own(ok,pid)&&class(ok)=="Button"&&own(cancel,pid)&&class(cancel)=="Button"{eligible.push((dialog,state.edits[0]));}}
         if eligible.len()==1{break;}std::thread::sleep(std::time::Duration::from_millis(100));}
     assert_eq!(eligible.len(),1,"exactly one own filename picker required");let(dialog,edit)=eligible[0];

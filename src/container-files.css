@@ -1,0 +1,40 @@
+.container-files-browser { display: flex; flex: 1; height: 100%; box-sizing: border-box; min-height: 0; min-width: 0; gap: 12px; overflow: hidden; }
+.container-files-tree { display: flex; flex-direction: column; flex: 0 0 190px; min-width: 130px; min-height: 0; overflow: auto; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+.container-files-tree-heading { position: sticky; top: 0; z-index: 1; padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--muted); background: var(--surface); font-size: .846154rem; }
+.container-files-tree ul { padding: 0; margin: 0; list-style: none; }
+.container-files-tree > ul { padding: 4px 0; }
+.container-files-tree-item { outline: none; }
+.container-files-tree-row { display: flex; align-items: center; min-height: 29px; padding-right: 8px; }
+.container-files-tree-row:hover { background: var(--surface-hover); }
+.container-files-tree-row.selected { background: var(--accent-subtle, rgba(121, 177, 255, .12)); color: var(--accent); }
+.container-files-tree-item:focus-visible > .container-files-tree-row { outline: 1px solid var(--accent); outline-offset: -1px; }
+.container-files-disclosure, .container-files-tree-name, .container-files-entry { border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.container-files-disclosure { display: inline-flex; flex: 0 0 18px; align-items: center; justify-content: center; width: 18px; padding: 4px 0; color: var(--muted); }
+.container-files-disclosure:disabled { cursor: default; }
+.container-files-tree-name { flex: 1; min-width: 0; padding: 5px 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .923077rem; }
+.container-files-tree-error { display: flex; flex-direction: column; gap: 4px; padding: 6px; font-size: .846154rem; color: var(--danger); overflow-wrap: anywhere; }
+.container-files-tree-empty, .container-files-tree-limit { padding: 4px 12px 4px 28px; color: var(--muted); font-size: .769231rem; }
+.container-files-main { display: flex; flex: 1; flex-direction: column; min-width: 0; min-height: 0; gap: 8px; overflow: hidden; }
+.container-files-toolbar { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; }
+.container-files-toolbar .text-input { flex: 1; min-width: 60px; padding-top: 6px; padding-bottom: 6px; }
+.container-files-list { flex: 1; min-height: 90px; border-radius: 6px; }
+.container-files-list table { width: 100%; table-layout: fixed; }
+.container-files-list th { position: sticky; top: 0; z-index: 1; height: 32px; padding-top: 6px; padding-bottom: 6px; background: var(--surface); }
+.container-files-list th:first-child { width: auto; }
+.container-files-list th:nth-child(2) { width: 68px; }
+.container-files-list th:nth-child(3) { width: 92px; }
+.container-files-list td { height: 34px; padding-top: 3px; padding-bottom: 3px; font-size: .923077rem; }
+.container-files-list .container-files-selected { background: var(--accent-subtle, rgba(121, 177, 255, .12)); }
+.container-files-entry { display: flex; gap: 7px; align-items: center; width: 100%; min-height: 27px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 2px 0; }
+.container-files-entry:enabled:hover { color: var(--accent); }
+.container-files-entry:disabled { cursor: default; color: var(--muted); }
+.container-files-kind { flex: 0 0 10px; color: var(--muted); }
+.container-files-entry-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.container-files-empty { padding: 12px; margin: 0; font-size: .923077rem; }
+.container-files-limit { flex: 0 0 auto; font-size: .846154rem; margin: 0; }
+.container-files-preview { display: flex; flex: 1; flex-direction: column; min-height: 100px; min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 6px; }
+.container-files-preview-heading { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 8px 5px 12px; border-bottom: 1px solid var(--border); }
+.container-files-preview-heading strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .846154rem; font-weight: 500; }
+.container-files-preview pre { flex: 1; min-height: 0; margin: 0; padding: 12px; overflow: auto; background: var(--bg); color: var(--text); white-space: pre; font-size: .923077rem; user-select: text; }
+.container-files-preview > .container-files-limit { padding: 4px 12px; border-top: 1px solid var(--border); }
+@media (max-width: 700px) { .container-files-tree { flex-basis: 150px; } }

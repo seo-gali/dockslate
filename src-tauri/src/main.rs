@@ -1,11 +1,14 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod builds;
+mod compose;
 mod container_tools;
 mod desktop;
 mod docker;
 mod image_build;
+mod image_removal;
 mod process;
+mod resources;
 mod runtime;
 mod volumes;
 mod wsl;
@@ -46,7 +49,7 @@ where
         if runtime::is_mutating() {
             return Err("엔진 설치 또는 상태 변경이 진행 중입니다".into());
         }
-        if volumes::is_busy() || builds::is_busy() {
+        if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
             return Err("파일 전송 작업이 진행 중입니다. 완료 후 다시 시도하세요.".into());
         }
         if image_build::is_building() {
@@ -236,7 +239,7 @@ async fn container_run(
 }
 #[tauri::command]
 async fn networks_list() -> Result<Value, String> {
-    read(docker::networks_list).await
+    read(resources::networks_list).await
 }
 #[tauri::command]
 async fn network_create(name: String, internal: bool) -> Result<Value, String> {
@@ -322,10 +325,13 @@ async fn runtime_start(approved: bool) -> Result<Value, String> {
 }
 #[tauri::command]
 async fn runtime_stop(approved: bool) -> Result<Value, String> {
-    if approved {
-        container_tools::close_all();
-    }
-    mutate(move || runtime::stop(approved)).await
+    mutate(move || {
+        if approved {
+            container_tools::close_all();
+        }
+        runtime::stop(approved)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -380,6 +386,54 @@ fn verify_read_only(report: &str) -> Result<(), String> {
     .map_err(|error| error.to_string())
 }
 
+#[tauri::command]
+async fn network_delete_preview(id: String) -> Result<Value, String> {
+    mutate(move || resources::network_delete_preview(id)).await
+}
+#[tauri::command]
+async fn network_delete_execute(token: String, approved: bool) -> Result<Value, String> {
+    mutate(move || resources::network_delete_execute(token, approved)).await
+}
+#[tauri::command]
+async fn image_removal_preview(
+    id: String,
+    delete_referencing_containers: bool,
+) -> Result<Value, String> {
+    read(move || image_removal::preview(id, delete_referencing_containers)).await
+}
+#[tauri::command]
+async fn image_removal_execute(token: String, approved: bool) -> Result<Value, String> {
+    mutate(move || image_removal::execute(token, approved)).await
+}
+#[tauri::command]
+async fn compose_pick_file(kind: String) -> Result<Value, String> {
+    read(move || compose::pick_file(kind)).await
+}
+#[tauri::command]
+async fn compose_preview(id: String) -> Result<Value, String> {
+    read(move || compose::preview(id)).await
+}
+#[tauri::command]
+async fn compose_build_start(id: String) -> Result<Value, String> {
+    mutate(move || compose::build_start(id)).await
+}
+#[tauri::command]
+async fn compose_run_preview(id: String) -> Result<Value, String> {
+    read(move || compose::run_preview(id)).await
+}
+#[tauri::command]
+async fn compose_run_start(approval: String, approved: bool) -> Result<Value, String> {
+    mutate(move || compose::run_start(approval, approved)).await
+}
+#[tauri::command]
+async fn compose_job_status(id: String) -> Result<Value, String> {
+    read(move || compose::job_status(id)).await
+}
+#[tauri::command]
+async fn compose_discard(id: String) -> Result<Value, String> {
+    read(move || compose::discard(id)).await
+}
+
 fn main() {
     let mut arguments = std::env::args().skip(1);
     let first = arguments.next();
@@ -400,6 +454,7 @@ fn main() {
     }
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
+ network_delete_preview, network_delete_execute, image_removal_preview, image_removal_execute, compose_pick_file, compose_preview, compose_build_start, compose_run_preview, compose_run_start, compose_job_status, compose_discard,
             volumes_list, volume_inspect, volume_create, volume_clone, volume_browse, volume_file_preview,
             volume_pick_archive, volume_export, volume_import_preview, volume_destructive_preview, volume_execute, volume_discard_preview, volume_job_status,
             builds_snapshot, builds_builder_inspect, builds_history_list, builds_history_detail, builds_builder_change, builds_transfer_start, builds_transfer_status, builds_pick_file,
@@ -445,7 +500,7 @@ fn main() {
                 if image_build::is_building() {
                     api.prevent_close();
                     let _ = window.emit("close-blocked", "이미지 빌드가 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.");
-                } else if volumes::is_busy() || builds::is_busy() {
+                } else if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
                     api.prevent_close();
                     let _ = window.emit("close-blocked", "파일 전송 중입니다. 완료 후 앱을 종료할 수 있습니다.");
                 } else if wsl::is_compacting() {

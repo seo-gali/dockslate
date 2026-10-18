@@ -1,0 +1,2503 @@
+{
+  "observedAt": "2026-10-18T04:24:14.721Z",
+  "target": "Actual Windows DockSlate native window and verified owned Moby Engine",
+  "mockData": false,
+  "explicitIsolatedFixtureApproval": true,
+  "expectedEngineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "fixture": {
+    "name": "dockslate-e2e-resources-1792297454721-d6c18429",
+    "root": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-resources-1792297454721-d6c18429",
+    "tag": "dockslate-e2e-resources-1792297454721-d6c18429:fixture",
+    "volumeName": "dockslate-e2e-resources-1792297454721-d6c18429-data",
+    "imageId": "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6",
+    "first": {
+      "id": "732bf17aa1216c92e7b51a2ea69e6a10bb3dda705bf74b197dffe0d2a4baeb85",
+      "message": "컨테이너를 생성했지만 시작 요청을 완료하지 못했습니다. Containers에서 상태와 로그를 확인하세요. Docker HTTP 400: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: \"/dockslate-e2e-intentionally-missing-executable\": stat /dockslate-e2e-intentionally-missing-executable: no such file or directory",
+      "name": "dockslate-e2e-resources-1792297454721-d6c18429-first",
+      "started": false,
+      "state": "created",
+      "warnings": []
+    },
+    "networks": [
+      {
+        "id": "8bd32fb4e983e47d00f60f3bf6edbee4f15ea049c0e73ff9d2950a45bc91f0f9",
+        "name": "dockslate-e2e-resources-1792297454721-d6c18429-primary"
+      }
+    ],
+    "second": {
+      "id": "3a5625e6b9cf0b44c720bbcbb147ee8d66f5bb4d2af54907f1841af110406c89",
+      "message": "컨테이너를 생성했지만 시작 요청을 완료하지 못했습니다. Containers에서 상태와 로그를 확인하세요. Docker HTTP 400: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: \"/dockslate-e2e-intentionally-missing-executable\": stat /dockslate-e2e-intentionally-missing-executable: no such file or directory",
+      "name": "dockslate-e2e-resources-1792297454721-d6c18429-second",
+      "started": false,
+      "state": "created",
+      "warnings": []
+    }
+  },
+  "failureConditions": [
+    "Engine ID, independent runtime ownership or owned install path changes",
+    "Any baseline container identity/name/image/state, image ID/tag, network configuration, volume identity or build cache ID changes or disappears",
+    "Any unrelated object is created while the isolated scenario is running",
+    "A fixture ID or tag overlaps a baseline object or fixture ownership metadata cannot be verified",
+    "Built-in or referenced network deletion is accepted, including references from created/stopped containers",
+    "Unapproved, consumed or stale image/network tokens perform a deletion",
+    "Cascade deletes an unapproved target or removes the fixture volume",
+    "Cleanup would stop or force-delete a running container, remove another object or prune globally"
+  ],
+  "cleanupPolicy": "Stop mutations if ownership/baseline changes. Otherwise remove only exact verified new stopped fixture container IDs, the exact fixture image ID, exact empty fixture network IDs and the exact fingerprint-bound fixture volume. Use application approval previews and force-free commands. Leave new build cache IDs for the root agent to inspect and selectively clean after all scenarios.",
+  "checks": [
+    {
+      "name": "captured actual baseline and verified expected independent engine before fixture creation",
+      "passed": true
+    },
+    {
+      "name": "built-in network deletion blocked",
+      "passed": true
+    },
+    {
+      "name": "built independently owned scratch/COPY fixture without pulling or modifying original hello-world image",
+      "passed": true
+    },
+    {
+      "name": "stopped container network reference blocks deletion",
+      "passed": true
+    },
+    {
+      "name": "non-cascade mode returns blocked DTO and exact stopped container names/IDs/states",
+      "passed": true
+    },
+    {
+      "name": "image approved=false rejects and preserves all resources",
+      "passed": true
+    },
+    {
+      "name": "image token is single use after rejected execution",
+      "passed": true
+    },
+    {
+      "name": "network approved=false rejects and preserves network",
+      "passed": true
+    },
+    {
+      "name": "network token is single use after rejected execution",
+      "passed": true
+    },
+    {
+      "name": "changed exact image reference set invalidates approval",
+      "passed": true
+    },
+    {
+      "name": "changed exact network reference set invalidates approval",
+      "passed": true
+    },
+    {
+      "name": "approved cascade removes only both exact stopped containers and fixture image while preserving named volume and all baseline resources",
+      "passed": true
+    },
+    {
+      "name": "approved deletion removes only each exact unused fixture network",
+      "passed": true
+    },
+    {
+      "name": "all exact fixture objects cleaned; every baseline resource preserved; new build caches left for coordinated root cleanup",
+      "passed": true
+    }
+  ],
+  "observations": {
+    "engine": {
+      "runtime": {
+        "blockedReasons": [],
+        "distribution": "DockSlate",
+        "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "keeperVerified": true,
+        "message": "The verified DockSlate WSL runtime is running. Docker Engine availability is checked through its owned Unix socket.",
+        "operation": {
+          "childProcessId": 22164,
+          "childStartedTicks": "639278379110741390",
+          "message": "The owned DockSlate runtime is running and its Docker Unix socket answered the health check.",
+          "processId": 11736,
+          "startedAt": 1792241110989,
+          "startedTicks": "639278379099750940",
+          "state": "completed",
+          "updatedAt": 1792241125845
+        },
+        "state": "running"
+      },
+      "engine": {
+        "apiVersion": "1.55",
+        "context": "dockslate",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "message": "Verified independent DockSlate Moby Engine",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected"
+      }
+    },
+    "baseline": {
+      "containers": [
+        {
+          "composeProject": null,
+          "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+          "image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "adoring_black",
+          "ports": "",
+          "publishedPorts": [],
+          "state": "exited",
+          "status": "Exited (0) 31 minutes ago"
+        }
+      ],
+      "images": [
+        {
+          "containers": 1,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "networks": [
+        {
+          "builtin": true,
+          "containers": [
+            {
+              "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+              "name": "adoring_black",
+              "state": "exited"
+            }
+          ],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "bridge",
+          "id": "fc37fe43101db68d1edfc3ab7cd2fd3953e199ccb6a046650374862010728b1a",
+          "internal": false,
+          "ipam": {
+            "Config": [
+              {
+                "Gateway": "172.17.0.1",
+                "Subnet": "172.17.0.0/16"
+              }
+            ],
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "bridge",
+          "scope": "local"
+        },
+        {
+          "builtin": true,
+          "containers": [],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "host",
+          "id": "2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231",
+          "internal": false,
+          "ipam": {
+            "Config": null,
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "host",
+          "scope": "local"
+        },
+        {
+          "builtin": true,
+          "containers": [],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "null",
+          "id": "1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+          "internal": false,
+          "ipam": {
+            "Config": null,
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "none",
+          "scope": "local"
+        }
+      ],
+      "volumes": [],
+      "cacheIds": [
+        "6y412t96uqj7ycn8zplpc1w3b",
+        "8qq0hy0o4wgz31ahm1s2jljml",
+        "b9joos2g2rkxz1e8pvdl6zpx9",
+        "four8i3guaiha8ng02lb7pfnz",
+        "g21tij0o6hbdarn4kf189svvh",
+        "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "oxqi7paywdhoe5gousysdyjzt",
+        "phkwnafm28f3rs01xoptzb9ll",
+        "rol703j7rcx69xfdq3x7pnslo",
+        "v53hsrkdfu9sswz68x7u75mzb",
+        "zqd3knm2r1af5ynskbigho8ju"
+      ]
+    },
+    "built-in network deletion blocked": {
+      "rejected": true,
+      "error": "Built-in networks cannot be deleted"
+    },
+    "build": {
+      "builder": "default",
+      "contextPath": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-e2e-resources-1792297454721-d6c18429",
+      "dockerfile": "Dockerfile",
+      "error": null,
+      "id": "3876-1792297463519-1",
+      "imageId": "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6",
+      "logVersion": 7,
+      "logs": "DockSlate 엔진과 빌드 경로를 확인합니다.\n빌더: default\n#0 building with \"default\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 225B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load .dockerignore\n#2 transferring context: 2B done\n#2 DONE 0.0s\n\n#3 [internal] load build context\n#3 transferring context: 84B 0.0s done\n#3 DONE 0.0s\n\n#4 [1/1] COPY marker.txt /fixture-marker.txt\n#4 DONE 0.0s\n\n#5 exporting to image\n#5 exporting layers 0.1s done\n#5 exporting manifest sha256:8844cd4ff615592e24d737219d1f59e2e9e0c6a5e7305be676cbd40232b122af 0.0s done\n#5 exporting config sha256:7fd7c4192b2dceef105199420850b7d3328ac9cc0800681cfb1b7f60c97c17ab\n#5 exporting config sha256:7fd7c4192b2dceef105199420850b7d3328ac9cc0800681cfb1b7f60c97c17ab 0.0s done\n#5 exporting attestation manifest sha256:b60f938c989f3c84bff50d61689219ef4a8676ab2370bef90c8401f97641ba01 0.0s done\n#5 exporting manifest list sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6 0.0s done\n#5 naming to docker.io/library/dockslate-e2e-resources-1792297454721-d6c18429:fixture done\n#5 unpacking to docker.io/library/dockslate-e2e-resources-1792297454721-d6c18429:fixture 0.0s done\n#5 DONE 0.2s\n",
+      "noCache": false,
+      "state": "completed",
+      "tag": "dockslate-e2e-resources-1792297454721-d6c18429:fixture",
+      "truncated": false
+    },
+    "stopped container network reference blocks deletion": {
+      "rejected": true,
+      "error": "Network is referenced by containers; remove its container references first"
+    },
+    "nonCascade": {
+      "blockedReasons": [
+        "This image is referenced by existing containers. Explicitly include all stopped referencing containers in a new deletion preview"
+      ],
+      "containers": [
+        {
+          "id": "732bf17aa1216c92e7b51a2ea69e6a10bb3dda705bf74b197dffe0d2a4baeb85",
+          "name": "dockslate-e2e-resources-1792297454721-d6c18429-first",
+          "state": "created"
+        }
+      ],
+      "deleteReferencingContainers": false,
+      "eligible": false,
+      "estimatedBytes": null,
+      "expiresAt": null,
+      "image": {
+        "id": "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6",
+        "size": 9821,
+        "tags": [
+          "dockslate-e2e-resources-1792297454721-d6c18429:fixture"
+        ]
+      },
+      "impact": [
+        "Only the exact listed stopped containers and selected image are approved for deletion. Running, paused and restarting containers are blocked.",
+        "Container writable layers and configuration will be irreversibly removed. All named and anonymous volumes are retained.",
+        "The selected image tags, metadata and unreferenced layers may be removed. Parent images are retained. Downloading the image again requires its source registry.",
+        "This is a sequence of Docker operations. A later failure can leave already deleted containers removed while the image is retained."
+      ],
+      "kind": "image_delete",
+      "recoverable": false,
+      "targets": [
+        "732bf17aa1216c92e7b51a2ea69e6a10bb3dda705bf74b197dffe0d2a4baeb85",
+        "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6"
+      ],
+      "token": null
+    },
+    "image approved=false rejects and preserves all resources": {
+      "rejected": true,
+      "error": "Explicit user approval is required"
+    },
+    "image token is single use after rejected execution": {
+      "rejected": true,
+      "error": "Image approval is missing or already consumed"
+    },
+    "network approved=false rejects and preserves network": {
+      "rejected": true,
+      "error": "Explicit user approval is required"
+    },
+    "network token is single use after rejected execution": {
+      "rejected": true,
+      "error": "Network approval is missing or already consumed"
+    },
+    "changed exact image reference set invalidates approval": {
+      "rejected": true,
+      "error": "The exact referencing container set or container configuration changed; create a new approval preview"
+    },
+    "changed exact network reference set invalidates approval": {
+      "rejected": true,
+      "error": "Network configuration or container references changed; create a new approval preview"
+    },
+    "cascadePreview": {
+      "blockedReasons": [],
+      "containers": [
+        {
+          "id": "3a5625e6b9cf0b44c720bbcbb147ee8d66f5bb4d2af54907f1841af110406c89",
+          "name": "dockslate-e2e-resources-1792297454721-d6c18429-second",
+          "state": "created"
+        },
+        {
+          "id": "732bf17aa1216c92e7b51a2ea69e6a10bb3dda705bf74b197dffe0d2a4baeb85",
+          "name": "dockslate-e2e-resources-1792297454721-d6c18429-first",
+          "state": "created"
+        }
+      ],
+      "deleteReferencingContainers": true,
+      "eligible": true,
+      "estimatedBytes": null,
+      "expiresAt": 1792297652633,
+      "image": {
+        "id": "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6",
+        "size": 9821,
+        "tags": [
+          "dockslate-e2e-resources-1792297454721-d6c18429:fixture"
+        ]
+      },
+      "impact": [
+        "Only the exact listed stopped containers and selected image are approved for deletion. Running, paused and restarting containers are blocked.",
+        "Container writable layers and configuration will be irreversibly removed. All named and anonymous volumes are retained.",
+        "The selected image tags, metadata and unreferenced layers may be removed. Parent images are retained. Downloading the image again requires its source registry.",
+        "This is a sequence of Docker operations. A later failure can leave already deleted containers removed while the image is retained."
+      ],
+      "kind": "image_delete",
+      "recoverable": false,
+      "targets": [
+        "3a5625e6b9cf0b44c720bbcbb147ee8d66f5bb4d2af54907f1841af110406c89",
+        "732bf17aa1216c92e7b51a2ea69e6a10bb3dda705bf74b197dffe0d2a4baeb85",
+        "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6"
+      ],
+      "token": "bb0297bd3b1bf5f8eaa47164d16c767a801c583e703458b687b84a6313606201"
+    },
+    "cascadeResult": {
+      "deleted": [
+        "3a5625e6b9cf0b44c720bbcbb147ee8d66f5bb4d2af54907f1841af110406c89",
+        "732bf17aa1216c92e7b51a2ea69e6a10bb3dda705bf74b197dffe0d2a4baeb85",
+        "sha256:685317f4c7f78ebec0a9f25452b1009ddf1b3e7fd45781a24e577c37e4092ed6"
+      ],
+      "failed": [],
+      "message": "Image deletion: 3 deleted, 0 failed",
+      "remaining": [],
+      "volumesRetained": true
+    },
+    "retainedVolume": {
+      "activeReferences": 0,
+      "containers": [],
+      "createdAt": "2026-10-18T13:24:33+09:00",
+      "driver": "local",
+      "fileSupported": true,
+      "labels": {
+        "io.dockslate.creation": "46b1b0e451120dd2f12d254f8c13fd8541a7c36df27f7a3b"
+      },
+      "mountpoint": "/var/lib/docker/volumes/dockslate-e2e-resources-1792297454721-d6c18429-data/_data",
+      "name": "dockslate-e2e-resources-1792297454721-d6c18429-data",
+      "options": null,
+      "referenceCount": 0,
+      "scope": "local",
+      "sizeBytes": 0
+    },
+    "networkDeletion:8bd32fb4e983e47d00f60f3bf6edbee4f15ea049c0e73ff9d2950a45bc91f0f9": {
+      "deleted": [
+        "8bd32fb4e983e47d00f60f3bf6edbee4f15ea049c0e73ff9d2950a45bc91f0f9"
+      ],
+      "failed": [],
+      "message": "Network deleted"
+    },
+    "networkDeletion:d0dc29b842562073f4ce7f4ca283e61cc979baac575f2b3ac911614e9b359ce4": {
+      "deleted": [
+        "d0dc29b842562073f4ce7f4ca283e61cc979baac575f2b3ac911614e9b359ce4"
+      ],
+      "failed": [],
+      "message": "Network deleted"
+    },
+    "afterCleanup": {
+      "containers": [
+        {
+          "composeProject": null,
+          "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+          "image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "adoring_black",
+          "ports": "",
+          "publishedPorts": [],
+          "state": "exited",
+          "status": "Exited (0) 33 minutes ago"
+        }
+      ],
+      "images": [
+        {
+          "containers": 1,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "networks": [
+        {
+          "builtin": true,
+          "containers": [
+            {
+              "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+              "name": "adoring_black",
+              "state": "exited"
+            }
+          ],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "bridge",
+          "id": "fc37fe43101db68d1edfc3ab7cd2fd3953e199ccb6a046650374862010728b1a",
+          "internal": false,
+          "ipam": {
+            "Config": [
+              {
+                "Gateway": "172.17.0.1",
+                "Subnet": "172.17.0.0/16"
+              }
+            ],
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "bridge",
+          "scope": "local"
+        },
+        {
+          "builtin": true,
+          "containers": [],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "host",
+          "id": "2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231",
+          "internal": false,
+          "ipam": {
+            "Config": null,
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "host",
+          "scope": "local"
+        },
+        {
+          "builtin": true,
+          "containers": [],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "null",
+          "id": "1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+          "internal": false,
+          "ipam": {
+            "Config": null,
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "none",
+          "scope": "local"
+        }
+      ],
+      "volumes": [],
+      "cacheIds": [
+        "6y412t96uqj7ycn8zplpc1w3b",
+        "8qq0hy0o4wgz31ahm1s2jljml",
+        "b9joos2g2rkxz1e8pvdl6zpx9",
+        "four8i3guaiha8ng02lb7pfnz",
+        "g21tij0o6hbdarn4kf189svvh",
+        "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "n6ymfjilb5mf4tww7v6w8zqoj",
+        "oxqi7paywdhoe5gousysdyjzt",
+        "phkwnafm28f3rs01xoptzb9ll",
+        "qn5v4l5a9nkkyulbbiqh0f1za",
+        "rol703j7rcx69xfdq3x7pnslo",
+        "v53hsrkdfu9sswz68x7u75mzb",
+        "v75d62gww9mva7a2dsjibw1uc",
+        "xf0sdlwyeu07gxp6jyp0wzh0l",
+        "zqd3knm2r1af5ynskbigho8ju"
+      ]
+    },
+    "newBuildCacheIds": [
+      "n6ymfjilb5mf4tww7v6w8zqoj",
+      "qn5v4l5a9nkkyulbbiqh0f1za",
+      "v75d62gww9mva7a2dsjibw1uc",
+      "xf0sdlwyeu07gxp6jyp0wzh0l"
+    ],
+    "final": {
+      "containers": [
+        {
+          "composeProject": null,
+          "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+          "image": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "name": "adoring_black",
+          "ports": "",
+          "publishedPorts": [],
+          "state": "exited",
+          "status": "Exited (0) 33 minutes ago"
+        }
+      ],
+      "images": [
+        {
+          "containers": 1,
+          "created": 1774301639,
+          "id": "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+          "size": 25874,
+          "tags": [
+            "hello-world:latest"
+          ]
+        }
+      ],
+      "networks": [
+        {
+          "builtin": true,
+          "containers": [
+            {
+              "id": "d332df439648b2f69b87e8e46c1b93e5320b28f86578576ea7196ceb20ee1b56",
+              "name": "adoring_black",
+              "state": "exited"
+            }
+          ],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "bridge",
+          "id": "fc37fe43101db68d1edfc3ab7cd2fd3953e199ccb6a046650374862010728b1a",
+          "internal": false,
+          "ipam": {
+            "Config": [
+              {
+                "Gateway": "172.17.0.1",
+                "Subnet": "172.17.0.0/16"
+              }
+            ],
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "bridge",
+          "scope": "local"
+        },
+        {
+          "builtin": true,
+          "containers": [],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "host",
+          "id": "2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231",
+          "internal": false,
+          "ipam": {
+            "Config": null,
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "host",
+          "scope": "local"
+        },
+        {
+          "builtin": true,
+          "containers": [],
+          "deletable": false,
+          "deleteBlockedReason": "Built-in networks cannot be deleted",
+          "driver": "null",
+          "id": "1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+          "internal": false,
+          "ipam": {
+            "Config": null,
+            "Driver": "default",
+            "Options": null
+          },
+          "name": "none",
+          "scope": "local"
+        }
+      ],
+      "volumes": [],
+      "cacheIds": [
+        "6y412t96uqj7ycn8zplpc1w3b",
+        "8qq0hy0o4wgz31ahm1s2jljml",
+        "b9joos2g2rkxz1e8pvdl6zpx9",
+        "four8i3guaiha8ng02lb7pfnz",
+        "g21tij0o6hbdarn4kf189svvh",
+        "ipsuyk5jz0pqxtmry3fj3qy9p",
+        "n6ymfjilb5mf4tww7v6w8zqoj",
+        "oxqi7paywdhoe5gousysdyjzt",
+        "phkwnafm28f3rs01xoptzb9ll",
+        "qn5v4l5a9nkkyulbbiqh0f1za",
+        "rol703j7rcx69xfdq3x7pnslo",
+        "v53hsrkdfu9sswz68x7u75mzb",
+        "v75d62gww9mva7a2dsjibw1uc",
+        "xf0sdlwyeu07gxp6jyp0wzh0l",
+        "zqd3knm2r1af5ynskbigho8ju"
+      ]
+    }
+  },
+  "cleanup": [
+    {
+      "kind": "volume",
+      "name": "dockslate-e2e-resources-1792297454721-d6c18429-data",
+      "result": {
+        "message": "볼륨을 삭제했습니다.",
+        "name": "dockslate-e2e-resources-1792297454721-d6c18429-data",
+        "state": "completed"
+      }
+    }
+  ],
+  "completed": true,
+  "failure": null,
+  "untested": [
+    "Running/paused/restarting-reference rejection requires a separately approved runnable fixture; this scenario uses created containers with a missing executable and pulls no image",
+    "Approval expiry after 120 seconds",
+    "External mutation during the interval between the final check and Docker DELETE",
+    "Windows physical storage reclamation"
+  ],
+  "baselineChanged": false,
+  "calls": [
+    {
+      "command": "runtime_status",
+      "durationMs": 768,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 1061,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 543,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 771,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 817,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 819,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 763,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 340,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 605,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 771,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 797,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 838,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 808,
+      "failed": false
+    },
+    {
+      "command": "network_delete_preview",
+      "durationMs": 628,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 798,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 317,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 566,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 791,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 836,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 861,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 837,
+      "failed": false
+    },
+    {
+      "command": "builds_snapshot",
+      "durationMs": 734,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 767,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 337,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 588,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 776,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 860,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 856,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "image_build_start",
+      "durationMs": 7,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 1,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 1,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 1,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 1,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 1,
+      "failed": false
+    },
+    {
+      "command": "image_build_status",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 645,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 896,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 886,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 923,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 926,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 335,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 584,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 832,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 863,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 861,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 846,
+      "failed": false
+    },
+    {
+      "command": "volume_create",
+      "durationMs": 1442,
+      "failed": false
+    },
+    {
+      "command": "volume_inspect",
+      "durationMs": 605,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 766,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 316,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 567,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 775,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 800,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 846,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "network_create",
+      "durationMs": 1556,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 763,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 315,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 583,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 753,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 861,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 859,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 848,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 317,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 564,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 796,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 881,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 884,
+      "failed": false
+    },
+    {
+      "command": "container_run",
+      "durationMs": 3026,
+      "failed": false
+    },
+    {
+      "command": "container_inspect",
+      "durationMs": 442,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 766,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 636,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 813,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 818,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 847,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 869,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 665,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 653,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 753,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 821,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 862,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 848,
+      "failed": false
+    },
+    {
+      "command": "network_delete_preview",
+      "durationMs": 670,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 569,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 811,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 797,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 862,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 861,
+      "failed": false
+    },
+    {
+      "command": "image_removal_preview",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "image_removal_preview",
+      "durationMs": 793,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 600,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 797,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 817,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 845,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 843,
+      "failed": false
+    },
+    {
+      "command": "image_removal_execute",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 796,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 567,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 874,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 810,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 884,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 878,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 669,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 832,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 857,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 842,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 881,
+      "failed": false
+    },
+    {
+      "command": "image_removal_execute",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 828,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 626,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 819,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 776,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 882,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 885,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 357,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 647,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 816,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 899,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 835,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 883,
+      "failed": false
+    },
+    {
+      "command": "network_create",
+      "durationMs": 1560,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 765,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 296,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 589,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 775,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 836,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 865,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 885,
+      "failed": false
+    },
+    {
+      "command": "network_delete_preview",
+      "durationMs": 672,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 317,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 585,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 773,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 881,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 888,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 865,
+      "failed": false
+    },
+    {
+      "command": "network_delete_execute",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 762,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 696,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 902,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 753,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 896,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 881,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 673,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 836,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 813,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 884,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 879,
+      "failed": false
+    },
+    {
+      "command": "network_delete_execute",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 763,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 337,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 609,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 770,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 863,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 844,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 855,
+      "failed": false
+    },
+    {
+      "command": "image_removal_preview",
+      "durationMs": 792,
+      "failed": false
+    },
+    {
+      "command": "network_delete_preview",
+      "durationMs": 669,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 767,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 341,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 604,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 857,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 902,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 861,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 903,
+      "failed": false
+    },
+    {
+      "command": "container_run",
+      "durationMs": 2748,
+      "failed": false
+    },
+    {
+      "command": "container_inspect",
+      "durationMs": 504,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 588,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 813,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 835,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 880,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 878,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 769,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 343,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 627,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 878,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 747,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 842,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 862,
+      "failed": false
+    },
+    {
+      "command": "image_removal_execute",
+      "durationMs": 1151,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 648,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 809,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 816,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 860,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 767,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 609,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 837,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 821,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 860,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 866,
+      "failed": false
+    },
+    {
+      "command": "network_delete_execute",
+      "durationMs": 752,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 337,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 624,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 791,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 856,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 839,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 765,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 563,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 836,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 861,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 862,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 824,
+      "failed": false
+    },
+    {
+      "command": "image_removal_preview",
+      "durationMs": 985,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 798,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 345,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 649,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 878,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 881,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 858,
+      "failed": false
+    },
+    {
+      "command": "image_removal_execute",
+      "durationMs": 5766,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 767,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 335,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 607,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 797,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 811,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 820,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 822,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 796,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 317,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 630,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 733,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 814,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 817,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 820,
+      "failed": false
+    },
+    {
+      "command": "network_delete_preview",
+      "durationMs": 626,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 586,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 792,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 835,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 838,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 838,
+      "failed": false
+    },
+    {
+      "command": "network_delete_execute",
+      "durationMs": 2067,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 796,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 566,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 816,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 825,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 862,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 865,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 605,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 814,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 794,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 801,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 839,
+      "failed": false
+    },
+    {
+      "command": "network_delete_preview",
+      "durationMs": 667,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 585,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 836,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 839,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 842,
+      "failed": false
+    },
+    {
+      "command": "network_delete_execute",
+      "durationMs": 2026,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 566,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 835,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 775,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 821,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 838,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 765,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 318,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 603,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 839,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 751,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 842,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 821,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 340,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 569,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 789,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 814,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 818,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 821,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 795,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 336,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 566,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 825,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 847,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 884,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 872,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 339,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 624,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 817,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 853,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 837,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 860,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 338,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 562,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 836,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 820,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 760,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 857,
+      "failed": false
+    },
+    {
+      "command": "volume_inspect",
+      "durationMs": 627,
+      "failed": false
+    },
+    {
+      "command": "volume_destructive_preview",
+      "durationMs": 607,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 793,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 334,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 564,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 776,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 816,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 863,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 839,
+      "failed": false
+    },
+    {
+      "command": "volume_execute",
+      "durationMs": 1553,
+      "failed": false
+    },
+    {
+      "command": "runtime_status",
+      "durationMs": 764,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 315,
+      "failed": false
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 547,
+      "failed": false
+    },
+    {
+      "command": "images_list",
+      "durationMs": 828,
+      "failed": false
+    },
+    {
+      "command": "networks_list",
+      "durationMs": 736,
+      "failed": false
+    },
+    {
+      "command": "volumes_list",
+      "durationMs": 778,
+      "failed": false
+    },
+    {
+      "command": "disk_usage",
+      "durationMs": 825,
+      "failed": false
+    }
+  ],
+  "exceptions": []
+}

@@ -20,6 +20,7 @@ const APPROVAL_LIFETIME: Duration = Duration::from_secs(120);
 static STATE: OnceLock<Mutex<RuntimeState>> = OnceLock::new();
 static MUTATION: Mutex<()> = Mutex::new(());
 static ACTIVE: AtomicBool = AtomicBool::new(false);
+static READ_STATUS: OnceLock<Mutex<Option<(Instant, Value)>>> = OnceLock::new();
 
 struct Approval {
     expected: Value,
@@ -280,6 +281,13 @@ pub fn inspect_status() -> Result<Value, String> {
             }
         }
     }
+    if let Ok(mut cached) = READ_STATUS.get_or_init(|| Mutex::new(None)).lock() {
+        *cached = if result["state"] == "running" && result["keeperVerified"] == true {
+            Some((Instant::now(), result.clone()))
+        } else {
+            None
+        };
+    }
     Ok(result)
 }
 
@@ -300,7 +308,12 @@ pub fn installation_preview() -> Result<Value, String> {
         .map_err(|_| "Another runtime request is being prepared.".to_string())?;
     let _disk_guard = crate::wsl::runtime_mutation_guard()?;
     let _ = poll_operation()?;
-    if is_mutating() || crate::wsl::is_compacting() {
+    if is_mutating()
+        || crate::wsl::is_compacting()
+        || crate::compose::is_busy()
+        || crate::builds::is_busy()
+        || crate::volumes::is_busy()
+    {
         return Err("A runtime or disk operation is already running.".into());
     }
     let mut result = inspect("preview")?;
@@ -969,6 +982,24 @@ impl Transport {
     }
 
     pub fn discover() -> Result<Self, String> {
+        let cached = READ_STATUS
+            .get_or_init(|| Mutex::new(None))
+            .lock()
+            .ok()
+            .and_then(|cached| {
+                cached
+                    .as_ref()
+                    .filter(|(at, _)| at.elapsed() < Duration::from_secs(30))
+                    .map(|(_, value)| value.clone())
+            });
+        if let Some(current) = cached {
+            if let Ok(transport) = Self::from_status(&current) {
+                return Ok(transport);
+            }
+            if let Ok(mut cached) = READ_STATUS.get().unwrap().lock() {
+                *cached = None;
+            }
+        }
         Self::from_status(&inspect_status()?)
     }
     pub fn from_status(current: &Value) -> Result<Self, String> {

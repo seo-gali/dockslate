@@ -346,9 +346,37 @@ button.metric:hover { border-color: var(--strong-border); background: var(--rais
 
 .container-table { min-width: 850px; }
 .container-modal-backdrop { position: fixed; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; background: var(--overlay); padding: 24px; }
-.container-dialog.detail-panel { width: min(1000px, 100%); max-width: 100%; max-height: calc(100vh - 48px); display: flex; flex-direction: column; box-shadow: 0 16px 56px var(--shadow); }
+.container-dialog.detail-panel { width: min(1000px, 100%); max-width: 100%; height: min(680px, calc(100dvh - 48px)); display: flex; flex-direction: column; box-shadow: 0 16px 56px var(--shadow); }
 .container-dialog .detail-heading { flex-shrink: 0; }
-.container-dialog-body { overflow-y: auto; min-height: 0; }
+.container-dialog-body { display: flex; flex: 1; flex-direction: column; overflow: hidden; min-height: 0; }
 .container-dialog .detail-tabs .segmented { flex-wrap: wrap; }
 .container-dialog .logs { height: min(48vh, 480px); }
 .container-dialog .detail-meta { grid-template-columns: 110px minmax(0, 1fr); }
+.container-dialog .detail-tabs { flex-shrink: 0; }
+.container-dialog .detail-pane { flex: 1; min-height: 0; overflow: auto; }
+.container-dialog .log-pane { display: flex; flex-direction: column; }
+.container-dialog .log-pane .logs { flex: 1; min-height: 100px; height: auto; margin: 0; }
+.container-dialog .log-controls { flex-wrap: nowrap; }
+.container-dialog .log-controls .search-input { min-width: 140px; }
+.container-dialog .detail-pane > section { padding: 16px; }
+.container-dialog .terminal-panel .toolbar { margin-bottom: 0; }
+.container-stats .detail-meta { margin-top: 16px; }
+.container-dialog .log-pane { padding: 0 16px 12px; }
+.container-dialog .log-pane .log-controls { padding: 0 0 12px; }
+.container-dialog .log-pane .logs { border: 1px solid var(--border); border-radius: 6px; }
+.container-dialog .log-pane .log-status { padding: 10px 0 0; }
+.container-dialog .container-inspect { display: flex; flex-direction: column; min-height: 0; height: 100%; padding: 0 16px 16px; }
+.container-dialog .container-inspect > .detail-content { padding: 0 0 12px; }
+.container-dialog .inspect-json { flex: 1; min-height: 0; height: auto !important; padding: 10px 12px !important; border: 1px solid var(--border); border-radius: 6px; }
+.embedded-stats { border-top: 1px solid var(--border); margin-top: 18px; padding-top: 16px; }
+.engine-details > h2 { padding: 12px 16px; }
+.container-dialog .detail-pane > .terminal-panel { display: flex !important; flex-direction: column; height: 100%; min-height: 0; gap: 12px; }
+.container-dialog .terminal-viewport { flex: 1; min-height: 100px !important; max-height: none !important; }
+.container-dialog .terminal-shell { width: 130px; }
+.container-action-menu { min-width: 174px; max-height: none; overflow: visible; }
+.container-action-menu button { min-height: 34px; }
+.language-select { width: 160px; }
+.tooltip-anchor { display: inline-flex; border-radius: 5px; }
+.tooltip-anchor:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.floating-tooltip { position: fixed; z-index: 300; width: 300px; transform: translateY(-100%); border: 1px solid var(--border); border-radius: 7px; padding: 10px 12px; background: var(--surface); color: var(--text); box-shadow: 0 6px 20px #0005; font-size: 12px; line-height: 1.5; pointer-events: none; overflow-wrap: anywhere; }
+.container-dialog .terminal-panel > .toolbar > label { display: flex; align-items: center; gap: 10px; }

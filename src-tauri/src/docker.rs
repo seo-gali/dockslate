@@ -12,6 +12,7 @@ const BODY_LIMIT: usize = 16 * 1024 * 1024;
 const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
 static MUTATION: Mutex<()> = Mutex::new(());
 static PREVIEWS: OnceLock<Mutex<HashMap<String, Preview>>> = OnceLock::new();
+static LOG_FORMATS: OnceLock<Mutex<HashMap<String, bool>>> = OnceLock::new();
 
 #[derive(Clone)]
 pub(crate) struct Client {
@@ -209,7 +210,7 @@ impl Client {
             .ok_or_else(|| "Invalid Docker container list".into())
     }
     fn images(&self) -> Result<Vec<Value>, String> {
-        self.json("GET", "/images/json?all=0&shared-size=1")?
+        self.json("GET", "/images/json?all=0")?
             .as_array()
             .cloned()
             .ok_or_else(|| "Invalid Docker image list".into())
@@ -324,7 +325,7 @@ pub fn engine_status() -> Result<Value, String> {
 }
 fn unavailable_snapshot(engine: Result<Value, String>, message: String) -> Value {
     let error: Result<Value, String> = Err(message);
-    json!({"engine_status":engine,"overview":error,"containers_list":error,"images_list":error,"disk_usage":error,"volumes_list":error})
+    json!({"engine_status":engine,"overview":error,"containers_list":error,"images_list":error,"disk_usage":error,"volumes_list":error,"networks_list":error})
 }
 pub fn dashboard_snapshot() -> Result<Value, String> {
     std::thread::scope(|scope| {
@@ -362,10 +363,11 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
         let message = text(&engine, "message").to_owned();
         return unavailable_snapshot(Ok(engine), message);
     };
-    let (containers, images, usage) = std::thread::scope(|scope| {
+    let (containers, images, usage, networks) = std::thread::scope(|scope| {
         let containers = scope.spawn(|| client.containers());
         let images = scope.spawn(|| client.images());
         let usage = scope.spawn(|| client.usage());
+        let networks = scope.spawn(|| client.json("GET", "/networks"));
         (
             containers
                 .join()
@@ -376,11 +378,20 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
             usage
                 .join()
                 .unwrap_or_else(|_| Err("Docker usage snapshot worker failed.".into())),
+            networks
+                .join()
+                .unwrap_or_else(|_| Err("Network snapshot worker failed.".into())),
         )
     });
     let volumes = match (&usage, &containers) {
         (Ok(usage), Ok(containers)) => crate::volumes::list_from_snapshot(usage, containers),
         (Err(message), _) | (_, Err(message)) => Err(message.clone()),
+    };
+    let networks = match (&networks, &containers) {
+        (Ok(networks), Ok(containers)) => {
+            crate::resources::networks_from_values(networks, containers)
+        }
+        (Err(error), _) | (_, Err(error)) => Err(error.clone()),
     };
     let container_list = containers
         .as_ref()
@@ -401,7 +412,7 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
         (Err(message), _, _) | (_, Err(message), _) | (_, _, Err(message)) => Err(message.clone()),
     };
     let engine_status: Result<Value, String> = Ok(engine);
-    json!({"engine_status":engine_status,"overview":overview,"containers_list":container_list,"images_list":image_list,"disk_usage":disk_usage,"volumes_list":volumes})
+    json!({"engine_status":engine_status,"overview":overview,"containers_list":container_list,"images_list":image_list,"disk_usage":disk_usage,"volumes_list":volumes,"networks_list":networks})
 }
 pub fn overview() -> Result<Value, String> {
     let (engine, client) = probe()?;
@@ -509,7 +520,29 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
         String::new()
     };
     client.json("POST", &format!("/containers/{id}/{action}{query}"))?;
-    Ok(json!({"message":format!("Container {action} completed")}))
+    let inspected = client.json("GET", &format!("/containers/{id}/json"))?;
+    let state = text(&inspected["State"], "Status");
+    let exit_code = inspected["State"]["ExitCode"].as_i64();
+    let message = if action == "start" && matches!(state, "exited" | "dead") {
+        format!(
+            "컨테이너가 종료되었습니다. 종료 코드: {}",
+            exit_code.unwrap_or(-1)
+        )
+    } else {
+        format!(
+            "{} 완료",
+            match action.as_str() {
+                "start" => "시작",
+                "stop" => "중지",
+                "restart" => "재시작",
+                "pause" => "일시정지",
+                _ => "다시 진행",
+            }
+        )
+    };
+    Ok(
+        json!({"message":message,"state":state,"exitCode":exit_code,"startedAt":inspected["State"]["StartedAt"],"finishedAt":inspected["State"]["FinishedAt"]}),
+    )
 }
 
 #[derive(Deserialize)]
@@ -656,27 +689,6 @@ fn supported_network(network: &Value) -> bool {
         && network["Internal"].as_bool().is_some()
         && (text(network, "Driver") == "bridge"
             || (text(network, "Driver") == "null" && text(network, "Name") == "none"))
-}
-
-pub fn networks_list() -> Result<Value, String> {
-    let client = connected()?;
-    let networks = client.json("GET", "/networks")?;
-    let networks = networks
-        .as_array()
-        .ok_or("Docker 네트워크 목록을 확인하지 못했습니다.")?;
-    let mut result: Vec<_> = networks
-        .iter()
-        .filter(|network| supported_network(network))
-        .map(|network| {
-            json!({
-                "id":network["Id"],"name":network["Name"],"driver":network["Driver"],
-                "internal":network["Internal"],
-                "builtin":matches!(text(network,"Name"),"bridge"|"none")
-            })
-        })
-        .collect();
-    result.sort_by(|left, right| text(left, "name").cmp(text(right, "name")));
-    Ok(json!(result))
 }
 
 pub fn network_create(name: String, internal: bool) -> Result<Value, String> {
@@ -1229,10 +1241,32 @@ pub fn container_logs(id: String) -> Result<Value, String> {
         return Err("Invalid container ID".into());
     }
     let client = connected()?;
-    if !client.containers()?.iter().any(|c| text(c, "Id") == id) {
-        return Err("Container no longer exists".into());
-    }
-    let inspect = client.json("GET", &format!("/containers/{id}/json"))?;
+    let key = format!("{}:{id}", client.identity);
+    let tty = LOG_FORMATS
+        .get_or_init(|| Mutex::new(HashMap::new()))
+        .lock()
+        .map_err(|_| "Log format cache unavailable")?
+        .get(&key)
+        .copied();
+    let tty = match tty {
+        Some(value) => value,
+        None => {
+            let inspect = client.json("GET", &format!("/containers/{id}/json"))?;
+            let value = inspect["Config"]["Tty"]
+                .as_bool()
+                .ok_or("Container log format unavailable")?;
+            let mut formats = LOG_FORMATS
+                .get()
+                .unwrap()
+                .lock()
+                .map_err(|_| "Log format cache unavailable")?;
+            if formats.len() >= 64 {
+                formats.clear();
+            }
+            formats.insert(key, value);
+            value
+        }
+    };
     let body = client.bytes(
         "GET",
         &format!("/containers/{id}/logs?stdout=1&stderr=1&timestamps=1&tail=300&follow=0"),
@@ -1240,7 +1274,7 @@ pub fn container_logs(id: String) -> Result<Value, String> {
         4 * 1024 * 1024,
     )?;
     let mut content = Vec::new();
-    if inspect["Config"]["Tty"].as_bool() == Some(true) {
+    if tty {
         content = body;
     } else {
         let mut position = 0;
@@ -1278,11 +1312,15 @@ pub fn images_list() -> Result<Value, String> {
     Ok(normalize_images(&client.images()?, &containers))
 }
 fn normalize_images(images: &[Value], containers: &[Value]) -> Value {
+    let mut references = HashMap::<&str, usize>::new();
+    for container in containers {
+        *references.entry(text(container, "ImageID")).or_default() += 1;
+    }
     let values: Vec<_> = images.iter().map(|image| {
         let id = text(image, "Id");
-        let references = containers.iter().filter(|c| text(c, "ImageID") == id).count();
+        let count = references.get(id).copied().unwrap_or(0);
         let tags: Vec<_> = array(image, "RepoTags").into_iter().filter(|tag| tag.as_str() != Some("<none>:<none>")).collect();
-        json!({"id":id,"tags":tags,"size":image["Size"],"containers":references,"created":image["Created"]})
+        json!({"id":id,"tags":tags,"size":image["Size"],"containers":count,"created":image["Created"]})
     }).collect();
     json!(values)
 }
@@ -1409,6 +1447,10 @@ fn aggregate_size(usage: &Value, key: &str, fallback: Option<u64>) -> Option<u64
     }
 }
 fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Value {
+    let referenced_images: HashSet<_> = containers
+        .iter()
+        .map(|container| text(container, "ImageID"))
+        .collect();
     let image_values = array(usage, "Images");
     let container_values = array(usage, "Containers");
     let volume_values = array(usage, "Volumes");
@@ -1416,7 +1458,7 @@ fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Valu
     let mut reclaimable = Some(0u64);
     let images: Vec<_> = image_values.iter().map(|image| {
         let id = text(image,"Id");
-        let referenced = containers.iter().any(|container| text(container,"ImageID") == id);
+        let referenced = referenced_images.contains(id);
         let eligible = image_id(id) && !referenced;
         let unique = image["Size"].as_u64().zip(image["SharedSize"].as_u64()).map(|(size,shared)|size.saturating_sub(shared));
         if eligible { reclaimable = reclaimable.zip(unique).map(|(sum,unique)|sum.saturating_add(unique)); }

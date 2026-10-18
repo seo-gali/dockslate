@@ -1,0 +1,179 @@
+{
+  "observedAt": "2026-10-18T04:23:42.482Z",
+  "artifact": "8A566A2FC41CED72B1092F28CAE54773C92E9BBFF0DF1FE75E4AD79B6869B5BC",
+  "completed": true,
+  "mockData": false,
+  "checks": [
+    {
+      "name": "Language switches immediately across navigation",
+      "passed": true,
+      "evidence": [
+        "Overview",
+        "Containers",
+        "Images",
+        "Resources",
+        "Builds",
+        "Disk Manager",
+        "Settings"
+      ]
+    },
+    {
+      "name": "Language persists after native WebView reload",
+      "passed": true
+    },
+    {
+      "name": "Menu navigation reuses shared list snapshots",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "Resources switches between volumes and actual networks",
+      "passed": true
+    },
+    {
+      "name": "All seven container tabs maintain the same modal geometry",
+      "passed": true,
+      "evidence": [
+        {
+          "tab": "Details",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        },
+        {
+          "tab": "Logs",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        },
+        {
+          "tab": "Inspect",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        },
+        {
+          "tab": "Mounts",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        },
+        {
+          "tab": "Terminal",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        },
+        {
+          "tab": "Files",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        },
+        {
+          "tab": "Stats",
+          "x": 100,
+          "y": 50,
+          "width": 1000,
+          "height": 680,
+          "scrollWidth": 998
+        }
+      ]
+    },
+    {
+      "name": "Stopped logs are immediately available on reopen without idle polling",
+      "passed": true,
+      "evidence": {
+        "hasLog": true,
+        "loading": false,
+        "firstMs": 3
+      }
+    },
+    {
+      "name": "Files shows lazy directory tree, selected contents and bounded preview",
+      "passed": true
+    },
+    {
+      "name": "Stopped Stats has an explicit state and no polling",
+      "passed": true
+    },
+    {
+      "name": "Container menu has only the five requested actions",
+      "passed": true,
+      "evidence": [
+        "Start",
+        "Stop",
+        "Restart",
+        "Open in browser",
+        "Delete…"
+      ]
+    },
+    {
+      "name": "Cleanup availability badge exposes the blocking reason on hover/focus",
+      "passed": true,
+      "evidence": "Referenced by an existing container"
+    },
+    {
+      "name": "Korean language can be restored",
+      "passed": true
+    }
+  ],
+  "timings": {
+    "firstLogReadyMs": 3
+  },
+  "failure": null,
+  "calls": [
+    {
+      "command": "dashboard_snapshot",
+      "durationMs": 1321
+    },
+    {
+      "command": "plugin:event|listen",
+      "durationMs": 3
+    },
+    {
+      "command": "builds_snapshot",
+      "durationMs": 747
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 517
+    },
+    {
+      "command": "containers_list",
+      "durationMs": 464
+    },
+    {
+      "command": "container_logs",
+      "durationMs": 481
+    },
+    {
+      "command": "container_inspect",
+      "durationMs": 503
+    },
+    {
+      "command": "container_files",
+      "durationMs": 773
+    },
+    {
+      "command": "container_files",
+      "durationMs": 959
+    },
+    {
+      "command": "container_file_preview",
+      "durationMs": 936
+    }
+  ]
+}
