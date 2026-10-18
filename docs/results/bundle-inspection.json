@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-18T09:41:15.223Z",
+  "observedAt": "2026-10-18T10:19:28.560Z",
   "measurement": "Production asset file sizes and gzip; no runtime benchmark or inferred network timing",
   "beforeEntry": {
     "bytes": 496910,
@@ -7,57 +7,57 @@
     "source": "Observed Vite output for native artifact 8A566A2FC41CED72B1092F28CAE54773C92E9BBFF0DF1FE75E4AD79B6869B5BC; rounded to 0.01 kB"
   },
   "entry": {
-    "name": "index-8bDW_8Hv.js",
-    "bytes": 277180,
-    "gzipBytes": 86619
+    "name": "index-BauyL7AO.js",
+    "bytes": 277408,
+    "gzipBytes": 86687
   },
   "initialKorean": {
-    "bytes": 280965,
-    "gzipBytes": 87914
+    "bytes": 281193,
+    "gzipBytes": 87980
   },
   "initialEnglish": {
-    "bytes": 342593,
-    "gzipBytes": 106551
+    "bytes": 342821,
+    "gzipBytes": 106617
   },
   "allJavaScript": {
-    "bytes": 504320,
-    "gzipBytes": 157102
+    "bytes": 504548,
+    "gzipBytes": 157165
   },
-  "entryReductionPercent": 44.22,
+  "entryReductionPercent": 44.17,
   "initialKoreanFiles": [
-    "Overview-Cv_mmxAK.js",
-    "index-8bDW_8Hv.js"
+    "Overview-DwhzvsB6.js",
+    "index-BauyL7AO.js"
   ],
   "lazyPages": [
     {
-      "name": "Builds-DBQf2Dez.js",
+      "name": "Builds-CN-QCXYe.js",
       "bytes": 19378,
       "gzipBytes": 6138
     },
     {
-      "name": "Containers-5ehz5bC2.js",
+      "name": "Containers-CarxeAM1.js",
       "bytes": 48416,
-      "gzipBytes": 15813
+      "gzipBytes": 15812
     },
     {
-      "name": "DiskManager-DIq6avz2.js",
+      "name": "DiskManager-DIhEp8Lk.js",
       "bytes": 27027,
-      "gzipBytes": 8470
+      "gzipBytes": 8473
     },
     {
-      "name": "Images-DQdlDBBz.js",
+      "name": "Images-BwQw7szm.js",
       "bytes": 34910,
       "gzipBytes": 10576
     },
     {
-      "name": "Resources-C3ErBlH5.js",
+      "name": "Resources-KaBFcIrQ.js",
       "bytes": 27449,
-      "gzipBytes": 7612
+      "gzipBytes": 7611
     },
     {
-      "name": "Settings-N1lsHoZz.js",
+      "name": "Settings-CwDFgUDp.js",
       "bytes": 3987,
-      "gzipBytes": 1521
+      "gzipBytes": 1519
     }
   ],
   "englishCatalog": {
@@ -69,14 +69,14 @@
   "rasterImages": [],
   "assets": [
     {
-      "name": "Builds-DBQf2Dez.js",
+      "name": "Builds-CN-QCXYe.js",
       "bytes": 19378,
       "gzipBytes": 6138
     },
     {
-      "name": "Containers-5ehz5bC2.js",
+      "name": "Containers-CarxeAM1.js",
       "bytes": 48416,
-      "gzipBytes": 15813
+      "gzipBytes": 15812
     },
     {
       "name": "Containers-DMhqzffb.css",
@@ -84,19 +84,24 @@
       "gzipBytes": 1104
     },
     {
-      "name": "DiskManager-DIq6avz2.js",
+      "name": "DiskManager-DIhEp8Lk.js",
       "bytes": 27027,
-      "gzipBytes": 8470
+      "gzipBytes": 8473
     },
     {
-      "name": "Images-DQdlDBBz.js",
+      "name": "Images-BwQw7szm.js",
       "bytes": 34910,
       "gzipBytes": 10576
     },
     {
-      "name": "index-8bDW_8Hv.js",
-      "bytes": 277180,
-      "gzipBytes": 86619
+      "name": "index-BauyL7AO.js",
+      "bytes": 277408,
+      "gzipBytes": 86687
+    },
+    {
+      "name": "index-CEXK8GR-.js",
+      "bytes": 66,
+      "gzipBytes": 79
     },
     {
       "name": "index-D6cMBp7a.css",
@@ -104,34 +109,29 @@
       "gzipBytes": 6383
     },
     {
-      "name": "index-MqYiC0Tm.js",
-      "bytes": 66,
-      "gzipBytes": 79
-    },
-    {
       "name": "locales.en-Bu7V7pGQ.js",
       "bytes": 61628,
       "gzipBytes": 18637
     },
     {
-      "name": "metadataCache-2tNqqCT9.js",
+      "name": "metadataCache-jQ9G3wJg.js",
       "bytes": 494,
-      "gzipBytes": 342
+      "gzipBytes": 340
     },
     {
-      "name": "Overview-Cv_mmxAK.js",
+      "name": "Overview-DwhzvsB6.js",
       "bytes": 3785,
-      "gzipBytes": 1295
+      "gzipBytes": 1293
     },
     {
-      "name": "Resources-C3ErBlH5.js",
+      "name": "Resources-KaBFcIrQ.js",
       "bytes": 27449,
-      "gzipBytes": 7612
+      "gzipBytes": 7611
     },
     {
-      "name": "Settings-N1lsHoZz.js",
+      "name": "Settings-CwDFgUDp.js",
       "bytes": 3987,
-      "gzipBytes": 1521
+      "gzipBytes": 1519
     }
   ]
 }

@@ -1,143 +1,77 @@
 # DockSlate
 
-> Docker Desktop 없이 사용하는 Windows용 독립 Moby 엔진과 컨테이너 관리 앱
+Windows 11용 컨테이너 관리 앱. Docker Desktop 대신 전용 WSL 2 Moby 엔진을 사용합니다.
 
-**기존 검증:** `D:\Program Files\DockSlate\runtime\wsl`의 전용 WSL 2 배포판에서 Moby 29.8.2 / API 1.55를 사용합니다. 이전 EXE에서 공용 화면·이미지 실행 4개, 컨테이너 상세 7개, 볼륨 작업 11개, 빌드 작업 6개 검사가 통과했습니다. 메뉴·전체 새로고침 검사 3개, 글자 크기·테마·중앙 팝업 검사 5개와 격리한 Compose 두 서비스의 CLI 빌드·정리도 확인했습니다. 실제 VHDX 압축과 원격 BuildKit 연결은 검증하지 않았습니다. [이전 검증 범위·실행 파일·제한](docs/results/workbench-verification.md), [기존 독립 엔진 검증](docs/results/standalone-runtime-verification.md).
+**현재 상태: 개발 버전. 요청 전체가 검증 완료된 상태는 아닙니다.**
 
-**이번 구현:** Resources의 볼륨·네트워크 탭, 한국어·영어 설정, 고정 높이 컨테이너 팝업과 파일 트리·캐시, 참조 컨테이너를 포함하는 이미지 삭제 승인, 실행 명령어 미리보기, Dockerfile·Compose 파일 선택 후 빌드를 추가했습니다. 중간 EXE의 실제 엔진·화면 검사 25개와 최신 배포 프런트엔드 검사 9개가 통과했습니다. 최신 EXE 재실행과 파일 가져오기 E2E는 브라우징 데이터 접근 경고의 원인 확인 전까지 중단했습니다. [이번 검증·최적화·제한](docs/results/refinement-verification.md), [보안 경고 조사](docs/results/browsing-data-alert.md). 사용자의 실제 프로젝트 파일은 제공되지 않아 해당 프로젝트의 빌드 성공은 확인하지 않았습니다.
+## 실행 · 다운로드
 
-초기 진입 JavaScript는 496.91KB에서 277.18KB로 44.22% 감소했습니다. 페이지별 지연 로딩, 처음 방문한 화면의 상태 보존, 영어 번역 지연 로딩, 데이터 종류별 구독과 읽기 캐시를 적용했습니다. 전체 기능을 모두 로드한 JS 합계는 약 504KB이며, 초기 진입 크기 감소를 전체 크기 감소로 표현하지 않습니다.
-
-[사용 안내](USER_GUIDE.md): 실행·볼륨·빌드·Compose·앱 교체 시 WSL 데이터와 성능 관련 설명.
-
-## 프로젝트
-
-- **분석:** [REA (Reverse Engineer Anything)](https://github.com/morluto/rea) + Codex
-- **분석 대상:** Windows용 Rancher Desktop(Electron, WSL2)
-- **UI 참고:** [Dockhand](https://dockhand.pro/)의 정보 구성과 작업 흐름. 코드·에셋·화면은 복제하지 않음
-- **플랫폼:** Windows 11
-- **기술:** Tauri 2 · React · TypeScript · Rust · Docker Engine API
-- **실행 방식:** DockSlate 전용 WSL 2 배포판의 Moby 엔진. Docker Desktop/Rancher Desktop 실행 파일·CLI·엔진에 의존하지 않음
-
-공식 Ubuntu WSL 이미지와 Docker Engine 패키지를 검증해 독립 저장소에 설치합니다. 관리 API는 전용 배포판의 Unix 소켓에 연결합니다. 앱에는 기존 데이터 자동 이관이나 Docker Desktop 자동 제거 기능이 없습니다. 이 PC에서는 사용자의 별도 승인으로 독립 엔진 E2E를 먼저 통과한 뒤 Docker Desktop 공식 제거기를 실행했습니다. Desktop 등록·서비스·실행 파일과 소유 VHDX 두 파일이 제거됐고, 제거 후에도 같은 독립 엔진 ID로 E2E를 다시 통과했습니다. [제거 기록](docs/results/docker-desktop-removal.json).
-
-## MVP 범위
-
-| 화면 | 기능 |
+| 찾는 것 | 파일 |
 | --- | --- |
-| Overview | 엔진 연결 상태, 실행 중 컨테이너 수, 이미지 수, 저장 공간 요약 |
-| Containers | 목록·검색·상태·CPU·메모리, 시작·중지·재시작, 로그·Inspect·터미널·파일, Compose 프로젝트별 그룹 |
-| Images | 로컬 목록·필터, Docker Hub 검색·Pull, 실행 설정·Docker/PowerShell 명령어 미리보기, 컨테이너 생성, 이미지·참조 중지 컨테이너 삭제 승인 |
-| Resources | Volumes: 생성·복제·파일·tar 전송·비우기·삭제. Networks: 목록·참조·IPAM, bridge 생성·미사용 네트워크 삭제 승인 |
-| Builds | Dockerfile·Compose 파일 선택 후 빌드, Compose 실행 미리보기·승인, 수동 이미지 빌드·진행 상태·로그·이력, 빌더 설정·기록 전송 |
-| Disk Manager | Docker 사용량·정리 대상 분석, 미사용 이미지·빌드 캐시 선택 정리, WSL VHDX 탐색·크기 확인·조건부 압축 |
-| Settings | 한국어·영어, 글자 크기·다크/라이트 테마, 독립 엔진 설치·시작·중지, 엔진 정보 |
+| 다운로드와 사용 안내 | **[guide.html](guide.html)** — 더블클릭해서 열기 |
+| 바로 실행할 EXE | [downloads/DockSlate.exe](downloads/DockSlate.exe) |
+| 안내서가 포함된 ZIP | [DockSlate-0.1.0-windows-x64.zip](downloads/DockSlate-0.1.0-windows-x64.zip) |
+| 설치 방식 | 사용자 선택에 따라 설치 없이 쓰는 EXE·ZIP 제공 |
+| 요청별 구현·검증 상태 | [체크리스트](docs/REQUEST_STATUS.md) |
 
-Compose 그룹은 실제 Docker 라벨로 표시합니다. Builds에서는 제한된 Compose 파일을 가져와 전용 엔진에서 빌드하고, 서비스·이미지·포트·새 볼륨·네트워크를 확인해 별도 승인한 뒤 생성·시작할 수 있습니다. Compose 편집·기존 프로젝트 교체, Kubernetes, 원격 Docker Engine과 계정 기능은 지원하지 않습니다. 수동 이미지 빌드의 사용자 빌더는 DockSlate 엔진의 BuildKit 컨테이너 또는 지정한 원격 BuildKit을 지원합니다. 원격 빌더에 소스를 전송하려면 해당 빌더를 명시적으로 선택해야 합니다. Compose 가져오기는 전용 WSL의 `default` 빌더를 사용합니다.
+`downloads`는 로컬 빌드 결과라 Git 저장소에 포함하지 않습니다. 소스만 내려받았다면 아래 빌드 절차로 생성하세요. 온라인 배포 링크는 아직 없습니다.
 
-앱 시작 시 엔진·컨테이너·이미지·볼륨·네트워크·Docker 사용량·런타임·WSL 디스크를 공용 스냅샷으로 조회합니다. CPU·메모리와 빌드 이력은 기본 화면을 지연시키지 않도록 백그라운드에서 별도로 읽습니다. 메뉴 이동은 저장된 결과와 입력 상태를 표시합니다. 어느 화면에서든 **전체 새로고침**을 누르면 앱 전체 데이터를 함께 갱신합니다. Pull·삭제·컨테이너 변경 뒤에도 전체 결과를 갱신해 Overview와 상세 화면을 일치시킵니다. 평상시 자동 폴링은 없고 실행 중인 작업과 열어 둔 로그·터미널만 필요한 갱신을 수행합니다. 갱신 중에도 기존 목록을 유지합니다. Files는 선택하거나 펼친 폴더만 읽고, 컨테이너·새로고침 revision별 크기가 제한된 메모리 캐시를 팝업 재개방에도 재사용합니다. Inspect는 조회한 JSON을 보관합니다. 목록은 50개씩, 큰 Inspect JSON은 화면에 보이는 줄만 렌더링합니다.
+1. ZIP을 풀고 `DockSlate.exe`를 실행합니다.
+2. **설정 → 런타임**에서 설치 대상 확인·승인 후 엔진을 시작합니다.
+3. **Images**에서 이미지를 준비하고 컨테이너를 실행합니다.
 
-용량은 1,000 기준 KB·MB·GB로 표시합니다. Overview의 **정리 대상 보기**에서 Docker Usage로 이동해 미사용 이미지·빌드 캐시를 선택하고 삭제 내용을 승인할 수 있습니다. Images에는 **Docker Hub 이미지 검색**이 항상 표시됩니다. 검색 버튼으로 결과를 조회하고 이미지를 선택하면 Pull 입력이 열립니다. 태그를 확인한 뒤 Pull을 실행합니다. 검색 영역의 접기·펼치기 상태와 로컬 필터·검색 결과는 메뉴를 이동해도 유지됩니다. 검색은 엔진의 Docker Hub API를 사용하므로 런타임이 중지돼 있으면 이유와 엔진 설정 바로가기를 표시합니다.
+필수 환경: Windows 11 x64, WSL 2.4.10 이상, WebView2. Node.js·Rust는 앱 사용자에게 필요하지 않습니다. 엔진 최초 설치에는 인터넷이 필요합니다.
 
-**이미지 빌드**에서 Windows의 프로젝트 폴더, 폴더 기준 Dockerfile 경로, 이미지 태그를 지정합니다. `.dockerignore`와 Dockerfile별 ignore 파일은 Buildx가 적용합니다. 기본값은 빌드 캐시를 재사용하며, 필요하면 캐시 없이 빌드할 수 있습니다. 결과는 전용 엔진에 저장됩니다. 같은 태그가 있으면 새 결과를 가리킵니다. 진행 로그는 메뉴 이동 중에도 유지하고, 빌드가 끝나면 전체 화면 데이터를 갱신합니다. 빌드 중에는 엔진 변경·정리·앱 종료를 차단합니다. 최근 로그만 제한된 크기로 보관하고 변경된 경우에만 다시 전달합니다. 진행 중 취소는 아직 지원하지 않습니다.
+> **보안 확인 미완료:** EXE는 서명되지 않았습니다. 보고된 브라우징 데이터 접근 경고의 원인은 미확인이고, Defender 검사는 기능 비활성화로 실행되지 않았습니다. 최신 EXE 자동 실행·신뢰 등록은 하지 않았습니다. [확인한 내용](docs/results/browsing-data-alert.md)
 
-Builds의 **파일에서 빌드**는 Windows 파일 선택 창에서 Dockerfile 또는 Compose `.yaml`·`.yml` 파일을 받습니다. Dockerfile은 부모 폴더를 context로 삼아 자동 생성한 이미지 태그로 빌드를 시작합니다. Compose는 선택한 파일을 정규화·검사한 뒤 별도 DockSlate 프로젝트·이미지 태그로 자동 빌드하며, 빌드 후 **실행 미리보기**에서 따로 승인해야 서비스를 시작합니다. 1~16개 서비스, 선택 폴더 내부의 상대 build 경로와 새 이름 있는 볼륨·bridge 네트워크를 지원합니다. 환경 변수 치환, `env_file`·`include`·`extends`·secrets/configs, bind mount·호스트 모드·privileged·장치 연결과 외부 프로젝트 리소스는 차단합니다. 비밀 파일을 자동으로 읽지 않으며, 소스 사전 검사에는 파일 수·용량·시간 제한을 적용합니다. Compose 빌드는 15분, 실행은 2분까지이며 원본 CLI 출력은 비밀 값 보호를 위해 표시하지 않습니다. [세부 제한과 사용 순서](USER_GUIDE.md#file-import).
+`index.html`과 `dist/index.html`은 앱 화면의 진입점입니다. 파일로 열면 실행·사용 안내가 표시됩니다. 엔진 관리는 Windows EXE에서 동작합니다.
 
-로컬 이미지 행의 **실행**에서 컨테이너 이름과 선택적인 localhost 포트 연결을 지정하고 **컨테이너 생성 및 실행**을 누릅니다. 생성·시작 뒤 전체 데이터를 갱신하고 Containers의 해당 컨테이너 로그로 이동합니다. 이미지의 기본 명령을 사용하며 hello-world처럼 명령이 끝나면 중지됩니다. Dockerfile에서 새 이미지를 만드는 기능은 상단 **이미지 빌드**와 로컬 목록의 **Dockerfile로 이미지 빌드**에서 엽니다.
+## 메뉴
 
-실행 설정의 **더보기**에서 Docker 네트워크, 이름 있는 볼륨과 연결 경로·읽기 전용 여부, 환경 변수, 명령·ENTRYPOINT, 작업 디렉터리, 재시작 정책, 메모리(MB)·CPU 제한을 지정합니다. 볼륨·네트워크 목록은 공용 조회 결과를 사용합니다. 새 볼륨이나 bridge 네트워크를 **만들고 선택**할 수 있으며 내부 전용 네트워크도 지원합니다. 이 연결 설정은 새 컨테이너 생성에만 적용하며 기존 컨테이너의 볼륨 변경에는 재생성이 필요합니다. 기본 bridge와 none을 선택할 수도 있습니다. none 선택 시 포트 연결을 비웁니다. 환경 변수는 한 줄에 KEY=value, 명령과 ENTRYPOINT는 한 줄에 인수 하나를 입력합니다. 빈 항목은 이미지 기본값을 사용합니다. 만든 볼륨·네트워크는 실행 설정을 닫아도 유지됩니다. **실행 명령어 확인**은 현재 설정에 해당하는 Docker(WSL) 명령과 Windows용 PowerShell 7.3 이상 명령을 미리 보고 복사하는 기능이며, 미리보기만으로 컨테이너를 만들지는 않습니다.
+| 메뉴 | 주요 기능 |
+| --- | --- |
+| Overview | 엔진·컨테이너·이미지·디스크 요약 |
+| Containers | 시작·중지·재시작, 중앙 상세 팝업, 통계·로그·JSON·마운트·터미널·파일 트리 |
+| Images | Docker Hub 검색·Pull, 실행 설정, Docker/PowerShell 명령 미리보기, 삭제 승인 |
+| Resources | 볼륨·네트워크 탭, 생성·참조 확인·삭제, 볼륨 파일·tar 전송 |
+| Builds | Dockerfile·Compose 가져오기, 빌드·기록·빌더 관리 |
+| Disk Manager | 선택한 이미지·캐시 정리, WSL 디스크 식별·압축 조건 확인 |
+| Settings | 한국어/영어, 다크/라이트, 글자 크기, 런타임·연결 탭 |
 
-이미지 삭제는 실제 이미지 ID·태그·참조 컨테이너를 검사한 승인창을 사용합니다. 참조가 있으면 **참조 컨테이너도 함께 삭제**를 명시적으로 선택해야 하며, 실행·일시정지·재시작 중이거나 상태가 확인되지 않은 컨테이너는 차단합니다. 다중 태그 이미지도 강제 삭제 없이 처리할 수 없어 차단합니다. 승인된 컨테이너의 쓰기 계층과 설정을 삭제한 뒤 이미지를 삭제하며 이름 있는 볼륨과 익명 볼륨은 보존합니다. 삭제 중 참조·설정이 바뀌면 중단하고, 일부 컨테이너를 이미 삭제한 뒤 실패할 수 있으므로 결과를 확인해야 합니다.
+## 검증 상태
 
-메뉴·제목·버튼의 드래그 선택을 막고 입력·로그·표 데이터·경로·진단은 복사할 수 있게 했습니다. Settings는 현재 런타임 상태를 표시하며 중지 완료 후 초록색 성공 알림을 남기지 않습니다.
+| 확인한 범위 | 결과 |
+| --- | --- |
+| 최신 Windows EXE 빌드·TypeScript·Rust 검사 | 통과. [빌드 기록](docs/results/refinement-build.json) |
+| 최신 배포 화면 | 9개 통과. 언어·설정 탭·지연 로딩·상태 보존. [결과](docs/results/frontend-refinements-e2e.json) |
+| 이전 EXE의 화면·리소스 동작 | 25개 통과. 최신 변경 전체를 검증한 결과는 아님. [범위](docs/results/refinement-verification.md) |
+| 독립 엔진 설치·컨테이너·포트·파일 마운트 | 이전 실제 환경 검증 통과. [결과](docs/results/standalone-runtime-verification.md) |
+| 성능 변경 | 진입 JS 약 497→277KB. 메뉴·번역 지연 로딩, 공유 요청·제한 캐시. [측정 범위](docs/results/refinement-verification.md) |
 
-Containers의 이름을 눌러 최대 680px 높이의 중앙 팝업을 엽니다. 탭을 바꿔도 팝업 높이를 유지하며 내용 안에서 스크롤합니다. Inspect는 실제 JSON을 항목별로 표시하고 Mounts에서 볼륨 연결을 확인합니다. Terminal은 선택한 컨테이너 안의 `/bin/sh` 또는 `/bin/bash`에 연결합니다. 메뉴를 옮기면 출력과 연결을 보관하고 조회를 멈추며, 엔진 중지와 앱 종료 시 연결을 닫습니다. Files의 왼쪽은 지연 로딩 폴더 트리, 오른쪽은 선택한 폴더 목록과 텍스트 미리보기입니다. 실행 중이거나 중지된 컨테이너를 지원하며 폴더는 256개 항목, 텍스트는 512KiB까지 표시합니다. 중지 상태는 Docker archive API의 16MiB 제한을 적용하므로 큰 폴더는 하위 경로를 직접 입력해야 합니다. 상세에 합친 CPU·메모리 통계는 팝업을 열 때와 **다시 측정**을 누를 때 한 번씩 읽으며 실시간 통계 폴링은 제공하지 않습니다.
+**남은 검증:** 최신 EXE 재실행, 상세·통계 병합과 팝업 여백, 실행 중 서버의 상태 버튼 전환, 인라인 볼륨 연결, Dockerfile·Compose 파일 선택→빌드→실행, 복사한 실행 명령, 실제 VHDX 압축·UAC. 보안 경고도 미해결입니다.
 
-Resources의 **Volumes**에서는 이름을 영문·숫자로 시작하고 이후 영문·숫자·`_-.`를 사용할 수 있습니다. 실행 설정의 더보기에서 새 컨테이너에 볼륨을 연결할 수 있습니다. 파일 작업은 드라이버 옵션이 없는 local 볼륨을 지원하며 약 2.15GB(2GiB)·50,000개 항목으로 제한합니다. UTF-8 본문은 65,536바이트까지 표시합니다. tar 가져오기는 같은 경로만 덮어쓰는 병합과 기존 내용을 지우는 전체 교체를 구분해 승인받습니다. 중지된 컨테이너의 참조도 비우기·가져오기·삭제를 차단합니다. 작업 중 새 참조가 확인되면 중단합니다. 참조 검사와 파일 변경을 하나의 원자적 작업으로 묶거나 이미 적용한 내용을 되돌리지는 않습니다.
+## 소스에서 빌드
 
-Resources의 **Networks**는 이름·드라이버·기본/사용자 구분, 참조 컨테이너와 IPAM 대역을 표시하고 로컬 bridge를 생성합니다. 기본 네트워크와 컨테이너가 참조하는 네트워크는 삭제할 수 없습니다. 중지된 컨테이너의 참조도 포함하며, 미사용 사용자 네트워크만 실제 ID·설정·참조를 다시 검사하고 승인받아 삭제합니다. 컨테이너를 기존 네트워크에 동적으로 연결·분리하는 UI는 제공하지 않습니다.
-
-Builds의 진행 중 탭에서 앱 빌드의 상태·로그와 마지막 조회 시 실행 중이던 BuildKit 작업을 구분합니다. 앱에서는 한 번에 하나씩 빌드하며 외부 작업 상태는 전체 새로고침으로 갱신합니다. 빌더 선택은 현재 앱에만 적용하고 재시작 시 검증된 로컬 기본 빌더를 사용합니다. 원격 BuildKit은 TCP 또는 WSL 내부 Unix 소켓을 지원하며 TLS·SSH·Kubernetes 설정은 제공하지 않습니다. `.dockerbuild` 내보내기는 Buildx를 사용하고 가져오기는 제품 내부 Rust 파서로 기록·로그를 보관합니다. Docker Desktop이나 PowerShell 파서에 의존하지 않으며 이미지·캐시를 복원하는 기능은 아닙니다. 입력 64MB, 압축 해제 128MB, 처리 15초와 보관 메타데이터 크기 제한을 적용합니다.
-
-## 디스크 관리 범위
-
-1. Docker Engine에서 미사용 데이터와 사용량을 조회합니다.
-2. 사용자가 선택한 **이미지·빌드 캐시만** 정리하며, 실행 중인 컨테이너·볼륨은 자동 삭제하지 않습니다.
-3. WSL 배포판 등록 정보와 실제 파일 시스템에서 DockSlate, Rancher Desktop 및 Docker Desktop의 VHDX를 **각각 식별**합니다. DockSlate는 자체 소유 마커와 등록 ID·경로도 검증합니다.
-4. VHDX 압축 전 소유 런타임, 사용·마운트·잠금 상태, 실행 권한과 영향을 받는 WSL 세션을 확인합니다. 사용자의 변경 지시에 따라 백업 생성·경로 입력은 요구하지 않으며, 백업 없이 원본을 변경한다는 점을 승인창에 표시합니다.
-5. 안전 조건이 충족되고 사용자가 승인한 경우에만 Windows의 지원되는 압축 기능을 사용합니다. 조건을 확인할 수 없으면 실행을 차단합니다.
-6. Docker의 정리 가능 추정치, VHDX 파일 크기, Windows에서 실제 회수한 용량을 **서로 다른 값**으로 표시합니다.
-
-WSL Disks의 **사전 조건 검사**는 해결할 조건을 먼저 표시하고 전체 결과는 **검사 상세 보기**로 접습니다. Windows 내장 Virtual Disk API로 VHDX 형식·분리 상태·식별 정보를 확인하고 `CompactVirtualDisk`를 사용합니다. Hyper-V PowerShell 모듈은 필수 설치 항목이 아닙니다. 내장 API를 사용할 수 없을 때만 지원되는 기존 Optimize-VHD 경로를 확인합니다. **관리자 권한으로 다시 실행**은 Windows 권한 요청과 새 관리자 창을 확인한 뒤 현재 창을 닫습니다. 엔진 상태와 저장된 데이터는 유지되며, 검색과 선택 항목은 초기화됩니다. 실제 압축과 관리자 재실행의 UAC 승인은 아직 검증하지 않았습니다.
-
-`docker_data.vhdx`와 같은 파일은 삭제할 찌꺼기가 아니라 Docker 데이터가 저장된 가상 디스크입니다. 원본 VHDX 직접 삭제와 경로 추측에 의한 조작은 금지합니다.
-
-실제 검증에서는 선택한 빌드 캐시 ID 하나만 삭제하고 선택하지 않은 ID 전부가 유지되는 것을 확인했습니다. VHDX는 탐색·크기 조회와 압축 차단만 확인했으며, 실제 디스크 압축 성공으로 표시하지 않습니다.
-
-## REA 작업 방식
-
-1. 공식 Windows 배포 파일에서 설치 없이 추출하거나, 설치된 Rancher Desktop에서 버전과 실제 Electron 패키지(`app.asar` 또는 배포 디렉터리)를 식별합니다.
-2. REA MCP로 모듈 구조, UI↔IPC, 컨테이너 제어, WSL 연동 지점을 조사합니다.
-3. REA가 반환한 Evidence와 한계를 기록하고, [Rancher Desktop 공개 소스](https://github.com/rancher-sandbox/rancher-desktop)로 검증합니다.
-4. 확인된 동작 중 MVP 기능만 독립적으로 구현합니다.
-5. 원본과 DockSlate를 동일한 테스트 환경에서 실행해 결과를 비교합니다.
-
-**REA 분석은 프로젝트의 필수 작업입니다.** 공개 소스만 읽거나 Docker API만 호출한 작업을 REA 역공학 성과로 표시하지 않습니다.
-
-## 개발 시작
-
-Windows용 Node.js/npm, Rust MSVC, Microsoft C++ Build Tools/Windows SDK, WebView2가 필요합니다. 현재 PC에는 승인된 필수 의존성과 빌드 도구, DockSlate 전용 배포판과 엔진을 설치했습니다. Rancher Desktop은 설치하지 않았으며, 이미 설치돼 있던 WSL 2.6.3을 사용합니다.
-
-독립 엔진 설치 위치는 사용자 지정 `D:\Program Files\DockSlate\runtime\wsl`, 배포판 이름은 `DockSlate`입니다. Ubuntu 24.04.5 x64, Docker Engine/CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0을 고정했으며 rootfs·키·패키지 SHA와 서명된 APT 메타데이터 검증을 포함한 실제 설치를 수행했습니다. curl·iptables·nftables·systemd 및 OS 의존성도 전용 배포판에 설치했습니다. 기존 등록이나 대상 폴더는 덮어쓰지 않습니다. [확인한 설치 입력·운영 제약](docs/results/standalone-runtime-evidence.md), [설치·연결 결과](docs/results/independent-runtime-provisioning.json).
-
-새 PC에서는 Settings에서 대상 확인·설치 승인, 런타임 시작 승인 순으로 진행합니다. 설치된 PC에서는 Settings에서 시작·중지를 승인할 수 있습니다. Linux CLI는 `wsl --distribution DockSlate --user root --exec docker ...` 경로를 사용합니다. Windows 프로젝트 bind mount의 source는 엔진이 보는 `/mnt/<drive>/...` 경로입니다. 이 PC에서는 읽기 전용 Windows 파일 mount와 동적으로 게시한 포트의 Windows localhost HTTP 응답을 실제 검증했습니다. 파일 감시·쓰기 권한·대소문자 동작 전체를 검증한 것은 아닙니다. Windows의 기존 `docker.exe`나 `docker-desktop` context를 독립 엔진으로 간주하지 않습니다.
+개발 도구: Node.js/npm, Rust MSVC, Microsoft C++ Build Tools/Windows SDK. 프로젝트의 `.tools`에 설치된 Rust가 있으면 스크립트가 사용합니다.
 
 ```powershell
-npm install
-npm run build
-.\node_modules\.bin\vite.cmd preview --host 127.0.0.1 --port 1420 --strictPort
-```
-
-위 설치·프런트엔드 빌드·배포 화면 조회는 실제 실행했습니다. 브라우저에서는 Tauri 백엔드가 없다는 오류와 작업 비활성화가 표시됩니다. 모의 데이터나 모의 백엔드는 사용하지 않습니다.
-
-Windows 제품 빌드 및 읽기 전용 진단:
-
-```powershell
+npm ci
 .\scripts\desktop.ps1 -Mode build
-.\scripts\desktop.ps1 -Mode verify
-.\src-tauri\target\release\dockslate.exe
+npm run package:local
 ```
 
-프로젝트 내부 `.tools/cargo`와 `.tools/rustup`이 있으면 스크립트가 사용하며, 없으면 설치된 Rust를 사용합니다. 초기 파일 접근 거부 이후 Codex sandbox 밖에서 위 제품 빌드와 진단을 성공했고, 실제 EXE 실행·재실행을 확인했습니다. sandbox 내부 빌드는 재시도에서도 Windows 오류 5로 실패했습니다. 보호 제품·조직 정책 적용 여부와 과거 실패 원인은 미확인이며 보안 설정을 변경하지 않았습니다. `verify`는 지정된 결과 JSON에 읽기 전용 조회와 거부 조건을 기록합니다.
+결과: `downloads/DockSlate.exe`, `downloads/DockSlate-0.1.0-windows-x64.zip`. 패키징은 앱을 실행하거나 WSL을 변경하지 않습니다.
 
-제품 EXE에는 관리 앱과 설치·상태 제어 코드가 포함되며, Ubuntu와 엔진 패키지는 승인된 설치 시 공식 출처에서 다운로드합니다. WebView2와 WSL 2.4.10 이상이 필요합니다. 이전 클라이언트 EXE 크기·실행 검증은 [기존 기록](docs/results/mvp-verification.md)에 남깁니다.
+별도 설치 프로그램은 만들지 않습니다. 사용자가 추가 도구 없이 EXE·ZIP 배포를 선택했습니다.
 
-`npm run dev`도 sandbox 밖에서 의존성 변환과 HTTP 응답을 확인했습니다. 분석·도구·Rust·검증 디렉터리를 Vite 파일 감시에서 제외해 잠긴 분석 파일의 EBUSY 종료를 수정했습니다. Tauri 개발 모드(`.\scripts\desktop.ps1 -Mode dev`)는 별도로 검증하지 않았습니다.
+브라우저 화면 개발: `npm run dev`. 데스크톱 개발: `.\scripts\desktop.ps1 -Mode dev`. 브라우저에는 네이티브 백엔드가 없으므로 엔진 작업을 실행할 수 없습니다.
 
-[확장 기능의 현재 검증](docs/results/workbench-verification.md), [독립 엔진 구현·실행 검증](docs/results/standalone-runtime-verification.md), [기존 클라이언트 검증](docs/results/mvp-verification.md), [추가 구현 근거](docs/results/rea-analysis.md), [세션 REA MCP 호출 감사](docs/results/rea-mcp-call-audit.md)를 참고하세요.
+## 데이터 · 지원 범위
 
-로컬 의존성의 라이선스와 확보한 원문은 [Third-party notices](THIRD_PARTY_NOTICES.md)에 기록했습니다. 누락 원문과 SDK·Rust 표준 라이브러리 고지가 남아 있어 외부 배포 고지는 확정하지 않았습니다.
+- 앱과 전용 WSL 배포판은 별개입니다. 앱 제거·EXE 삭제로 이미지·볼륨을 자동 삭제하지 않습니다.
+- 기존 컨테이너의 볼륨 변경은 재생성이 필요합니다. 볼륨 생성만으로 자동 연결되지 않습니다.
+- Compose 가져오기는 제한된 로컬 프로젝트만 지원합니다. Kubernetes `deployment.yaml` 배포는 지원하지 않습니다.
+- 실행 중 컨테이너·볼륨을 자동 정리하지 않습니다. 압축은 조건 검사와 승인이 필요합니다.
+- Apple container는 macOS용입니다. Windows 엔진 대체로 적용하지 않았습니다.
 
-## MVP 완료 기준
-
-- REA 분석 대상·버전·Evidence·확인되지 않은 사항 기록
-- 독립 Moby 엔진 설치·시작·API 연결·중지·재시작 및 컨테이너·이미지 E2E 통과
-- Compose 그룹, 로그, 엔진 연결 실패 상태를 실제 데이터로 확인
-- Resources 네트워크 참조·기본 네트워크 삭제 차단, 이미지 연쇄 삭제 승인·활성 참조·다중 태그 차단 E2E 확인
-- Dockerfile·Compose 파일 선택 후 빌드와 Compose 실행 승인·입력 제한 E2E 확인
-- 한국어·영어 전환, 고정 높이 팝업과 파일 트리·캐시의 실제 사용자 경로 확인
-- Docker 사용량과 Rancher/Docker VHDX의 소유자·경로·크기 구분
-- 삭제 확인, 차단 조건, 압축 전제 조건 E2E 검증
-- 안전한 테스트 디스크에서 압축 가능 여부 및 작업 전후 용량 검증; 불가한 환경은 미지원으로 명시
-- Windows 앱 실행·빌드 검증 및 측정한 크기·메모리 사용량 기록
-
-**분석 상태:** Rancher Desktop 1.24.0 공식 Windows MSI를 설치 없이 추출하고 REA MCP의 집중 정적 분석 결과를 확보했습니다. 전체 ASAR 분석은 시간 제한, 집중 분석은 그래프 자원 제한으로 부분 coverage입니다. [원본 분석 결과·Evidence·미확인 사항](docs/research/rancher-desktop-1.24.0.md)은 보존했습니다. MVP 구현 요청 이후 새 REA MCP 호출은 수행하지 않았습니다.
-
-## 근거 및 참고
-
-- [REA](https://github.com/morluto/rea)
-- [Rancher Desktop 아키텍처](https://docs.rancherdesktop.io/references/architecture/)
-- [Rancher Desktop 소스 및 Apache-2.0](https://github.com/rancher-sandbox/rancher-desktop)
-- [Dockhand](https://github.com/Finsys/dockhand) · [Dockhand 라이선스(BSL 1.1)](https://dockhand.pro/license.html)
-- [Docker Engine API](https://docs.docker.com/reference/api/engine/) · [Docker 데이터 정리](https://docs.docker.com/engine/manage-resources/pruning/)
-- [Microsoft WSL 디스크 관리](https://learn.microsoft.com/windows/wsl/disk-space)
+[사용 안내](guide.html) · [요청 체크리스트](docs/REQUEST_STATUS.md) · [Rancher Desktop REA 근거](docs/research/rancher-desktop-1.24.0.md) · [외부 라이선스 고지와 미확인 항목](THIRD_PARTY_NOTICES.md)

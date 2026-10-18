@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-18T09:36:47.521Z",
+  "observedAt": "2026-10-18T10:21:53.221Z",
   "completed": true,
   "target": "Built production frontend in isolated signed Chrome; native backend unavailable; no mock data",
   "checks": [
@@ -7,8 +7,8 @@
       "name": "Only entry and Overview scripts load for initial Korean screen",
       "passed": true,
       "evidence": [
-        "http://127.0.0.1:1420/assets/index-8bDW_8Hv.js",
-        "http://127.0.0.1:1420/assets/Overview-Cv_mmxAK.js"
+        "http://127.0.0.1:1420/assets/index-BauyL7AO.js",
+        "http://127.0.0.1:1420/assets/Overview-DwhzvsB6.js"
       ]
     },
     {
@@ -25,31 +25,31 @@
       "evidence": [
         {
           "page": "Overview",
-          "firstVisitMs": 333
+          "firstVisitMs": 335
         },
         {
           "page": "Containers",
-          "firstVisitMs": 366
-        },
-        {
-          "page": "Images",
-          "firstVisitMs": 349
-        },
-        {
-          "page": "Resources",
-          "firstVisitMs": 332
-        },
-        {
-          "page": "Builds",
           "firstVisitMs": 367
         },
         {
+          "page": "Images",
+          "firstVisitMs": 350
+        },
+        {
+          "page": "Resources",
+          "firstVisitMs": 366
+        },
+        {
+          "page": "Builds",
+          "firstVisitMs": 351
+        },
+        {
           "page": "Disk Manager",
-          "firstVisitMs": 334
+          "firstVisitMs": 332
         },
         {
           "page": "Settings",
-          "firstVisitMs": 352
+          "firstVisitMs": 350
         }
       ]
     },
@@ -97,17 +97,17 @@
   ],
   "failure": null,
   "scripts": [
-    "http://127.0.0.1:1420/assets/index-8bDW_8Hv.js",
-    "http://127.0.0.1:1420/assets/Overview-Cv_mmxAK.js",
-    "http://127.0.0.1:1420/assets/Settings-N1lsHoZz.js",
+    "http://127.0.0.1:1420/assets/index-BauyL7AO.js",
+    "http://127.0.0.1:1420/assets/Overview-DwhzvsB6.js",
+    "http://127.0.0.1:1420/assets/Settings-CwDFgUDp.js",
     "http://127.0.0.1:1420/assets/locales.en-Bu7V7pGQ.js",
-    "http://127.0.0.1:1420/assets/Containers-5ehz5bC2.js",
-    "http://127.0.0.1:1420/assets/index-MqYiC0Tm.js",
-    "http://127.0.0.1:1420/assets/metadataCache-2tNqqCT9.js",
-    "http://127.0.0.1:1420/assets/Images-DQdlDBBz.js",
-    "http://127.0.0.1:1420/assets/Resources-C3ErBlH5.js",
-    "http://127.0.0.1:1420/assets/Builds-DBQf2Dez.js",
-    "http://127.0.0.1:1420/assets/DiskManager-DIq6avz2.js"
+    "http://127.0.0.1:1420/assets/Containers-CarxeAM1.js",
+    "http://127.0.0.1:1420/assets/index-CEXK8GR-.js",
+    "http://127.0.0.1:1420/assets/metadataCache-jQ9G3wJg.js",
+    "http://127.0.0.1:1420/assets/Images-BwQw7szm.js",
+    "http://127.0.0.1:1420/assets/Resources-KaBFcIrQ.js",
+    "http://127.0.0.1:1420/assets/Builds-CN-QCXYe.js",
+    "http://127.0.0.1:1420/assets/DiskManager-DIhEp8Lk.js"
   ],
   "errors": []
 }

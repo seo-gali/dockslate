@@ -1,0 +1,22 @@
+{
+    "generatedAt":  "2026-10-18T19:29:33.2905412+09:00",
+    "version":  "0.1.0",
+    "platform":  "windows-x64",
+    "scope":  "Local review package; no public release upload",
+    "distribution":  "Portable EXE and ZIP only, selected by user",
+    "executableLaunched":  false,
+    "securityAlertResolved":  false,
+    "installerInstalledOrUninstalled":  false,
+    "files":  [
+                  {
+                      "file":  "DockSlate.exe",
+                      "bytes":  4680704,
+                      "sha256":  "1A8BCD49CE81D1C493B088FC3A713EBCBCB68DFB897199DE688E82462E5BE88D"
+                  },
+                  {
+                      "file":  "DockSlate-0.1.0-windows-x64.zip",
+                      "bytes":  2315550,
+                      "sha256":  "85F7E26067FAB16F06E2D24E5016DB645B9B788D85FF005636F7E74923F330EF"
+                  }
+              ]
+}

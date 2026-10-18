@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/copy-guide.mjs",
     "tauri": "tauri",
     "desktop:dev": "tauri dev",
-    "desktop:build": "tauri build --no-bundle"
+    "desktop:build": "tauri build --no-bundle",
+    "package:local": "powershell -NoProfile -File scripts/package-local.ps1"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",

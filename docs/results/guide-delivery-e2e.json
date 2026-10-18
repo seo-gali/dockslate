@@ -1,0 +1,91 @@
+{
+  "observedAt": "2026-10-18T10:29:37.283Z",
+  "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
+  "completed": true,
+  "checks": [
+    {
+      "name": "index.html shows launch guidance and opens local HTML guide",
+      "passed": true,
+      "evidence": {
+        "text": "DockSlate\n\n컨테이너 관리는 Windows 앱에서 실행합니다.\n\n이 HTML은 앱의 화면 소스입니다. 아래 안내에서 EXE를 내려받거나 사용 방법을 확인하세요.\n\n실행 파일 · 사용 안내 열기\n개발 중이라면 npm run dev로 화면을 열거나 scripts/desktop.ps1 -Mode dev로 데스크톱 앱을 실행하세요.",
+        "guide": "file:///D:/01_Programming/08_AI/REA/dockslate/guide.html",
+        "root": true
+      }
+    },
+    {
+      "name": "dist/index.html shows launch guidance and opens local HTML guide",
+      "passed": true,
+      "evidence": {
+        "text": "DockSlate\n\n컨테이너 관리는 Windows 앱에서 실행합니다.\n\n이 HTML은 앱의 화면 소스입니다. 아래 안내에서 EXE를 내려받거나 사용 방법을 확인하세요.\n\n실행 파일 · 사용 안내 열기\n개발 중이라면 npm run dev로 화면을 열거나 scripts/desktop.ps1 -Mode dev로 데스크톱 앱을 실행하세요.",
+        "guide": "file:///D:/01_Programming/08_AI/REA/dockslate/dist/guide.html",
+        "root": true
+      }
+    },
+    {
+      "name": "guide.html has real EXE/ZIP links and complete guide sections",
+      "passed": true,
+      "evidence": [
+        {
+          "name": "DockSlate-0.1.0-windows-x64.zip",
+          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
+        },
+        {
+          "name": "DockSlate.exe",
+          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate.exe"
+        }
+      ]
+    },
+    {
+      "name": "dist/guide.html has real EXE/ZIP links and complete guide sections",
+      "passed": true,
+      "evidence": [
+        {
+          "name": "DockSlate-0.1.0-windows-x64.zip",
+          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
+        },
+        {
+          "name": "DockSlate.exe",
+          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate.exe"
+        }
+      ]
+    },
+    {
+      "name": "EXE download button saves the exact packaged executable without running it",
+      "passed": true,
+      "evidence": {
+        "sha256": "1A8BCD49CE81D1C493B088FC3A713EBCBCB68DFB897199DE688E82462E5BE88D"
+      }
+    },
+    {
+      "name": "ZIP download button saves the exact local review package",
+      "passed": true,
+      "evidence": {
+        "sha256": "85F7E26067FAB16F06E2D24E5016DB645B9B788D85FF005636F7E74923F330EF"
+      }
+    },
+    {
+      "name": "Guide HTML download opens independently and remains downloadable",
+      "passed": true,
+      "evidence": {
+        "bytes": 24934,
+        "externalScriptOrStyles": 0
+      }
+    },
+    {
+      "name": "Extracted ZIP guide links to its adjacent executable",
+      "passed": true,
+      "evidence": [
+        "file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/portable-extract/DockSlate-0.1.0-windows-x64/DockSlate.exe"
+      ]
+    },
+    {
+      "name": "Guide fits a 390px mobile viewport",
+      "passed": true
+    },
+    {
+      "name": "No JavaScript exceptions in local guide or downloaded standalone copy",
+      "passed": true
+    }
+  ],
+  "failure": null
+}

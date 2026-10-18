@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="dockslate-root" content="./">
+  <title>DockSlate · 다운로드와 사용 안내</title>
+  <style>
+    :root{color-scheme:light;--bg:#f5f7fb;--paper:#fff;--text:#202c40;--muted:#5c6a7e;--line:#dce3ef;--blue:#2856d8;--soft:#eaf0ff;--warn:#fff6df}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 "Segoe UI",-apple-system,BlinkMacSystemFont,"Malgun Gothic",sans-serif}a{color:var(--blue);text-underline-offset:3px}button,a.button{font:inherit;cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:9px 14px;background:var(--paper);color:var(--text);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}button:hover,a.button:hover{border-color:var(--blue)}button:focus-visible,a:focus-visible{outline:3px solid #7296ff;outline-offset:3px}.primary{background:var(--blue)!important;color:white!important;border-color:var(--blue)!important}.shell{max-width:1160px;margin:auto;padding:28px 30px 72px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:24px;border-bottom:1px solid var(--line)}.brand{font-size:24px;font-weight:750;letter-spacing:-.7px}.caption{font-size:12px;color:var(--muted);margin:0}.actions{display:flex;flex-wrap:wrap;gap:8px}.layout{display:grid;grid-template-columns:188px minmax(0,1fr);gap:36px;margin-top:28px}nav{position:sticky;top:24px;align-self:start;display:grid;gap:5px}nav a{padding:9px 12px;color:var(--muted);border-radius:7px;text-decoration:none}nav a.active{background:var(--soft);color:var(--blue);font-weight:650}.section{scroll-margin-top:24px;margin-bottom:42px}h1{font-size:32px;letter-spacing:-1px;line-height:1.3;margin:0 0 12px}h2{font-size:22px;letter-spacing:-.5px;margin:0 0 16px}h3{font-size:16px;margin:0 0 10px}p{margin:8px 0 16px}.muted{color:var(--muted)}.card{background:var(--paper);border:1px solid var(--line);padding:22px;border-radius:12px;margin:14px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid .card{margin:0}.notice{background:var(--warn);border-left:3px solid #d6a52f;padding:12px 16px;border-radius:5px;margin:16px 0;font-size:13px}.pill{display:inline-block;font-size:11px;font-weight:650;padding:3px 8px;border-radius:5px;white-space:nowrap;background:var(--soft);color:var(--blue)}.pending{background:#fff0d5;color:#875300}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}table{width:100%;border-collapse:collapse;background:var(--paper);font-size:13px;text-align:left}th,td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf1f8;font-weight:650}tr:last-child td{border:0}td:first-child{min-width:120px}ol,ul{padding-left:23px;margin:12px 0}li{margin:7px 0}code{font:12px/1.6 Consolas,monospace;background:#edf1f8;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#152036;color:#e6edff;padding:16px;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 Consolas,monospace}details{border-bottom:1px solid var(--line);padding:13px 0}summary{cursor:pointer;font-weight:600}details p{margin:12px 0 4px;font-size:14px;color:var(--muted)}.steps{counter-reset:step;list-style:none;padding:0}.steps li{position:relative;padding-left:38px;margin:20px 0}.steps li:before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:25px;height:25px;text-align:center;border-radius:50%;background:var(--soft);color:var(--blue);font-size:13px;font-weight:700}.hash{font:11px/1.7 Consolas,monospace;word-break:break-all;color:var(--muted)}footer{border-top:1px solid var(--line);padding-top:20px;font-size:12px;color:var(--muted)}[hidden]{display:none!important}
+    @media(max-width:760px){.shell{padding:20px 18px 48px}header{align-items:flex-start;flex-direction:column}.layout{display:block;margin-top:16px}nav{position:static;display:flex;overflow:auto;margin-bottom:24px;gap:5px}nav a{white-space:nowrap;font-size:13px}.grid{grid-template-columns:1fr}h1{font-size:27px}.card{padding:18px}th,td{padding:10px}.actions .button,.actions button{font-size:13px}}
+    @media print{body{background:white;font-size:11px}.shell{padding:0;max-width:none}.layout{display:block}nav,header .actions,.download-actions,#download-note{display:none!important}.section{margin-bottom:22px}.card{break-inside:avoid;padding:12px}h1{font-size:24px}h2{font-size:18px}details p{display:block}details{break-inside:avoid}a{color:inherit;text-decoration:none}table{font-size:11px}th,td{padding:7px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div><div class="brand">DockSlate <span class="pill">0.1.0 · Windows</span></div><p class="caption">다운로드 · 사용 안내 · 작업 현황</p></div>
+    <div class="actions"><button id="save-guide" type="button">안내서 HTML 다운로드</button><button id="print-guide" type="button">인쇄 / PDF</button></div>
+  </header>
+  <div class="layout">
+    <nav aria-label="사용 안내 목차">
+      <a href="#start" class="active">시작하기</a><a href="#containers">컨테이너</a><a href="#images">이미지 · 실행 설정</a><a href="#builds">파일로 빌드</a><a href="#resources">볼륨 · 네트워크</a><a href="#settings">설정 · 디스크</a><a href="#questions">자주 묻는 질문</a><a href="#status">요청별 작업 현황</a>
+    </nav>
+    <main>
+      <section id="start" class="section">
+        <h1>앱은 EXE로 실행합니다.</h1>
+        <p class="muted">DockSlate는 전용 WSL 엔진을 관리하는 Windows 앱입니다. 이 안내서는 브라우저에서 바로 열고 공유할 수 있습니다.</p>
+        <div class="card" id="download-card">
+          <h3>Windows x64 다운로드</h3>
+          <p class="muted">ZIP을 풀고 <strong>DockSlate.exe</strong>를 실행합니다. Node.js와 Rust는 사용자 PC에 필요하지 않습니다.</p>
+          <div class="actions download-actions">
+            <a class="button primary" data-artifact="DockSlate-0.1.0-windows-x64.zip" href="./downloads/DockSlate-0.1.0-windows-x64.zip" download>포터블 ZIP</a>
+            <a class="button" data-artifact="DockSlate.exe" href="./downloads/DockSlate.exe" download>EXE만 다운로드</a>
+          </div>
+          <p class="caption" id="download-note">다운로드 파일은 이 안내서와 함께 있는 downloads 폴더에 있습니다. HTML만 전달받았다면 EXE 또는 ZIP도 함께 받아야 합니다.</p>
+          <p class="caption">선택한 배포 방식: 설치 없이 쓰는 EXE·ZIP. 추가 제작 도구와 별도 설치 프로그램은 사용하지 않습니다.</p>
+          <div class="notice"><strong>현재 배포 상태: 검증 중.</strong> EXE는 서명되지 않았습니다. 사용자가 보고한 보안 제품의 브라우징 데이터 접근 경고는 원인이 확인되지 않아 최신 EXE의 재실행 검증을 보류했습니다. 경고를 무시하거나 신뢰 목록에 추가하도록 안내하지 않습니다.</div>
+        </div>
+        <div class="grid">
+          <div class="card"><h3>필요한 환경</h3><ul><li>Windows 11 x64</li><li>WSL 2.4.10 이상</li><li>Microsoft Edge WebView2 Runtime</li><li>엔진 최초 설치 시 인터넷 연결</li></ul></div>
+          <div class="card"><h3>처음 사용하는 PC</h3><ol><li>앱 → <strong>설정 → 런타임</strong></li><li>설치 대상과 경로를 확인하고 승인</li><li>런타임 시작 → 연결 상태 확인</li></ol><p class="caption">앱 설치와 WSL 엔진 설치는 별도입니다. 기존 엔진이 있으면 다시 설치하지 않습니다.</p></div>
+        </div>
+        <details><summary>index.html과 dist/index.html은 왜 앱으로 실행되지 않나요?</summary><p>두 파일은 Tauri가 띄우는 화면의 진입점입니다. 브라우저의 file:// 주소에는 Rust 백엔드가 없으므로 엔진을 제어할 수 없습니다. 직접 열면 이 안내서로 이동할 수 있게 했습니다. 개발 화면은 <code>npm run dev</code>, 데스크톱 개발 실행은 <code>scripts/desktop.ps1 -Mode dev</code>를 사용합니다.</p></details>
+      </section>
+      <section id="containers" class="section">
+        <h2>컨테이너 확인</h2>
+        <ol class="steps"><li><strong>Containers에서 이름 클릭</strong><br>항상 같은 크기의 중앙 팝업이 열립니다. 긴 내용은 내부에서 스크롤합니다.</li><li><strong>상세 / 로그 / 상세 JSON / 마운트 / 터미널 / 파일</strong><br>CPU·메모리는 상세 탭을 열 때 한 번 읽습니다. 다시 확인하려면 ‘다시 측정’을 누릅니다.</li><li><strong>시작·중지·재시작은 목록 오른쪽 메뉴</strong><br>브라우저에서 열기는 연결된 포트가 있는 경우 사용할 수 있습니다.</li></ol>
+        <div class="table-wrap"><table><thead><tr><th>할 일</th><th>위치와 동작</th></tr></thead><tbody><tr><td>로그 확인</td><td>최근 300줄. 검색·복사·자동 스크롤 지원. 중지된 컨테이너는 반복 조회하지 않습니다.</td></tr><tr><td>파일 탐색</td><td>왼쪽 폴더 트리 → 오른쪽 목록 → 파일 미리보기. 폴더를 펼칠 때 필요한 경로만 읽습니다.</td></tr><tr><td>터미널 연결</td><td>실행 중인 컨테이너에서 /bin/sh 또는 /bin/bash 선택. 셀이 없는 이미지는 연결할 수 없습니다.</td></tr><tr><td>설정 확인</td><td>상세 JSON에서 검색·영역 선택·복사. 마운트 탭에서 실제 연결 경로를 확인합니다.</td></tr></tbody></table></div>
+        <details><summary>시작했는데 바로 중지되는 건 오류인가요?</summary><p><code>hello-world</code>처럼 메시지를 출력하고 끝나는 이미지는 정상 종료해도 중지 상태가 됩니다. 상세의 종료 코드가 0이고 로그에 정상 출력이 있으면 프로그램이 끝난 것입니다. 계속 실행하려면 서버 등 계속 동작하는 프로세스를 가진 이미지가 필요합니다.</p></details>
+      </section>
+      <section id="images" class="section">
+        <h2>이미지에서 실행</h2>
+        <ol class="steps"><li><strong>이미지 준비</strong><br>Images → Docker Hub에서 검색·Pull하거나 로컬 이미지를 선택합니다.</li><li><strong>실행 설정 입력</strong><br>이름과 포트를 지정합니다. ‘더보기’에서 볼륨·네트워크·환경 변수·명령·작업 경로·재시작 정책·CPU·메모리를 설정합니다.</li><li><strong>실행 명령어 확인</strong><br>Docker(WSL) 명령을 기본으로 표시합니다. Windows에서 호출할 PowerShell 7.3+ 형식도 복사할 수 있습니다. 미리보기는 자동 실행하지 않습니다.</li><li><strong>컨테이너 생성 및 실행</strong><br>작업 결과를 갱신하고 해당 컨테이너의 로그로 이동합니다.</li></ol>
+        <div class="notice">참조 중인 이미지 삭제는 승인창에서 ‘참조 컨테이너도 함께 삭제’를 직접 선택해야 합니다. 중지·생성·dead 상태만 허용하며, 볼륨은 남깁니다. 실행 중 참조와 여러 태그가 있는 이미지는 차단합니다.</div>
+        <details><summary>명령어가 docker로 시작하지 않는 이유는?</summary><p>기본 Docker 탭은 전용 WSL 내부에서 실행하는 docker 명령입니다. PowerShell 탭은 Windows에서 <code>wsl.exe</code>를 거쳐 같은 엔진의 Docker를 호출하므로 더 깁니다. Windows에 별도로 설치한 docker.exe가 다른 엔진에 연결되는 것을 피하기 위한 형식입니다.</p></details>
+      </section>
+      <section id="builds" class="section">
+        <h2>Dockerfile · Compose로 빌드</h2>
+        <div class="table-wrap"><table><thead><tr><th>입력</th><th>사용 순서</th></tr></thead><tbody><tr><td>Dockerfile</td><td>Builds → 파일 가져오기 → Dockerfile 선택. 파일이 있는 폴더를 빌드 컨텍스트로 사용합니다. COPY가 참조하는 소스도 그 폴더 안에 있어야 합니다.</td></tr><tr><td>compose.yaml / yml</td><td>파일 선택 → 검증 → 빌드 → 서비스·이미지·포트·볼륨·네트워크 확인 → 실행 승인.</td></tr><tr><td>컨텍스트 직접 지정</td><td>이미지 빌드 폼에서 폴더·Dockerfile 경로·이미지 태그를 지정합니다.</td></tr><tr><td>.dockerbuild</td><td>빌드 기록 가져오기·내보내기용입니다. 이미지나 빌드 캐시를 복원하지 않습니다.</td></tr></tbody></table></div>
+        <p class="caption">파일은 외부 서버로 업로드하지 않고 전용 WSL 엔진에서 처리합니다.</p>
+        <details><summary>Compose 가져오기 제한</summary><ul><li>1~16개 서비스, 프로젝트 폴더 안의 상대 빌드 경로</li><li>새 이름의 볼륨과 bridge 네트워크</li><li>include·extends·env_file·변수 치환·secrets·configs 미지원</li><li>호스트 bind mount·privileged·장치·외부 리소스 미지원</li></ul><p>새 파일 선택 → 빌드 → 실행 UI 경로는 코드·컴파일 확인까지 끝났으며, 실제 엔진 E2E 검증은 남아 있습니다. 이전의 격리된 두 서비스 Compose CLI 빌드 성공과 구분합니다.</p></details>
+      </section>
+      <section id="resources" class="section">
+        <h2>볼륨 · 네트워크</h2>
+        <div class="grid"><div class="card"><h3>Resources → Volumes</h3><ul><li>생성·복제·참조 확인</li><li>파일 탐색·텍스트 보기</li><li>tar 내보내기·병합 / 교체 가져오기</li><li>비우기·삭제는 영향 확인 후 승인</li></ul></div><div class="card"><h3>Resources → Networks</h3><ul><li>driver·IPAM·참조 컨테이너 확인</li><li>bridge·내부 전용 네트워크 생성</li><li>기본 네트워크 삭제 차단</li><li>참조 없는 사용자 네트워크만 삭제</li></ul></div></div>
+        <details><summary>볼륨을 만들면 기존 컨테이너에 연결되나요?</summary><p>생성만으로는 연결되지 않습니다. Images의 실행 설정에서 볼륨을 선택하고 컨테이너 내부 경로를 입력해야 합니다. 같은 화면에서 새 볼륨·네트워크를 만들고 선택할 수도 있습니다. 기존 컨테이너의 볼륨 마운트를 바꾸려면 컨테이너를 새 설정으로 재생성해야 합니다.</p></details>
+      </section>
+      <section id="settings" class="section">
+        <h2>설정 · 디스크 관리</h2>
+        <div class="table-wrap"><table><thead><tr><th>탭</th><th>기능</th></tr></thead><tbody><tr><td>설정 → 화면</td><td>한국어 / English, 다크 / 라이트, 글자 11~16px(기본 12px). 선택은 저장됩니다.</td></tr><tr><td>설정 → 런타임</td><td>전용 WSL 엔진 설치·시작·중지와 저장 위치 확인.</td></tr><tr><td>설정 → 엔진 연결</td><td>연결 상태·엔진 정보와 진단.</td></tr><tr><td>디스크 → Docker 사용량</td><td>정리 대상을 선택하고 승인. ‘정리 차단’에 마우스를 올리거나 키보드로 포커스하면 이유를 표시합니다.</td></tr><tr><td>디스크 → WSL 디스크</td><td>배포판별 VHDX 식별과 압축 조건 확인. 실제 압축·UAC 승인은 아직 검증하지 않았습니다.</td></tr></tbody></table></div>
+        <details><summary>전체 새로고침과 메뉴 이동의 차이</summary><p>메뉴 이동은 저장된 조회 결과를 사용합니다. 전체 새로고침과 생성·삭제 같은 작업이 결과를 갱신합니다. 열린 실행 중 로그·터미널·진행 중 작업만 필요한 갱신을 수행합니다.</p></details>
+      </section>
+      <section id="questions" class="section">
+        <h2>자주 묻는 질문</h2>
+        <details><summary>앱을 지우거나 다시 설치하면 WSL 데이터도 없어지나요?</summary><p>앱 EXE·설치 폴더와 전용 WSL 배포판은 별개입니다. 포터블 EXE 삭제나 앱 제거로 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 런타임 중지도 데이터를 지우지 않습니다. 재설치 후 기존 배포판의 소유권과 엔진 정보를 확인해 사용합니다.</p></details>
+        <details><summary>deployment.yaml 하나로 전체를 빌드할 수 있나요?</summary><p>파일 이름이 아니라 내용으로 구분합니다. Docker Compose 형식이면 제한된 Compose 가져오기 대상으로 사용할 수 있습니다. Kubernetes Deployment 형식은 이미 만들어진 이미지를 실행하는 선언이라 Dockerfile 빌드 입력이 아니며, DockSlate는 Kubernetes 배포를 지원하지 않습니다.</p></details>
+        <details><summary>Apple container나 Davit을 적용할 부분은?</summary><p>이 Windows 앱의 엔진을 macOS 전용 Apple container로 교체할 수는 없습니다. 화면 밀도·탭·작업 중심 배치는 참고할 수 있습니다. 저장소와 빌드 소스를 Linux 파일 시스템에 두어 Windows↔WSL 경계를 줄이는 방향은 검토할 수 있지만, 이 프로젝트에서 I/O 개선 수치를 측정하지는 않았습니다.</p></details>
+        <details><summary>보안 경고는 해결됐나요?</summary><p>아직 아닙니다. 소스에서 일반 Chrome·Edge의 기록·비밀번호 파일을 읽는 코드는 발견하지 못했지만, 그것만으로 실행 파일의 안전을 확정할 수는 없습니다. WebView2는 앱 전용 프로필을 사용합니다. 실제 경고가 가리킨 접근 대상 경로가 없어 원인은 미확인이고, Defender 검사는 기능 비활성화로 실행되지 않았습니다.</p></details>
+        <p class="caption">자료: <a href="https://github.com/apple/container">Apple container</a> · <a href="https://github.com/wouterdebie/davit">Davit</a> · <a href="https://learn.microsoft.com/en-us/windows/wsl/filesystems">WSL 파일 시스템</a> · <a href="https://docs.docker.com/reference/compose-file/build/">Compose 빌드</a> · <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Kubernetes Deployment</a> · <a href="https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder">WebView2 프로필</a></p>
+      </section>
+      <section id="status" class="section">
+        <h2>요청별 작업 현황</h2>
+        <p class="muted">모두 끝난 상태는 아닙니다. 아래 ‘구현’은 코드가 있는 상태이고 ‘검증’은 실제로 확인한 범위입니다. 기준일: 2026-10-18.</p>
+        <div class="table-wrap"><table><thead><tr><th>요청</th><th>구현</th><th>검증 / 남은 일</th></tr></thead><tbody>
+          <tr><td>중앙 팝업·동일 크기</td><td>반영</td><td>이전 EXE의 7개 탭 크기 통과. 상세·통계 병합 후 최신 EXE 재확인 남음.</td></tr>
+          <tr><td>여백·버튼·간결한 탭</td><td>반영</td><td>최신 일반 화면 확인. 로그·JSON·터미널 팝업의 최신 실제 데이터 확인 남음.</td></tr>
+          <tr><td>한국어·영어·테마·폰트</td><td>반영</td><td>최신 배포 화면에서 전환·저장 확인. 상세 탭 이름도 번역 적용.</td></tr>
+          <tr><td>설정 블록 탭 통일</td><td>반영</td><td>화면 / 런타임 / 엔진 연결 탭 확인.</td></tr>
+          <tr><td>더보기 메뉴 5개만</td><td>반영</td><td>이전 네이티브 화면 확인.</td></tr>
+          <tr><td>시작 후 상태·아이콘</td><td>반영</td><td>명령 후 실제 상태 조회. 실행 중 서버의 최신 버튼 전환 E2E 남음.</td></tr>
+          <tr><td>로그 지연·재조회</td><td>캐시·중복 요청 통합</td><td>이전 EXE에서 조회 481ms, 캐시 재표시 3ms 관측. 전체 성능 보장값은 아님.</td></tr>
+          <tr><td>트리형 파일 탐색기</td><td>반영</td><td>이전 EXE에서 실제 파일 트리·미리보기 확인.</td></tr>
+          <tr><td>통계·상세 병합·열 때 측정</td><td>반영</td><td>컴파일 통과. 최신 네이티브 경로 확인 남음.</td></tr>
+          <tr><td>정리 차단 사유 툴팁</td><td>반영</td><td>이전 네이티브 화면 확인.</td></tr>
+          <tr><td>참조 포함 이미지 삭제</td><td>승인창·제한 적용</td><td>격리 데이터에서 중지/생성 참조 삭제·볼륨 보존·승인 거절 확인. 실행 중 참조 시나리오 남음.</td></tr>
+          <tr><td>Dockerfile·Compose 파일 선택</td><td>반영</td><td><span class="pill pending">E2E 남음</span> 새 파일 선택→빌드→실행 전체 경로.</td></tr>
+          <tr><td>실행 설정에서 볼륨 생성</td><td>반영</td><td>새 볼륨 생성→새 컨테이너 연결 경로 E2E 남음. 기존 컨테이너 자동 연결 기능은 없음.</td></tr>
+          <tr><td>실행 명령어 팝업</td><td>Docker / PowerShell</td><td>두 형식 구문 검사 통과. 복사 명령의 실제 실행 검증 남음.</td></tr>
+          <tr><td>볼륨·네트워크 통합</td><td>Resources 2개 탭</td><td>탭·상태 보존 확인. 격리 네트워크 삭제·참조 차단 확인.</td></tr>
+          <tr><td>불필요한 렌더링</td><td>구독 분리·memo 적용</td><td>구조 확인. 전후 렌더 횟수·CPU 측정은 없음.</td></tr>
+          <tr><td>지연 로딩</td><td>메뉴·영어 번역 분리</td><td>진입 JS 약 497→277KB(44% 감소). 전체 JS 합계 감소를 뜻하지 않음.</td></tr>
+          <tr><td>요청·캐시 최적화</td><td>공유 조회·제한 캐시</td><td>메뉴 이동 재조회 없음 확인. 장시간 메모리 측정 남음.</td></tr>
+          <tr><td>느린 쿼리·N+1</td><td>목록 일괄 조회·참조 집계</td><td>행별 목록 조회 제거 구조 확인. SQL DB 없음. 전체 지연 벤치마크 없음.</td></tr>
+          <tr><td>이미지·폰트·스크립트</td><td>SVG·시스템 폰트·분할 JS</td><td>배포 자산 확인. 외부 웹 폰트·래스터 UI 이미지 없음.</td></tr>
+          <tr><td>독립 WSL 엔진</td><td>설치·시작·중지</td><td>이전 실제 설치·API·컨테이너·포트·파일 마운트 검증 통과.</td></tr>
+          <tr><td>디스크 압축</td><td>사전 조건·차단·승인</td><td><span class="pill pending">미검증</span> 실제 VHDX 압축·UAC 승인.</td></tr>
+          <tr><td>보안 경고</td><td>조사 기록</td><td><span class="pill pending">미해결</span> 접근 대상 확인과 정상 보안 검사 남음.</td></tr>
+          <tr><td>실행 파일·배포 형식</td><td>EXE·ZIP 제공</td><td>사용자가 EXE·ZIP 방식을 선택. 실제 파일 다운로드·해시 일치 확인. 별도 설치 프로그램은 제공하지 않음.</td></tr>
+        </tbody></table></div>
+        <p class="caption">자세한 근거는 저장소의 <a data-doc="docs/REQUEST_STATUS.md" href="./docs/REQUEST_STATUS.md">요청 체크리스트</a>와 <a data-doc="docs/results/refinement-verification.md" href="./docs/results/refinement-verification.md">검증 기록</a>에서 확인할 수 있습니다.</p>
+      </section>
+      <footer>DockSlate 0.1.0 · Windows 11 / Tauri 2 / 전용 WSL Moby<br>이 안내서는 외부 폰트·스크립트 없이 동작합니다. HTML 한 파일로 저장해 전달할 수 있습니다.</footer>
+    </main>
+  </div>
+</div>
+<script>
+  (() => {
+    const root = document.querySelector('meta[name="dockslate-root"]').content;
+    const packaged = location.pathname.includes('/DockSlate-0.1.0-windows-x64/');
+    document.querySelectorAll('[data-artifact]').forEach(link => {
+      if (packaged && link.dataset.artifact !== 'DockSlate.exe') link.hidden = true;
+      link.href = packaged ? './DockSlate.exe' : root + 'downloads/' + link.dataset.artifact;
+    });
+    document.querySelectorAll('[data-doc]').forEach(link => {
+      link.href = packaged ? './' + link.dataset.doc : root + link.dataset.doc;
+    });
+    document.getElementById('print-guide').addEventListener('click', () => { document.querySelectorAll('details').forEach(d => d.open = true); window.print(); });
+    document.getElementById('save-guide').addEventListener('click', () => {
+      const copy = document.documentElement.cloneNode(true);
+      copy.querySelectorAll('.download-actions').forEach(el => el.remove());
+      copy.querySelector('#download-note').textContent = '공유용 안내서입니다. 프로그램 실행 파일은 제공자에게 EXE 또는 ZIP으로 별도 전달받으세요.';
+      copy.querySelectorAll('[data-doc]').forEach(link => { const text = document.createElement('span'); text.textContent = link.textContent; link.replaceWith(text); });
+      const url = URL.createObjectURL(new Blob(['<!doctype html>\n' + copy.outerHTML], {type:'text/html;charset=utf-8'}));
+      const a = document.createElement('a'); a.href = url; a.download = 'DockSlate-사용안내.html'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 10000);
+    });
+    const nav = [...document.querySelectorAll('nav a')];
+    const observer = new IntersectionObserver(entries => { const section = entries.find(e => e.isIntersecting); if (section) nav.forEach(a => a.classList.toggle('active', a.hash === '#' + section.target.id)); }, {rootMargin:'-5% 0px -65% 0px'});
+    document.querySelectorAll('main section').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
