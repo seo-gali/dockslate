@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-18T10:46:33.928Z",
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "containerId": "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e",
+  "nativeExeLaunched": false,
+  "userContainerChanged": false,
+  "mode": "Actual owned WSL Docker log helper; readonly",
+  "normal": {
+    "code": 0,
+    "signal": null,
+    "handshake": true,
+    "frames": 205,
+    "bytes": 82150,
+    "incompleteBytes": 0,
+    "firstByteMs": 164,
+    "firstDataMs": 165,
+    "elapsedMs": 22191,
+    "cancelMs": 24,
+    "longestSilenceMs": 22001,
+    "error": ""
+  },
+  "rejected": {
+    "code": 3,
+    "signal": null,
+    "handshake": false,
+    "frames": 0,
+    "bytes": 0,
+    "incompleteBytes": 0,
+    "firstByteMs": null,
+    "firstDataMs": null,
+    "elapsedMs": 162,
+    "cancelMs": null,
+    "longestSilenceMs": 0,
+    "error": "Docker log stream HTTP 404"
+  },
+  "cancelled": {
+    "code": 0,
+    "signal": null,
+    "handshake": false,
+    "frames": 0,
+    "bytes": 0,
+    "incompleteBytes": 0,
+    "firstByteMs": null,
+    "firstDataMs": null,
+    "elapsedMs": 157,
+    "cancelMs": 150,
+    "longestSilenceMs": 0,
+    "error": ""
+  },
+  "passed": true
+}

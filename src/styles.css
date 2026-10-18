@@ -198,6 +198,8 @@ button.metric:hover { border-color: var(--strong-border); background: var(--rais
 .logs { color: var(--code-text); background: var(--code-bg); font-size: 0.846154rem; line-height: 1.7; font-family: Consolas, 'Cascadia Mono', monospace; padding: 14px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; overflow: auto; height: 360px; }
 .image-build-panel { margin-bottom: 16px; }
 .image-run-panel { margin-bottom: 16px; }
+.port-endpoints { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.port-endpoint { text-align: left; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .run-advanced { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
 .run-advanced > summary { cursor: pointer; font-size: 1rem; padding: 4px 0 12px; }
 .run-advanced > summary .muted { margin-left: 8px; font-size: 0.923077rem; }

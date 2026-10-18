@@ -1,0 +1,140 @@
+{
+  "at": "2026-10-18T14:10:55.029Z",
+  "artifact": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe",
+  "sha256": "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02",
+  "pid": 27576,
+  "nativeBackend": true,
+  "isolatedProfile": true,
+  "explicitRiskApproval": true,
+  "scope": "Actual Tauri RPC and event delivery from readonly Docker logs follow; no DOM/navigation/global application state changes",
+  "containerId": "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e",
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "userContainersChanged": false,
+  "rawLogsStored": false,
+  "ownStreamIds": [
+    "6c377cfd-c0e3-4c37-b26e-4f3300717224",
+    "7b21d643-0cd5-4901-a0d4-a04e8bdfe314"
+  ],
+  "checks": [
+    {
+      "id": "stream-1-start",
+      "passed": true
+    },
+    {
+      "id": "duplicate-own-stream-rejected",
+      "passed": true
+    },
+    {
+      "id": "idle-follow-without-snapshot-poll",
+      "passed": true,
+      "idleMs": 3504,
+      "observedContainerLogsCalls": 0,
+      "concurrentRootUi": true
+    },
+    {
+      "id": "stream-1-real-reset-and-content",
+      "passed": true,
+      "resetCount": 1,
+      "dataEvents": 4,
+      "contentBytes": 131072,
+      "firstContentMs": 1758,
+      "rpcToObservationMs": 5356
+    },
+    {
+      "id": "stream-1-sequence-and-bounds",
+      "passed": true,
+      "lastSequence": 4,
+      "maxContentBytes": 32768,
+      "errorCount": 0,
+      "truncatedCount": 1
+    },
+    {
+      "id": "stream-1-stop",
+      "passed": true
+    },
+    {
+      "id": "stream-1-no-events-after-stop",
+      "passed": true,
+      "monitoringMs": 1200,
+      "eventsAfterStop": 0
+    },
+    {
+      "id": "stream-2-start",
+      "passed": true
+    },
+    {
+      "id": "stream-2-real-reset-and-content",
+      "passed": true,
+      "resetCount": 1,
+      "dataEvents": 1,
+      "contentBytes": 32768,
+      "firstContentMs": 828,
+      "rpcToObservationMs": 903
+    },
+    {
+      "id": "stream-2-sequence-and-bounds",
+      "passed": true,
+      "lastSequence": 1,
+      "maxContentBytes": 32768,
+      "errorCount": 0,
+      "truncatedCount": 1
+    },
+    {
+      "id": "stream-2-stop",
+      "passed": true
+    },
+    {
+      "id": "stream-2-no-events-after-stop",
+      "passed": true,
+      "monitoringMs": 1200,
+      "eventsAfterStop": 0
+    },
+    {
+      "id": "invalid-container-id-rejected",
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "6c377cfd-c0e3-4c37-b26e-4f3300717224": {
+      "events": 5,
+      "dataEvents": 4,
+      "contentBytes": 131072,
+      "maxContentBytes": 32768,
+      "resetCount": 1,
+      "firstSequence": 0,
+      "lastSequence": 4,
+      "sequenceValid": true,
+      "containerMatches": true,
+      "firstContentMs": 1758.3999999910593,
+      "firstResetMs": 1667.699999988079,
+      "startedAt": 150648.20000000298,
+      "errorCount": 0,
+      "closedCount": 0,
+      "truncatedCount": 1,
+      "eventsAfterStop": 0,
+      "monitorStopped": true
+    },
+    "7b21d643-0cd5-4901-a0d4-a04e8bdfe314": {
+      "events": 3,
+      "dataEvents": 2,
+      "contentBytes": 65536,
+      "maxContentBytes": 32768,
+      "resetCount": 1,
+      "firstSequence": 0,
+      "lastSequence": 2,
+      "sequenceValid": true,
+      "containerMatches": true,
+      "firstContentMs": 828,
+      "firstResetMs": 726.4000000059605,
+      "startedAt": 157484.29999999702,
+      "errorCount": 0,
+      "closedCount": 0,
+      "truncatedCount": 1,
+      "eventsAfterStop": 0,
+      "monitorStopped": true
+    }
+  },
+  "passed": true,
+  "ownListenersRemoved": true,
+  "ownStreamsStopped": true
+}

@@ -19,6 +19,17 @@ pub fn execute(
     timeout: Duration,
     max_output: usize,
 ) -> Result<Output, String> {
+    execute_observed(program, args, stdin, timeout, max_output, None)
+}
+
+pub fn execute_observed(
+    program: &Path,
+    args: &[String],
+    stdin: Option<&[u8]>,
+    timeout: Duration,
+    max_output: usize,
+    on_stdout: Option<Box<dyn FnMut(&[u8]) + Send>>,
+) -> Result<Output, String> {
     let mut command = Command::new(program);
     command
         .args(args)
@@ -39,6 +50,7 @@ pub fn execute(
         mut stream: R,
         limit: usize,
         flag: Arc<AtomicBool>,
+        mut observer: Option<Box<dyn FnMut(&[u8]) + Send>>,
     ) -> thread::JoinHandle<Vec<u8>> {
         thread::spawn(move || {
             let mut output = Vec::new();
@@ -49,6 +61,9 @@ pub fn execute(
                     Ok(count) => {
                         let remaining = limit.saturating_sub(output.len());
                         output.extend_from_slice(&buffer[..count.min(remaining)]);
+                        if let Some(observer) = observer.as_mut() {
+                            observer(&buffer[..count.min(remaining)]);
+                        }
                         if count > remaining {
                             flag.store(true, Ordering::SeqCst);
                             break;
@@ -63,11 +78,13 @@ pub fn execute(
         child.stdout.take().ok_or("표준 출력 연결 실패")?,
         max_output,
         overflow.clone(),
+        on_stdout,
     );
     let stderr = reader(
         child.stderr.take().ok_or("표준 오류 연결 실패")?,
         max_output,
         overflow.clone(),
+        None,
     );
     let input = stdin.map(|bytes| bytes.to_vec());
     let input_writer = input.and_then(|bytes| {

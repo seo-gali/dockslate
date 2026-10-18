@@ -1,0 +1,80 @@
+{
+  "observedAt": "2026-10-18T14:16:33.533Z",
+  "artifactSha256": "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02",
+  "native": true,
+  "readOnly": true,
+  "completed": true,
+  "checks": [
+    {
+      "name": "Native Details includes statistics with six localized detail tabs",
+      "passed": true,
+      "evidence": [
+        "상세",
+        "로그",
+        "상세 JSON",
+        "마운트",
+        "터미널",
+        "파일"
+      ]
+    },
+    {
+      "name": "Native log tab receives real stream data with no 2-second full log requests",
+      "passed": true,
+      "evidence": {
+        "idleMs": 3300,
+        "fullLogRequests": 0,
+        "status": "새 로그 감지 중 · 최근 로그 · 일부 잘림"
+      }
+    },
+    {
+      "name": "Actual detail popup retains size across all six tabs",
+      "passed": true,
+      "evidence": [
+        {
+          "tab": "상세",
+          "width": 1000,
+          "height": 680
+        },
+        {
+          "tab": "로그",
+          "width": 1000,
+          "height": 680
+        },
+        {
+          "tab": "상세 JSON",
+          "width": 1000,
+          "height": 680
+        },
+        {
+          "tab": "마운트",
+          "width": 1000,
+          "height": 680
+        },
+        {
+          "tab": "터미널",
+          "width": 1000,
+          "height": 680
+        },
+        {
+          "tab": "파일",
+          "width": 1000,
+          "height": 680
+        }
+      ]
+    },
+    {
+      "name": "Actual logs have consistent inner padding",
+      "passed": true,
+      "evidence": {
+        "left": "14px",
+        "right": "14px",
+        "top": "14px"
+      }
+    },
+    {
+      "name": "Hiding and closing native log tab sends stream stop",
+      "passed": true
+    }
+  ],
+  "failure": null
+}

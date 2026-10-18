@@ -1,0 +1,11 @@
+.image-pull-dialog { width: 580px; }
+.image-pull-dialog .dialog-content { padding-bottom: 20px; }
+.image-pull-dialog progress { width: 100%; height: 8px; accent-color: var(--accent); display: block; }
+.image-pull-dialog .pull-overall-progress { height: 10px; margin: 18px 0 12px; }
+.pull-byte-count { font-variant-numeric: tabular-nums; }
+.pull-layers { max-height: 240px; overflow: auto; margin-top: 16px; padding-right: 8px; }
+.pull-layer { padding: 8px 0; border-bottom: 1px solid var(--soft-border); }
+.pull-layer > div { display: flex; justify-content: space-between; gap: 12px; }
+.pull-layer progress { margin-top: 6px; }
+.image-run-row > td { white-space: normal; overflow: visible; padding: 12px; background: var(--subtle-bg); }
+.image-run-row .image-run-panel { margin: 0; }

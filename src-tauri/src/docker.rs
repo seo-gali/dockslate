@@ -3,7 +3,10 @@ use serde::Deserialize;
 use serde_json::{json, Value};
 use std::{
     collections::{HashMap, HashSet},
-    sync::{Mutex, OnceLock},
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Mutex, OnceLock,
+    },
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
@@ -13,6 +16,7 @@ const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
 static MUTATION: Mutex<()> = Mutex::new(());
 static PREVIEWS: OnceLock<Mutex<HashMap<String, Preview>>> = OnceLock::new();
 static LOG_FORMATS: OnceLock<Mutex<HashMap<String, bool>>> = OnceLock::new();
+static PULLING: AtomicBool = AtomicBool::new(false);
 
 #[derive(Clone)]
 pub(crate) struct Client {
@@ -1165,6 +1169,72 @@ pub fn containers_metrics(ids: Vec<String>) -> Result<Value, String> {
     }))
 }
 
+fn browser_endpoint(private_port: u16, public_port: u16) -> Result<String, String> {
+    if matches!(
+        private_port,
+        1433 | 1521 | 3306 | 5432 | 5672 | 6379 | 6380 | 9042 | 11211 | 27017..=27019
+    ) {
+        return Err("This port is normally used by a database or messaging client. Copy the address and connect with the corresponding client instead of a browser.".into());
+    }
+    let program = crate::runtime::system_directory()?.join("curl.exe");
+    if !program.is_file() {
+        return Err(
+            "Windows curl is unavailable; the port's HTTP protocol cannot be verified.".into(),
+        );
+    }
+    let schemes = if matches!(private_port, 443 | 8443 | 9443) {
+        ["https", "http"]
+    } else {
+        ["http", "https"]
+    };
+    for scheme in schemes {
+        let url = format!("{scheme}://127.0.0.1:{public_port}/");
+        let args: Vec<String> = [
+            "--disable",
+            "--silent",
+            "--show-error",
+            "--noproxy",
+            "*",
+            "--proto",
+            "=http,https",
+            "--http1.1",
+            "--head",
+            "--insecure",
+            "--connect-timeout",
+            "0.5",
+            "--max-time",
+            "1.2",
+            "--max-filesize",
+            "16384",
+            "--output",
+            "NUL",
+            "--write-out",
+            "%{http_code}",
+            "--",
+            &url,
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect();
+        let output = crate::process::execute(
+            &program,
+            &args,
+            None,
+            Duration::from_millis(1500),
+            16 * 1024,
+        );
+        if let Ok(output) = output {
+            let code = std::str::from_utf8(&output.stdout)
+                .ok()
+                .and_then(|text| text.trim().parse::<u16>().ok());
+            if output.status.success() && code.is_some_and(|code| (100..600).contains(&code)) {
+                return Ok(url);
+            }
+        }
+    }
+    Err("No HTTP or HTTPS response was detected on this published port. The service may still be starting or may require a different client.".into())
+}
+
 pub fn container_open_port(
     id: String,
     private_port: u16,
@@ -1193,7 +1263,7 @@ pub fn container_open_port(
                 .into(),
         );
     }
-    let url = format!("http://127.0.0.1:{public_port}/");
+    let url = browser_endpoint(private_port, public_port)?;
     #[cfg(windows)]
     {
         use std::{ffi::c_void, os::windows::ffi::OsStrExt};
@@ -1384,6 +1454,17 @@ pub fn image_search(term: String) -> Result<Value, String> {
     Ok(json!(results))
 }
 pub fn image_pull(reference: String) -> Result<Value, String> {
+    image_pull_with_progress(reference, |_| {})
+}
+
+pub fn is_pulling() -> bool {
+    PULLING.load(Ordering::Acquire)
+}
+
+pub fn image_pull_with_progress(
+    reference: String,
+    emit: impl FnMut(Value) + Send + 'static,
+) -> Result<Value, String> {
     let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
     if reference.is_empty()
         || reference.len() > 256
@@ -1401,35 +1482,55 @@ pub fn image_pull(reference: String) -> Result<Value, String> {
         } else {
             reference
         };
-    let client = connected()?;
-    let body = client.bytes(
-        "POST",
-        &format!("/images/create?fromImage={}", encode(&reference)),
-        Duration::from_secs(120),
-        32 * 1024 * 1024,
-    )?;
-    let mut statuses = Vec::new();
-    for line in body.split(|b| *b == b'\n').filter(|line| !line.is_empty()) {
-        let value: Value = serde_json::from_slice(line)
-            .map_err(|_| "Invalid Docker pull progress response; outcome may be unknown")?;
-        if let Some(error) = value["error"].as_str() {
-            return Err(format!(
-                "Image pull failed: {}",
-                error.chars().take(1000).collect::<String>()
-            ));
-        }
-        if let Some(status) = value["status"].as_str() {
-            statuses.push(status.chars().take(300).collect::<String>());
+    struct PullGuard;
+    impl Drop for PullGuard {
+        fn drop(&mut self) {
+            PULLING.store(false, Ordering::Release);
         }
     }
-    let final_status = statuses
-        .last()
-        .ok_or("Image pull returned no completion response")?;
-    let image = client.json("GET", &format!("/images/{}/json", encode(&reference)))?;
-    if !image_id(text(&image, "Id")) {
-        return Err(format!("Pull response completed ({final_status}), but the requested image identity could not be verified"));
+    PULLING.store(true, Ordering::Release);
+    let _pull_guard = PullGuard;
+    let progress = crate::image_pull::Progress::new(reference.clone(), emit);
+    let outcome: Result<Value, String> = (|| {
+        let client = connected()?;
+        let body = client.transport.request_observed(
+            "POST",
+            &format!(
+                "/v{}/images/create?fromImage={}",
+                client.api,
+                encode(&reference)
+            ),
+            Duration::from_secs(15 * 60),
+            32 * 1024 * 1024,
+            progress.observer(),
+        )?;
+        let mut final_status = None;
+        for line in body.split(|b| *b == b'\n').filter(|line| !line.is_empty()) {
+            let value: Value = serde_json::from_slice(line)
+                .map_err(|_| "Invalid Docker pull progress response; outcome may be unknown")?;
+            if let Some(error) = value["error"].as_str() {
+                return Err(format!(
+                    "Image pull failed: {}",
+                    error.chars().take(1000).collect::<String>()
+                ));
+            }
+            if let Some(status) = value["status"].as_str() {
+                final_status = Some(status.chars().take(300).collect::<String>());
+            }
+        }
+        let final_status = final_status.ok_or("Image pull returned no completion response")?;
+        progress.phase("verifying", "Verifying the downloaded image", None);
+        let image = client.json("GET", &format!("/images/{}/json", encode(&reference)))?;
+        if !image_id(text(&image, "Id")) {
+            return Err(format!("Pull response completed ({final_status}), but the requested image identity could not be verified"));
+        }
+        Ok(json!({"message":format!("Image pull completed: {final_status}")}))
+    })();
+    match &outcome {
+        Ok(_) => progress.phase("completed", "Image pull completed", None),
+        Err(error) => progress.phase("failed", "Image pull failed", Some(error)),
     }
-    Ok(json!({"message":format!("Image pull completed: {final_status}")}))
+    outcome
 }
 
 fn measured_sum(values: &[Value], key: &str) -> Option<u64> {

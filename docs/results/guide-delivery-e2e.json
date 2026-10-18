@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-18T10:29:37.283Z",
+  "observedAt": "2026-10-18T14:23:38.084Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -53,21 +53,21 @@
       "name": "EXE download button saves the exact packaged executable without running it",
       "passed": true,
       "evidence": {
-        "sha256": "1A8BCD49CE81D1C493B088FC3A713EBCBCB68DFB897199DE688E82462E5BE88D"
+        "sha256": "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02"
       }
     },
     {
       "name": "ZIP download button saves the exact local review package",
       "passed": true,
       "evidence": {
-        "sha256": "85F7E26067FAB16F06E2D24E5016DB645B9B788D85FF005636F7E74923F330EF"
+        "sha256": "2714F6B1B4865653964C6A7363138B6C24A571502B39F3E3E10FCF155E557116"
       }
     },
     {
       "name": "Guide HTML download opens independently and remains downloadable",
       "passed": true,
       "evidence": {
-        "bytes": 24934,
+        "bytes": 27665,
         "externalScriptOrStyles": 0
       }
     },

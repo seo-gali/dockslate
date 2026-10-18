@@ -1,0 +1,60 @@
+.data-table.resizable-table {
+  width: var(--resizable-table-width);
+  min-width: var(--resizable-table-width);
+  max-width: none;
+  table-layout: fixed;
+}
+
+.resizable-table th {
+  position: relative;
+  overflow: visible;
+}
+
+.resizable-table th:not(:last-child),
+.resizable-table td:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+.column-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -6px;
+  z-index: 2;
+  width: 12px;
+  cursor: col-resize;
+  touch-action: none;
+  -webkit-app-region: no-drag;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.column-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 5px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--strong-border);
+}
+
+.column-resize-handle:hover::after,
+.column-resize-handle:focus-visible::after,
+.column-resize-handle.is-resizing::after {
+  background: var(--accent);
+}
+
+.column-resize-handle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 3px;
+}
+
+.column-resizing,
+.column-resizing * {
+  cursor: col-resize !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}

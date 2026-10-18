@@ -1,17 +1,21 @@
 {
-    "observedAt":  "2026-10-18T19:29:30.1498660+09:00",
+    "observedAt":  "2026-10-18T23:22:06.6982140+09:00",
     "artifact":  "src-tauri/target/release/dockslate.exe",
-    "sha256":  "1A8BCD49CE81D1C493B088FC3A713EBCBCB68DFB897199DE688E82462E5BE88D",
-    "bytes":  4680704,
+    "sha256":  "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02",
+    "bytes":  4750336,
     "signature":  "NotSigned",
     "windowsReleaseBuildPassed":  true,
     "frontendTypecheckPassed":  true,
     "rustCheckOfflinePassed":  true,
     "rustFormatCheckPassed":  true,
-    "nativeLaunchedAfterBrowsingDataAlert":  false,
-    "launchDeferredReason":  "Awaiting the protected file target of the browsing-data access warning; no antivirus allowlist, trust or service changes",
+    "nativeLaunchedAfterBrowsingDataAlert":  true,
+    "launchDeferredReason":  null,
     "frontendOnlyReport":  "frontend-refinements-e2e.json",
     "earlierNativeReport":  "workbench-refinements-e2e.json",
     "earlierResourceReport":  "resource-actions-e2e.json",
-    "engineChangedByBuild":  false
+    "engineChangedByBuild":  false,
+    "explicitUserRiskApproval":  true,
+    "nativeUiReport":  "interactions-native-e2e.json",
+    "liveLogsReport":  "live-log-native-e2e.json",
+    "detailUiReport":  "log-ui-native-e2e.json"
 }

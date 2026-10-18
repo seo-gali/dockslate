@@ -62,7 +62,8 @@ Deleting this folder does not unregister the WSL distribution or delete volumes.
     })
     $manifest = [ordered]@{
         generatedAt = (Get-Date).ToString('o'); version = '0.1.0'; platform = 'windows-x64'
-        scope = 'Local review package; no public release upload'; distribution = 'Portable EXE and ZIP only, selected by user'; executableLaunched = $false
+        scope = 'Local review package; no public release upload'; distribution = 'Portable EXE and ZIP only, selected by user'; packagingLaunchedExecutable = $false
+        nativeUiVerificationPerformed = [bool]$build.nativeLaunchedAfterBrowsingDataAlert
         securityAlertResolved = $false; installerInstalledOrUninstalled = $false; files = $files
     }
     [IO.File]::WriteAllText((Join-Path $downloadRoot 'artifacts.json'), ($manifest | ConvertTo-Json -Depth 6), [Text.UTF8Encoding]::new($false))

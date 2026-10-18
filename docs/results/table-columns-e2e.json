@@ -1,0 +1,551 @@
+{
+  "observedAt": "2026-10-18T10:52:21.312Z",
+  "completed": true,
+  "target": "Isolated UI component harness in signed Google Chrome with real product ResizableColumns.tsx and CSS, same seven Containers column specs, empty tbody; browser integration verification only",
+  "nativeUserPathE2E": false,
+  "nativeExecutableLaunched": false,
+  "engineData": false,
+  "backendInjected": false,
+  "mockData": false,
+  "browser": {
+    "signature": "Valid",
+    "signer": "Google LLC",
+    "freshOwnProfile": true,
+    "headless": true
+  },
+  "url": "http://127.0.0.1:1421/.analysis/table-columns-harness.html",
+  "checks": [
+    {
+      "name": "Exact seven production column specs; empty table and no injected native backend",
+      "passed": true,
+      "evidence": [
+        {
+          "id": "name",
+          "width": 210,
+          "minWidth": 130,
+          "maxWidth": 720
+        },
+        {
+          "id": "status",
+          "width": 110,
+          "minWidth": 92,
+          "maxWidth": 300
+        },
+        {
+          "id": "image",
+          "width": 240,
+          "minWidth": 130,
+          "maxWidth": 900
+        },
+        {
+          "id": "ports",
+          "width": 250,
+          "minWidth": 150,
+          "maxWidth": 800
+        },
+        {
+          "id": "cpu",
+          "width": 90,
+          "minWidth": 76,
+          "maxWidth": 250
+        },
+        {
+          "id": "memory",
+          "width": 125,
+          "minWidth": 100,
+          "maxWidth": 350
+        },
+        {
+          "id": "actions",
+          "width": 84,
+          "minWidth": 84,
+          "maxWidth": 84
+        }
+      ]
+    },
+    {
+      "name": "Visible vertical separators expose focusable labeled bounded separator controls",
+      "passed": true,
+      "evidence": {
+        "separators": [
+          {
+            "role": "separator",
+            "tabIndex": 0,
+            "label": "Name column width",
+            "orientation": "vertical",
+            "min": 130,
+            "max": 720,
+            "handleWidth": 12,
+            "visibleBarWidth": "2px",
+            "barColor": "rgb(64, 81, 106)",
+            "border": "1px"
+          },
+          {
+            "role": "separator",
+            "tabIndex": 0,
+            "label": "Status column width",
+            "orientation": "vertical",
+            "min": 92,
+            "max": 300,
+            "handleWidth": 12,
+            "visibleBarWidth": "2px",
+            "barColor": "rgb(64, 81, 106)",
+            "border": "1px"
+          },
+          {
+            "role": "separator",
+            "tabIndex": 0,
+            "label": "Image column width",
+            "orientation": "vertical",
+            "min": 130,
+            "max": 900,
+            "handleWidth": 12,
+            "visibleBarWidth": "2px",
+            "barColor": "rgb(64, 81, 106)",
+            "border": "1px"
+          },
+          {
+            "role": "separator",
+            "tabIndex": 0,
+            "label": "Ports column width",
+            "orientation": "vertical",
+            "min": 150,
+            "max": 800,
+            "handleWidth": 12,
+            "visibleBarWidth": "2px",
+            "barColor": "rgb(64, 81, 106)",
+            "border": "1px"
+          },
+          {
+            "role": "separator",
+            "tabIndex": 0,
+            "label": "CPU column width",
+            "orientation": "vertical",
+            "min": 76,
+            "max": 250,
+            "handleWidth": 12,
+            "visibleBarWidth": "2px",
+            "barColor": "rgb(64, 81, 106)",
+            "border": "1px"
+          },
+          {
+            "role": "separator",
+            "tabIndex": 0,
+            "label": "Memory column width",
+            "orientation": "vertical",
+            "min": 100,
+            "max": 350,
+            "handleWidth": 12,
+            "visibleBarWidth": "2px",
+            "barColor": "rgb(64, 81, 106)",
+            "border": "1px"
+          }
+        ],
+        "rootRenders": 2
+      }
+    },
+    {
+      "name": "Actual pointer drag expands Name 80px, updates table width, persists and leaves parent render count unchanged",
+      "passed": true,
+      "evidence": {
+        "initial": {
+          "widths": [
+            210,
+            110,
+            240,
+            250,
+            90,
+            125,
+            84
+          ],
+          "values": [
+            210,
+            110,
+            240,
+            250,
+            90,
+            125
+          ],
+          "tableWidth": 1109,
+          "wrapperWidth": 958,
+          "scrollWidth": 1109,
+          "scrollLeft": 0,
+          "renders": 2,
+          "resizing": false,
+          "saved": null
+        },
+        "dragged": {
+          "widths": [
+            290,
+            110,
+            240,
+            250,
+            90,
+            125,
+            84
+          ],
+          "values": [
+            290,
+            110,
+            240,
+            250,
+            90,
+            125
+          ],
+          "tableWidth": 1189,
+          "wrapperWidth": 958,
+          "scrollWidth": 1189,
+          "scrollLeft": 0,
+          "renders": 2,
+          "resizing": false,
+          "saved": {
+            "version": 1,
+            "widths": {
+              "name": 290,
+              "status": 110,
+              "image": 240,
+              "ports": 250,
+              "cpu": 90,
+              "memory": 125,
+              "actions": 84
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Width preference survives actual browser reload",
+      "passed": true,
+      "evidence": {
+        "widths": [
+          290,
+          110,
+          240,
+          250,
+          90,
+          125,
+          84
+        ],
+        "values": [
+          290,
+          110,
+          240,
+          250,
+          90,
+          125
+        ],
+        "tableWidth": 1189,
+        "wrapperWidth": 958,
+        "scrollWidth": 1189,
+        "scrollLeft": 0,
+        "renders": 2,
+        "resizing": false,
+        "saved": {
+          "version": 1,
+          "widths": {
+            "name": 290,
+            "status": 110,
+            "image": 240,
+            "ports": 250,
+            "cpu": 90,
+            "memory": 125,
+            "actions": 84
+          }
+        }
+      }
+    },
+    {
+      "name": "Actual keyboard controls support 10px arrows, 50px Shift, minimum, maximum, clamping and Enter reset",
+      "passed": true,
+      "evidence": {
+        "widths": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125,
+          84
+        ],
+        "values": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125
+        ],
+        "tableWidth": 1109,
+        "wrapperWidth": 958,
+        "scrollWidth": 1109,
+        "scrollLeft": 0,
+        "renders": 2,
+        "resizing": false,
+        "saved": {
+          "version": 1,
+          "widths": {
+            "name": 210,
+            "status": 110,
+            "image": 240,
+            "ports": 250,
+            "cpu": 90,
+            "memory": 125,
+            "actions": 84
+          }
+        }
+      }
+    },
+    {
+      "name": "Actual pointer double-click resets configured width",
+      "passed": true,
+      "evidence": {
+        "widths": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125,
+          84
+        ],
+        "values": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125
+        ],
+        "tableWidth": 1109,
+        "wrapperWidth": 958,
+        "scrollWidth": 1109,
+        "scrollLeft": 0,
+        "renders": 2,
+        "resizing": false,
+        "saved": {
+          "version": 1,
+          "widths": {
+            "name": 210,
+            "status": 110,
+            "image": 240,
+            "ports": 250,
+            "cpu": 90,
+            "memory": 125,
+            "actions": 84
+          }
+        }
+      }
+    },
+    {
+      "name": "Escape during real pointer drag restores original width and saved preference and removes drag state",
+      "passed": true,
+      "evidence": {
+        "beforeCancel": {
+          "widths": [
+            210,
+            110,
+            240,
+            250,
+            90,
+            125,
+            84
+          ],
+          "values": [
+            210,
+            110,
+            240,
+            250,
+            90,
+            125
+          ],
+          "tableWidth": 1109,
+          "wrapperWidth": 958,
+          "scrollWidth": 1109,
+          "scrollLeft": 0,
+          "renders": 2,
+          "resizing": false,
+          "saved": {
+            "version": 1,
+            "widths": {
+              "name": 210,
+              "status": 110,
+              "image": 240,
+              "ports": 250,
+              "cpu": 90,
+              "memory": 125,
+              "actions": 84
+            }
+          }
+        },
+        "canceled": {
+          "widths": [
+            210,
+            110,
+            240,
+            250,
+            90,
+            125,
+            84
+          ],
+          "values": [
+            210,
+            110,
+            240,
+            250,
+            90,
+            125
+          ],
+          "tableWidth": 1109,
+          "wrapperWidth": 958,
+          "scrollWidth": 1109,
+          "scrollLeft": 0,
+          "renders": 2,
+          "resizing": false,
+          "saved": {
+            "version": 1,
+            "widths": {
+              "name": 210,
+              "status": 110,
+              "image": 240,
+              "ports": 250,
+              "cpu": 90,
+              "memory": 125,
+              "actions": 84
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Actual horizontal wheel scroll exposes overflowing columns",
+      "passed": true,
+      "evidence": {
+        "widths": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125,
+          84
+        ],
+        "values": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125
+        ],
+        "tableWidth": 1109,
+        "wrapperWidth": 958,
+        "scrollWidth": 1109,
+        "scrollLeft": 151,
+        "renders": 2,
+        "resizing": false,
+        "saved": {
+          "version": 1,
+          "widths": {
+            "name": 210,
+            "status": 110,
+            "image": 240,
+            "ports": 250,
+            "cpu": 90,
+            "memory": 125,
+            "actions": 84
+          }
+        }
+      }
+    },
+    {
+      "name": "Invalid stored numeric ranges clamp and invalid types fall back to configured defaults",
+      "passed": true,
+      "evidence": {
+        "widths": [
+          720,
+          92,
+          240,
+          250,
+          90,
+          125,
+          84
+        ],
+        "values": [
+          720,
+          92,
+          240,
+          250,
+          90,
+          125
+        ],
+        "tableWidth": 1601,
+        "wrapperWidth": 958,
+        "scrollWidth": 1601,
+        "scrollLeft": 0,
+        "renders": 2,
+        "resizing": false,
+        "saved": {
+          "version": 1,
+          "widths": {
+            "name": 999999,
+            "status": -100,
+            "image": "invalid",
+            "ports": null,
+            "cpu": 90,
+            "memory": 125,
+            "actions": 84
+          }
+        }
+      }
+    },
+    {
+      "name": "Malformed stored JSON falls back to usable defaults",
+      "passed": true,
+      "evidence": {
+        "widths": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125,
+          84
+        ],
+        "values": [
+          210,
+          110,
+          240,
+          250,
+          90,
+          125
+        ],
+        "tableWidth": 1109,
+        "wrapperWidth": 958,
+        "scrollWidth": 1109,
+        "scrollLeft": 0,
+        "renders": 2,
+        "resizing": false,
+        "saved": {
+          "malformed": true
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "failure": null,
+  "harnessCorrections": [
+    "The first run reached all pointer, keyboard, scroll and range-validation checks, then its snapshot helper attempted to parse deliberately malformed preference JSON. The helper now reports malformed storage instead of throwing; no product code changed."
+  ],
+  "requestOrigins": [
+    "http://127.0.0.1:1421"
+  ],
+  "parentRenderCountBeforeDrag": 2,
+  "parentRenderCountAfterDrag": 2,
+  "browserCloseRequested": true,
+  "cleanup": {
+    "ownedViteServerStopped": true,
+    "ownedChromeBrowserExited": true,
+    "otherBrowserProfilesUsed": false,
+    "nativeExecutableLaunched": false
+  }
+}

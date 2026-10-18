@@ -6,7 +6,9 @@ mod container_tools;
 mod desktop;
 mod docker;
 mod image_build;
+mod image_pull;
 mod image_removal;
+mod live_logs;
 mod process;
 mod resources;
 mod runtime;
@@ -250,6 +252,18 @@ async fn container_logs(id: String) -> Result<Value, String> {
     read(move || docker::container_logs(id)).await
 }
 #[tauri::command]
+async fn container_logs_start(
+    app: tauri::AppHandle,
+    id: String,
+    stream_id: String,
+) -> Result<Value, String> {
+    read(move || live_logs::start(app, id, stream_id)).await
+}
+#[tauri::command]
+async fn container_logs_stop(stream_id: String) -> Result<Value, String> {
+    read(move || live_logs::stop(stream_id)).await
+}
+#[tauri::command]
 async fn images_list() -> Result<Value, String> {
     read(docker::images_list).await
 }
@@ -262,8 +276,26 @@ async fn image_search(term: String) -> Result<Value, String> {
     read(move || docker::image_search(term)).await
 }
 #[tauri::command]
-async fn image_pull(reference: String) -> Result<Value, String> {
-    mutate(move || docker::image_pull(reference)).await
+async fn image_pull(
+    app: tauri::AppHandle,
+    reference: String,
+    request_id: Option<String>,
+) -> Result<Value, String> {
+    let request_id = request_id.unwrap_or_default();
+    if request_id.len() > 128
+        || !request_id
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || b"_-".contains(&byte))
+    {
+        return Err("Invalid image pull request identifier".into());
+    }
+    mutate(move || {
+        docker::image_pull_with_progress(reference, move |mut progress| {
+            progress["requestId"] = Value::String(request_id.clone());
+            let _ = app.emit("image-pull-progress", progress);
+        })
+    })
+    .await
 }
 #[tauri::command]
 async fn image_build_start(
@@ -328,6 +360,7 @@ async fn runtime_stop(approved: bool) -> Result<Value, String> {
     mutate(move || {
         if approved {
             container_tools::close_all();
+            live_logs::close_all();
         }
         runtime::stop(approved)
     })
@@ -474,6 +507,8 @@ fn main() {
             networks_list,
             network_create,
             container_logs,
+            container_logs_start,
+            container_logs_stop,
             images_list,
             image_details,
             image_search,
@@ -497,7 +532,10 @@ fn main() {
         ])
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {
-                if image_build::is_building() {
+                if docker::is_pulling() {
+                    api.prevent_close();
+                    let _ = window.emit("close-blocked", "An image download is running. Wait for it to finish before closing DockSlate.");
+                } else if image_build::is_building() {
                     api.prevent_close();
                     let _ = window.emit("close-blocked", "이미지 빌드가 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.");
                 } else if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
@@ -515,7 +553,7 @@ fn main() {
                         "close-blocked",
                         "엔진 설치 또는 상태 변경이 진행 중입니다. 완료 결과를 확인할 때까지 앱을 종료할 수 없습니다.",
                     );
-                } else { container_tools::close_all(); }
+                } else { container_tools::close_all(); live_logs::close_all(); }
             }
         })
         .run(tauri::generate_context!())

@@ -31,5 +31,13 @@ export const korean: Readonly<Record<string, string>> = {
   "Stats": "통계",
   "Logs": "로그",
   "Inspect": "상세 JSON",
-  "Details": "상세"
+  "Details": "상세",
+  "Downloading": "다운로드 중",
+  "Extracting": "압축 해제 중",
+  "Download complete": "다운로드 완료",
+  "Pull complete": "레이어 준비 완료",
+  "Already exists": "이미 있음",
+  "Verifying Checksum": "무결성 확인 중",
+  "Waiting": "대기 중",
+  "Pulling fs layer": "레이어 준비 중",
 };

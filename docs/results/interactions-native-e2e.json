@@ -1,0 +1,74 @@
+{
+  "observedAt": "2026-10-18T14:14:41.499Z",
+  "artifactSha256": "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02",
+  "native": true,
+  "mockBackend": false,
+  "completed": true,
+  "checks": [
+    {
+      "name": "Real container list has seven columns and visible resize separators",
+      "passed": true,
+      "evidence": {
+        "columns": 7,
+        "handles": 6,
+        "border": "0.8px"
+      }
+    },
+    {
+      "name": "Native pointer drag resizes and persists the Name column",
+      "passed": true,
+      "evidence": "{\"version\":1,\"widths\":{\"name\":270,\"status\":110,\"image\":240,\"ports\":250,\"cpu\":90,\"memory\":125,\"actions\":84}}"
+    },
+    {
+      "name": "MongoDB port copies the actual Compass connection URI rather than opening HTTP",
+      "passed": true,
+      "evidence": {
+        "uri": "mongodb://127.0.0.1:32768/"
+      }
+    },
+    {
+      "name": "Database browser opening is blocked both by menu and fresh backend validation",
+      "passed": true
+    },
+    {
+      "name": "Actual pinned cached-image Pull starts with progress dialog",
+      "passed": true,
+      "evidence": {
+        "title": "이미지 받는 중",
+        "bar": true,
+        "closeDisabled": true
+      }
+    },
+    {
+      "name": "Real image Pull completes in a localized popup that waits for Close",
+      "passed": true,
+      "evidence": {
+        "title": "이미지 받기가 완료되었습니다.",
+        "layers": 1,
+        "error": null
+      }
+    },
+    {
+      "name": "Run form expands directly under the selected real image row",
+      "passed": true
+    },
+    {
+      "name": "Actual fixture creation navigates to highlighted list row without auto-opening Logs",
+      "passed": true,
+      "evidence": {
+        "id": "e336f2c2bb63d6c00c623acef1707e09161443402f0340a511b98327568ca652",
+        "state": "exited"
+      }
+    },
+    {
+      "name": "No unhandled JavaScript exceptions throughout actual native workflows",
+      "passed": true
+    }
+  ],
+  "cleanup": {
+    "isolatedFixtureDeleted": true,
+    "baselineContainersImagesVolumesNetworksPreserved": true,
+    "mongoStillRunning": true
+  },
+  "failure": null
+}

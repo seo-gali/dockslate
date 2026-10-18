@@ -34,7 +34,7 @@
           </div>
           <p class="caption" id="download-note">다운로드 파일은 이 안내서와 함께 있는 downloads 폴더에 있습니다. HTML만 전달받았다면 EXE 또는 ZIP도 함께 받아야 합니다.</p>
           <p class="caption">선택한 배포 방식: 설치 없이 쓰는 EXE·ZIP. 추가 제작 도구와 별도 설치 프로그램은 사용하지 않습니다.</p>
-          <div class="notice"><strong>현재 배포 상태: 검증 중.</strong> EXE는 서명되지 않았습니다. 사용자가 보고한 보안 제품의 브라우징 데이터 접근 경고는 원인이 확인되지 않아 최신 EXE의 재실행 검증을 보류했습니다. 경고를 무시하거나 신뢰 목록에 추가하도록 안내하지 않습니다.</div>
+          <div class="notice"><strong>현재 배포 상태: 검증 중.</strong> EXE는 서명되지 않았습니다. 보고된 브라우징 데이터 접근 경고의 원인은 미확인입니다. 지정 EXE는 사용자 승인 후 새 프로필에서 화면 검증했습니다. 경고를 무시하거나 신뢰 목록에 추가하도록 안내하지 않습니다.</div>
         </div>
         <div class="grid">
           <div class="card"><h3>필요한 환경</h3><ul><li>Windows 11 x64</li><li>WSL 2.4.10 이상</li><li>Microsoft Edge WebView2 Runtime</li><li>엔진 최초 설치 시 인터넷 연결</li></ul></div>
@@ -43,14 +43,14 @@
         <details><summary>index.html과 dist/index.html은 왜 앱으로 실행되지 않나요?</summary><p>두 파일은 Tauri가 띄우는 화면의 진입점입니다. 브라우저의 file:// 주소에는 Rust 백엔드가 없으므로 엔진을 제어할 수 없습니다. 직접 열면 이 안내서로 이동할 수 있게 했습니다. 개발 화면은 <code>npm run dev</code>, 데스크톱 개발 실행은 <code>scripts/desktop.ps1 -Mode dev</code>를 사용합니다.</p></details>
       </section>
       <section id="containers" class="section">
-        <h2>컨테이너 확인</h2>
+        <h2>컨테이너 확인</h2><p class="caption">표의 열 경계선을 드래그하면 너비가 저장됩니다. 키보드 방향키로도 조절하며 Enter 또는 더블클릭으로 기본값을 복원합니다. 포트를 누르면 접속 주소를 복사합니다.</p>
         <ol class="steps"><li><strong>Containers에서 이름 클릭</strong><br>항상 같은 크기의 중앙 팝업이 열립니다. 긴 내용은 내부에서 스크롤합니다.</li><li><strong>상세 / 로그 / 상세 JSON / 마운트 / 터미널 / 파일</strong><br>CPU·메모리는 상세 탭을 열 때 한 번 읽습니다. 다시 확인하려면 ‘다시 측정’을 누릅니다.</li><li><strong>시작·중지·재시작은 목록 오른쪽 메뉴</strong><br>브라우저에서 열기는 연결된 포트가 있는 경우 사용할 수 있습니다.</li></ol>
-        <div class="table-wrap"><table><thead><tr><th>할 일</th><th>위치와 동작</th></tr></thead><tbody><tr><td>로그 확인</td><td>최근 300줄. 검색·복사·자동 스크롤 지원. 중지된 컨테이너는 반복 조회하지 않습니다.</td></tr><tr><td>파일 탐색</td><td>왼쪽 폴더 트리 → 오른쪽 목록 → 파일 미리보기. 폴더를 펼칠 때 필요한 경로만 읽습니다.</td></tr><tr><td>터미널 연결</td><td>실행 중인 컨테이너에서 /bin/sh 또는 /bin/bash 선택. 셀이 없는 이미지는 연결할 수 없습니다.</td></tr><tr><td>설정 확인</td><td>상세 JSON에서 검색·영역 선택·복사. 마운트 탭에서 실제 연결 경로를 확인합니다.</td></tr></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>할 일</th><th>위치와 동작</th></tr></thead><tbody><tr><td>로그 확인</td><td>처음에는 최근 300줄을 받고 이후 새 로그를 감지합니다. 검색·복사·자동 스크롤 지원. 탭을 닫으면 연결도 닫습니다.</td></tr><tr><td>파일 탐색</td><td>왼쪽 폴더 트리 → 오른쪽 목록 → 파일 미리보기. 폴더를 펼칠 때 필요한 경로만 읽습니다.</td></tr><tr><td>터미널 연결</td><td>실행 중인 컨테이너에서 /bin/sh 또는 /bin/bash 선택. 셀이 없는 이미지는 연결할 수 없습니다.</td></tr><tr><td>설정 확인</td><td>상세 JSON에서 검색·영역 선택·복사. 마운트 탭에서 실제 연결 경로를 확인합니다.</td></tr></tbody></table></div>
         <details><summary>시작했는데 바로 중지되는 건 오류인가요?</summary><p><code>hello-world</code>처럼 메시지를 출력하고 끝나는 이미지는 정상 종료해도 중지 상태가 됩니다. 상세의 종료 코드가 0이고 로그에 정상 출력이 있으면 프로그램이 끝난 것입니다. 계속 실행하려면 서버 등 계속 동작하는 프로세스를 가진 이미지가 필요합니다.</p></details>
       </section>
       <section id="images" class="section">
         <h2>이미지에서 실행</h2>
-        <ol class="steps"><li><strong>이미지 준비</strong><br>Images → Docker Hub에서 검색·Pull하거나 로컬 이미지를 선택합니다.</li><li><strong>실행 설정 입력</strong><br>이름과 포트를 지정합니다. ‘더보기’에서 볼륨·네트워크·환경 변수·명령·작업 경로·재시작 정책·CPU·메모리를 설정합니다.</li><li><strong>실행 명령어 확인</strong><br>Docker(WSL) 명령을 기본으로 표시합니다. Windows에서 호출할 PowerShell 7.3+ 형식도 복사할 수 있습니다. 미리보기는 자동 실행하지 않습니다.</li><li><strong>컨테이너 생성 및 실행</strong><br>작업 결과를 갱신하고 해당 컨테이너의 로그로 이동합니다.</li></ol>
+        <ol class="steps"><li><strong>이미지 준비</strong><br>Images → Docker Hub에서 검색·Pull하거나 로컬 이미지를 선택합니다. Pull 팝업에 실제 레이어 진행 상태를 표시하고, 완료 후 닫기 버튼을 누릅니다.</li><li><strong>실행 설정 입력</strong><br>선택한 이미지 행 바로 아래에 실행 설정이 열립니다. 이름과 포트를 지정합니다. ‘더보기’에서 볼륨·네트워크·환경 변수·명령·작업 경로·재시작 정책·CPU·메모리를 설정합니다.</li><li><strong>실행 명령어 확인</strong><br>Docker(WSL) 명령을 기본으로 표시합니다. Windows에서 호출할 PowerShell 7.3+ 형식도 복사할 수 있습니다. 미리보기는 자동 실행하지 않습니다.</li><li><strong>컨테이너 생성 및 실행</strong><br>컨테이너 목록으로 이동해 새 행을 표시합니다. 상세 팝업은 이름을 눌렀을 때만 엽니다.</li></ol>
         <div class="notice">참조 중인 이미지 삭제는 승인창에서 ‘참조 컨테이너도 함께 삭제’를 직접 선택해야 합니다. 중지·생성·dead 상태만 허용하며, 볼륨은 남깁니다. 실행 중 참조와 여러 태그가 있는 이미지는 차단합니다.</div>
         <details><summary>명령어가 docker로 시작하지 않는 이유는?</summary><p>기본 Docker 탭은 전용 WSL 내부에서 실행하는 docker 명령입니다. PowerShell 탭은 Windows에서 <code>wsl.exe</code>를 거쳐 같은 엔진의 Docker를 호출하므로 더 깁니다. Windows에 별도로 설치한 docker.exe가 다른 엔진에 연결되는 것을 피하기 위한 형식입니다.</p></details>
       </section>
@@ -68,10 +68,12 @@
       <section id="settings" class="section">
         <h2>설정 · 디스크 관리</h2>
         <div class="table-wrap"><table><thead><tr><th>탭</th><th>기능</th></tr></thead><tbody><tr><td>설정 → 화면</td><td>한국어 / English, 다크 / 라이트, 글자 11~16px(기본 12px). 선택은 저장됩니다.</td></tr><tr><td>설정 → 런타임</td><td>전용 WSL 엔진 설치·시작·중지와 저장 위치 확인.</td></tr><tr><td>설정 → 엔진 연결</td><td>연결 상태·엔진 정보와 진단.</td></tr><tr><td>디스크 → Docker 사용량</td><td>정리 대상을 선택하고 승인. ‘정리 차단’에 마우스를 올리거나 키보드로 포커스하면 이유를 표시합니다.</td></tr><tr><td>디스크 → WSL 디스크</td><td>배포판별 VHDX 식별과 압축 조건 확인. 실제 압축·UAC 승인은 아직 검증하지 않았습니다.</td></tr></tbody></table></div>
-        <details><summary>전체 새로고침과 메뉴 이동의 차이</summary><p>메뉴 이동은 저장된 조회 결과를 사용합니다. 전체 새로고침과 생성·삭제 같은 작업이 결과를 갱신합니다. 열린 실행 중 로그·터미널·진행 중 작업만 필요한 갱신을 수행합니다.</p></details>
+        <details><summary>전체 새로고침과 메뉴 이동의 차이</summary><p>메뉴 이동은 저장된 조회 결과를 사용합니다. 전체 새로고침과 생성·삭제 같은 작업이 결과를 갱신합니다. 열린 로그는 Docker 스트림으로 새 내용을 받고, 터미널·진행 중 작업만 필요한 갱신을 수행합니다.</p></details>
       </section>
       <section id="questions" class="section">
         <h2>자주 묻는 질문</h2>
+        <details><summary>MongoDB가 실행 중인데 Compass에서 연결이 거절돼요.</summary><p>컨테이너 포트와 PC 포트를 구분해야 합니다. 표가 <code>127.0.0.1:32768 → 27017/tcp</code>라면 Compass 주소는 <code>mongodb://127.0.0.1:32768/</code>입니다. 표의 포트를 눌러 주소를 복사하세요. MongoDB 포트는 웹 페이지가 아니므로 브라우저에서 열지 않습니다. 자동 할당된 PC 포트는 컨테이너마다 다를 수 있습니다.</p></details>
+        <details><summary>Windows에서 docker ps를 입력하면 명령을 찾을 수 없어요.</summary><p>전용 엔진과 Docker CLI는 WSL 안에 있습니다. Windows PATH에 docker.exe를 설치한 구성은 아닙니다. CMD·PowerShell에서 아래처럼 호출할 수 있습니다.</p><pre>wsl -d DockSlate -u root --exec /usr/bin/docker --host unix:///var/run/docker.sock ps</pre><p>Docker Desktop을 다시 설치할 필요는 없습니다. 별도 Windows CLI나 PATH 변경은 이 배포에 추가하지 않았습니다.</p></details>
         <details><summary>앱을 지우거나 다시 설치하면 WSL 데이터도 없어지나요?</summary><p>앱 EXE·설치 폴더와 전용 WSL 배포판은 별개입니다. 포터블 EXE 삭제나 앱 제거로 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 런타임 중지도 데이터를 지우지 않습니다. 재설치 후 기존 배포판의 소유권과 엔진 정보를 확인해 사용합니다.</p></details>
         <details><summary>deployment.yaml 하나로 전체를 빌드할 수 있나요?</summary><p>파일 이름이 아니라 내용으로 구분합니다. Docker Compose 형식이면 제한된 Compose 가져오기 대상으로 사용할 수 있습니다. Kubernetes Deployment 형식은 이미 만들어진 이미지를 실행하는 선언이라 Dockerfile 빌드 입력이 아니며, DockSlate는 Kubernetes 배포를 지원하지 않습니다.</p></details>
         <details><summary>Apple container나 Davit을 적용할 부분은?</summary><p>이 Windows 앱의 엔진을 macOS 전용 Apple container로 교체할 수는 없습니다. 화면 밀도·탭·작업 중심 배치는 참고할 수 있습니다. 저장소와 빌드 소스를 Linux 파일 시스템에 두어 Windows↔WSL 경계를 줄이는 방향은 검토할 수 있지만, 이 프로젝트에서 I/O 개선 수치를 측정하지는 않았습니다.</p></details>
@@ -82,15 +84,15 @@
         <h2>요청별 작업 현황</h2>
         <p class="muted">모두 끝난 상태는 아닙니다. 아래 ‘구현’은 코드가 있는 상태이고 ‘검증’은 실제로 확인한 범위입니다. 기준일: 2026-10-18.</p>
         <div class="table-wrap"><table><thead><tr><th>요청</th><th>구현</th><th>검증 / 남은 일</th></tr></thead><tbody>
-          <tr><td>중앙 팝업·동일 크기</td><td>반영</td><td>이전 EXE의 7개 탭 크기 통과. 상세·통계 병합 후 최신 EXE 재확인 남음.</td></tr>
-          <tr><td>여백·버튼·간결한 탭</td><td>반영</td><td>최신 일반 화면 확인. 로그·JSON·터미널 팝업의 최신 실제 데이터 확인 남음.</td></tr>
+          <tr><td>중앙 팝업·동일 크기</td><td>반영</td><td>최신 EXE에서 상세·통계 병합 후 6개 탭의 같은 크기를 확인.</td></tr>
+          <tr><td>여백·버튼·간결한 탭</td><td>반영</td><td>최신 실제 6개 탭 화면과 로그 안쪽 여백 확인.</td></tr>
           <tr><td>한국어·영어·테마·폰트</td><td>반영</td><td>최신 배포 화면에서 전환·저장 확인. 상세 탭 이름도 번역 적용.</td></tr>
           <tr><td>설정 블록 탭 통일</td><td>반영</td><td>화면 / 런타임 / 엔진 연결 탭 확인.</td></tr>
           <tr><td>더보기 메뉴 5개만</td><td>반영</td><td>이전 네이티브 화면 확인.</td></tr>
           <tr><td>시작 후 상태·아이콘</td><td>반영</td><td>명령 후 실제 상태 조회. 실행 중 서버의 최신 버튼 전환 E2E 남음.</td></tr>
-          <tr><td>로그 지연·재조회</td><td>캐시·중복 요청 통합</td><td>이전 EXE에서 조회 481ms, 캐시 재표시 3ms 관측. 전체 성능 보장값은 아님.</td></tr>
+          <tr><td>로그 지연·재조회</td><td>캐시·중복 요청 통합</td><td>최신 실제 앱에서 로그 스트림·캐시 표시 확인. 2초 전체 재조회 없음.</td></tr>
           <tr><td>트리형 파일 탐색기</td><td>반영</td><td>이전 EXE에서 실제 파일 트리·미리보기 확인.</td></tr>
-          <tr><td>통계·상세 병합·열 때 측정</td><td>반영</td><td>컴파일 통과. 최신 네이티브 경로 확인 남음.</td></tr>
+          <tr><td>통계·상세 병합·열 때 측정</td><td>반영</td><td>최신 실제 네이티브 상세·통계 영역 확인.</td></tr>
           <tr><td>정리 차단 사유 툴팁</td><td>반영</td><td>이전 네이티브 화면 확인.</td></tr>
           <tr><td>참조 포함 이미지 삭제</td><td>승인창·제한 적용</td><td>격리 데이터에서 중지/생성 참조 삭제·볼륨 보존·승인 거절 확인. 실행 중 참조 시나리오 남음.</td></tr>
           <tr><td>Dockerfile·Compose 파일 선택</td><td>반영</td><td><span class="pill pending">E2E 남음</span> 새 파일 선택→빌드→실행 전체 경로.</td></tr>
@@ -106,6 +108,11 @@
           <tr><td>디스크 압축</td><td>사전 조건·차단·승인</td><td><span class="pill pending">미검증</span> 실제 VHDX 압축·UAC 승인.</td></tr>
           <tr><td>보안 경고</td><td>조사 기록</td><td><span class="pill pending">미해결</span> 접근 대상 확인과 정상 보안 검사 남음.</td></tr>
           <tr><td>실행 파일·배포 형식</td><td>EXE·ZIP 제공</td><td>사용자가 EXE·ZIP 방식을 선택. 실제 파일 다운로드·해시 일치 확인. 별도 설치 프로그램은 제공하지 않음.</td></tr>
+          <tr><td>Pull 진행·완료 팝업</td><td>실제 레이어 상태·닫기 버튼</td><td>기존 고정 digest 실제 Pull·진행 팝업·완료·닫기 통과. 새 이미지 전체 다운로드 검사는 아님.</td></tr>
+          <tr><td>실행 폼·생성 후 이동</td><td>선택 이미지 바로 아래 / 목록만 이동</td><td>격리 컨테이너 실제 생성 후 목록 이동·강조, 자동 팝업 없음 확인. 검증 후 해당 컨테이너만 삭제.</td></tr>
+          <tr><td>표 열 구분선·너비 조절</td><td>드래그·키보드·너비 저장</td><td>최신 실제 표의 드래그·저장, 별도 브라우저의 키보드·초기화·가로 스크롤 확인.</td></tr>
+          <tr><td>로그 2초 조회 대신 감지</td><td>Docker follow 연결·이벤트 전달</td><td>실제 Tauri 이벤트 13개·로그 화면 검사 통과. 보조 연결 무음 유지·종료도 확인.</td></tr>
+          <tr><td>MongoDB 접속·브라우저 동작</td><td>Mongo URI 복사·웹 응답 확인</td><td>실제32768 연결 열림·27017 닫힘, Mongo URI 복사와 DB 포트 브라우저 차단 확인. Compass 직접 로그인은 미실행.</td></tr>
         </tbody></table></div>
         <p class="caption">자세한 근거는 저장소의 <a data-doc="docs/REQUEST_STATUS.md" href="./docs/REQUEST_STATUS.md">요청 체크리스트</a>와 <a data-doc="docs/results/refinement-verification.md" href="./docs/results/refinement-verification.md">검증 기록</a>에서 확인할 수 있습니다.</p>
       </section>

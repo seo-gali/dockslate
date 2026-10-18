@@ -54,7 +54,7 @@ fn now_ms() -> u64 {
 }
 
 #[cfg(windows)]
-fn system_directory() -> Result<PathBuf, String> {
+pub(crate) fn system_directory() -> Result<PathBuf, String> {
     #[link(name = "kernel32")]
     unsafe extern "system" {
         fn GetSystemDirectoryW(buffer: *mut u16, size: u32) -> u32;
@@ -70,7 +70,7 @@ fn system_directory() -> Result<PathBuf, String> {
     )))
 }
 #[cfg(not(windows))]
-fn system_directory() -> Result<PathBuf, String> {
+pub(crate) fn system_directory() -> Result<PathBuf, String> {
     Err("The DockSlate runtime requires Windows 11 and WSL 2.".into())
 }
 
@@ -1043,7 +1043,18 @@ impl Transport {
         timeout: Duration,
         limit: usize,
     ) -> Result<Vec<u8>, String> {
-        self.request_inner(method, path, None, timeout, limit)
+        self.request_inner(method, path, None, timeout, limit, None)
+    }
+
+    pub(crate) fn request_observed(
+        &self,
+        method: &str,
+        path: &str,
+        timeout: Duration,
+        limit: usize,
+        observer: Box<dyn FnMut(&[u8]) + Send>,
+    ) -> Result<Vec<u8>, String> {
+        self.request_inner(method, path, None, timeout, limit, Some(observer))
     }
 
     pub(crate) fn archive_stat(&self, api: &str, id: &str, path: &str) -> Result<Vec<u8>, String> {
@@ -1319,6 +1330,7 @@ impl Transport {
             Some(body),
             timeout,
             limit,
+            None,
         )
     }
 
@@ -1329,6 +1341,7 @@ impl Transport {
         body: Option<&[u8]>,
         timeout: Duration,
         limit: usize,
+        observer: Option<Box<dyn FnMut(&[u8]) + Send>>,
     ) -> Result<Vec<u8>, String> {
         if !["GET", "POST", "DELETE"].contains(&method)
             || !path.starts_with('/')
@@ -1370,6 +1383,9 @@ impl Transport {
             "--write-out".into(),
             "\n%{http_code}".into(),
         ];
+        if observer.is_some() {
+            args.push("--no-buffer".into());
+        }
         if body.is_some() {
             args.extend([
                 "--header".into(),
@@ -1379,12 +1395,13 @@ impl Transport {
             ]);
         }
         args.extend(["--".into(), format!("http://localhost{path}")]);
-        let output = crate::process::execute(
+        let output = crate::process::execute_observed(
             &program,
             &args,
             body,
             timeout + Duration::from_secs(2),
             limit.saturating_add(4096),
+            observer,
         )?;
         if !output.status.success() {
             return Err("The owned Docker socket request failed or timed out; a mutation outcome may be unknown. Refresh before retrying.".into());
