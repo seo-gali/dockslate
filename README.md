@@ -76,4 +76,6 @@ npm run package:local
 - Apple container는 macOS용입니다. Windows 엔진 대체로 적용하지 않았습니다.
 - Windows에는 `docker.exe`를 설치하지 않습니다. CMD·PowerShell에서는 `wsl -d DockSlate -u root --exec docker --host unix:///var/run/docker.sock ps`로 전용 CLI를 호출합니다.
 
+[작업 지침](AGENTS.md) · [코딩 표준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md)
+
 [사용 안내](guide.html) · [요청 체크리스트](docs/REQUEST_STATUS.md) · [Rancher Desktop REA 근거](docs/research/rancher-desktop-1.24.0.md) · [외부 라이선스 고지와 미확인 항목](THIRD_PARTY_NOTICES.md)
