@@ -131,7 +131,7 @@ export function useDockSlateRuntime(externalBusy = false) {
     setDialogError(null);
     setOperation({ tone: 'accent', message: t("DockSlate 런타임 {p1} 요청을 처리하고 있습니다…", { p1: t(actionLabels[action]) }) });
     try {
-      const result = await backend<RuntimeResult>(`runtime_${action}`, action === 'install' ? { token: preview!.token, approved: true } : { approved: true });
+      const result = await backend<RuntimeResult>(`runtime_${action}`, action === 'install' ? { token: preview!.token, approved: true, startEngine: true } : { approved: true });
       const failed = result.state === 'failed' || result.state === 'unsupported' || result.state === 'not_installed';
       setOperation(failed ? { tone: 'danger', message: result.message } : isWorking(result.state) ? { tone: 'accent', message: runtimeMessage(result.state) ?? t("DockSlate 런타임 {p1} 중입니다.", { p1: t(actionLabels[action]) }) } : null);
       setTracking(isWorking(result.state) ? action : null);
@@ -151,8 +151,8 @@ export function useDockSlateRuntime(externalBusy = false) {
   };
 
   const dialog = confirmation && <ConfirmDialog
-    title={t("DockSlate 런타임 {p1} 확인", { p1: t(actionLabels[confirmation]) })}
-    label={confirmation === 'install' ? t("설치 승인 및 실행") : t("{p1} 승인 및 실행", { p1: t(actionLabels[confirmation]) })}
+    title={confirmation === 'install' ? t("Docker Engine 설치 및 시작") : t("DockSlate 런타임 {p1} 확인", { p1: t(actionLabels[confirmation]) })}
+    label={confirmation === 'install' ? t("설치 및 시작 승인") : t("{p1} 승인 및 실행", { p1: t(actionLabels[confirmation]) })}
     busy={pending !== null}
     error={dialogError}
     acknowledged={acknowledged}
@@ -164,6 +164,7 @@ export function useDockSlateRuntime(externalBusy = false) {
       <p>{t("다음 대상을 새로 설치합니다.")}</p>
       <ul className="dialog-target-list">{preview.targets.map((target, index) => <li key={index}>{target}</li>)}</ul>
       {preview.impact.map((impact, index) => <p key={index}>{impact}</p>)}
+      <p><strong>{t("설치가 끝나면 새 Docker Engine을 시작하고 연결을 확인합니다.")}</strong></p>
       <p><strong>{t("필요한 환경")}</strong></p>
       <ul className="dialog-target-list">{preview.requirements.map((requirement, index) => <li key={index}>{requirement}</li>)}</ul>
       <p>{t("DockSlate 전용 WSL 배포판과 저장소에서 컨테이너·이미지·볼륨을 관리합니다. 기존 Docker 데이터는 자동으로 가져오지 않습니다.")}</p>
@@ -201,7 +202,7 @@ export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSl
         {statusMessages[status.state] && <details className="runtime-diagnostics"><summary>{t("원본 런타임 진단")}</summary><p>{status.message}</p>{status.operation && <p>{status.operation.message}</p>}</details>}
         {blockers.length > 0 && <div><p><strong>{t("작업 차단 사유")}</strong></p><ul className="disk-blockers" style={{ marginTop: 8 }}>{blockers.map((reason, index) => <li key={index}><Icon name="warning" size={14} /><span>{reason}</span></li>)}</ul></div>}
         <div className="detail-actions" style={{ marginTop: 0 }}>
-          {status.state === 'not_installed' && <button className="button primary" disabled={runtime.controlsDisabled} onClick={() => void runtime.prepareInstall()}><Icon name="download" size={16} />{runtime.preparing ? t("설치 조건 확인 중…") : t("런타임 설치…")}</button>}
+          {status.state === 'not_installed' && <button className="button primary" disabled={runtime.controlsDisabled} onClick={() => void runtime.prepareInstall()}><Icon name="download" size={16} />{runtime.preparing ? t("설치 조건 확인 중…") : t("Docker Engine 설치…")}</button>}
           {status.state === 'stopped' && <button className="button primary" disabled={runtime.controlsDisabled || blockers.length > 0} onClick={() => runtime.requestAction('start')}><Icon name="play" size={16} />{t("런타임 시작…")}</button>}
           {status.state === 'running' && <button className="button" disabled={runtime.controlsDisabled || blockers.length > 0} onClick={() => runtime.requestAction('stop')}><Icon name="stop" size={16} />{t("런타임 중지…")}</button>}
           {isWorking(status.state) && <span className="muted" role="status">{t(stateLabels[status.state])}{t("… 완료 상태를 확인하고 있습니다.")}</span>}

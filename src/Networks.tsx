@@ -45,7 +45,10 @@ export default function Networks(props: EngineProps & { noPageHeader?: boolean; 
   useEffect(() => { busyCallback.current?.(working || target !== null); }, [working, target]);
   useEffect(() => () => { generation.current += 1; busyCallback.current?.(false); }, []);
   useEffect(() => { setPage(0); }, [search]);
-  const filtered = useMemo(() => (query.data ?? []).filter(network => `${network.name} ${network.id} ${network.driver} ${network.containers.map(container => container.name).join(' ')}`.toLowerCase().includes(search.toLowerCase())), [query.data, search]);
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return (query.data ?? []).filter(network => `${network.name} ${network.id} ${network.driver} ${network.containers.map(container => container.name).join(' ')}`.toLowerCase().includes(term));
+  }, [query.data, search]);
   const currentPage = Math.min(page, Math.max(0, Math.ceil(filtered.length / 50) - 1));
   const selected = query.data?.find(network => network.id === selectedId) ?? null;
   const create = async () => {

@@ -348,8 +348,12 @@ async fn runtime_install_preview() -> Result<Value, String> {
     read(runtime::installation_preview).await
 }
 #[tauri::command]
-async fn runtime_install(token: String, approved: bool) -> Result<Value, String> {
-    mutate(move || runtime::install(token, approved)).await
+async fn runtime_install(
+    token: String,
+    approved: bool,
+    start_engine: Option<bool>,
+) -> Result<Value, String> {
+    mutate(move || runtime::install(token, approved, start_engine.unwrap_or(false))).await
 }
 #[tauri::command]
 async fn runtime_start(approved: bool) -> Result<Value, String> {
@@ -403,7 +407,7 @@ fn verify_read_only(report: &str) -> Result<(), String> {
         "invalidPull": docker::image_pull("--invalid-reference".into()),
         "runtime": runtime::status(),
         "runtimeInstallPreview": runtime::installation_preview(),
-        "unapprovedRuntimeInstall": runtime::install("invalid-verification-token".into(), false),
+        "unapprovedRuntimeInstall": runtime::install("invalid-verification-token".into(), false, false),
         "unapprovedRuntimeStart": runtime::start(false),
         "unapprovedRuntimeStop": runtime::stop(false),
         "unapprovedDesktopElevation": desktop::restart_elevated(false),

@@ -21,7 +21,7 @@ export function ContainerInspect({ container, revision, active = true, focusSect
   const [error, setError] = useState<string | null>(null);
   const [section, setSection] = useState('전체');
   const [search, setSearch] = useState('');
-  const deferredSearch = useDeferredValue(search);
+  const deferredSearch = useDeferredValue(search.trim().toLowerCase());
   const [copied, setCopied] = useState(false);
   const request = useRef(0);
   const read = async () => {
@@ -40,6 +40,6 @@ export function ContainerInspect({ container, revision, active = true, focusSect
     const value = section === '전체' ? data : { [section]: data[section] };
     return JSON.stringify(value, null, 2);
   }, [data, section]);
-  const content = useMemo(() => deferredSearch ? json.split('\n').filter(line => line.toLowerCase().includes(deferredSearch.toLowerCase())).join('\n') : json, [json, deferredSearch]);
+  const content = useMemo(() => deferredSearch ? json.split('\n').filter(line => line.toLowerCase().includes(deferredSearch)).join('\n') : json, [json, deferredSearch]);
   return <div className="container-inspect"><div className="detail-content"><div className="toolbar"><SearchInput value={search} onChange={setSearch} placeholder={t("설정 키와 값 검색…")} /><button className="button small" disabled={!content} onClick={() => { void navigator.clipboard.writeText(content).then(() => setCopied(true)).catch(failure => setError(errorMessage(failure))); }}><Icon name="copy" size={14} />{copied ? t("복사됨") : t("복사")}</button></div><div className="inspect-sections">{sections.map(name => <button className={`button small ${section === name ? 'primary' : ''}`} key={name} disabled={!data} onClick={() => { setSection(name); setCopied(false); }}>{name === '전체' ? t('전체') : name}</button>)}</div>{error && <ErrorNotice message={error} onRetry={() => void read()} />}{loading && <p className="usage-note" role="status">{t("설정 정보를 확인하고 있습니다.")}</p>}</div><JsonText content={content || (loading ? t('조회 중…') : error ? t('설정을 조회할 수 없습니다.') : t('검색 결과가 없습니다.'))} /></div>;
 }

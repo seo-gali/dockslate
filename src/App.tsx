@@ -13,6 +13,7 @@ import { useImageBuild } from './ImageBuild';
 const DiskManager = lazy(() => import('./pages/DiskManager').then(module => ({ default: memo(module.default) })));
 const Settings = lazy(() => import('./pages/Settings').then(module => ({ default: memo(module.default) })));
 import { useDockSlateRuntime } from './runtime';
+const EngineSetup = lazy(() => import('./EngineSetup'));
 import type { RunResult } from './ImageRun';
 export interface ContainerOpenRequest extends RunResult { sequence: number }
 
@@ -54,6 +55,8 @@ export function EngineGate({ engine, engineLoading, engineError, reloadEngine, o
 export default function App() {
   const language = useLanguage();
   const [page, updatePage] = useState<Page>('Overview');
+  const [showEngineSetup, setShowEngineSetup] = useState(false);
+  const setupChecked = useRef(false);
   const [visited, setVisited] = useState(() => new Set<Page>(['Overview']));
   const setPage = useCallback((next: Page) => { setVisited(current => current.has(next) ? current : new Set([...current, next])); updatePage(next); }, []);
   const [diskBusy, setDiskBusy] = useState(false);
@@ -81,6 +84,11 @@ export default function App() {
   const engineQuery = useBackendQuery<EngineStatus>('engine_status');
   const runtime = useDockSlateRuntime(imageBuildBusy || imageRunBusy || volumeBusy || buildTransferBusy || composeBusy);
   useEffect(() => {
+    if (setupChecked.current || !runtime.query.data) return;
+    setupChecked.current = true;
+    if (['not_installed', 'stopped', 'unsupported'].includes(runtime.query.data.state)) setShowEngineSetup(true);
+  }, [runtime.query.data]);
+  useEffect(() => {
     if (!('__TAURI_INTERNALS__' in window)) return;
     let disposed = false;
     let unsubscribe: (() => void) | undefined;
@@ -103,6 +111,8 @@ export default function App() {
   const engineProps: EngineProps = { engine, engineLoading: engineQuery.loading, engineError: engine?.state === 'busy' ? null : engineQuery.error, reloadEngine: engineQuery.reload, openRuntimeSettings: showSettings, language, mutationBlocked: imageBuildBusy || imageRunBusy || volumeBusy || buildTransferBusy || composeBusy };
   const busy = diskBusy;
   const tone = engine?.state === 'connected' ? 'success' : engine?.state === 'busy' ? 'accent' : engine?.state === 'permission_denied' ? 'danger' : 'warning';
+
+  if (showEngineSetup) return <Suspense fallback={<StatePanel busy title={t('Docker Engine 준비')} description={t('설치 상태를 확인하고 있습니다.')} />}><EngineSetup runtime={runtime} engine={engine} onContinue={() => setShowEngineSetup(false)} onSettings={() => { setShowEngineSetup(false); showSettings(); }} />{runtime.dialog}</Suspense>;
 
   return <div className="app-shell"><header className="app-topbar"><div className="app-brand"><span className="brand-mark"><svg viewBox="0 0 28 28" width="25" height="25" fill="none" aria-hidden="true"><path d="M5 5h11l7 7v11H12l-7-7z" stroke="currentColor" strokeWidth="2" /><path d="M5 16h11V5M16 16l7 7" stroke="currentColor" strokeWidth="2" /></svg></span>DockSlate</div><div className="engine-topline"><span className="topline-owner">DockSlate{engine?.engine ? ` · ${engine.engine}` : ''}</span><StatusBadge tone={tone}>{engineLabel(engine, engineQuery.loading)}</StatusBadge></div></header><aside className="sidebar"><p className="nav-label">Workspace</p><nav aria-label={t("주요 메뉴")}>{menu.map(item => <div key={item.page}>{item.page === 'Settings' && <div className="nav-divider" />}<button className={`nav-item ${page === item.page ? 'active' : ''}`} disabled={busy} title={busy ? t("작업이 진행 중입니다") : undefined} onClick={() => setPage(item.page)} aria-current={page === item.page ? 'page' : undefined}><Icon name={item.icon} />{t(item.page)}</button></div>)}</nav></aside><main className="main-content"><div className="page">{imageBuildBusy && <div className="notice info" role="status"><Icon name="images" /><div><strong>{t("이미지 빌드 중")}</strong><p>{t("다른 메뉴를 확인하는 동안 빌드를 계속합니다.")}</p></div><button className="button small" onClick={() => setPage('Builds')}>{t("빌드 보기")}</button></div>}{closeNotice && <div className="notice warning-notice" role="alert"><Icon name="warning" /><div><strong>{t("앱 종료 상태")}</strong><p>{closeNotice}</p></div><button className="icon-button" onClick={() => setCloseNotice(null)} aria-label={t("종료 알림 닫기")} title={t("종료 알림 닫기")}><Icon name="close" size={16} /></button></div>}<div data-page="Overview" hidden={page !== 'Overview'}>{visited.has('Overview') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Overview {...engineProps} navigate={navigateOverview} /></Suspense>}</div><div data-page="Containers" hidden={page !== 'Containers'}>{visited.has('Containers') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Containers {...engineProps} active={page === 'Containers'} openRequest={containerRequest} /></Suspense>}</div><div data-page="Images" hidden={page !== 'Images'}>{visited.has('Images') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Images {...engineProps} build={imageBuildState} openBuilds={openBuilds} onRunBusy={setImageRunBusy} onContainerCreated={createContainer} /></Suspense>}</div><div data-page="Resources" hidden={page !== 'Resources'}>{visited.has('Resources') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Resources {...engineProps} onBusy={setVolumeBusy} /></Suspense>}</div><div data-page="Builds" hidden={page !== 'Builds'}>{visited.has('Builds') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Builds {...engineProps} build={build} compose={compose} onBusy={setBuildTransferBusy} importBlocked={imageRunBusy || volumeBusy || buildTransferBusy || imageBuildBusy} /></Suspense>}</div><div data-page="Disk Manager" hidden={page !== 'Disk Manager'}>{visited.has('Disk Manager') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><DiskManager {...engineProps} runtime={runtime} dockerTabRequest={dockerTabRequest} onDiskBusy={setDiskBusy} /></Suspense>}</div><div data-page="Settings" hidden={page !== 'Settings'}>{visited.has('Settings') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Settings {...engineProps} runtime={runtime} runtimeRequest={runtimeTabRequest} /></Suspense>}</div></div></main>{runtime.dialog}</div>;
 }

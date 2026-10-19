@@ -157,7 +157,11 @@ try {
   report.observations.afterNavigation = preserved;
   fact(preserved.term === 'hello' && preserved.reference === 'hello-world:latest' && preserved.localFilter === localFilter && JSON.stringify(preserved.names) === JSON.stringify(rows.map(row => row.name)), 'Registry results, selection, or local filter were lost after native navigation');
   check('native navigation preserves registry results, selection, and local filter');
-  const invalidInputs = ['https://hub.docker.com/search?q=hello', 'hello\nworld', 'example.com/hello', '../hello', 'h'.repeat(129)];
+  await evaluate(`[...${pageExpression}.querySelectorAll('[role="tab"]')].find(button => button.textContent.trim() === 'Docker Hub')?.click()`);
+  await setInput('#registry-search', '');
+  fact(await evaluate(`!${pageExpression}.querySelector('table[aria-label="Docker Hub 검색 결과"]') && ${pageExpression}.querySelector('.registry-search-panel button[type="submit"]').disabled`), 'Clearing the Hub term retained previous results or enabled blank search');
+  check('clearing the Hub term removes previous results and disables blank submission');
+  const invalidInputs = ['', ' ', '\t\n', '\u00a0\u3000', '\u200b', 'https://hub.docker.com/search?q=hello', 'hello\nworld', 'example.com/hello', '../hello', 'h'.repeat(129)];
   report.observations.invalidInputs = [];
   for (const term of invalidInputs) {
     let rejection = null;
@@ -165,7 +169,7 @@ try {
     report.observations.invalidInputs.push({ term, rejection });
     fact(rejection?.includes('Docker Hub 검색어는'), `Invalid term was not rejected by Rust input validation: ${JSON.stringify(term)}`);
   }
-  check('Rust rejects URL, embedded control character, external registry, traversal, and oversized terms before querying Hub');
+  check('Rust rejects blank, whitespace, invisible, URL, control, registry, traversal, and oversized terms before querying Hub');
   const afterImages = identities(await invoke('images_list'));
   const afterContainers = identities(await invoke('containers_list'));
   report.observations.after = { images: afterImages, containers: afterContainers };

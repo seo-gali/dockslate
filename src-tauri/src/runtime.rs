@@ -350,12 +350,19 @@ pub fn installation_preview() -> Result<Value, String> {
     Ok(result)
 }
 
-fn begin(mode: &str, operation_state: &'static str, expected: Value) -> Result<Value, String> {
+fn begin(
+    mode: &str,
+    operation_state: &'static str,
+    expected: Value,
+    start_engine: bool,
+) -> Result<Value, String> {
     {
         let mut guard = state()
             .lock()
             .map_err(|_| "Runtime operation tracking is unavailable.".to_string())?;
-        let command = launch(json!({"mode":mode,"approved":true,"expected":expected}))?;
+        let command = launch(
+            json!({"mode":mode,"approved":true,"expected":expected,"startEngine":start_engine}),
+        )?;
         guard.approvals.clear();
         guard.last_operation = None;
         guard.active = Some(Operation {
@@ -403,7 +410,7 @@ fn require_idle() -> Result<(), String> {
     Ok(())
 }
 
-pub fn install(token: String, approved: bool) -> Result<Value, String> {
+pub fn install(token: String, approved: bool, start_engine: bool) -> Result<Value, String> {
     if !approved {
         return Err("Explicit approval is required to download and create the separate DockSlate WSL runtime.".into());
     }
@@ -423,7 +430,7 @@ pub fn install(token: String, approved: bool) -> Result<Value, String> {
     if approval.created.elapsed() >= APPROVAL_LIFETIME {
         return Err("The runtime installation approval expired. Create a new preview.".into());
     }
-    begin("install", "installing", approval.expected)
+    begin("install", "installing", approval.expected, start_engine)
 }
 
 fn change_state(
@@ -454,7 +461,7 @@ fn change_state(
         .cloned()
         .filter(|value| !value.is_null())
         .ok_or("Runtime ownership cannot be verified.")?;
-    begin(mode, operation_state, expected)
+    begin(mode, operation_state, expected, false)
 }
 pub fn start(approved: bool) -> Result<Value, String> {
     change_state("start", "stopped", "starting", approved)

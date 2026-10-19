@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { listen } from '@tauri-apps/api/event';
 import { backend, type Container } from './api';
 import { cachedLogs, storeContainerLogs } from './containerReadCache';
@@ -58,7 +58,8 @@ export default function ContainerLogs({ container, revision, active }: { contain
     return () => { disposed = true; unlisten?.(); void stop(); };
   }, [active, container.id, container.state, revision, restart]);
   const content = entry?.data.content ?? '';
-  const visible = search ? content.split('\n').filter(line => line.toLowerCase().includes(search.toLowerCase())).join('\n') : content;
+  const deferredSearch = useDeferredValue(search.trim().toLowerCase());
+  const visible = useMemo(() => deferredSearch ? content.split('\n').filter(line => line.toLowerCase().includes(deferredSearch)).join('\n') : content, [content, deferredSearch]);
   useEffect(() => { if (autoScroll && logsRef.current) logsRef.current.scrollTop = logsRef.current.scrollHeight; }, [visible, autoScroll]);
   const copy = async () => {
     try { await navigator.clipboard.writeText(visible); setCopyOperation({tone: 'success', message: t('표시된 로그를 복사했습니다.')}); }

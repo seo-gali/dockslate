@@ -1,7 +1,8 @@
 [package]
 name = "dockslate"
 version = "0.1.0"
-description = "A local Rancher Desktop Moby client for Windows"
+description = "An independent Docker Engine desktop for Windows"
+default-run = "dockslate"
 edition = "2021"
 rust-version = "1.85"
 

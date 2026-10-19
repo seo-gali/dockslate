@@ -304,7 +304,7 @@ function Get-InstallationPreview {
     return [ordered]@{
         eligible = $blocked.Count -eq 0
         targets = @(($distribution + ' (new WSL 2 distribution)'), $installPath, (Join-Path $runtimeRoot 'ownership.json'))
-        impact = @('Download Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.', 'Install pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.', 'Create a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.', 'Configure systemd and a root-only Unix socket; no Docker TCP listener is created.', 'Stop only the newly created DockSlate distribution after setup. It remains stopped until an approved Start action.')
+        impact = @('Download Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.', 'Install pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.', 'Create a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.', 'Configure systemd and a root-only Unix socket; no Docker TCP listener is created.', 'Restart only the newly created distribution to activate systemd. Start the new Docker Engine when installation and startup are approved together.')
         requirements = @('Windows 11 x64 with working WSL 2.4.10 or later.', 'HTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.', 'A free DockSlate distribution name and an absent runtime target directory.', 'At least 4 GiB of host free space; container images and volumes use additional space.', 'Keep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection.')
         blockedReasons = @($blocked.ToArray())
         fingerprint = if ($blocked.Count -eq 0) { [ordered]@{ installPath = $installPath; runtimeRoot = $runtimeRoot; rootfsSha256 = $rootfsHash; engineVersion = $engineVersion; wslVersion = $version.ToString(); distribution = $distribution } } else { $null }
@@ -347,7 +347,17 @@ function New-Keeper($marker) {
 }
 
 try {
-    $runtimeRoot = Normalize-Path 'D:\Program Files\DockSlate\runtime'
+    $registeredRuntime = @(Get-Registrations | Where-Object { $_.name -ieq $distribution })
+    if ($registeredRuntime.Count -gt 1) { throw 'Multiple DockSlate registrations exist. Automatic runtime selection is blocked.' }
+    if ($registeredRuntime.Count -eq 1) {
+        $registeredPath = Normalize-Path $registeredRuntime[0].basePath
+        if ([IO.Path]::GetFileName($registeredPath) -cne 'wsl') { throw 'The registered DockSlate data location is not an owned runtime layout.' }
+        $runtimeRoot = Normalize-Path ([IO.Path]::GetDirectoryName($registeredPath))
+    } else {
+        $localData = [Environment]::GetFolderPath('LocalApplicationData')
+        if ([string]::IsNullOrWhiteSpace($localData)) { throw 'The current-user application data directory is unavailable.' }
+        $runtimeRoot = Normalize-Path (Join-Path $localData 'DockSlateData\runtime')
+    }
     $installPath = Normalize-Path (Join-Path $runtimeRoot 'wsl')
     Assert-PlainPath $runtimeRoot
     switch -CaseSensitive ($request.mode) {
@@ -392,7 +402,16 @@ try {
             if (@(Get-Running) -contains $distribution) { throw 'The newly created DockSlate distribution did not stop. Installation completion is unverified.' }
             $marker.state = 'installed'
             Write-OwnedJson 'ownership.json' $marker
-            Set-Stage 'completed' 'The separate DockSlate WSL runtime is installed and stopped. Start it with explicit approval.'
+            if ($request.startEngine -eq $true) {
+                $null = Assert-OwnedRegistration (Read-OwnedJson 'ownership.json') @(Get-Registrations)
+                Set-Stage 'starting' 'Starting the newly installed Docker Engine, Buildx and Compose.'
+                $keeper = New-Keeper $marker
+                $null = Invoke-FixedWsl @('--distribution', $distribution, '--user', 'root', '--exec', '/usr/local/libexec/dockslate-start')
+                if (!(Test-TrackedProcess $keeper $wsl) -or @((Get-Running)) -notcontains $distribution) { throw 'The newly installed Docker Engine did not reach its verified running state.' }
+                Set-Stage 'completed' 'Docker Engine is installed and running. Docker CLI, Buildx and Compose are installed in the owned runtime.'
+            } else {
+                Set-Stage 'completed' 'The separate DockSlate WSL runtime is installed and stopped. Start it with explicit approval.'
+            }
             $result = Get-Inventory
         }
         { $_ -cin @('start', 'stop') } {

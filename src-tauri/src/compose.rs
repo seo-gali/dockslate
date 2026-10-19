@@ -645,7 +645,7 @@ fn normalize(
     }
     let mut resources = Vec::new();
     for category in ["volumes", "networks"] {
-        if let Some(values) = config[category].as_object_mut() {
+        if let Some(values) = config.get_mut(category).and_then(Value::as_object_mut) {
             for (name, value) in values {
                 if !valid_name(name) {
                     return Err("볼륨과 네트워크 이름을 확인하세요 (최대 63자).".into());

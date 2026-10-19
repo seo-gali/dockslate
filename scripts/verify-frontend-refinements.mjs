@@ -4,7 +4,9 @@ const s = JSON.parse(fs.readFileSync(process.argv[2] ?? '.analysis/frontend-brow
 if (!s.frontendOnly || s.nativeBackendInjected !== false || !Number.isInteger(port) || port < 1 || port > 65535)
     throw Error('Isolated frontend browser session required');
 const list = await (await fetch('http://127.0.0.1:' + port + '/json/list')).json();
-const page = list.find(p => p.type === 'page' && p.url === 'http://127.0.0.1:1420/');
+const frontendUrl = s.url ?? 'http://127.0.0.1:1420/';
+if (!/^http:\/\/127\.0\.0\.1:\d+\/$/.test(frontendUrl)) throw Error('Loopback frontend URL required');
+const page = list.find(p => p.type === 'page' && p.url === frontendUrl);
 if (!page)
     throw Error('Isolated frontend missing');
 if (!['127.0.0.1', 'localhost', '[::1]'].includes(new URL(page.webSocketDebuggerUrl).hostname))
@@ -55,6 +57,8 @@ try {
     for (let i = 0; i < pages.length; i++)
         times.push({ page: pages[i], firstVisitMs: await nav(i, pages[i]) });
     check('All seven lazy screens mount without JavaScript errors', times);
+    assert(!requests.some(r => /\/Container(Files|Inspect|Logs|Terminal)-/.test(r.url)), 'Container details loaded before opening their tabs');
+    check('Container detail scripts and file CSS remain unloaded during list navigation');
     await nav(6, 'Settings');
     let active = await ev(`[...document.querySelectorAll('[data-page="Settings"] [role="tab"]')].map(e=>({text:e.textContent.trim(),active:e.getAttribute('aria-selected')}))`);
     assert(active.length === 3, 'Settings not split into three tabs');
@@ -104,7 +108,7 @@ catch (e) {
     console.error(e.stack);
 }
 finally {
-    fs.writeFileSync('docs/results/frontend-refinements-e2e.json', JSON.stringify(report, null, 2));
+    fs.writeFileSync(process.argv[3] ?? 'docs/results/frontend-refinements-e2e.json', JSON.stringify(report, null, 2));
     for (const p of pending.values())
         clearTimeout(p.timer);
     ws.close();

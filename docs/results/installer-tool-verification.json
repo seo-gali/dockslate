@@ -1,0 +1,105 @@
+{
+    "observedAt":  "2026-10-18T14:49:20.8255373Z",
+    "explicitOfficialToolDownloadApproval":  true,
+    "tauriCliVersion":  "2.12.2",
+    "officialSource":  "https://github.com/tauri-apps/tauri/blob/tauri-cli-v2.12.2/crates/tauri-bundler/src/bundle/windows/nsis/mod.rs",
+    "tools":  [
+                  {
+                      "name":  "NSIS 3.11",
+                      "url":  "https://github.com/tauri-apps/binary-releases/releases/download/nsis-3.11/nsis-3.11.zip",
+                      "bytes":  2361546,
+                      "expectedOfficialSha1":  "EF7FF767E5CBD9EDD22ADD3A32C9B8F4500BB10D",
+                      "actualSha1":  "EF7FF767E5CBD9EDD22ADD3A32C9B8F4500BB10D",
+                      "actualSha256":  "C7D27F780DDB6CFFB4730138CD1591E841F4B7EDB155856901CDF5F214394FA1",
+                      "officialHashMatched":  true
+                  },
+                  {
+                      "name":  "Tauri NSIS utility 0.5.3",
+                      "url":  "https://github.com/tauri-apps/nsis-tauri-utils/releases/download/nsis_tauri_utils-v0.5.3/nsis_tauri_utils.dll",
+                      "bytes":  34304,
+                      "expectedOfficialSha1":  "75197FEE3C6A814FE035788D1C34EAD39349B860",
+                      "actualSha1":  "75197FEE3C6A814FE035788D1C34EAD39349B860",
+                      "actualSha256":  "5BA143B5DB4A87D32D6E7802E033330AAE56CBCEABE0D1E3BA41948385AD4709",
+                      "officialHashMatched":  true
+                  }
+              ],
+    "archiveEntriesChecked":  441,
+    "toolsReady":  true,
+    "missingFiles":  [
+
+                     ],
+    "hookCompilation":  {
+                            "compiler":  "MakeNSIS v3.11",
+                            "source":  "src-tauri/installer/hooks.nsh",
+                            "harness":  ".analysis/installer-tool-stage/hooks-compile-check.nsi",
+                            "exitCode":  0,
+                            "warnings":  0,
+                            "producedCompileFixture":  ".analysis/installer-tool-stage/hooks-compile-check.exe",
+                            "producedBytes":  62490,
+                            "producedSha256":  "0CD98319E67DD38028AB91189FBC0C20849AF2ECD6C706B975FEF46B12FAD52D",
+                            "fixtureExecuted":  false,
+                            "scope":  "Compile of installation/uninstallation PATH hooks and explicitly approved WSL prerequisite setup only. Neither produced installer nor WSL prerequisite commands were executed.",
+                            "sourceSha256":  "D1CC14677DC9314317B3162D806AF8CE3C7A500FE6F7DD4B82F9F998D9546E1A"
+                        },
+    "productInstallerBuilt":  false,
+    "mainApplicationRebuilt":  false,
+    "applicationExecuted":  false,
+    "registryOrPathChanged":  false,
+    "engineOrWslChanged":  false,
+    "runtimePreservationReview":  {
+                                      "installScope":  "currentUser",
+                                      "defaultApplicationDirectory":  "%LOCALAPPDATA%\\DockSlate",
+                                      "optionalTauriAppDataRemoval":  [
+                                                                          "%APPDATA%\\dev.dockslate.desktop",
+                                                                          "%LOCALAPPDATA%\\dev.dockslate.desktop"
+                                                                      ],
+                                      "freshRuntimeDirectory":  "%LOCALAPPDATA%\\DockSlateData\\runtime\\wsl",
+                                      "existingRegisteredRuntime":  "Existing registered runtime paths are resolved dynamically and are not installer resources.",
+                                      "resourceRemoval":  "Only bundled app/CLI/guide/notices files; directory removal is non-recursive except the optional fixed bundle-ID app-data paths.",
+                                      "runtimeOutsideRemovedPaths":  true,
+                                      "verifiedByActualUninstall":  false,
+                                      "officialInstallerTemplate":  "https://github.com/tauri-apps/tauri/blob/tauri-cli-v2.12.2/crates/tauri-bundler/src/bundle/windows/nsis/installer.nsi"
+                                  },
+    "limitations":  [
+                        "Complete DockSlate installer compilation and isolated installation/uninstallation E2E remain separate checks.",
+                        "Hook compile success does not verify actual PATH updates or rollback on a target PC."
+                    ],
+    "wslPrerequisiteSourceReview":  {
+                                        "fixedProbe":  "Windows system wsl.exe --status",
+                                        "systemExecutable":  "Sysnative/wsl.exe on a 64-bit OS from the 32-bit NSIS stub; SYSDIR/wsl.exe otherwise",
+                                        "probeIdleTimeoutMilliseconds":  30000,
+                                        "standardShippedPlugin":  "nsExec.dll from the verified official NSIS archive",
+                                        "approval":  "Korean/English OK/Cancel dialog; Cancel is the default and silent-install response",
+                                        "effectsDisclosed":  [
+                                                                 "Windows virtualization feature changes",
+                                                                 "Microsoft WSL download and internet access",
+                                                                 "Administrator approval through UAC",
+                                                                 "Possible Windows restart",
+                                                                 "No general-purpose Linux distribution installation",
+                                                                 "Existing distributions and Docker data preservation"
+                                                             ],
+                                        "approvedAction":  "ExecShellWait runas on the fixed system wsl.exe with fixed --install --no-distribution arguments",
+                                        "readinessAfterAction":  "Probe --status again; abort DockSlate installation unless its exit status is 0",
+                                        "missingExecutable":  "Explain that the Windows system executable cannot be launched; stop setup and link official Microsoft installation guidance",
+                                        "automaticRestartRequested":  false,
+                                        "currentUserAppScopePreserved":  true,
+                                        "actualStatusCommandExecuted":  false,
+                                        "actualWslInstallationExecuted":  false,
+                                        "actualUacDialogTested":  false,
+                                        "fixtureExecuted":  false,
+                                        "officialReferences":  [
+                                                                   "https://nsis.sourceforge.io/Docs/Chapter4.html#4.9.1.4",
+                                                                   "https://nsis.sourceforge.io/NsExec_plug-in",
+                                                                   "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
+                                                                   "https://learn.microsoft.com/en-us/windows/wsl/install",
+                                                                   "https://learn.microsoft.com/en-us/windows/win32/shell/launch"
+                                                               ],
+                                        "limitations":  [
+                                                            "A successful status command does not prove the minimum WSL package version or a working WSL 2 VM. First-run runtime setup retains its own WSL 2, version and ownership checks.",
+                                                            "ExecShellWait does not expose the child exit code; a second status probe determines whether setup can continue.",
+                                                            "Pending reboot and failed installation are not reliably distinguished from the status result. Setup stops with restart/retry guidance; it does not reboot Windows.",
+                                                            "A missing Windows system wsl.exe cannot be repaired by launching the absent executable. Setup explains this and stops instead of downloading an unapproved replacement.",
+                                                            "Clean-PC missing-feature, UAC refusal, reboot and actual installation/uninstallation paths have not been executed."
+                                                        ]
+                                    }
+}

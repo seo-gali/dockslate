@@ -1,0 +1,177 @@
+{
+  "observedAt": "2026-10-19T12:47:05.294Z",
+  "measurement": "Production asset file sizes and gzip; no runtime benchmark or inferred network timing",
+  "beforeEntry": {
+    "bytes": 496910,
+    "gzipBytes": 146310,
+    "source": "Observed Vite output for native artifact 8A566A2FC41CED72B1092F28CAE54773C92E9BBFF0DF1FE75E4AD79B6869B5BC; rounded to 0.01 kB"
+  },
+  "entry": {
+    "name": "index-DGGvABkl.js",
+    "bytes": 268944,
+    "gzipBytes": 84846
+  },
+  "initialKorean": {
+    "bytes": 272729,
+    "gzipBytes": 86139
+  },
+  "initialEnglish": {
+    "bytes": 337704,
+    "gzipBytes": 105713
+  },
+  "allJavaScript": {
+    "bytes": 526553,
+    "gzipBytes": 167645
+  },
+  "entryReductionPercent": 45.88,
+  "initialKoreanFiles": [
+    "Overview-Bwm-ftNf.js",
+    "index-DGGvABkl.js"
+  ],
+  "lazyPages": [
+    {
+      "name": "Builds-BHZqlUcD.js",
+      "bytes": 30861,
+      "gzipBytes": 9075
+    },
+    {
+      "name": "Containers-uzPfMKeI.js",
+      "bytes": 26379,
+      "gzipBytes": 9119
+    },
+    {
+      "name": "DiskManager-B2Qqr7C1.js",
+      "bytes": 27270,
+      "gzipBytes": 8591
+    },
+    {
+      "name": "Images-NMS2l7Wo.js",
+      "bytes": 38854,
+      "gzipBytes": 11740
+    },
+    {
+      "name": "Resources-DABUpBiw.js",
+      "bytes": 27502,
+      "gzipBytes": 7635
+    },
+    {
+      "name": "Settings-DWhkQrYe.js",
+      "bytes": 3987,
+      "gzipBytes": 1519
+    }
+  ],
+  "englishCatalog": {
+    "name": "locales.en-roT22cwc.js",
+    "bytes": 64975,
+    "gzipBytes": 19574
+  },
+  "externalFontFiles": [],
+  "rasterImages": [],
+  "assets": [
+    {
+      "name": "Builds-BHZqlUcD.js",
+      "bytes": 30861,
+      "gzipBytes": 9075
+    },
+    {
+      "name": "ContainerFiles-BqpnrS6P.js",
+      "bytes": 11859,
+      "gzipBytes": 4379
+    },
+    {
+      "name": "ContainerFiles-DMhqzffb.css",
+      "bytes": 4091,
+      "gzipBytes": 1104
+    },
+    {
+      "name": "ContainerInspect-CEaxV4WN.js",
+      "bytes": 2681,
+      "gzipBytes": 1430
+    },
+    {
+      "name": "ContainerLogs-DJ4epGo5.js",
+      "bytes": 3260,
+      "gzipBytes": 1772
+    },
+    {
+      "name": "Containers-C2C28JuH.css",
+      "bytes": 1013,
+      "gzipBytes": 403
+    },
+    {
+      "name": "Containers-uzPfMKeI.js",
+      "bytes": 26379,
+      "gzipBytes": 9119
+    },
+    {
+      "name": "ContainerTerminal-C5tJsCn2.js",
+      "bytes": 13473,
+      "gzipBytes": 5155
+    },
+    {
+      "name": "DiskManager-B2Qqr7C1.js",
+      "bytes": 27270,
+      "gzipBytes": 8591
+    },
+    {
+      "name": "EngineSetup-BV71Ld8j.js",
+      "bytes": 2163,
+      "gzipBytes": 1096
+    },
+    {
+      "name": "EngineSetup-CAh6N3oy.css",
+      "bytes": 1008,
+      "gzipBytes": 459
+    },
+    {
+      "name": "Images-C9A3HPNY.css",
+      "bytes": 689,
+      "gzipBytes": 367
+    },
+    {
+      "name": "Images-NMS2l7Wo.js",
+      "bytes": 38854,
+      "gzipBytes": 11740
+    },
+    {
+      "name": "index-CF6QBXcM.js",
+      "bytes": 66,
+      "gzipBytes": 79
+    },
+    {
+      "name": "index-DGGvABkl.js",
+      "bytes": 268944,
+      "gzipBytes": 84846
+    },
+    {
+      "name": "index-DqUfT0jG.css",
+      "bytes": 30028,
+      "gzipBytes": 6412
+    },
+    {
+      "name": "locales.en-roT22cwc.js",
+      "bytes": 64975,
+      "gzipBytes": 19574
+    },
+    {
+      "name": "metadataCache-pt3ZV5Vo.js",
+      "bytes": 494,
+      "gzipBytes": 342
+    },
+    {
+      "name": "Overview-Bwm-ftNf.js",
+      "bytes": 3785,
+      "gzipBytes": 1293
+    },
+    {
+      "name": "Resources-DABUpBiw.js",
+      "bytes": 27502,
+      "gzipBytes": 7635
+    },
+    {
+      "name": "Settings-DWhkQrYe.js",
+      "bytes": 3987,
+      "gzipBytes": 1519
+    }
+  ]
+}

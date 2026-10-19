@@ -1,0 +1,86 @@
+{
+  "observedAt": "2026-10-18T14:44:33.039Z",
+  "artifactSha256": "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02",
+  "native": true,
+  "mockBackend": false,
+  "completed": false,
+  "failureConditions": [
+    "No real Windows file picker",
+    "Selection mismatch or unsupported source accepted",
+    "Build fails or does not create a distinct local image",
+    "Run skips explicit Compose approval",
+    "Fixture container fails to execute",
+    "Existing container/image/volume/network ID sets change",
+    "Fixture cleanup fails"
+  ],
+  "scope": "Actual selected isolated hello-world-based Dockerfile and Compose, not a user project",
+  "checks": [
+    {
+      "name": "Real Windows Dockerfile picker cancellation returns without starting a build",
+      "passed": true,
+      "evidence": {
+        "processId": 3472,
+        "dialogClass": "#32770",
+        "filenameControlId": 1148,
+        "action": "cancel",
+        "title": "������ Dockerfile ����"
+      }
+    },
+    {
+      "name": "Actual Dockerfile picker with Korean/spaces path automatically builds a distinct local image",
+      "passed": true,
+      "evidence": {
+        "picker": {
+          "processId": 3472,
+          "dialogClass": "#32770",
+          "filenameControlId": 1148,
+          "action": "select",
+          "title": "������ Dockerfile ����"
+        },
+        "context": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-59a2b74210a5\\샘플 프로젝트",
+        "tag": "dockslate-import-mvdxsfoi:latest",
+        "imageId": "sha256:f0d1ad381fc360b9076ef11b35d90fff0e323aa258142b464776df6d7f9d5374"
+      }
+    },
+    {
+      "name": "Dockerfile-built image runs its actual executable and navigates to list",
+      "passed": true,
+      "evidence": {
+        "containerId": "1e2aa34d257a2ab7d3e563d33055e767ceeb2b37f13c69ee94a05cf50e306258",
+        "imageId": "sha256:f0d1ad381fc360b9076ef11b35d90fff0e323aa258142b464776df6d7f9d5374",
+        "exitCode": 0,
+        "noMounts": true
+      }
+    },
+    {
+      "name": "Actual Compose picker rejects variable substitution before build or run",
+      "passed": true,
+      "evidence": {
+        "rejection": "환경 변수 치환·역슬래시 이스케이프·YAML 태그는 가져오기에서 지원하지 않습니다. 값과 경로를 명시한 Compose 파일을 선택하세요."
+      }
+    },
+    {
+      "name": "Only exact isolated resources removed; all baseline resource sets preserved",
+      "passed": true,
+      "evidence": {
+        "fixtureImagesRemoved": [
+          "sha256:f0d1ad381fc360b9076ef11b35d90fff0e323aa258142b464776df6d7f9d5374"
+        ],
+        "fixtureNetworksRemoved": [],
+        "baselineContainersImagesVolumesNetworksPreserved": true,
+        "mongoStillRunning": true,
+        "buildCacheAndHistoryRetained": true
+      }
+    }
+  ],
+  "cleanup": {
+    "fixtureImagesRemoved": [
+      "sha256:f0d1ad381fc360b9076ef11b35d90fff0e323aa258142b464776df6d7f9d5374"
+    ],
+    "fixtureNetworksRemoved": [],
+    "baselineContainersImagesVolumesNetworksPreserved": true,
+    "mongoStillRunning": true,
+    "buildCacheAndHistoryRetained": true
+  },
+  "failure": "Error: Compose build failed: Compose build 작업 실패 (종료 코드 1). 원본 구성 또는 전용 WSL의 Compose 지원을 확인하세요. 비밀 값 보호를 위해 원본 명령 출력은 표시하지 않습니다. 부분 생성된 리소스가 있을 수 있으므로 전체 새로고침으로 확인하세요.\n    at assert (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-file-imports.mjs:21:48)\n    at file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-file-imports.mjs:92:3"
+}

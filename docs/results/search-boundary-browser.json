@@ -1,0 +1,141 @@
+{
+  "completed": true,
+  "observedAt": "2026-10-19T12:51:54.633Z",
+  "scope": "Actual frontend API boundary in isolated Chrome; no native backend or registry response mocked",
+  "cases": [
+    {
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {},
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": null
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": []
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": ""
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "  "
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "\t\n"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": " 　"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "​"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "../hello"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "hello\nworld"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "example.com/hello"
+      },
+      "rejected": true,
+      "message": "Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다."
+    },
+    {
+      "args": {
+        "term": "hello"
+      },
+      "valid": true,
+      "rejected": true,
+      "message": "데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요."
+    },
+    {
+      "args": {
+        "term": "  nginx  "
+      },
+      "valid": true,
+      "rejected": true,
+      "message": "데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요."
+    },
+    {
+      "args": {
+        "term": "hashicorp/consul"
+      },
+      "valid": true,
+      "rejected": true,
+      "message": "데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요."
+    },
+    {
+      "args": {
+        "term": "library/hello-world"
+      },
+      "valid": true,
+      "rejected": true,
+      "message": "데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요."
+    },
+    {
+      "args": {
+        "term": "a"
+      },
+      "valid": true,
+      "rejected": true,
+      "message": "데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요."
+    },
+    {
+      "args": {
+        "term": "image.name"
+      },
+      "valid": true,
+      "rejected": true,
+      "message": "데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요."
+    }
+  ]
+}

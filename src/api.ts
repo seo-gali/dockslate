@@ -133,6 +133,16 @@ export interface CompactResult {
 export type DiskOperation = CompactResult | { status: 'in_progress'; diskId: string; startedAt?: number; warnings: string[] } | { status: 'failed'; diskId: string; error: string; warnings: string[] };
 
 export async function backend<T>(command: string, args?: Record<string, unknown>): Promise<T> {
+  if (command === 'image_search') {
+    const term = typeof args?.term === 'string' ? args.term.trim() : '';
+    const parts = term.split('/');
+    if (!term || term.length > 128 || !/^[A-Za-z0-9/_.-]+$/.test(term) || term.includes('..')
+      || parts.some(part => !/^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$/.test(part))
+      || (parts.length > 1 && parts[0].includes('.'))) {
+      throw new Error('Docker Hub 검색어는 1~128자의 영문, 숫자, /, _, ., -로 입력하세요. 외부 레지스트리 주소는 검색할 수 없습니다.');
+    }
+    args = { ...args, term };
+  }
   if (!('__TAURI_INTERNALS__' in window)) throw new Error('데스크톱 백엔드에 연결할 수 없습니다. DockSlate Windows 앱에서 실행하세요.');
   return invoke<T>(command, args);
 }

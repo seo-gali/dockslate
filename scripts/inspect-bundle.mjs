@@ -43,5 +43,5 @@ const report = {
   rasterImages: files.filter(name => /\.(png|jpe?g|gif|webp|avif)$/i.test(name)),
   assets: sizes,
 };
-fs.writeFileSync('docs/results/bundle-inspection.json', JSON.stringify(report, null, 2));
+fs.writeFileSync(process.argv[2] ?? 'docs/results/bundle-inspection.json', JSON.stringify(report, null, 2));
 console.log(JSON.stringify({ entry: report.entry, initialKorean: report.initialKorean, initialEnglish: report.initialEnglish, allJavaScript: report.allJavaScript, entryReductionPercent: report.entryReductionPercent }));

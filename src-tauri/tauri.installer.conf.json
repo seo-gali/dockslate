@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "publisher": "DockSlate",
+    "category": "DeveloperTool",
+    "shortDescription": "Docker Engine, Compose and container management for Windows",
+    "useLocalToolsDir": true,
+    "resources": {
+      "target/release/docker.exe": "bin/docker.exe",
+      "target/installer-resources/guide.html": "guide.html",
+      "../docs/REQUEST_STATUS.md": "docs/REQUEST_STATUS.md",
+      "../docs/results/refinement-verification.md": "docs/results/refinement-verification.md",
+      "../USER_GUIDE.md": "USER_GUIDE.md",
+      "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md"
+    },
+    "windows": {
+      "allowDowngrades": false,
+      "webviewInstallMode": { "type": "downloadBootstrapper", "silent": true },
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": ["Korean", "English"],
+        "displayLanguageSelector": true,
+        "startMenuFolder": "DockSlate",
+        "installerHooks": "installer/hooks.nsh",
+        "compression": "lzma"
+      }
+    }
+  }
+}

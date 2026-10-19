@@ -105,7 +105,10 @@ export default function Volumes(props: EngineProps & { noPageHeader?: boolean; o
     return () => { disposed = true; if (timer) window.clearTimeout(timer); };
   }, [job?.id, job?.state]);
   const selected = query.data?.find(volume => volume.name === selectedName) ?? null;
-  const filtered = useMemo(() => (query.data ?? []).filter(volume => `${volume.name} ${volume.driver} ${volume.containers.map(container => container.name).join(' ')}`.toLowerCase().includes(search.toLowerCase())), [query.data, search]);
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return (query.data ?? []).filter(volume => `${volume.name} ${volume.driver} ${volume.containers.map(container => container.name).join(' ')}`.toLowerCase().includes(term));
+  }, [query.data, search]);
   useEffect(() => { setPage(0); }, [search]);
   const currentPage = Math.min(page, Math.max(0, Math.ceil(filtered.length / 50) - 1));
   const mutate = async (action: () => Promise<void>) => {
