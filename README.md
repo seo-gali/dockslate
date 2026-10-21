@@ -4,7 +4,7 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 **현재 상태: 개발 버전. 요청 전체가 검증 완료된 상태는 아닙니다.**
 
-공식 Windows Docker CLI·Compose·Buildx를 포함한 설치 EXE를 별도 Windows 빌드에서 생성하고 해시를 확인했습니다. 실제 설치·제거 검증은 남아 있습니다. 기존 엔진 연결·한글 경로 연결·입출력·로그 취소·Compose 실행을 확인했으며, 개발 PC의 파일 복사는 접근 거부로 실패했습니다. [현재 결과](docs/results/installation-correction.md), [Docker Desktop 조사](docs/research/docker-desktop-4.96.0.md)
+공식 Windows Docker CLI·Compose·Buildx를 포함한 설치 EXE를 제공합니다. 사용자 설치에서 발견한 긴 PATH 등록 오류를 수정하고 임시 레지스트리에서 등록·재설치·제거를 검증했습니다. 전체 설치·제거 완료 검증은 남아 있습니다. 기존 엔진 연결·한글 경로 연결·입출력·로그 취소·Compose 실행을 확인했으며, 개발 PC의 파일 복사는 접근 거부로 실패했습니다. [현재 결과](docs/results/installation-correction.md), [Docker Desktop 조사](docs/research/docker-desktop-4.96.0.md)
 
 ## 실행 · 다운로드
 

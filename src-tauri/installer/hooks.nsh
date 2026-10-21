@@ -1,22 +1,13 @@
-﻿; https://v2.tauri.app/distribute/windows-installer/#extending-the-installer
+; https://v2.tauri.app/distribute/windows-installer/#extending-the-installer
 !include "LogicLib.nsh"
 !include "WinMessages.nsh"
 !include "x64.nsh"
 !define MUI_FINISHPAGE_RUN_NOTCHECKED
 !define DOCKSLATE_INSTALLER_KEY "Software\DockSlate\Installer"
+!define DOCKSLATE_PATH_SCRIPT_SOURCE "${__FILEDIR__}\user-path.ps1"
 
-Var DockSlatePathOriginal
-Var DockSlatePathResult
-Var DockSlatePathEntry
-Var DockSlatePathToken
-Var DockSlatePathPosition
-Var DockSlatePathLength
-Var DockSlatePathCharacter
-Var DockSlatePathReadable
-Var DockSlatePathPresent
-Var DockSlatePathType
-Var DockSlatePathFound
-Var DockSlatePathRetained
+Var DockSlatePathMode
+Var DockSlatePathExit
 Var DockSlateWslExecutable
 Var DockSlateWslStatus
 Var DockSlateWslMessage
@@ -95,103 +86,36 @@ wsl_install_launch:
 FunctionEnd
 
 !macro DockSlatePathFunctions PREFIX
-Function ${PREFIX}DockSlateReadUserPath
+Function ${PREFIX}DockSlateUpdateUserPath
   Push $0
   Push $1
-  Push $2
-  Push $3
-  Push $4
-  StrCpy $DockSlatePathReadable 0
-  StrCpy $DockSlatePathPresent 0
-  StrCpy $DockSlatePathOriginal ""
-  StrCpy $DockSlatePathType 2
-  System::Call 'advapi32::RegOpenKeyExW(p 0x80000001, w "Environment", i 0, i 0x20019, *p .r0) i .r1'
-  ${If} $1 = 2
-    StrCpy $DockSlatePathReadable 1
-    Goto read_done
-  ${EndIf}
-  ${If} $1 <> 0
-    Goto read_done
-  ${EndIf}
-  System::Call 'advapi32::RegQueryValueExW(p r0, w "Path", p 0, *i .r2, p 0, *i .r3) i .r1'
-  System::Call 'advapi32::RegCloseKey(p r0)'
-  ${If} $1 = 2
-    StrCpy $DockSlatePathReadable 1
-    Goto read_done
-  ${EndIf}
-  ${If} $1 <> 0
-    Goto read_done
-  ${EndIf}
-  ${If} $2 <> 1
-  ${AndIf} $2 <> 2
-    Goto read_done
-  ${EndIf}
-  IntOp $4 ${NSIS_MAX_STRLEN} * 2
-  ${If} $3 > $4
-    Goto read_done
-  ${EndIf}
+  StrCpy $DockSlatePathExit 1
+  InitPluginsDir
   ClearErrors
-  ReadRegStr $DockSlatePathOriginal HKCU "Environment" "Path"
-  ${IfNot} ${Errors}
-    StrCpy $DockSlatePathType $2
-    StrCpy $DockSlatePathPresent 1
-    StrCpy $DockSlatePathReadable 1
+  File "/oname=$PLUGINSDIR\dockslate-user-path.ps1" "${DOCKSLATE_PATH_SCRIPT_SOURCE}"
+  ${If} ${Errors}
+    Goto path_update_done
   ${EndIf}
-read_done:
-  Pop $4
-  Pop $3
-  Pop $2
+  System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_SCRIPT", w "$PLUGINSDIR\dockslate-user-path.ps1")'
+  System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_MODE", w "$DockSlatePathMode")'
+  System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_BIN", w "$INSTDIR\bin")'
+  StrCpy $0 "$SYSDIR\WindowsPowerShell\v1.0\powershell.exe"
+  ${If} ${RunningX64}
+    StrCpy $0 "$WINDIR\Sysnative\WindowsPowerShell\v1.0\powershell.exe"
+  ${EndIf}
+  ; Keep the complete registry value in .NET, outside NSIS's fixed-size strings.
+  nsExec::ExecToStack /TIMEOUT=30000 `"$0" -NoLogo -NoProfile -NonInteractive -Command "& ([scriptblock]::Create([IO.File]::ReadAllText($$env:DOCKSLATE_PATH_SCRIPT)))"`
+  Pop $DockSlatePathExit
+  Pop $1
+  ${If} $DockSlatePathExit != "0"
+    DetailPrint "Windows PATH operation failed: $1"
+  ${EndIf}
+  System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_SCRIPT", p 0)'
+  System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_MODE", p 0)'
+  System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_BIN", p 0)'
+path_update_done:
   Pop $1
   Pop $0
-FunctionEnd
-
-Function ${PREFIX}DockSlateScanUserPath
-  StrCpy $DockSlatePathResult ""
-  StrCpy $DockSlatePathToken ""
-  StrCpy $DockSlatePathFound 0
-  StrCpy $DockSlatePathRetained 0
-  StrCpy $DockSlatePathPosition 0
-  StrLen $DockSlatePathLength $DockSlatePathOriginal
-scan_next:
-  ${If} $DockSlatePathPosition >= $DockSlatePathLength
-    Goto scan_token
-  ${EndIf}
-  StrCpy $DockSlatePathCharacter $DockSlatePathOriginal 1 $DockSlatePathPosition
-  ${If} $DockSlatePathCharacter == ";"
-    Goto scan_token
-  ${EndIf}
-  StrCpy $DockSlatePathToken "$DockSlatePathToken$DockSlatePathCharacter"
-  IntOp $DockSlatePathPosition $DockSlatePathPosition + 1
-  Goto scan_next
-scan_token:
-  ${If} $DockSlatePathToken == $DockSlatePathEntry
-    StrCpy $DockSlatePathFound 1
-  ${Else}
-    ${If} $DockSlatePathRetained = 0
-      StrCpy $DockSlatePathResult $DockSlatePathToken
-    ${Else}
-      StrCpy $DockSlatePathResult "$DockSlatePathResult;$DockSlatePathToken"
-    ${EndIf}
-    IntOp $DockSlatePathRetained $DockSlatePathRetained + 1
-  ${EndIf}
-  StrCpy $DockSlatePathToken ""
-  ${If} $DockSlatePathPosition >= $DockSlatePathLength
-    Return
-  ${EndIf}
-  IntOp $DockSlatePathPosition $DockSlatePathPosition + 1
-  Goto scan_next
-FunctionEnd
-
-Function ${PREFIX}DockSlateWriteUserPath
-  ClearErrors
-  ${If} $DockSlatePathType = 1
-    WriteRegStr HKCU "Environment" "Path" $DockSlatePathResult
-  ${Else}
-    WriteRegExpandStr HKCU "Environment" "Path" $DockSlatePathResult
-  ${EndIf}
-  ${IfNot} ${Errors}
-    SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
-  ${EndIf}
 FunctionEnd
 !macroend
 
@@ -204,65 +128,30 @@ setup_silent_unsupported:
   SetErrorLevel 2
   Abort "Interactive setup is required to review and approve Docker Engine installation or startup. No engine changes were approved."
 setup_interactive:
-  Call DockSlateReadUserPath
-  ${If} $DockSlatePathReadable <> 1
-    MessageBox MB_ICONSTOP "The current user's PATH could not be read without truncation. Installation was stopped without changing PATH."
-    Abort
+  StrCpy $DockSlatePathMode "check"
+  Call DockSlateUpdateUserPath
+  ${If} $DockSlatePathExit != "0"
+    SetErrorLevel 2
+    ${If} $LANGUAGE = 1042
+      Abort "사용자 PATH를 확인할 수 없어 설치를 중단했습니다. 기존 PATH와 엔진 데이터는 보존했습니다."
+    ${EndIf}
+    Abort "The current user's PATH could not be checked. Existing PATH entries and engine data were preserved."
   ${EndIf}
   Call DockSlateRequireWsl
 !macroend
 
 !macro NSIS_HOOK_POSTINSTALL
-  Push $0
-  Push $1
-  StrCpy $DockSlatePathEntry "$INSTDIR\bin"
-  Call DockSlateReadUserPath
-  ${If} $DockSlatePathReadable <> 1
-    DetailPrint "PATH was not changed: it could not be read safely."
-    Goto path_install_done
-  ${EndIf}
-  Call DockSlateScanUserPath
-  ${If} $DockSlatePathFound = 1
-    Goto path_install_done
-  ${EndIf}
-  StrLen $0 $DockSlatePathOriginal
-  StrLen $1 $DockSlatePathEntry
-  IntOp $0 $0 + $1
-  IntOp $0 $0 + 2
-  ${If} $0 >= ${NSIS_MAX_STRLEN}
-    DetailPrint "PATH was not changed: adding DockSlate would exceed the installer string limit."
-    MessageBox MB_ICONEXCLAMATION "DockSlate was installed, but PATH is too long to update safely. Add the installed bin folder to your user PATH manually."
-    Goto path_install_done
-  ${EndIf}
-  ${If} $DockSlatePathOriginal == ""
-    StrCpy $DockSlatePathResult $DockSlatePathEntry
-  ${Else}
-    StrCpy $DockSlatePathResult "$DockSlatePathOriginal;$DockSlatePathEntry"
-  ${EndIf}
-  Call DockSlateWriteUserPath
-  ${IfNot} ${Errors}
-    WriteRegStr HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathEntry" $DockSlatePathEntry
-    WriteRegDWORD HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathAdded" 1
-    WriteRegDWORD HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathWasPresent" $DockSlatePathPresent
-    DetailPrint "Added the DockSlate bin folder to this user's PATH. Open a new terminal to use docker."
-  ${Else}
-    MessageBox MB_ICONEXCLAMATION "DockSlate was installed, but its bin folder could not be added to your user PATH."
-  ${EndIf}
-path_install_done:
-  Pop $1
-  Pop $0
-  Call DockSlateReadUserPath
-  ${If} $DockSlatePathReadable = 1
-    Call DockSlateScanUserPath
-  ${EndIf}
-  ${If} $DockSlatePathReadable <> 1
-  ${OrIf} $DockSlatePathFound <> 1
+  StrCpy $DockSlatePathMode "install"
+  Call DockSlateUpdateUserPath
+  ${If} $DockSlatePathExit != "0"
     SetErrorLevel 2
     ${If} $LANGUAGE = 1042
-      Abort "Windows docker 명령 등록을 완료하지 못했습니다. 기존 PATH와 엔진 데이터는 보존했습니다."
+      Abort "Windows docker 명령 등록을 완료하지 못했습니다. 설치 상세 내역의 PATH 오류를 확인하세요. 기존 엔진 데이터는 보존했습니다."
     ${EndIf}
-    Abort "Windows docker command registration is incomplete. Existing PATH entries and engine data were preserved."
+    Abort "Windows docker command registration is incomplete. Review the PATH error in the installation details. Existing engine data was preserved."
   ${EndIf}
+  SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
+  DetailPrint "Verified the DockSlate bin folder in this user's PATH. Open a new terminal to use docker."
   IfFileExists "$INSTDIR\dockslate.exe" 0 setup_files_missing
   IfFileExists "$INSTDIR\bin\docker.exe" 0 setup_files_missing
   DetailPrint "Preparing Docker Engine, Docker CLI, Compose and Buildx. Review the target and approve installation or startup in the setup window."
@@ -291,44 +180,13 @@ setup_complete:
 !macroend
 
 !macro NSIS_HOOK_POSTUNINSTALL
-  Push $0
-  Push $1
-  StrCpy $DockSlatePathEntry "$INSTDIR\bin"
-  ReadRegDWORD $0 HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathAdded"
-  ReadRegStr $1 HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathEntry"
-  ${If} $0 <> 1
-  ${OrIf} $1 != $DockSlatePathEntry
-    Goto path_uninstall_done
+  StrCpy $DockSlatePathMode "uninstall"
+  Call un.DockSlateUpdateUserPath
+  ${If} $DockSlatePathExit == "0"
+    DeleteRegKey /ifempty HKCU "${DOCKSLATE_INSTALLER_KEY}"
+    SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
+  ${Else}
+    DetailPrint "The owned PATH entry could not be removed. Other entries were preserved."
   ${EndIf}
-  Call un.DockSlateReadUserPath
-  ${If} $DockSlatePathReadable <> 1
-    DetailPrint "PATH was preserved because it could not be read safely."
-    Goto path_uninstall_done
-  ${EndIf}
-  Call un.DockSlateScanUserPath
-  ${If} $DockSlatePathFound = 1
-    ReadRegDWORD $0 HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathWasPresent"
-    ${If} $DockSlatePathRetained = 0
-    ${AndIf} $0 = 0
-      ClearErrors
-      DeleteRegValue HKCU "Environment" "Path"
-      ${IfNot} ${Errors}
-        SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
-      ${EndIf}
-    ${Else}
-      Call un.DockSlateWriteUserPath
-    ${EndIf}
-    ${If} ${Errors}
-      DetailPrint "The owned PATH entry could not be removed. Other entries were preserved."
-      Goto path_uninstall_done
-    ${EndIf}
-  ${EndIf}
-  DeleteRegValue HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathEntry"
-  DeleteRegValue HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathAdded"
-  DeleteRegValue HKCU "${DOCKSLATE_INSTALLER_KEY}" "PathWasPresent"
-  DeleteRegKey /ifempty HKCU "${DOCKSLATE_INSTALLER_KEY}"
   DetailPrint "DockSlate WSL distributions, containers, images, volumes and runtime disks are preserved."
-path_uninstall_done:
-  Pop $1
-  Pop $0
 !macroend

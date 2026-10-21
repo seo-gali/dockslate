@@ -20,6 +20,16 @@ Windows CLI는 Windows 파일과 환경 변수를 사용한다. 컨테이너 생
 
 ## 설치 완료 조건
 
+### 긴 PATH에서 설치 중단
+
+사용자 설치에서 `PATH could not be read without truncation` 오류가 확인됐다. 이 PC의 사용자 PATH는 1,199자이며 기존 설치기의 NSIS 문자열 한도는 1,024자다. 엔진은 별도 WSL에서 정상 실행되더라도 이 단계에서 설치가 중단되면 Windows `docker` 명령은 등록되지 않는다.
+
+PATH 원문을 NSIS 변수에 담지 않고 Windows의 .NET 레지스트리 API로 처리한다. 등록·재설치·제거에서 기존 문자열, 환경 변수 표기, 레지스트리 형식을 보존한다. 제거는 설치기가 추가한 경로만 대상으로 한다. Windows PowerShell 5.1에서 `scripts/verify-installer-path.ps1` 종료 0: 1,199자·10,000자·빈 값·미등록 값의 왕복, 재설치, 이후 추가 경로 보존, 소유권·형식·길이 제한과 실제 설치 명령의 읽기 전용 조회를 확인했다. 실제 사용자·시스템 PATH와 엔진 데이터는 변경하지 않았다. 전체 설치·제거 완료는 별도 확인이 필요하다.
+
+NSIS의 [ReadRegStr 제한](https://nsis.sourceforge.io/Reference/ReadRegStr)과 .NET의 [환경 변수 원문 읽기](https://learn.microsoft.com/en-us/dotnet/api/microsoft.win32.registrykey.getvalue?view=net-10.0)를 기준으로 처리한다. 새로운 의존성이나 PowerShell 실행 정책 변경은 없다.
+
+화면의 실제 여부도 다시 확인했다. 소유권을 확인한 기존 엔진에 직접 요청한 `info`, `ps -a`, `images`는 종료 0이며 Engine 29.8.2, `trusting_feistel`, `mongo:latest`가 화면과 일치했다. Windows TCP 연결은 32768 성공·27017 실패다. 해당 컨테이너의 Compass 접속 주소는 `mongodb://127.0.0.1:32768`이다. 데이터베이스 내용은 조회·변경하지 않았다.
+
 1. 앱·Windows CLI·현재 사용자 PATH를 준비하고 엔진 설치 대상을 자동 확인한다.
 2. 기존 엔진의 소유권을 확인해 재사용한다. 새 설치·시작은 대상과 영향을 표시한 승인 뒤 진행한다.
 3. 레지스트리의 시스템·사용자 PATH를 반영한 새 터미널에서 설치한 docker가 선택되는지 검사한다. 다른 Docker 경로가 앞서면 충돌을 표시하고 완료를 차단한다.

@@ -32,6 +32,10 @@ jobs:
       - name: Prepare approved official Docker components
         run: |
           & ./scripts/prepare-windows-docker.ps1 -AllowDownload
+      - name: Verify installer PATH preservation
+        run: |
+          & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -File ./scripts/verify-installer-path.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build the application and installer
         run: |
           & ./scripts/build-installer.ps1 -AllowToolDownload
