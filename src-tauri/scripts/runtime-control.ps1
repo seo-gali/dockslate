@@ -219,8 +219,25 @@ function Get-Operation {
     return $record
 }
 
-function New-Status([string]$state, [string]$message, [string[]]$blocked = @(), $fingerprint = $null, [bool]$keeperVerified = $false) {
-    return [ordered]@{ state = $state; distribution = $distribution; installPath = $installPath; message = $message; blockedReasons = @($blocked); fingerprint = $fingerprint; operation = (Get-Operation); keeperVerified = $keeperVerified }
+function New-Status([string]$state, [string]$message, [string[]]$blocked = @(), $fingerprint = $null, [bool]$keeperVerified = $false, [bool]$retryableInstallation = $false) {
+    return [ordered]@{ state = $state; distribution = $distribution; installPath = $installPath; message = $message; blockedReasons = @($blocked); fingerprint = $fingerprint; operation = (Get-Operation); keeperVerified = $keeperVerified; retryableInstallation = $retryableInstallation }
+}
+
+function Assert-RetryableInstallation($marker, $entries) {
+    if (!$marker -or $marker.schema -ne 1 -or $marker.owner -cne 'DockSlate' -or $marker.distribution -cne $distribution -or $marker.rootfsSha256 -cne $rootfsHash -or $marker.engineVersion -cne $engineVersion -or $marker.state -cne 'installing' -or $marker.stage -cne 'downloading') { throw 'The partial installation is not a verified download-only stage. Its files are preserved; retry is blocked.' }
+    if ($marker.PSObject.Properties.Name -cnotcontains 'registrationId' -or $null -ne $marker.registrationId -or [guid]::Parse([string]$marker.installId) -eq [guid]::Empty) { throw 'The download-only ownership marker has an invalid installation or registration identity.' }
+    if (!(Normalize-Path ([string]$marker.installPath)).Equals($installPath, [StringComparison]::OrdinalIgnoreCase)) { throw 'The partial installation marker does not identify the resolved runtime directory.' }
+    if (@($entries | Where-Object { $_.name -ieq $distribution }).Count -ne 0 -or (Test-Path -LiteralPath $installPath)) { throw 'A DockSlate registration or runtime directory already exists. Retry after import is blocked.' }
+    foreach ($entry in $entries) {
+        if ((Normalize-Path $entry.basePath).Equals($installPath, [StringComparison]::OrdinalIgnoreCase)) { throw 'A WSL registration already uses the runtime target directory. Retry is blocked.' }
+    }
+    Assert-PlainPath $runtimeRoot
+    if (!(Test-Path -LiteralPath $runtimeRoot -PathType Container)) { throw 'The owned partial installation directory is unavailable.' }
+    foreach ($item in @(Get-ChildItem -LiteralPath $runtimeRoot -Force)) {
+        if ($item.PSIsContainer -or @('ownership.json', 'operation.json', 'mutation.lock', 'ubuntu-rootfs.tar') -cnotcontains $item.Name) { throw 'The partial installation contains unexpected files or directories. Existing data is preserved; retry is blocked.' }
+        Assert-PlainPath $item.FullName
+    }
+    return $marker
 }
 
 function Assert-OwnedRegistration($marker, $entries) {
@@ -258,7 +275,11 @@ function Get-Inventory {
         return New-Status 'not_installed' 'Create a separate DockSlate WSL 2 runtime to use Linux Docker Engine without Docker Desktop or Rancher Desktop.'
     }
     $marker = Read-OwnedJson 'ownership.json'
-    if ($marker -and $marker.state -ceq 'installing') { return New-Status 'failed' 'The DockSlate runtime installation is incomplete. Its files and WSL registration are preserved for inspection.' @('Partial installation cannot be automatically retried or removed.') }
+    if ($marker -and $marker.state -ceq 'installing') {
+        try { $null = Assert-RetryableInstallation $marker $entries }
+        catch { return New-Status 'failed' 'The DockSlate runtime installation is incomplete. Its files and WSL registration are preserved for inspection.' @($_.Exception.Message) }
+        return New-Status 'failed' 'The runtime download failed before import. Review the target and approve installation again to retry the download.' @() $null $false $true
+    }
     try { $fingerprint = Assert-OwnedRegistration $marker $entries }
     catch { return New-Status 'unsupported' $_.Exception.Message @($_.Exception.Message) }
     $running = @(Get-Running)
@@ -272,8 +293,11 @@ function Get-Inventory {
 function Get-InstallationPreview {
     $blocked = [Collections.Generic.List[string]]::new()
     $current = Get-Inventory
-    if ($current.state -cne 'not_installed') { $blocked.Add($current.message) }
-    if ([IO.File]::Exists($runtimeRoot) -or [IO.Directory]::Exists($runtimeRoot)) { $blocked.Add('The runtime target already exists; it will not be overwritten or automatically removed.') }
+    $retry = $current.retryableInstallation -eq $true
+    $retryInstallId = $null
+    if ($retry) { $retryInstallId = (Assert-RetryableInstallation (Read-OwnedJson 'ownership.json') @(Get-Registrations)).installId }
+    if ($current.state -cne 'not_installed' -and !$retry) { $blocked.Add($current.message) }
+    if (!$retry -and ([IO.File]::Exists($runtimeRoot) -or [IO.Directory]::Exists($runtimeRoot))) { $blocked.Add('The runtime target already exists; it will not be overwritten or automatically removed.') }
     foreach ($entry in @(Get-Registrations)) {
         $otherPath = $null
         try { $otherPath = Normalize-Path $entry.basePath } catch { continue }
@@ -303,11 +327,12 @@ function Get-InstallationPreview {
     if ($drive.AvailableFreeSpace -lt 4GB) { $blocked.Add('At least 4 GiB of host free space is required before installation; Docker data will require additional space.') }
     return [ordered]@{
         eligible = $blocked.Count -eq 0
+        retryableInstallation = $retry
         targets = @(($distribution + ' (new WSL 2 distribution)'), $installPath, (Join-Path $runtimeRoot 'ownership.json'))
-        impact = @('Download Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.', 'Install pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.', 'Create a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.', 'Configure systemd and a root-only Unix socket; no Docker TCP listener is created.', 'Restart only the newly created distribution to activate systemd. Start the new Docker Engine when installation and startup are approved together.')
-        requirements = @('Windows 11 x64 with working WSL 2.4.10 or later.', 'HTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.', 'A free DockSlate distribution name and an absent runtime target directory.', 'At least 4 GiB of host free space; container images and volumes use additional space.', 'Keep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection.')
+        impact = @($(if ($retry) { 'Retry the verified download-only installation, replacing only its owned partial rootfs archive and verifying the pinned SHA-256 before import. No registered distribution or virtual disk is modified.' } else { 'Download Ubuntu 24.04.5 x64 WSL rootfs and verify its pinned SHA-256 before import.' }), 'Install pinned Docker Engine and CLI 29.8.2, containerd 2.3.6, Buildx 0.38.0, Compose CLI 5.6.0, curl, iptables and nftables inside the new distribution using signed official APT repositories.', 'Create a separate ext4.vhdx and Docker data directory owned by DockSlate. No existing Docker data is imported.', 'Configure systemd and a root-only Unix socket; no Docker TCP listener is created.', 'Restart only the newly created distribution to activate systemd. Start the new Docker Engine when installation and startup are approved together.')
+        requirements = @('Windows 11 x64 with working WSL 2.4.10 or later.', 'HTTPS access to releases.ubuntu.com, official Ubuntu APT mirrors and download.docker.com.', 'A free DockSlate distribution name and an absent target directory or a verified download-only partial installation.', 'At least 4 GiB of host free space; container images and volumes use additional space.', 'Keep DockSlate open while setup runs. Failed imports and partial setup are preserved for inspection.')
         blockedReasons = @($blocked.ToArray())
-        fingerprint = if ($blocked.Count -eq 0) { [ordered]@{ installPath = $installPath; runtimeRoot = $runtimeRoot; rootfsSha256 = $rootfsHash; engineVersion = $engineVersion; wslVersion = $version.ToString(); distribution = $distribution } } else { $null }
+        fingerprint = if ($blocked.Count -eq 0) { [ordered]@{ installPath = $installPath; runtimeRoot = $runtimeRoot; rootfsSha256 = $rootfsHash; engineVersion = $engineVersion; wslVersion = $version.ToString(); distribution = $distribution; retryInstallId = $retryInstallId } } else { $null }
     }
 }
 
@@ -368,23 +393,45 @@ try {
             $preview = Get-InstallationPreview
             if (!$preview.eligible) { throw ($preview.blockedReasons -join ' ') }
             Assert-Expected $preview.fingerprint
-            if (Test-Path -LiteralPath $runtimeRoot) { throw 'The runtime target appeared after approval. No files will be overwritten.' }
-            $null = [IO.Directory]::CreateDirectory($runtimeRoot)
-            Assert-PlainPath $runtimeRoot
-            if (@(Get-ChildItem -LiteralPath $runtimeRoot -Force).Count -ne 0) { throw 'The runtime target contains unowned files. Installation is blocked.' }
-            $marker = [ordered]@{ schema = 1; owner = 'DockSlate'; distribution = $distribution; installId = [guid]::NewGuid().ToString(); installPath = $installPath; registrationId = $null; rootfsSha256 = $rootfsHash; engineVersion = $engineVersion; state = 'installing' }
-            $markerStream = [IO.File]::Open((Join-Path $runtimeRoot 'ownership.json'), [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
-            try { $bytes = [Text.UTF8Encoding]::new($false).GetBytes(($marker | ConvertTo-Json -Compress)); $markerStream.Write($bytes, 0, $bytes.Length) }
-            finally { $markerStream.Dispose() }
-            Lock-OwnedRuntime
+            if ($preview.retryableInstallation) {
+                Lock-OwnedRuntime
+                $marker = Assert-RetryableInstallation (Read-OwnedJson 'ownership.json') @(Get-Registrations)
+                if ($marker.installId -cne $preview.fingerprint.retryInstallId) { throw 'The partial installation changed after approval. Create a new preview.' }
+            } else {
+                if (Test-Path -LiteralPath $runtimeRoot) { throw 'The runtime target appeared after approval. No files will be overwritten.' }
+                $null = [IO.Directory]::CreateDirectory($runtimeRoot)
+                Assert-PlainPath $runtimeRoot
+                if (@(Get-ChildItem -LiteralPath $runtimeRoot -Force).Count -ne 0) { throw 'The runtime target contains unowned files. Installation is blocked.' }
+                $marker = [ordered]@{ schema = 1; owner = 'DockSlate'; distribution = $distribution; installId = [guid]::NewGuid().ToString(); installPath = $installPath; registrationId = $null; rootfsSha256 = $rootfsHash; engineVersion = $engineVersion; state = 'installing'; stage = 'downloading' }
+                $markerStream = [IO.File]::Open((Join-Path $runtimeRoot 'ownership.json'), [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
+                try { $bytes = [Text.UTF8Encoding]::new($false).GetBytes(($marker | ConvertTo-Json -Compress)); $markerStream.Write($bytes, 0, $bytes.Length) }
+                finally { $markerStream.Dispose() }
+                Lock-OwnedRuntime
+            }
             Begin-Operation 'installing'
             Set-Stage 'installing' 'Downloading and verifying the official Ubuntu 24.04.5 WSL rootfs.'
             $archive = Join-Path $runtimeRoot 'ubuntu-rootfs.tar'
             [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-            Invoke-WebRequest -Uri $rootfsUrl -OutFile $archive -UseBasicParsing -MaximumRedirection 0 -TimeoutSec 900
+            $archiveStream = [DockSlateRuntimeLock]::Acquire($archive)
+            try {
+                $archiveStream.SetLength(0)
+                $download = [Net.HttpWebRequest]::Create($rootfsUrl)
+                $download.AllowAutoRedirect = $false
+                $download.Timeout = 900000
+                $download.ReadWriteTimeout = 900000
+                $response = $download.GetResponse()
+                try {
+                    if ([int]$response.StatusCode -ne 200) { throw 'The official rootfs download did not return HTTP 200.' }
+                    $source = $response.GetResponseStream()
+                    try { $source.CopyTo($archiveStream) }
+                    finally { $source.Dispose() }
+                } finally { $response.Dispose() }
+            } finally { $archiveStream.Dispose() }
             if ((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant() -cne $rootfsHash) { throw 'The official rootfs SHA-256 does not match its pinned value. Import is blocked.' }
             if (@(Get-Registrations | Where-Object { $_.name -ieq $distribution }).Count -ne 0) { throw 'The distribution name became occupied before import. Existing registrations will not be changed.' }
             Assert-PlainPath $runtimeRoot
+            $marker.stage = 'importing'
+            Write-OwnedJson 'ownership.json' $marker
             Set-Stage 'installing' 'Importing only the new DockSlate WSL 2 distribution.'
             $null = Invoke-FixedWsl @('--import', $distribution, $installPath, $archive, '--version', '2')
             $registered = @(Get-Registrations | Where-Object { $_.name -ceq $distribution })
@@ -451,7 +498,7 @@ try {
 } catch {
     $message = $_.Exception.Message
     if ($ownsOperation) { try { Set-Stage 'failed' $message } catch {} }
-    [ordered]@{ state = 'failed'; distribution = $distribution; installPath = $installPath; message = $message; blockedReasons = @($message); operation = if ($ownsOperation) { $operation } else { $null } } | ConvertTo-Json -Depth 15 -Compress
+    [ordered]@{ state = 'failed'; distribution = $distribution; installPath = $installPath; message = $message; blockedReasons = @($message); operation = if ($ownsOperation) { $operation } else { $null }; retryableInstallation = $false } | ConvertTo-Json -Depth 15 -Compress
     if ($request.mode -notin @('status', 'preview')) { exit 1 }
 } finally {
     if ($mutationLock) { $mutationLock.Dispose() }

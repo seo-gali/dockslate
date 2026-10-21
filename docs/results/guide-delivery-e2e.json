@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-18T14:23:38.084Z",
+  "observedAt": "2026-10-21T10:41:24.892Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -22,52 +22,37 @@
       }
     },
     {
-      "name": "guide.html has real EXE/ZIP links and complete guide sections",
+      "name": "guide.html offers the complete ZIP and hides the obsolete standalone EXE",
       "passed": true,
       "evidence": [
         {
           "name": "DockSlate-0.1.0-windows-x64.zip",
           "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
-        },
-        {
-          "name": "DockSlate.exe",
-          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate.exe"
         }
       ]
     },
     {
-      "name": "dist/guide.html has real EXE/ZIP links and complete guide sections",
+      "name": "dist/guide.html offers the complete ZIP and hides the obsolete standalone EXE",
       "passed": true,
       "evidence": [
         {
           "name": "DockSlate-0.1.0-windows-x64.zip",
           "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
-        },
-        {
-          "name": "DockSlate.exe",
-          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate.exe"
         }
       ]
-    },
-    {
-      "name": "EXE download button saves the exact packaged executable without running it",
-      "passed": true,
-      "evidence": {
-        "sha256": "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02"
-      }
     },
     {
       "name": "ZIP download button saves the exact local review package",
       "passed": true,
       "evidence": {
-        "sha256": "2714F6B1B4865653964C6A7363138B6C24A571502B39F3E3E10FCF155E557116"
+        "sha256": "5196650BBEEFB5AE252C167D947806FDEA928ACF0CE67D17AA9B14CF1513C0B3"
       }
     },
     {
       "name": "Guide HTML download opens independently and remains downloadable",
       "passed": true,
       "evidence": {
-        "bytes": 27665,
+        "bytes": 28646,
         "externalScriptOrStyles": 0
       }
     },

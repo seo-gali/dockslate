@@ -1,23 +1,21 @@
 {
-    "generatedAt":  "2026-10-18T23:26:03.7956367+09:00",
+    "generatedAt":  "2026-10-21T19:40:21.2099335+09:00",
     "version":  "0.1.0",
     "platform":  "windows-x64",
-    "scope":  "Local review package; no public release upload",
-    "distribution":  "Portable EXE and ZIP only, selected by user",
+    "scope":  "Local review ZIP; no public release upload. Any existing standalone EXE was preserved and is not refreshed by this package.",
+    "distribution":  "Complete portable ZIP with DockSlate.exe, bin and libexec",
     "packagingLaunchedExecutable":  false,
-    "nativeUiVerificationPerformed":  true,
+    "nativeWindowsComponentsLaunched":  false,
+    "archiveContentVerified":  true,
+    "verifiedFiles":  10,
+    "nativeUiVerificationPerformed":  false,
     "securityAlertResolved":  false,
     "installerInstalledOrUninstalled":  false,
     "files":  [
                   {
-                      "file":  "DockSlate.exe",
-                      "bytes":  4750336,
-                      "sha256":  "A746B364F516DC39B05A65D47FBE727B57F27CD4D35CD068F5ABF02D149F8A02"
-                  },
-                  {
                       "file":  "DockSlate-0.1.0-windows-x64.zip",
-                      "bytes":  2361540,
-                      "sha256":  "BE3E7D48B814792E6C7290C5D6136D0A7299D339BA06C4AC2474581DE8AD8DAC"
+                      "bytes":  57868822,
+                      "sha256":  "5196650BBEEFB5AE252C167D947806FDEA928ACF0CE67D17AA9B14CF1513C0B3"
                   }
               ]
 }

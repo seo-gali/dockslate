@@ -1,0 +1,518 @@
+{
+  "observedAt": "2026-10-21T10:33:01.232Z",
+  "launcherSha256": "4F118A40B51E24A4BE0FA2982C773AEA8F0EB9FF6504458BA5893BE27DE17D22",
+  "completed": false,
+  "existingProfileUsed": false,
+  "checks": [
+    {
+      "args": [
+        "version",
+        "--format",
+        "{{.Server.Version}}"
+      ],
+      "code": 0,
+      "exitMs": 3786,
+      "closeMs": 3786,
+      "stdout": "29.8.2",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "info",
+        "--format",
+        "{{.ID}}"
+      ],
+      "code": 0,
+      "exitMs": 1679,
+      "closeMs": 1679,
+      "stdout": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "ps",
+        "-a",
+        "--format",
+        "{{.ID}}\t{{.Names}}\t{{.State}}"
+      ],
+      "code": 0,
+      "exitMs": 1675,
+      "closeMs": 1675,
+      "stdout": "3c8b6e44565e\ttrusting_feistel\texited\na73885f93dfc\trelaxed_shtern\texited",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "image",
+        "ls",
+        "--format",
+        "{{.ID}}\t{{.Repository}}:{{.Tag}}"
+      ],
+      "code": 0,
+      "exitMs": 1622,
+      "closeMs": 1622,
+      "stdout": "dc28ed5a9d0f\tmongo:latest\n11a3eb1597e8\thello-world:latest",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "code": 0,
+      "exitMs": 1659,
+      "closeMs": 1659,
+      "stdout": "6a9bd9dc0586bf275f35ace5f3de5d654ab90d3d78a38e81eb74f4ce6ebdb9d3\n6fb2d9d4859015bdcc8c2680b7d65b4f096e670b1638103009a4c742791ebfb8",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "network",
+        "ls",
+        "--format",
+        "{{.ID}}\t{{.Name}}"
+      ],
+      "code": 0,
+      "exitMs": 1620,
+      "closeMs": 1620,
+      "stdout": "4f0e30c9a2b9\tbridge\n2cb593bc43ea\thost\n1f9f5a22c8f5\tnone",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "ps",
+        "-aq",
+        "--no-trunc"
+      ],
+      "code": 0,
+      "exitMs": 1547,
+      "closeMs": 1547,
+      "stdout": "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e\na73885f93dfcc924f354f3cfded68f0bc4fc26e240fda6f0c20cdbd999f616a3",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "network",
+        "ls",
+        "-q",
+        "--no-trunc"
+      ],
+      "code": 0,
+      "exitMs": 1615,
+      "closeMs": 1615,
+      "stdout": "4f0e30c9a2b9f6d3ee411258d1a12466e7f448c793a523639dd029375ffc96e9\n2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231\n1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "volume",
+        "ls",
+        "-q"
+      ],
+      "code": 0,
+      "exitMs": 1558,
+      "closeMs": 1558,
+      "stdout": "6a9bd9dc0586bf275f35ace5f3de5d654ab90d3d78a38e81eb74f4ce6ebdb9d3\n6fb2d9d4859015bdcc8c2680b7d65b4f096e670b1638103009a4c742791ebfb8",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "image",
+        "ls",
+        "-q",
+        "--no-trunc"
+      ],
+      "code": 0,
+      "exitMs": 1670,
+      "closeMs": 1671,
+      "stdout": "sha256:dc28ed5a9d0fc616903c3f463bb1e53b92b49f441721b91926e87d90bf957ce8\nsha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "ps",
+        "-aq",
+        "--filter",
+        "label=io.dockslate.verification=dockslate-verify-20261021183255"
+      ],
+      "code": 0,
+      "exitMs": 1536,
+      "closeMs": 1536,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "network",
+        "ls",
+        "-q",
+        "--filter",
+        "label=com.docker.compose.project=dockslate-verify-20261021183255"
+      ],
+      "code": 0,
+      "exitMs": 1538,
+      "closeMs": 1538,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "image",
+        "inspect",
+        "mongo:latest",
+        "--format",
+        "{{json .Config.Volumes}}"
+      ],
+      "code": 0,
+      "exitMs": 1592,
+      "closeMs": 1592,
+      "stdout": "{\"/data/configdb\":{},\"/data/db\":{}}",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "run",
+        "-d",
+        "--pull=never",
+        "--name",
+        "dockslate-verify-20261021183255-mount",
+        "--label",
+        "io.dockslate.verification=dockslate-verify-20261021183255",
+        "--tmpfs",
+        "/data/configdb",
+        "--tmpfs",
+        "/data/db",
+        "--mount",
+        "type=bind,source=D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\bind folder 한글,target=/probe,readonly",
+        "--entrypoint",
+        "/bin/sh",
+        "mongo:latest",
+        "-c",
+        "printf 'fixture-ready\\n'; sleep 300"
+      ],
+      "code": 0,
+      "exitMs": 5893,
+      "closeMs": 5893,
+      "stdout": "d2d7ef5096fa950d8e28004024f048f44bb439239172df34be61ca4003d78dbf",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "exec",
+        "dockslate-verify-20261021183255-mount",
+        "/bin/cat",
+        "/probe/marker.txt"
+      ],
+      "code": 0,
+      "exitMs": 5765,
+      "closeMs": 5765,
+      "stdout": "native-windows-bind-probe",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "run",
+        "-d",
+        "--pull=never",
+        "--name",
+        "dockslate-verify-20261021183255-volume",
+        "--label",
+        "io.dockslate.verification=dockslate-verify-20261021183255",
+        "--tmpfs",
+        "/data/configdb",
+        "--tmpfs",
+        "/data/db",
+        "--volume",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\bind folder 한글:/probe:ro",
+        "--entrypoint",
+        "/bin/sh",
+        "mongo:latest",
+        "-c",
+        "printf 'fixture-ready\\n'; sleep 300"
+      ],
+      "code": 0,
+      "exitMs": 5949,
+      "closeMs": 5949,
+      "stdout": "f155b100d96ab28ef39b512bd5f28171a7fc44a2dfce940cde52de80845418d6",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "exec",
+        "dockslate-verify-20261021183255-volume",
+        "/bin/cat",
+        "/probe/marker.txt"
+      ],
+      "code": 0,
+      "exitMs": 4795,
+      "closeMs": 4795,
+      "stdout": "native-windows-bind-probe",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "cp",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\upload.txt",
+        "dockslate-verify-20261021183255-mount:/tmp/upload.txt"
+      ],
+      "code": 1,
+      "exitMs": 1632,
+      "closeMs": 1632,
+      "stdout": "",
+      "stderr": "time=\"2026-10-21T19:33:48+09:00\" level=error msg=\"Can't add file \\\\\\\\?\\\\D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\upload.txt to tar: open \\\\\\\\?\\\\D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\upload.txt: Access is denied.\"\ntime=\"2026-10-21T19:33:48+09:00\" level=error msg=\"Can't close tar writer: archive/tar: missed writing 17 bytes\"\nerror during connect: Put \"http://%2F%2F.%2Fpipe%2Fdockslate_engine_S-1-5-21-1314793369-3957084476-1388555053-1001/v1.56/containers/dockslate-verify-20261021183255-mount/archive?noOverwriteDirNonDir=true&path=%2Ftmp\": unexpected EOF"
+    },
+    {
+      "args": [
+        "cp",
+        "dockslate-verify-20261021183255-mount:/probe/marker.txt",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\download.txt"
+      ],
+      "code": 1,
+      "exitMs": 1676,
+      "closeMs": 1676,
+      "stdout": "",
+      "stderr": "openat download.txt: Access is denied."
+    },
+    {
+      "args": [
+        "exec",
+        "-i",
+        "dockslate-verify-20261021183255-mount",
+        "/bin/sh",
+        "-c",
+        "IFS= read -r value; printf \"%s\\n\" \"$value\""
+      ],
+      "code": 0,
+      "exitMs": 4866,
+      "closeMs": 4866,
+      "stdout": "stdin-probe",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "exec",
+        "-i",
+        "dockslate-verify-20261021183255-mount",
+        "/bin/cat"
+      ],
+      "code": 0,
+      "exitMs": 4875,
+      "closeMs": 4875,
+      "stdout": "stdin-eof-probe",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "compose",
+        "--project-name",
+        "dockslate-verify-20261021183255",
+        "--file",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\compose.yaml",
+        "config",
+        "--format",
+        "json"
+      ],
+      "code": 0,
+      "exitMs": 391,
+      "closeMs": 392,
+      "stdout": "{\n  \"name\": \"dockslate-verify-20261021183255\",\n  \"networks\": {\n    \"default\": {\n      \"name\": \"dockslate-verify-20261021183255_default\",\n      \"ipam\": {}\n    }\n  },\n  \"services\": {\n    \"probe\": {\n      \"command\": [\n        \"-c\",\n        \"printf 'compose-ready\\\\n'; sleep 300\"\n      ],\n      \"entrypoint\": [\n        \"/bin/sh\"\n      ],\n      \"image\": \"mongo:latest\",\n      \"labels\": {\n        \"io.dockslate.verification\": \"dockslate-verify-20261021183255\"\n      },\n      \"networks\": {\n        \"default\": null\n      },\n      \"tmpfs\": [\n        \"/data/configdb\",\n        \"/data/db\"\n      ],\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\bind folder 한글\",\n          \"target\": \"/probe\",\n          \"read_only\": true\n        }\n      ]\n    }\n  }\n}",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "compose",
+        "--project-name",
+        "dockslate-verify-20261021183255",
+        "--file",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\compose.yaml",
+        "up",
+        "-d",
+        "--pull",
+        "never"
+      ],
+      "code": 0,
+      "exitMs": 4962,
+      "closeMs": 4962,
+      "stdout": "",
+      "stderr": "Network dockslate-verify-20261021183255_default Creating \n Network dockslate-verify-20261021183255_default Creating \n Network dockslate-verify-20261021183255_default Created \n Network dockslate-verify-20261021183255_default Created \n Container dockslate-verify-20261021183255-probe-1 Creating \n Container dockslate-verify-20261021183255-probe-1 Created \n Container dockslate-verify-20261021183255-probe-1 Starting \n Container dockslate-verify-20261021183255-probe-1 Started"
+    },
+    {
+      "args": [
+        "compose",
+        "--project-name",
+        "dockslate-verify-20261021183255",
+        "--file",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\compose.yaml",
+        "exec",
+        "-T",
+        "probe",
+        "/bin/cat",
+        "/probe/marker.txt"
+      ],
+      "code": 0,
+      "exitMs": 7218,
+      "closeMs": 7218,
+      "stdout": "native-windows-bind-probe",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "compose",
+        "--project-name",
+        "dockslate-verify-20261021183255",
+        "--file",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\compose.yaml",
+        "down"
+      ],
+      "code": 0,
+      "exitMs": 15331,
+      "closeMs": 15331,
+      "stdout": "",
+      "stderr": "Container dockslate-verify-20261021183255-probe-1 Stopping \n Container dockslate-verify-20261021183255-probe-1 Stopped \n Container dockslate-verify-20261021183255-probe-1 Removing \n Container dockslate-verify-20261021183255-probe-1 Removed \n Network dockslate-verify-20261021183255_default Removing \n Network dockslate-verify-20261021183255_default Removed"
+    },
+    {
+      "args": [
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=io.dockslate.verification=dockslate-verify-20261021183255"
+      ],
+      "code": 0,
+      "exitMs": 1557,
+      "closeMs": 1557,
+      "stdout": "f155b100d96ab28ef39b512bd5f28171a7fc44a2dfce940cde52de80845418d6\nd2d7ef5096fa950d8e28004024f048f44bb439239172df34be61ca4003d78dbf",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "inspect",
+        "--format",
+        "{{index .Config.Labels \"io.dockslate.verification\"}}",
+        "d2d7ef5096fa950d8e28004024f048f44bb439239172df34be61ca4003d78dbf"
+      ],
+      "code": 0,
+      "exitMs": 1529,
+      "closeMs": 1529,
+      "stdout": "dockslate-verify-20261021183255",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "rm",
+        "-f",
+        "d2d7ef5096fa950d8e28004024f048f44bb439239172df34be61ca4003d78dbf"
+      ],
+      "code": 0,
+      "exitMs": 2710,
+      "closeMs": 2710,
+      "stdout": "d2d7ef5096fa950d8e28004024f048f44bb439239172df34be61ca4003d78dbf",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "inspect",
+        "--format",
+        "{{index .Config.Labels \"io.dockslate.verification\"}}",
+        "f155b100d96ab28ef39b512bd5f28171a7fc44a2dfce940cde52de80845418d6"
+      ],
+      "code": 0,
+      "exitMs": 1579,
+      "closeMs": 1579,
+      "stdout": "dockslate-verify-20261021183255",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "rm",
+        "-f",
+        "f155b100d96ab28ef39b512bd5f28171a7fc44a2dfce940cde52de80845418d6"
+      ],
+      "code": 0,
+      "exitMs": 2753,
+      "closeMs": 2753,
+      "stdout": "f155b100d96ab28ef39b512bd5f28171a7fc44a2dfce940cde52de80845418d6",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "ps",
+        "-aq",
+        "--no-trunc"
+      ],
+      "code": 0,
+      "exitMs": 3601,
+      "closeMs": 3601,
+      "stdout": "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e\na73885f93dfcc924f354f3cfded68f0bc4fc26e240fda6f0c20cdbd999f616a3",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "network",
+        "ls",
+        "-q",
+        "--no-trunc"
+      ],
+      "code": 0,
+      "exitMs": 1617,
+      "closeMs": 1617,
+      "stdout": "4f0e30c9a2b9f6d3ee411258d1a12466e7f448c793a523639dd029375ffc96e9\n2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231\n1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "volume",
+        "ls",
+        "-q"
+      ],
+      "code": 0,
+      "exitMs": 1541,
+      "closeMs": 1541,
+      "stdout": "6a9bd9dc0586bf275f35ace5f3de5d654ab90d3d78a38e81eb74f4ce6ebdb9d3\n6fb2d9d4859015bdcc8c2680b7d65b4f096e670b1638103009a4c742791ebfb8",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "image",
+        "ls",
+        "-q",
+        "--no-trunc"
+      ],
+      "code": 0,
+      "exitMs": 1685,
+      "closeMs": 1685,
+      "stdout": "sha256:dc28ed5a9d0fc616903c3f463bb1e53b92b49f441721b91926e87d90bf957ce8\nsha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+      "stderr": ""
+    }
+  ],
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "fixtureChecks": {
+    "binds": {
+      "passed": true
+    },
+    "copyToContainer": {
+      "passed": false,
+      "failure": "Error: CLI failed: cp D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\upload.txt dockslate-verify-20261021183255-mount:/tmp/upload.txt: time=\"2026-10-21T19:33:48+09:00\" level=error msg=\"Can't add file \\\\\\\\?\\\\D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\upload.txt to tar: open \\\\\\\\?\\\\D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\upload.txt: Access is denied.\"\ntime=\"2026-10-21T19:33:48+09:00\" level=error msg=\"Can't close tar writer: archive/tar: missed writing 17 bytes\"\nerror during connect: Put \"http://%2F%2F.%2Fpipe%2Fdockslate_engine_S-1-5-21-1314793369-3957084476-1388555053-1001/v1.56/containers/dockslate-verify-20261021183255-mount/archive?noOverwriteDirNonDir=true&path=%2Ftmp\": unexpected EOF\n    at ChildProcess.<anonymous> (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-windows-cli.mjs:37:30)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)"
+    },
+    "copyToWindows": {
+      "passed": false,
+      "failure": "Error: CLI failed: cp dockslate-verify-20261021183255-mount:/probe/marker.txt D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\download.txt: openat download.txt: Access is denied.\n    at ChildProcess.<anonymous> (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-windows-cli.mjs:37:30)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)"
+    },
+    "stdin": {
+      "passed": true
+    },
+    "logFollowCancellation": {
+      "passed": true
+    },
+    "compose": {
+      "passed": true
+    }
+  },
+  "logFollowCancellationPassed": true,
+  "fixtureChecksPassed": false,
+  "originalResourcesPreserved": true,
+  "failure": "Error: copyToContainer: Error: CLI failed: cp D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\upload.txt dockslate-verify-20261021183255-mount:/tmp/upload.txt: time=\"2026-10-21T19:33:48+09:00\" level=error msg=\"Can't add file \\\\\\\\?\\\\D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\upload.txt to tar: open \\\\\\\\?\\\\D:\\\\01_Programming\\\\08_AI\\\\REA\\\\dockslate\\\\.analysis\\\\dockslate-verify-20261021183255\\\\upload.txt: Access is denied.\"\ntime=\"2026-10-21T19:33:48+09:00\" level=error msg=\"Can't close tar writer: archive/tar: missed writing 17 bytes\"\nerror during connect: Put \"http://%2F%2F.%2Fpipe%2Fdockslate_engine_S-1-5-21-1314793369-3957084476-1388555053-1001/v1.56/containers/dockslate-verify-20261021183255-mount/archive?noOverwriteDirNonDir=true&path=%2Ftmp\": unexpected EOF\n    at ChildProcess.<anonymous> (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-windows-cli.mjs:37:30)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)\ncopyToWindows: Error: CLI failed: cp dockslate-verify-20261021183255-mount:/probe/marker.txt D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\dockslate-verify-20261021183255\\download.txt: openat download.txt: Access is denied.\n    at ChildProcess.<anonymous> (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-windows-cli.mjs:37:30)\n    at ChildProcess.emit (node:events:509:28)\n    at maybeClose (node:internal/child_process:1141:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:306:5)\n    at fixtures (file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-windows-cli.mjs:151:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///D:/01_Programming/08_AI/REA/dockslate/scripts/verify-windows-cli.mjs:175:44",
+  "applicationSha256": "0845BCC5529DBAB1C9399B9F61A53EB06698E6DE94679A73815127FE9DCC79DA"
+}

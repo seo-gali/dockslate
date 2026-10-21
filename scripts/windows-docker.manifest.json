@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "platform": "windows-amd64",
+  "assets": [
+    {
+      "id": "docker-cli",
+      "version": "29.8.2",
+      "url": "https://download.docker.com/win/static/stable/x86_64/docker-29.8.2.zip",
+      "cacheFile": "docker-29.8.2.zip",
+      "bytes": 49464022,
+      "sha256": "e8a956a1f117764dd79f6b1964eca0bb451088fe2db5ecce93ed0e01e5d814b3",
+      "bootstrapMd5": "3c99c7cb8817cb4f81e076479b56c921",
+      "sha256Status": "Pinned after the approved download from Docker HTTPS on 2026-10-20; byte count and previously observed HTTP ETag MD5 matched. This SHA-256 is a locally observed pin, not an independently published Docker SHA-256.",
+      "zipEntry": "docker/docker.exe",
+      "destination": "docker.exe"
+    },
+    {
+      "id": "compose",
+      "version": "5.6.0",
+      "url": "https://github.com/docker/compose/releases/download/v5.6.0/docker-compose-windows-x86_64.exe",
+      "cacheFile": "docker-compose-5.6.0-windows-x86_64.exe",
+      "bytes": 33352192,
+      "sha256": "8aeaa0055e660e12cf07cd70680dc8333957fe6718528b91ec3da084eab62483",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "cli-plugins/docker-compose.exe"
+    },
+    {
+      "id": "buildx",
+      "version": "0.38.0",
+      "url": "https://github.com/docker/buildx/releases/download/v0.38.0/buildx-v0.38.0.windows-amd64.exe",
+      "cacheFile": "buildx-0.38.0.windows-amd64.exe",
+      "bytes": 70038568,
+      "sha256": "b39784aed5b3f9b24d1971bbcbad8c8206033fa63ed4fea82c9141728fe0ea26",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "cli-plugins/docker-buildx.exe"
+    },
+    {
+      "id": "docker-cli-license",
+      "version": "29.8.2",
+      "url": "https://raw.githubusercontent.com/docker/cli/v29.8.2/LICENSE",
+      "cacheFile": "docker-cli-29.8.2-LICENSE",
+      "bytes": 10765,
+      "sha256": "2d81ea060825006fc8f3fe28aa5dc0ffeb80faf325b612c955229157b8c10dc0",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "licenses/docker-cli/LICENSE"
+    },
+    {
+      "id": "docker-cli-notice",
+      "version": "29.8.2",
+      "url": "https://raw.githubusercontent.com/docker/cli/v29.8.2/NOTICE",
+      "cacheFile": "docker-cli-29.8.2-NOTICE",
+      "bytes": 635,
+      "sha256": "a8c869fbda819afb8d80e0ac19bac52e766bc6c19cb38cf94f52d64c4be2aab6",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "licenses/docker-cli/NOTICE"
+    },
+    {
+      "id": "compose-license",
+      "version": "5.6.0",
+      "url": "https://raw.githubusercontent.com/docker/compose/v5.6.0/LICENSE",
+      "cacheFile": "compose-5.6.0-LICENSE",
+      "bytes": 11357,
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "licenses/compose/LICENSE"
+    },
+    {
+      "id": "compose-notice",
+      "version": "5.6.0",
+      "url": "https://raw.githubusercontent.com/docker/compose/v5.6.0/NOTICE",
+      "cacheFile": "compose-5.6.0-NOTICE",
+      "bytes": 140,
+      "sha256": "b7dca0a6b01fa7365e4892877a6321179ee343d72ee87a96cfc222141b99a1e6",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "licenses/compose/NOTICE"
+    },
+    {
+      "id": "buildx-license",
+      "version": "0.38.0",
+      "url": "https://raw.githubusercontent.com/docker/buildx/v0.38.0/LICENSE",
+      "cacheFile": "buildx-0.38.0-LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bootstrapMd5": null,
+      "zipEntry": null,
+      "destination": "licenses/buildx/LICENSE"
+    }
+  ],
+  "noticeScope": "Preserves the versioned upstream root LICENSE and existing NOTICE files. Buildx v0.38.0 has no root NOTICE at the checked upstream URL (HTTP 404). Complete transitive Go dependency license coverage and external distribution review remain unverified."
+}

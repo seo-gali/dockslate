@@ -2,6 +2,7 @@ param()
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+& (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
 $localCargo = Join-Path $projectRoot '.tools\cargo\bin\cargo.exe'
 if (Test-Path -LiteralPath $localCargo -PathType Leaf) {
     $env:CARGO_HOME = Join-Path $projectRoot '.tools\cargo'

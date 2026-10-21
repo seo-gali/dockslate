@@ -20,6 +20,7 @@ Var DockSlatePathRetained
 Var DockSlateWslExecutable
 Var DockSlateWslStatus
 Var DockSlateWslMessage
+Var DockSlateSetupResult
 
 Function DockSlateReadWslStatus
   Push $0
@@ -198,6 +199,11 @@ FunctionEnd
 !insertmacro DockSlatePathFunctions "un."
 
 !macro NSIS_HOOK_PREINSTALL
+  IfSilent setup_silent_unsupported setup_interactive
+setup_silent_unsupported:
+  SetErrorLevel 2
+  Abort "Interactive setup is required to review and approve Docker Engine installation or startup. No engine changes were approved."
+setup_interactive:
   Call DockSlateReadUserPath
   ${If} $DockSlatePathReadable <> 1
     MessageBox MB_ICONSTOP "The current user's PATH could not be read without truncation. Installation was stopped without changing PATH."
@@ -245,6 +251,43 @@ FunctionEnd
 path_install_done:
   Pop $1
   Pop $0
+  Call DockSlateReadUserPath
+  ${If} $DockSlatePathReadable = 1
+    Call DockSlateScanUserPath
+  ${EndIf}
+  ${If} $DockSlatePathReadable <> 1
+  ${OrIf} $DockSlatePathFound <> 1
+    SetErrorLevel 2
+    ${If} $LANGUAGE = 1042
+      Abort "Windows docker 명령 등록을 완료하지 못했습니다. 기존 PATH와 엔진 데이터는 보존했습니다."
+    ${EndIf}
+    Abort "Windows docker command registration is incomplete. Existing PATH entries and engine data were preserved."
+  ${EndIf}
+  IfFileExists "$INSTDIR\dockslate.exe" 0 setup_files_missing
+  IfFileExists "$INSTDIR\bin\docker.exe" 0 setup_files_missing
+  DetailPrint "Preparing Docker Engine, Docker CLI, Compose and Buildx. Review the target and approve installation or startup in the setup window."
+  SetOutPath "$INSTDIR"
+  ClearErrors
+  ExecWait '"$INSTDIR\dockslate.exe" --installer-setup' $DockSlateSetupResult
+  ${If} ${Errors}
+    StrCpy $DockSlateSetupResult 1
+  ${EndIf}
+  ${If} $DockSlateSetupResult <> 0
+    SetErrorLevel 2
+    ${If} $LANGUAGE = 1042
+      Abort "Docker Engine 준비를 취소했거나 엔진·Windows docker 명령 검증을 완료하지 못했습니다. 준비창의 오류와 PATH 충돌 여부를 확인하세요. 앱 파일과 기존 엔진 데이터는 보존했습니다. DockSlate 설치를 다시 실행하여 완료하세요."
+    ${EndIf}
+    Abort "Setup was cancelled, or Docker Engine and the Windows docker command could not be verified. Review the setup error and any PATH conflict. Application files and existing engine data are preserved. Run DockSlate Setup again to finish."
+  ${EndIf}
+  DetailPrint "Docker Engine, the new-terminal docker command, Compose and Buildx were verified. Open a new terminal to use docker."
+  Goto setup_complete
+setup_files_missing:
+  SetErrorLevel 2
+  ${If} $LANGUAGE = 1042
+    Abort "설치한 앱 또는 Windows Docker CLI 파일이 없습니다. 엔진 준비는 시작하지 않았습니다."
+  ${EndIf}
+  Abort "The installed app or Windows Docker CLI is missing. Docker Engine setup was not started."
+setup_complete:
 !macroend
 
 !macro NSIS_HOOK_POSTUNINSTALL

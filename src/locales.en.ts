@@ -1,4 +1,8 @@
 export const english: Readonly<Record<string, string>> = {
+  "다운로드 다시 시도…": "Retry download…",
+  "가져오기 전에 실패한 다운로드를 다시 시도합니다. 대상과 영향을 확인하고 새로 승인하세요.": "Retry the download that failed before import. Review the target and impact, then approve again.",
+  "다운로드 실패 원인을 해결한 뒤 새로 승인하여 다시 시도할 수 있습니다.": "Resolve the download error, then approve again to retry.",
+  "설치 완료": "Finish installation",
   "Docker Engine 설치 및 시작": "Install and start Docker Engine",
   "Docker Engine 설치…": "Install Docker Engine…",
   "설치 및 시작 승인": "Approve installation and startup",

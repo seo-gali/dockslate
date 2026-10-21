@@ -1,0 +1,169 @@
+{
+  "observedAt": "2026-10-21T10:42:53.922Z",
+  "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
+  "completed": false,
+  "checks": {
+    "nativeInstallerSetupExecuted": false,
+    "windowsReleaseBuildExit": 0,
+    "rustCheckExit": 0,
+    "hookFixtureExecuted": false,
+    "frontendBuildExit": 0,
+    "browserCompleted": true,
+    "installerBuildExit": 1,
+    "hookCompilationExit": 0,
+    "installerExecuted": false,
+    "browserChecks": 10,
+    "lockedDependencyFetchExit": 0,
+    "lockFilesChanged": false,
+    "latestNativeFlowExecuted": false,
+    "powerShellParserFiles": 5,
+    "powerShellParserErrors": 0,
+    "offlineComponentGuardExit": 1,
+    "offlineComponentGuardExpectedFailure": true,
+    "browserScope": "Earlier general frontend checks; not the native CLI or engine broker.",
+    "componentPreparationExit": 0,
+    "portablePackagingExit": 0,
+    "offlineNativeCliChecks": 4,
+    "offlineNativeCliExit": 0,
+    "nativeCliIntegrationExit": 1,
+    "nativeCliCommands": 34,
+    "nativeCliCommandsPassed": 32,
+    "nativeCliCommandsFailed": 2,
+    "logFollowCancellationPassed": true,
+    "originalResourcesPreserved": true,
+    "guideDeliveryExit": 0,
+    "guideDeliveryChecks": 9,
+    "portableInternalFilesVerified": 10,
+    "engineRestoredStopped": true
+  },
+  "artifacts": [
+    {
+      "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe",
+      "name": "dockslate.exe",
+      "bytes": 4691968,
+      "sha256": "0845BCC5529DBAB1C9399B9F61A53EB06698E6DE94679A73815127FE9DCC79DA",
+      "executed": true,
+      "executionMode": "--engine-proxy only; GUI and installer setup not executed"
+    },
+    {
+      "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\docker.exe",
+      "name": "docker.exe",
+      "bytes": 315904,
+      "sha256": "4F118A40B51E24A4BE0FA2982C773AEA8F0EB9FF6504458BA5893BE27DE17D22",
+      "executed": true,
+      "executionMode": "isolated native CLI checks"
+    }
+  ],
+  "installerFilePresent": false,
+  "blocker": "NSIS cannot open its original win.bmp; no installer produced. Native CLI file upload and overwrite fail with Access is denied. Causes are unconfirmed; security settings unchanged.",
+  "remaining": [
+    "Complete installer packaging and actual setup/cancel/uninstall validation.",
+    "Resolve native CLI host-file upload and overwrite access errors.",
+    "Verify fresh-PC engine installation, installed PATH, Dockerfile build/load/save, attach and foreign-pipe rejection."
+  ],
+  "protectionEvidence": {
+    "record": "2026-10-19 22:16:01.350  [17364:9700]action:PDPEngTips|process:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Bin\\makensis.exe|file:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Contrib\\Graphics\\Wizard\\win.bmp|remember:1",
+    "compilerSha256": "42850802704ECB11163F7E0329D35EE54BD288953200D4966E226D572848CFC5",
+    "source": "IMFTips.log",
+    "securitySettingsChanged": false,
+    "product": "IObit Malware Fighter"
+  },
+  "hookFixture": {
+    "sha256": "5FA6F8D2FEADA7B0CCB43E71536EAEBEB4B92EBF79BC31D5C5C330B3938E1FE0",
+    "bytes": 63096,
+    "sourceSha256": "18FF35DFB49116809AC6E57A05EF940C09893CF06A9D4D9FA4EAF46EFAAE3C12",
+    "executed": false
+  },
+  "installerFlow": {
+    "automaticApprovalPreparation": true,
+    "explicitEngineChangeApprovalRequired": true,
+    "automaticCompletionVerification": true,
+    "failedRequestsAutomaticallyRetried": false,
+    "nativeFlowExecuted": false
+  },
+  "discontinuedSecurityUi": {
+    "settingsChanged": false,
+    "automationStopped": true,
+    "temporaryAutomationScriptsRemoved": [
+      "inspect-imf-access.ps1",
+      "imf-file-access-ui.ps1"
+    ]
+  },
+  "previousInstallerAttempt": {
+    "exit": 1,
+    "scope": "Earlier launcher candidate, before official Windows component integration.",
+    "error": "NSIS File failed opening its original Contrib/Graphics/Wizard/win.bmp.",
+    "installerProduced": false
+  },
+  "nativeWindowsComponents": {
+    "versions": {
+      "buildx": "0.38.0",
+      "cli": "29.8.2",
+      "compose": "5.6.0"
+    },
+    "downloadApproval": "Approved by user continuation on 2026-10-20.",
+    "downloaded": true,
+    "staged": true,
+    "executed": true,
+    "manifest": "scripts/windows-docker.manifest.json",
+    "cliArchiveSha256Pinned": true,
+    "receipt": "src-tauri/target/windows-docker/manifest.json"
+  },
+  "rea": {
+    "target": "Docker Desktop 4.96.0 build 243774",
+    "route": "REA CLI 6.4.0",
+    "research": "docs/research/docker-desktop-4.96.0.md",
+    "originalSha256": "3F75D46A07FF7C7ADCC42E55B2BAB862E25A459351723AC2633DE9AD22A5B4B6",
+    "originalExecuted": false,
+    "selectedWindowsPeInspections": 4
+  },
+  "sourceCleanup": [
+    "Replaced command-specific WSL CLI argument rewriting.",
+    "Replaced the unused Rancher Desktop pipe client with an owned server."
+  ],
+  "nativeExecution": {
+    "approvedByUser": true,
+    "approvedAt": "2026-10-21",
+    "applicationSha256": "9A6BF2C9EE0D307F9595ED5DE713D14FEE339B0172CFFF9721712DFC41BC0943",
+    "launcherSha256": "A0BBC4C8485515A8C585CAC8B7E12F898DBC89761B304A2BDF64AB28BCA844A0",
+    "offlineReport": "docs/results/native-cli-offline.json",
+    "engineConnectionReport": "docs/results/native-cli-connection.json",
+    "integrationInProgress": false,
+    "restoreOriginalState": "stopped",
+    "securitySettingsChanged": false,
+    "correctedCandidate": "Broker handle isolation, message-pipe half-close and drain, cancellable guest reads that do not retry after cancellation.",
+    "currentApplicationSha256": "0845BCC5529DBAB1C9399B9F61A53EB06698E6DE94679A73815127FE9DCC79DA",
+    "currentLauncherSha256": "4F118A40B51E24A4BE0FA2982C773AEA8F0EB9FF6504458BA5893BE27DE17D22",
+    "engineStartedWithApproval": true,
+    "originalStateRestored": true,
+    "restoredAt": "2026-10-21T10:35:29.6570069+00:00",
+    "latestApplicationExecutionMode": "--engine-proxy only; no GUI installer validation",
+    "fixtureResults": {
+      "binds": true,
+      "copyToContainer": false,
+      "copyToWindows": false,
+      "stdin": true,
+      "logFollowCancellation": true,
+      "compose": true
+    }
+  },
+  "previousReadOnlyObservation": {
+    "scope": "Historical observation before the approved integration run; not the current disk state.",
+    "dataDeleted": false,
+    "ownedPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "windowsDockerOnPath": false,
+    "diskLastWrite": "2026-10-18T15:11:12.3814599Z",
+    "distributions": "NAME         STATE           VERSION\r\n\r\n* DockSlate    Stopped         2",
+    "diskBytes": 4709154816,
+    "runtimeChanged": false
+  },
+  "hostAfterIntegration": {
+    "state": "stopped",
+    "ownedPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "registrationId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+    "diskBytes": 4791992320,
+    "diskLastWriteUtc": "2026-10-21T10:35:29.6010428Z",
+    "dataDeleted": false,
+    "securitySettingsChanged": false
+  }
+}

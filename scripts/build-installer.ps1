@@ -55,6 +55,7 @@ if (!$toolsReady -and !$AllowToolDownload) {
     $toolStatus | ConvertTo-Json -Depth 4
     throw 'NSIS 3.11 and the Tauri NSIS utility are not fully cached. No download or build was started. After explicit download approval, rerun with -AllowToolDownload.'
 }
+& (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
 
 $processVariables = @('CARGO_HOME', 'RUSTUP_HOME', 'PATH', 'CARGO_NET_OFFLINE', 'CARGO_TARGET_DIR', 'HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'NO_PROXY')
 $savedVariables = @{}

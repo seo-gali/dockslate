@@ -1,0 +1,34 @@
+{
+  "observedAt": "2026-10-21T10:36:20.245Z",
+  "fixtureRoot": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\native-cli-offline-1792578980244",
+  "launcherSha256": "4F118A40B51E24A4BE0FA2982C773AEA8F0EB9FF6504458BA5893BE27DE17D22",
+  "engineStarted": false,
+  "applicationStarted": false,
+  "existingProfileUsed": false,
+  "checks": [
+    {
+      "arguments": "--version",
+      "exit": 0,
+      "stdout": "Docker version 29.8.2, build 7fc2dff",
+      "stderr": ""
+    },
+    {
+      "arguments": "--debug --version",
+      "exit": 0,
+      "stdout": "Docker version 29.8.2, build 7fc2dff",
+      "stderr": ""
+    },
+    {
+      "arguments": "compose version --short",
+      "exit": 0,
+      "stdout": "5.6.0",
+      "stderr": ""
+    },
+    {
+      "arguments": "buildx version",
+      "exit": 0,
+      "stdout": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5",
+      "stderr": ""
+    }
+  ]
+}

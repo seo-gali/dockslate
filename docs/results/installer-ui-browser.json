@@ -1,0 +1,117 @@
+{
+  "observedAt": "2026-10-20T09:37:25.511Z",
+  "completed": true,
+  "target": "Built production frontend in isolated signed Chrome; native backend unavailable; no mock data",
+  "checks": [
+    {
+      "name": "Only entry and Overview scripts load for initial Korean screen",
+      "passed": true,
+      "evidence": [
+        "http://127.0.0.1:1424/assets/index-ByqPGZYH.js",
+        "http://127.0.0.1:1424/assets/Overview-CacBqKBi.js"
+      ]
+    },
+    {
+      "name": "English catalog loads on selection and translates navigation",
+      "passed": true
+    },
+    {
+      "name": "English preference persists after actual browser reload",
+      "passed": true
+    },
+    {
+      "name": "All seven lazy screens mount without JavaScript errors",
+      "passed": true,
+      "evidence": [
+        {
+          "page": "Overview",
+          "firstVisitMs": 331
+        },
+        {
+          "page": "Containers",
+          "firstVisitMs": 341
+        },
+        {
+          "page": "Images",
+          "firstVisitMs": 346
+        },
+        {
+          "page": "Resources",
+          "firstVisitMs": 349
+        },
+        {
+          "page": "Builds",
+          "firstVisitMs": 339
+        },
+        {
+          "page": "Disk Manager",
+          "firstVisitMs": 347
+        },
+        {
+          "page": "Settings",
+          "firstVisitMs": 340
+        }
+      ]
+    },
+    {
+      "name": "Container detail scripts and file CSS remain unloaded during list navigation",
+      "passed": true
+    },
+    {
+      "name": "Settings uses appearance, runtime and connection tabs",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "Appearance",
+          "active": "true"
+        },
+        {
+          "text": "Runtime",
+          "active": "false"
+        },
+        {
+          "text": "Engine connection",
+          "active": "false"
+        }
+      ]
+    },
+    {
+      "name": "Theme and font size controls work after lazy loading",
+      "passed": true
+    },
+    {
+      "name": "Images separates local and registry blocks and preserves tab state",
+      "passed": true
+    },
+    {
+      "name": "Resources preserves volume/network tab state",
+      "passed": true
+    },
+    {
+      "name": "Build file import has its own tab and offline actions remain disabled",
+      "passed": true,
+      "evidence": [
+        "Build from file",
+        "In progress",
+        "Build history",
+        "Builders",
+        "Imported"
+      ]
+    }
+  ],
+  "failure": null,
+  "scripts": [
+    "http://127.0.0.1:1424/assets/index-ByqPGZYH.js",
+    "http://127.0.0.1:1424/assets/Overview-CacBqKBi.js",
+    "http://127.0.0.1:1424/assets/Settings-kvUqxeGs.js",
+    "http://127.0.0.1:1424/assets/locales.en-COzPQ4VP.js",
+    "http://127.0.0.1:1424/assets/Containers-qwv6N2-l.js",
+    "http://127.0.0.1:1424/assets/index-BKU4cvc_.js",
+    "http://127.0.0.1:1424/assets/Images-CiiAkDep.js",
+    "http://127.0.0.1:1424/assets/metadataCache-KxoiHtSn.js",
+    "http://127.0.0.1:1424/assets/Resources-3arufvK0.js",
+    "http://127.0.0.1:1424/assets/Builds-Dk_otVbZ.js",
+    "http://127.0.0.1:1424/assets/DiskManager-Dh_ThtFE.js"
+  ],
+  "errors": []
+}

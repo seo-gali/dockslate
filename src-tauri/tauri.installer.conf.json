@@ -9,6 +9,11 @@
     "useLocalToolsDir": true,
     "resources": {
       "target/release/docker.exe": "bin/docker.exe",
+      "target/windows-docker/docker.exe": "libexec/docker.exe",
+      "target/windows-docker/cli-plugins/docker-compose.exe": "libexec/cli-plugins/docker-compose.exe",
+      "target/windows-docker/cli-plugins/docker-buildx.exe": "libexec/cli-plugins/docker-buildx.exe",
+      "target/windows-docker/licenses/": "libexec/licenses/",
+      "target/windows-docker/manifest.json": "libexec/manifest.json",
       "target/installer-resources/guide.html": "guide.html",
       "../docs/REQUEST_STATUS.md": "docs/REQUEST_STATUS.md",
       "../docs/results/refinement-verification.md": "docs/results/refinement-verification.md",

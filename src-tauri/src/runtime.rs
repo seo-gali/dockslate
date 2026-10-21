@@ -1193,6 +1193,97 @@ impl Transport {
         self.verify(true)
     }
 
+    pub(crate) fn spawn_dial_stdio(&self) -> Result<Child, String> {
+        self.verify_tool_start()?;
+        // Guest session identity and bounded process lifetime.
+        const RELAY: &str = r#"read -r stat < /proc/$$/stat || exit 125
+stat="${stat##*) }"
+set -- $stat
+printf 'DOCKSLATE_PROXY_SESSION:%s:%s\n' "$$" "${20}" >&2
+exec /usr/bin/timeout --foreground --signal=TERM --kill-after=5s 86400s /usr/bin/env -u DOCKER_HOST -u DOCKER_CONTEXT -u DOCKER_CONFIG -u DOCKER_TLS -u DOCKER_TLS_VERIFY -u DOCKER_CERT_PATH -u DOCKER_API_VERSION -u DOCKER_CUSTOM_HEADERS -u BUILDX_BUILDER -u BUILDX_CONFIG /usr/bin/docker --config /run/dockslate/proxy-cli --host unix:///var/run/docker.sock system dial-stdio"#;
+        let mut command = Command::new(system_directory()?.join("wsl.exe"));
+        command.args([
+            "--distribution",
+            "DockSlate",
+            "--user",
+            "root",
+            "--exec",
+            "/usr/bin/setsid",
+            "--wait",
+            "/bin/sh",
+            "-c",
+            RELAY,
+        ]);
+        for key in [
+            "DOCKER_HOST",
+            "DOCKER_CONTEXT",
+            "DOCKER_CONFIG",
+            "DOCKER_TLS",
+            "DOCKER_TLS_VERIFY",
+            "DOCKER_CERT_PATH",
+            "DOCKER_API_VERSION",
+            "DOCKER_CUSTOM_HEADERS",
+            "BUILDX_BUILDER",
+            "BUILDX_CONFIG",
+        ] {
+            command.env_remove(key);
+        }
+        command
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::CommandExt;
+            command.creation_flags(0x08000000);
+        }
+        command
+            .spawn()
+            .map_err(|e| format!("Cannot connect the owned Docker socket: {e}"))
+    }
+
+    pub(crate) fn cancel_dial_stdio(&self, pid: u32, started: u64) -> Result<(), String> {
+        if pid <= 1 || started == 0 {
+            return Err("Invalid Docker proxy guest session".into());
+        }
+        self.verify_tool_session()?;
+        // PID reuse check before each process-group signal.
+        const STOP: &str = r#"pid=$1; expected=$2
+check() {
+  read -r stat < "/proc/$pid/stat" 2>/dev/null || return 1
+  stat="${stat##*) }"; set -- $stat
+  [ "${20}" = "$expected" ]
+}
+check || exit 0
+/usr/bin/kill -TERM -- "-$pid" 2>/dev/null || exit 0
+/usr/bin/sleep 0.2
+check || exit 0
+/usr/bin/kill -KILL -- "-$pid" 2>/dev/null || true"#;
+        let output = crate::process::execute(
+            &system_directory()?.join("wsl.exe"),
+            &[
+                "--distribution".into(),
+                "DockSlate".into(),
+                "--user".into(),
+                "root".into(),
+                "--exec".into(),
+                "/bin/sh".into(),
+                "-c".into(),
+                STOP.into(),
+                "dockslate-proxy-stop".into(),
+                pid.to_string(),
+                started.to_string(),
+            ],
+            None,
+            Duration::from_secs(3),
+            4096,
+        )?;
+        if !output.status.success() {
+            return Err("The Docker proxy guest session could not be stopped".into());
+        }
+        Ok(())
+    }
+
     pub(crate) fn buildx_command(
         &self,
         arguments: &[String],

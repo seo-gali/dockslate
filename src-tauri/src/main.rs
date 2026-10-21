@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod builds;
+mod cli_platform;
 mod compose;
 mod container_tools;
 mod desktop;
@@ -9,6 +10,7 @@ mod image_build;
 mod image_pull;
 mod image_removal;
 mod live_logs;
+mod pipe;
 mod process;
 mod resources;
 mod runtime;
@@ -20,10 +22,11 @@ use std::sync::{
     atomic::{AtomicBool, Ordering},
     Mutex,
 };
-use tauri::Emitter;
+use tauri::{Emitter, Manager};
 
 static MUTATION: Mutex<()> = Mutex::new(());
 static EXIT_PENDING: AtomicBool = AtomicBool::new(false);
+static INSTALLER_SETUP: AtomicBool = AtomicBool::new(false);
 
 async fn read<F>(operation: F) -> Result<Value, String>
 where
@@ -196,7 +199,82 @@ async fn engine_status() -> Result<Value, String> {
 }
 #[tauri::command]
 async fn dashboard_snapshot() -> Result<Value, String> {
-    read(docker::dashboard_snapshot).await
+    read(|| {
+        let mut snapshot = docker::dashboard_snapshot()?;
+        snapshot["installer_setup_mode"] = serde_json::json!({"Ok":installer_setup_mode()});
+        Ok(snapshot)
+    }).await
+}
+#[tauri::command]
+fn installer_setup_mode() -> bool {
+    INSTALLER_SETUP.load(Ordering::Acquire)
+}
+#[tauri::command]
+async fn installer_setup_finish(app: tauri::AppHandle) -> Result<(), String> {
+    if !installer_setup_mode() {
+        return Err("This command is only available during installer setup.".into());
+    }
+    read(|| {
+        if runtime::is_mutating() {
+            return Err("Docker Engine setup is still running.".into());
+        }
+        let runtime = runtime::inspect_status()?;
+        if runtime["state"] != "running" || runtime["keeperVerified"] != true {
+            return Err("The owned Docker Engine runtime is not running and verified.".into());
+        }
+        let engine = docker::connected()?;
+        let executable = std::env::current_exe().map_err(|error| error.to_string())?;
+        cli_platform::ensure_proxy(&executable)?;
+        let cli = executable.parent().ok_or("The installed application directory is unavailable.")?.join("bin/docker.exe");
+        if !cli.is_file() {
+            return Err("The installed Windows Docker CLI is missing.".into());
+        }
+        let path_check = r#"
+$ErrorActionPreference = 'Stop'
+[Console]::InputEncoding = [Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+try {
+    $expected = [IO.Path]::GetFullPath([Console]::In.ReadToEnd())
+    $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
+    $env:Path = $env:Path + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
+    $commands = @(Get-Command docker -CommandType Application,ExternalScript -All -ErrorAction SilentlyContinue)
+    if ($commands.Count -eq 0) { throw 'A new terminal cannot find the Windows docker command.' }
+    $resolved = [IO.Path]::GetFullPath($commands[0].Path)
+    if (!$resolved.Equals($expected, [StringComparison]::OrdinalIgnoreCase)) {
+        throw ('A new terminal resolves docker to "' + $resolved + '" instead of the installed DockSlate CLI "' + $expected + '". Review the conflicting PATH entry and retry. Other Docker installations and PATH entries were preserved.')
+    }
+    [Console]::Write('verified')
+} catch {
+    [Console]::Error.Write($_.Exception.Message)
+    exit 1
+}
+"#;
+        let path_output = process::execute(
+            &runtime::system_directory()?.join("WindowsPowerShell/v1.0/powershell.exe"),
+            &["-NoLogo".into(), "-NoProfile".into(), "-NonInteractive".into(), "-Command".into(), path_check.into()],
+            Some(cli.to_str().ok_or("The installed Windows Docker CLI path is invalid.")?.as_bytes()),
+            std::time::Duration::from_secs(30),
+            64 * 1024,
+        )?;
+        if !path_output.status.success() || path_output.stdout != b"verified" {
+            return Err(format!("Windows docker command registration could not be verified: {} Setup is not complete.", String::from_utf8_lossy(&path_output.stderr).trim()));
+        }
+        for arguments in [vec!["info", "--format", "{{.ID}}"], vec!["compose", "version", "--short"], vec!["buildx", "version"]] {
+            let args: Vec<String> = arguments.iter().map(|argument| (*argument).into()).collect();
+            let output = process::execute(&cli, &args, None, std::time::Duration::from_secs(30), 64 * 1024)?;
+            let value = std::str::from_utf8(&output.stdout).map_err(|_| "Windows Docker CLI returned invalid output.")?.trim();
+            if !output.status.success() || value.is_empty() {
+                return Err(format!("Windows Docker CLI verification failed: {}. Setup is not complete.", arguments.join(" ")));
+            }
+            if arguments[0] == "info" && value != engine.identity {
+                return Err("The Windows Docker CLI is connected to a different engine. Setup is not complete.".into());
+            }
+        }
+        let windows_endpoint = cli_platform::endpoint()?;
+        Ok(serde_json::json!({"verified":true,"windowsEndpoint":windows_endpoint}))
+    }).await?;
+    app.exit(0);
+    Ok(())
 }
 #[tauri::command]
 async fn overview() -> Result<Value, String> {
@@ -474,6 +552,22 @@ async fn compose_discard(id: String) -> Result<Value, String> {
 fn main() {
     let mut arguments = std::env::args().skip(1);
     let first = arguments.next();
+    if first.as_deref() == Some("--engine-proxy") {
+        if arguments.next().is_some() {
+            std::process::exit(2);
+        }
+        if let Err(error) = pipe::serve() {
+            eprintln!("DockSlate engine proxy: {error}");
+            std::process::exit(125);
+        }
+        return;
+    }
+    if first.as_deref() == Some("--installer-setup") {
+        if arguments.next().is_some() {
+            std::process::exit(2);
+        }
+        INSTALLER_SETUP.store(true, Ordering::Release);
+    }
     if first.as_deref() == Some("--dockslate-elevated") {
         if arguments.next().is_some() || desktop::prepare_elevated_startup().is_err() {
             std::process::exit(1);
@@ -500,6 +594,8 @@ fn main() {
             terminal_open, terminal_read, terminal_input, terminal_resize, terminal_close,
             engine_status,
             dashboard_snapshot,
+            installer_setup_mode,
+            installer_setup_finish,
             overview,
             containers_list,
             container_inspect,
@@ -557,6 +653,9 @@ fn main() {
                         "close-blocked",
                         "엔진 설치 또는 상태 변경이 진행 중입니다. 완료 결과를 확인할 때까지 앱을 종료할 수 없습니다.",
                     );
+                } else if installer_setup_mode() {
+                    api.prevent_close();
+                    window.app_handle().exit(2);
                 } else { container_tools::close_all(); live_logs::close_all(); }
             }
         })

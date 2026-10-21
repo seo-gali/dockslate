@@ -2,6 +2,20 @@
 
 Locally verified dependencies and license texts for DockSlate 0.1.0, Windows x86_64 MSVC. Checked on 2026-10-14 using package-lock.json, src-tauri/Cargo.lock, and manifests/license files from installed official npm and crates.io packages. This document does not establish complete notices for external binary distribution.
 
+## Native Windows Docker components
+
+The preparation manifest is [scripts/windows-docker.manifest.json](scripts/windows-docker.manifest.json). It selects standalone official Windows releases; no Docker Desktop files are extracted or redistributed. `scripts/prepare-windows-docker.ps1` verifies cached sizes and hashes without downloading by default. Downloading requires its explicit `-AllowDownload` option. Installed and portable layouts preserve the upstream texts under `libexec/licenses/` and include a per-file SHA-256 receipt in `libexec/manifest.json`.
+
+| Component | Version | Official binary | License and notice sources |
+| --- | --- | --- | --- |
+| Docker CLI | 29.8.2 | [Windows x86_64 ZIP](https://download.docker.com/win/static/stable/x86_64/docker-29.8.2.zip) | [Apache-2.0 LICENSE](https://github.com/docker/cli/blob/v29.8.2/LICENSE), [NOTICE](https://github.com/docker/cli/blob/v29.8.2/NOTICE) |
+| Docker Compose | 5.6.0 | [Windows x86_64 release](https://github.com/docker/compose/releases/download/v5.6.0/docker-compose-windows-x86_64.exe) | [Apache-2.0 LICENSE](https://github.com/docker/compose/blob/v5.6.0/LICENSE), [NOTICE](https://github.com/docker/compose/blob/v5.6.0/NOTICE) |
+| Docker Buildx | 0.38.0 | [Windows amd64 release](https://github.com/docker/buildx/releases/download/v0.38.0/buildx-v0.38.0.windows-amd64.exe) | [Apache-2.0 LICENSE](https://github.com/docker/buildx/blob/v0.38.0/LICENSE); the versioned root NOTICE URL returned HTTP 404 |
+
+Compose and Buildx release SHA-256 values are pinned in the preparation manifest. The Docker ZIP's public SHA-256 URL was unavailable: the initial manifest retains only the observed length (49,464,022 bytes) and HTTP ETag MD5 (`3c99c7cb8817cb4f81e076479b56c921`) as bootstrap metadata. This is not an independently verified SHA-256. The script blocks staging until the SHA-256 observed after an approved download is reviewed and pinned in that manifest. License/notice document sizes and SHA-256 values were checked from the versioned upstream raw texts and are pinned separately.
+
+This records the source and preservation of the upstream root license/notice texts. It does not establish complete license coverage for the binaries' transitive Go dependencies or approval for external distribution. Binary preparation, packaging and execution validation are separate checks.
+
 ## Verification scope
 
 - Frontend runtime: `npm list --omit=dev --all --json` confirmed the actual installed production dependency tree.

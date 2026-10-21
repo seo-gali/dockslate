@@ -1,6 +1,6 @@
 import { lazy, memo, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { listen } from '@tauri-apps/api/event';
-import { type EngineStatus, useBackendQuery } from './api';
+import { backend, type EngineStatus, useBackendQuery } from './api';
 import { ErrorNotice, Icon, RefreshButton, StatePanel, StatusBadge, errorMessage, type IconName } from './components';
 const Overview = lazy(() => import('./pages/Overview').then(module => ({ default: memo(module.default) })));
 const Containers = lazy(() => import('./pages/Containers').then(module => ({ default: memo(module.default) })));
@@ -82,7 +82,22 @@ export default function App() {
   const openBuilds = useCallback(() => { setPage('Builds'); void filePicker.current('dockerfile'); }, [setPage]);
   const imageBuildState = useMemo(() => ({ busy: build.busy, picking: build.picking }), [build.busy, build.picking]);
   const engineQuery = useBackendQuery<EngineStatus>('engine_status');
+  const installerQuery = useBackendQuery<boolean>('installer_setup_mode', undefined, '__TAURI_INTERNALS__' in window);
+  const installerMode = '__TAURI_INTERNALS__' in window ? installerQuery.data : false;
+  const [finishingSetup, setFinishingSetup] = useState(false);
+  const finishingSetupRequest = useRef(false);
+  const [setupError, setSetupError] = useState<string | null>(null);
   const runtime = useDockSlateRuntime(imageBuildBusy || imageRunBusy || volumeBusy || buildTransferBusy || composeBusy);
+  useEffect(() => { if (installerMode) setShowEngineSetup(true); }, [installerMode]);
+  const completeSetup = useCallback(async () => {
+    if (!installerMode) { setShowEngineSetup(false); return; }
+    if (finishingSetupRequest.current) return;
+    finishingSetupRequest.current = true;
+    setFinishingSetup(true); setSetupError(null);
+    try { await backend('installer_setup_finish'); }
+    catch (error) { setSetupError(errorMessage(error)); }
+    finally { finishingSetupRequest.current = false; setFinishingSetup(false); }
+  }, [installerMode]);
   useEffect(() => {
     if (setupChecked.current || !runtime.query.data) return;
     setupChecked.current = true;
@@ -112,7 +127,8 @@ export default function App() {
   const busy = diskBusy;
   const tone = engine?.state === 'connected' ? 'success' : engine?.state === 'busy' ? 'accent' : engine?.state === 'permission_denied' ? 'danger' : 'warning';
 
-  if (showEngineSetup) return <Suspense fallback={<StatePanel busy title={t('Docker Engine 준비')} description={t('설치 상태를 확인하고 있습니다.')} />}><EngineSetup runtime={runtime} engine={engine} onContinue={() => setShowEngineSetup(false)} onSettings={() => { setShowEngineSetup(false); showSettings(); }} />{runtime.dialog}</Suspense>;
+  if (installerMode === null) return <main className="main-content"><StatePanel busy={!installerQuery.error} title={t('설치 상태를 확인하고 있습니다.')} />{installerQuery.error && <ErrorNotice message={installerQuery.error} onRetry={() => void installerQuery.reload()} />}</main>;
+  if (showEngineSetup) return <Suspense fallback={<StatePanel busy title={t('Docker Engine 준비')} description={t('설치 상태를 확인하고 있습니다.')} />}><EngineSetup runtime={runtime} engine={engine} installerMode={installerMode} finishing={finishingSetup} finishError={setupError} onContinue={() => void completeSetup()} onSettings={() => { setShowEngineSetup(false); showSettings(); }} />{runtime.dialog}</Suspense>;
 
   return <div className="app-shell"><header className="app-topbar"><div className="app-brand"><span className="brand-mark"><svg viewBox="0 0 28 28" width="25" height="25" fill="none" aria-hidden="true"><path d="M5 5h11l7 7v11H12l-7-7z" stroke="currentColor" strokeWidth="2" /><path d="M5 16h11V5M16 16l7 7" stroke="currentColor" strokeWidth="2" /></svg></span>DockSlate</div><div className="engine-topline"><span className="topline-owner">DockSlate{engine?.engine ? ` · ${engine.engine}` : ''}</span><StatusBadge tone={tone}>{engineLabel(engine, engineQuery.loading)}</StatusBadge></div></header><aside className="sidebar"><p className="nav-label">Workspace</p><nav aria-label={t("주요 메뉴")}>{menu.map(item => <div key={item.page}>{item.page === 'Settings' && <div className="nav-divider" />}<button className={`nav-item ${page === item.page ? 'active' : ''}`} disabled={busy} title={busy ? t("작업이 진행 중입니다") : undefined} onClick={() => setPage(item.page)} aria-current={page === item.page ? 'page' : undefined}><Icon name={item.icon} />{t(item.page)}</button></div>)}</nav></aside><main className="main-content"><div className="page">{imageBuildBusy && <div className="notice info" role="status"><Icon name="images" /><div><strong>{t("이미지 빌드 중")}</strong><p>{t("다른 메뉴를 확인하는 동안 빌드를 계속합니다.")}</p></div><button className="button small" onClick={() => setPage('Builds')}>{t("빌드 보기")}</button></div>}{closeNotice && <div className="notice warning-notice" role="alert"><Icon name="warning" /><div><strong>{t("앱 종료 상태")}</strong><p>{closeNotice}</p></div><button className="icon-button" onClick={() => setCloseNotice(null)} aria-label={t("종료 알림 닫기")} title={t("종료 알림 닫기")}><Icon name="close" size={16} /></button></div>}<div data-page="Overview" hidden={page !== 'Overview'}>{visited.has('Overview') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Overview {...engineProps} navigate={navigateOverview} /></Suspense>}</div><div data-page="Containers" hidden={page !== 'Containers'}>{visited.has('Containers') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Containers {...engineProps} active={page === 'Containers'} openRequest={containerRequest} /></Suspense>}</div><div data-page="Images" hidden={page !== 'Images'}>{visited.has('Images') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Images {...engineProps} build={imageBuildState} openBuilds={openBuilds} onRunBusy={setImageRunBusy} onContainerCreated={createContainer} /></Suspense>}</div><div data-page="Resources" hidden={page !== 'Resources'}>{visited.has('Resources') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Resources {...engineProps} onBusy={setVolumeBusy} /></Suspense>}</div><div data-page="Builds" hidden={page !== 'Builds'}>{visited.has('Builds') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Builds {...engineProps} build={build} compose={compose} onBusy={setBuildTransferBusy} importBlocked={imageRunBusy || volumeBusy || buildTransferBusy || imageBuildBusy} /></Suspense>}</div><div data-page="Disk Manager" hidden={page !== 'Disk Manager'}>{visited.has('Disk Manager') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><DiskManager {...engineProps} runtime={runtime} dockerTabRequest={dockerTabRequest} onDiskBusy={setDiskBusy} /></Suspense>}</div><div data-page="Settings" hidden={page !== 'Settings'}>{visited.has('Settings') && <Suspense fallback={<p className="loading-line" role="status">{t('화면을 여는 중…')}</p>}><Settings {...engineProps} runtime={runtime} runtimeRequest={runtimeTabRequest} /></Suspense>}</div></div></main>{runtime.dialog}</div>;
 }

@@ -147,7 +147,7 @@ export async function backend<T>(command: string, args?: Record<string, unknown>
   return invoke<T>(command, args);
 }
 
-const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list', 'networks_list']);
+const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list', 'networks_list', 'installer_setup_mode']);
 const deferredCommands = new Set(['builds_snapshot']);
 type CommandResult = { Ok?: unknown; Err?: string };
 type DashboardState = { values: Record<string, unknown>; errors: Record<string, string>; loading: boolean; initialized: boolean; revision: number; metrics?: ContainerMetrics | null; metricsLoading?: boolean; metricsError?: string | null; deferredLoading?: Record<string, boolean> };

@@ -12,6 +12,7 @@ export interface RuntimeStatus {
   installPath: string | null;
   message: string;
   blockedReasons: string[];
+  retryableInstallation: boolean;
   operation?: { state: string; message: string; processId?: number; startedAt?: number } | null;
 }
 export interface RuntimeInstallPreview {
@@ -20,6 +21,7 @@ export interface RuntimeInstallPreview {
   impact: string[];
   requirements: string[];
   eligible: boolean;
+  retryableInstallation: boolean;
   blockedReasons: string[];
   expiresAt: number | null;
 }
@@ -78,7 +80,7 @@ export function useDockSlateRuntime(externalBusy = false) {
   }, [tracking, pending, query.loading, query.data]);
 
   const prepareInstall = useCallback(async () => {
-    if (requestInFlight.current || controlsDisabled || query.data?.state !== 'not_installed') return;
+    if (requestInFlight.current || controlsDisabled || (query.data?.state !== 'not_installed' && !query.data?.retryableInstallation)) return;
     requestInFlight.current = true;
     setPreparing(true);
     setPreview(null);
@@ -100,7 +102,7 @@ export function useDockSlateRuntime(externalBusy = false) {
       setPreparing(false);
       requestInFlight.current = false;
     }
-  }, [controlsDisabled, query.data?.state]);
+  }, [controlsDisabled, query.data?.state, query.data?.retryableInstallation]);
 
   const requestAction = useCallback((action: 'start' | 'stop') => {
     if (requestInFlight.current || controlsDisabled || query.data?.blockedReasons.length) return;
@@ -161,7 +163,7 @@ export function useDockSlateRuntime(externalBusy = false) {
     onConfirm={() => void execute()}
   >
     {confirmation === 'install' && preview ? <>
-      <p>{t("다음 대상을 새로 설치합니다.")}</p>
+      <p>{preview.retryableInstallation ? t("가져오기 전에 실패한 다운로드를 다시 시도합니다. 대상과 영향을 확인하고 새로 승인하세요.") : t("다음 대상을 새로 설치합니다.")}</p>
       <ul className="dialog-target-list">{preview.targets.map((target, index) => <li key={index}>{target}</li>)}</ul>
       {preview.impact.map((impact, index) => <p key={index}>{impact}</p>)}
       <p><strong>{t("설치가 끝나면 새 Docker Engine을 시작하고 연결을 확인합니다.")}</strong></p>
@@ -185,7 +187,7 @@ export function useDockSlateRuntime(externalBusy = false) {
 export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSlateRuntime> }) {
   const { query, preview } = runtime;
   const status = query.data;
-  const blockers = preview && !preview.eligible && status?.state === 'not_installed' ? preview.blockedReasons : status?.blockedReasons ?? [];
+  const blockers = preview && !preview.eligible && (status?.state === 'not_installed' || status?.retryableInstallation) ? preview.blockedReasons : status?.blockedReasons ?? [];
   return <section className="settings-panel" style={{ marginBottom: 18 }} aria-busy={runtime.busy || runtime.preparing}>
     <h2>{t("DockSlate 런타임")}</h2>
     <div className="settings-help">
@@ -202,11 +204,11 @@ export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSl
         {statusMessages[status.state] && <details className="runtime-diagnostics"><summary>{t("원본 런타임 진단")}</summary><p>{status.message}</p>{status.operation && <p>{status.operation.message}</p>}</details>}
         {blockers.length > 0 && <div><p><strong>{t("작업 차단 사유")}</strong></p><ul className="disk-blockers" style={{ marginTop: 8 }}>{blockers.map((reason, index) => <li key={index}><Icon name="warning" size={14} /><span>{reason}</span></li>)}</ul></div>}
         <div className="detail-actions" style={{ marginTop: 0 }}>
-          {status.state === 'not_installed' && <button className="button primary" disabled={runtime.controlsDisabled} onClick={() => void runtime.prepareInstall()}><Icon name="download" size={16} />{runtime.preparing ? t("설치 조건 확인 중…") : t("Docker Engine 설치…")}</button>}
+          {(status.state === 'not_installed' || status.retryableInstallation) && <button className="button primary" disabled={runtime.controlsDisabled} onClick={() => void runtime.prepareInstall()}><Icon name="download" size={16} />{runtime.preparing ? t("설치 조건 확인 중…") : status.retryableInstallation ? t("다운로드 다시 시도…") : t("Docker Engine 설치…")}</button>}
           {status.state === 'stopped' && <button className="button primary" disabled={runtime.controlsDisabled || blockers.length > 0} onClick={() => runtime.requestAction('start')}><Icon name="play" size={16} />{t("런타임 시작…")}</button>}
           {status.state === 'running' && <button className="button" disabled={runtime.controlsDisabled || blockers.length > 0} onClick={() => runtime.requestAction('stop')}><Icon name="stop" size={16} />{t("런타임 중지…")}</button>}
           {isWorking(status.state) && <span className="muted" role="status">{t(stateLabels[status.state])}{t("… 완료 상태를 확인하고 있습니다.")}</span>}
-          {status.state === 'failed' && <span className="muted">{t("실패 원인을 해결한 뒤 상태를 새로고침하세요.")}</span>}
+          {status.state === 'failed' && <span className="muted">{status.retryableInstallation ? t("다운로드 실패 원인을 해결한 뒤 새로 승인하여 다시 시도할 수 있습니다.") : t("실패 원인을 해결한 뒤 상태를 새로고침하세요.")}</span>}
           {status.state === 'unsupported' && <span className="muted">{t("필요한 환경을 확인한 뒤 상태를 새로고침하세요.")}</span>}
           {(status.state === 'running' || status.state === 'stopped') && <span className="muted" style={{ fontSize: '0.923077rem' }}>{status.state === 'running' ? t("중지하면 이 엔진의 컨테이너와 서비스가 중단됩니다. 저장된 데이터는 유지됩니다.") : t("저장된 컨테이너·이미지·볼륨은 다음 시작 시 다시 사용할 수 있습니다.")}</span>}
         </div>
