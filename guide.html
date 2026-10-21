@@ -29,17 +29,17 @@
           <h3>Windows x64 다운로드</h3>
           <p class="muted">설치판은 앱과 Windows 명령 진입점을 설치하고 Docker Engine 설치 대상을 확인합니다. 대상과 영향에 동의하면 엔진·Compose·Buildx 설치와 시작, Windows 명령 검증을 자동으로 진행합니다. Node.js와 Rust는 필요하지 않습니다.</p>
           <div class="actions download-actions">
-            <span class="button" aria-disabled="true">설치판 준비 중</span>
+            <a class="button" data-artifact="DockSlate_0.1.0_x64-setup.exe" href="./downloads/DockSlate_0.1.0_x64-setup.exe" download>Windows 설치 EXE</a>
             <a class="button" data-artifact="DockSlate-0.1.0-windows-x64.zip" href="./downloads/DockSlate-0.1.0-windows-x64.zip" download>포터블 ZIP</a>
             <a class="button" data-artifact="DockSlate.exe" href="./DockSlate.exe" download hidden>폴더의 EXE</a>
           </div>
-          <p class="caption" id="download-note">ZIP 전체를 풀고 DockSlate.exe와 bin·libexec 폴더를 함께 유지하세요. HTML만 전달받았다면 ZIP도 함께 받아야 합니다.</p>
-          <p class="caption">ZIP에는 공식 Windows Docker CLI·Compose·Buildx를 포함합니다. 기존 엔진 연결과 Compose 실행은 확인했으나 파일 복사는 접근 거부로 실패했습니다. 설치판은 NSIS 입력 파일 읽기 오류로 아직 제공하지 않습니다.</p>
+          <p class="caption" id="download-note">설치 EXE를 실행하면 앱과 Windows 명령을 설치합니다. 포터블은 ZIP 전체를 풀고 DockSlate.exe와 bin·libexec 폴더를 함께 유지하세요.</p>
+          <p class="caption">설치판과 ZIP에는 공식 Windows Docker CLI·Compose·Buildx를 포함합니다. 설치 파일 생성·해시 대조와 기존 엔진의 CLI·Compose 실행을 확인했으며, 실제 설치·제거 검증은 남아 있습니다.</p>
           <div class="notice"><strong>현재 배포 상태: 개발 버전.</strong> EXE는 서명되지 않았고 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. CLI 검사는 별도 승인과 격리 프로필로 수행했으며, 보안 예외·신뢰 등록은 하지 않았습니다.</div>
         </div>
         <div class="grid">
           <div class="card"><h3>필요한 환경</h3><ul><li>Windows 11 x64</li><li>WSL 2.4.10 이상</li><li>Microsoft Edge WebView2 Runtime</li><li>엔진 최초 설치 시 인터넷 연결</li></ul></div>
-          <div class="card"><h3>처음 사용하는 PC</h3><ol><li>설치판으로 앱과 Windows CLI 설치</li><li>설치 중 열린 엔진 준비 화면에서 <strong>Docker Engine 설치 및 시작</strong> 승인</li><li>엔진·Windows CLI·Compose·Buildx 확인 → 설치 완료</li><li>새 터미널에서 <code>docker ps</code>, <code>docker compose version</code> 사용</li></ol><p class="caption">엔진은 공식 패키지를 내려받아 설치합니다. 기존 DockSlate 엔진은 등록 경로와 소유권을 검사해 재사용하며 WSL을 삭제하지 않습니다. 설치판 제작과 실제 설치 검증은 아직 완료되지 않았습니다.</p></div>
+          <div class="card"><h3>처음 사용하는 PC</h3><ol><li>설치판으로 앱과 Windows CLI 설치</li><li>설치 중 열린 엔진 준비 화면에서 <strong>Docker Engine 설치 및 시작</strong> 승인</li><li>엔진·Windows CLI·Compose·Buildx 확인 → 설치 완료</li><li>새 터미널에서 <code>docker ps</code>, <code>docker compose version</code> 사용</li></ol><p class="caption">엔진은 공식 패키지를 내려받아 설치합니다. 기존 DockSlate 엔진은 등록 경로와 소유권을 검사해 재사용하며 WSL을 삭제하지 않습니다. 실제 설치·제거 검증은 남아 있습니다.</p></div>
         </div>
         <details><summary>index.html과 dist/index.html은 왜 앱으로 실행되지 않나요?</summary><p>두 파일은 Tauri가 띄우는 화면의 진입점입니다. 브라우저의 file:// 주소에는 Rust 백엔드가 없으므로 엔진을 제어할 수 없습니다. 직접 열면 이 안내서로 이동할 수 있게 했습니다. 개발 화면은 <code>npm run dev</code>, 데스크톱 개발 실행은 <code>scripts/desktop.ps1 -Mode dev</code>를 사용합니다.</p></details>
       </section>
@@ -74,7 +74,7 @@
       <section id="questions" class="section">
         <h2>자주 묻는 질문</h2>
         <details><summary>MongoDB가 실행 중인데 Compass에서 연결이 거절돼요.</summary><p>컨테이너 포트와 PC 포트를 구분해야 합니다. 표가 <code>127.0.0.1:32768 → 27017/tcp</code>라면 Compass 주소는 <code>mongodb://127.0.0.1:32768/</code>입니다. 표의 포트를 눌러 주소를 복사하세요. MongoDB 포트는 웹 페이지가 아니므로 브라우저에서 열지 않습니다. 자동 할당된 PC 포트는 컨테이너마다 다를 수 있습니다.</p></details>
-        <details><summary>Windows에서 docker 명령은 어떻게 쓰나요?</summary><p>설치판은 현재 사용자 PATH에 DockSlate의 bin 폴더를 등록하도록 구현했습니다. 설치판은 아직 제공하지 않습니다. 현재 포터블은 전체 ZIP을 푼 폴더의 bin\docker.exe를 실행하세요. 공식 Windows CLI·Compose의 기존 엔진 연결은 확인했으며 파일 복사 오류와 실제 설치·빌드 검증은 남아 있습니다.</p><pre>docker ps
+        <details><summary>Windows에서 docker 명령은 어떻게 쓰나요?</summary><p>설치판은 현재 사용자 PATH에 DockSlate의 bin 폴더를 등록합니다. 설치 후 새 CMD·PowerShell 창에서 아래 명령을 사용하세요. 포터블은 전체 ZIP을 푼 폴더의 bin\docker.exe를 실행합니다. 개발 PC의 파일 복사 접근 거부와 실제 설치·빌드 검증은 남아 있습니다.</p><pre>docker ps
 docker build -t my-app .
 docker compose up -d</pre><p>설치 과정에서 엔진 준비와 Windows 명령 검증을 함께 진행합니다. 기존 WSL과 이미지는 유지합니다. 새 포터블 구성에는 ZIP 안의 bin·libexec 폴더도 필요합니다. Windows SDK는 현재 사용자 전용 pipe를 명시해야 하며 실제 호환성 검증은 남아 있습니다.</p></details>
         <details><summary>앱을 지우거나 다시 설치하면 WSL 데이터도 없어지나요?</summary><p>앱 EXE·설치 폴더와 전용 WSL 배포판은 별개입니다. 포터블 EXE 삭제나 앱 제거로 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 런타임 중지도 데이터를 지우지 않습니다. 재설치 후 기존 배포판의 소유권과 엔진 정보를 확인해 사용합니다.</p></details>
@@ -131,6 +131,7 @@ docker compose up -d</pre><p>설치 과정에서 엔진 준비와 Windows 명령
       link.hidden = packaged ? link.dataset.artifact !== 'DockSlate.exe' : link.dataset.artifact === 'DockSlate.exe';
       link.href = packaged ? './DockSlate.exe' : root + 'downloads/' + link.dataset.artifact;
     });
+    if (packaged && document.querySelector('.download-actions')) document.getElementById('download-note').textContent = '이 폴더의 DockSlate.exe를 실행하세요. bin·libexec 구성 요소를 함께 유지하세요.';
     document.querySelectorAll('[data-doc]').forEach(link => {
       link.href = packaged ? './' + link.dataset.doc : root + link.dataset.doc;
     });

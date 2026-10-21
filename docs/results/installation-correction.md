@@ -1,6 +1,6 @@
 # 설치·Windows Docker 통합 검증
 
-Docker Desktop처럼 앱 설치 과정에서 내부 Linux 엔진과 Windows Docker 명령을 함께 준비한다. 기존 WSL·이미지·볼륨을 유지하며 별도 Linux 배포판을 사용자가 설치하는 과정을 요구하지 않는다. 기존 엔진의 실제 CLI·Compose 실행을 확인했다. 파일 복사와 설치판 제작 오류가 남아 있어 통합 설치판은 아직 제공하지 않는다.
+Docker Desktop처럼 앱 설치 과정에서 내부 Linux 엔진과 Windows Docker 명령을 함께 준비한다. 기존 WSL·이미지·볼륨을 유지하며 별도 Linux 배포판을 사용자가 설치하는 과정을 요구하지 않는다. 별도 Windows 빌드에서 설치 EXE를 생성하고 GitHub 압축 파일 digest와 내부 EXE의 SHA-256을 대조해 로컬에 내려받았다. 설치기는 실행하지 않았으며 실제 설치·제거는 미검증이다.
 
 완료 기준은 설치 파일 하나로 앱·Windows CLI를 설치하고, 승인한 Docker Engine을 준비한 뒤 새 터미널의 `docker`·`docker compose` 사용을 실제 확인하는 것이다. ZIP 생성과 개별 CLI 검증은 이 결과를 대신하지 않는다.
 
@@ -44,10 +44,11 @@ Windows CLI는 Windows 파일과 환경 변수를 사용한다. 컨테이너 생
 | 기존 디스크 | 검증 후 4,791,992,320 bytes. 엔진 실행으로 파일 크기·수정 시각은 변경됐으며, 디스크·WSL 등록·기존 리소스는 삭제하지 않음 |
 | 설치 hook | 앞선 payload 없는 fixture 컴파일 종료 0. fixture는 실행하지 않음 |
 | 설치판 제작 | 공식 구성 요소 배치 후 재실행도 종료 1: 원본 win.bmp 입력 열기 실패. 설치 파일 미생성 |
+| 원격 설치판 제작 | GitHub Windows 빌드 성공. 설치 EXE·SHA-256 산출물 생성, 내려받은 압축 파일의 공식 GitHub digest와 내부 EXE 해시 일치 확인. [빌드 결과](https://github.com/seo-gali/dockslate/actions/runs/39590016647) |
 | 실제 CLI | 명령 34개 중 32개 종료 0. 엔진 ID 일치·두 bind 양식의 공백/한글 경로·exec·표준 입력/EOF·Compose config/up/exec/down 확인 |
 | 연결 종료 | 첫 연결의 출력 핸들 상속, exec 반종료, 취소 후 읽기 재시도 오류 수정. logs --follow 취소 후 배타적 엔진 lease 열기 성공 |
 | 파일 복사 | Windows→컨테이너 읽기 접근 거부. 컨테이너→Windows는 첫 새 파일 생성 성공 후 같은 파일 덮어쓰기 접근 거부. 최신 전체 명령은 실패 종료 1로 기록 |
-| 실제 설치·제거 | 설치 파일 미생성으로 실행하지 못함. 깨끗한 PC의 엔진 설치·PATH 등록·취소·제거와 데이터 보존은 미검증 |
+| 실제 설치·제거 | 설치 파일은 생성했으나 사용자 승인 범위에서 자동 실행을 제외해 실행하지 않음. 깨끗한 PC의 엔진 설치·PATH 등록·취소·제거와 데이터 보존은 미검증 |
 
 최신 릴리스 파일의 해시와 각 검사의 실제 실행 범위는 [산출물 기록](installer-engine-integration.json)에 남긴다. 이전 EXE의 네이티브 검사와 일반 프런트엔드 10개 검사는 새 엔진 연결부의 동작 검증으로 간주하지 않는다.
 

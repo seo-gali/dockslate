@@ -4,18 +4,18 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 **현재 상태: 개발 버전. 요청 전체가 검증 완료된 상태는 아닙니다.**
 
-공식 Windows Docker CLI·Compose·Buildx를 포함한 포터블 ZIP을 만들었습니다. 실제 엔진 연결·한글 경로 연결·입출력·로그 취소·Compose 실행을 확인했습니다. 파일 복사는 접근 거부로, NSIS 설치판 제작은 입력 파일 읽기 오류로 실패했습니다. [현재 결과](docs/results/installation-correction.md), [Docker Desktop 조사](docs/research/docker-desktop-4.96.0.md)
+공식 Windows Docker CLI·Compose·Buildx를 포함한 설치 EXE를 별도 Windows 빌드에서 생성하고 해시를 확인했습니다. 실제 설치·제거 검증은 남아 있습니다. 기존 엔진 연결·한글 경로 연결·입출력·로그 취소·Compose 실행을 확인했으며, 개발 PC의 파일 복사는 접근 거부로 실패했습니다. [현재 결과](docs/results/installation-correction.md), [Docker Desktop 조사](docs/research/docker-desktop-4.96.0.md)
 
 ## 실행 · 다운로드
 
 | 찾는 것 | 파일 |
 | --- | --- |
 | 다운로드와 사용 안내 | **[guide.html](guide.html)** — 더블클릭해서 열기 |
+| 설치판 | [DockSlate_0.1.0_x64-setup.exe](downloads/DockSlate_0.1.0_x64-setup.exe) — 앱·Windows CLI 설치 → 승인한 엔진 준비 → 명령 확인 |
 | 앱·CLI·플러그인·안내서가 포함된 ZIP | [DockSlate-0.1.0-windows-x64.zip](downloads/DockSlate-0.1.0-windows-x64.zip) — 압축을 풀고 폴더 안의 DockSlate.exe 실행 |
-| 설치판 | 미생성 — NSIS 컴파일 오류 해결·설치 검증 필요 |
 | 요청별 구현·검증 상태 | [체크리스트](docs/REQUEST_STATUS.md) |
 
-`downloads`는 로컬 빌드 결과라 Git 저장소에 포함하지 않습니다. 소스만 내려받았다면 아래 빌드 절차로 생성하세요. 온라인 배포 링크는 아직 없습니다.
+`downloads`는 로컬 빌드 결과라 Git 저장소에 포함하지 않습니다. 소스만 내려받았다면 아래 빌드 절차로 생성하거나 [Windows 빌드 산출물](https://github.com/seo-gali/dockslate/actions?query=branch%3Abuild%2Finstaller)을 받으세요. GitHub 산출물은 7일 보관하며 정식 릴리스는 아직 없습니다.
 
 1. 설치판은 앱·Windows CLI를 복사하고 Docker Engine 설치 대상을 자동으로 확인합니다. 포터블은 ZIP을 풀고 EXE를 실행합니다.
 2. **Docker Engine 설치 및 시작**의 대상과 영향을 확인하고 동의하면 다운로드·설치·시작을 이어서 진행합니다. 기존 엔진은 소유권을 확인해 재사용하고, 중지 상태면 시작합니다. WSL을 삭제할 필요는 없습니다.
@@ -44,7 +44,7 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 | 확인한 범위 | 결과 |
 | --- | --- |
-| 현재 소스의 Windows EXE·CLI 빌드·TypeScript·Rust 검사 | 통과. 설치판 제작은 파일 접근 오류로 실패. [현재 기록](docs/results/installer-engine-integration.json) |
+| 현재 소스의 Windows EXE·CLI 빌드·TypeScript·Rust 검사 | 통과. 별도 Windows 빌드에서 설치 EXE 생성·SHA-256 확인. 로컬 NSIS 파일 접근 오류는 남음. [현재 기록](docs/results/installer-engine-integration.json) |
 | 새 Windows CLI와 기존 소유 엔진 | 실제 명령 34개 중 32개 성공, 파일 복사 2개 접근 거부로 실패. 로그 취소 후 잠금 해제 통과. 검증 리소스 정리·기존 ID 보존·엔진 중지 복원 확인. [결과](docs/results/native-cli-connection.json) |
 | 배포 중 EXE의 실제 화면·로그 | Pull·실행·접속 주소 9개, 로그 이벤트 13개, 상세·로그 화면 5개 통과. 새 설치 통합 후보의 검증은 아님. [범위](docs/results/interaction-workflows.md) |
 | 최신 배포 프런트엔드 | 브라우저 검사 10개 통과. 언어·탭 유지·상세 코드 지연 로딩. 엔진 미연결 환경. [결과](docs/results/api-performance-browser.json) |

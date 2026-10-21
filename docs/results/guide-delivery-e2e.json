@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-21T10:41:24.892Z",
+  "observedAt": "2026-10-21T11:48:11.946Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -22,9 +22,13 @@
       }
     },
     {
-      "name": "guide.html offers the complete ZIP and hides the obsolete standalone EXE",
+      "name": "guide.html offers the installer and complete ZIP and hides the obsolete standalone EXE",
       "passed": true,
       "evidence": [
+        {
+          "name": "DockSlate_0.1.0_x64-setup.exe",
+          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe"
+        },
         {
           "name": "DockSlate-0.1.0-windows-x64.zip",
           "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
@@ -32,27 +36,38 @@
       ]
     },
     {
-      "name": "dist/guide.html offers the complete ZIP and hides the obsolete standalone EXE",
+      "name": "dist/guide.html offers the installer and complete ZIP and hides the obsolete standalone EXE",
       "passed": true,
       "evidence": [
+        {
+          "name": "DockSlate_0.1.0_x64-setup.exe",
+          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe"
+        },
         {
           "name": "DockSlate-0.1.0-windows-x64.zip",
           "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
         }
       ]
+    },
+    {
+      "name": "Installer button saves the exact verified setup executable without launching it",
+      "passed": true,
+      "evidence": {
+        "sha256": "6952BE7C27C057346E248978822117F2F1EBBA0927B0E73550F40A4FA49BC330"
+      }
     },
     {
       "name": "ZIP download button saves the exact local review package",
       "passed": true,
       "evidence": {
-        "sha256": "5196650BBEEFB5AE252C167D947806FDEA928ACF0CE67D17AA9B14CF1513C0B3"
+        "sha256": "201FA6998D3C85B3D04593AAD227E1BC669450E47D9914A5BF4AB00A61ADFC6D"
       }
     },
     {
       "name": "Guide HTML download opens independently and remains downloadable",
       "passed": true,
       "evidence": {
-        "bytes": 28646,
+        "bytes": 28761,
         "externalScriptOrStyles": 0
       }
     },
@@ -62,6 +77,10 @@
       "evidence": [
         "file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/portable-extract/DockSlate-0.1.0-windows-x64/DockSlate.exe"
       ]
+    },
+    {
+      "name": "Guide exported from the package opens independently without application download links",
+      "passed": true
     },
     {
       "name": "Guide fits a 390px mobile viewport",

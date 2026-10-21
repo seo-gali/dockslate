@@ -67,7 +67,7 @@ Compose 가져오기 제한: 1~16개 서비스, 프로젝트 내부 상대 컨�
 | 디스크 정리·압축 | 정확한 대상 정리, WSL 식별·압축 조건·차단 | 실제 VHDX 압축·UAC 승인 미검증 |
 | 파일로 HTML 열기 | root/dist 진입점에 정적 안내, 자체 완결 HTML 가이드 | 두 file:// 진입점·실제 다운로드·공유 HTML·추출 ZIP 안내·모바일 등 10개 통과 |
 | EXE·ZIP 다운로드 | downloads에 모으는 패키징 추가 | 공개 배포 URL 없음 |
-| 설치 파일 | 설치 중 엔진 대상 자동 확인 → 승인 후 설치·시작 → Windows CLI·Compose·Buildx 자동 검증. 중복 완료 요청 차단 | 앱·CLI 빌드·일반 화면 10개 통과. 제품 NSIS의 파일 포함 오류·실제 자동 설치 검증은 남음 |
+| 설치 파일 | 설치 중 엔진 대상 자동 확인 → 승인 후 설치·시작 → Windows CLI·Compose·Buildx 자동 검증. 중복 완료 요청 차단 | 별도 Windows 빌드로 설치 EXE 생성·해시 대조 완료. 실제 설치·제거는 미검증. 로컬 NSIS 읽기 오류는 남음 |
 | 보안 제품 경고 | 접근 대상 미확인. 신뢰/예외 등록 없음. 사용자 명시 승인 후 지정 EXE 새 프로필 검증 | 경고 대상 확인, 실행 가능한 정상 검사 |
 
 ## 최신 추가 요청
@@ -81,7 +81,7 @@ Compose 가져오기 제한: 1~16개 서비스, 프로젝트 내부 상대 컨�
 | DB 포트 브라우저 열기 수정 | Mongo URI 복사·DB 브라우저 메뉴와 백엔드 차단 통과 |
 | 2초 로그 갱신 대신 감지 | 실제 follow·Tauri 이벤트·창 숨김 종료·전체 재조회0 확인 |
 | Compass 접속 실패 원인 | PC32768 연결 열림,27017 닫힘 확인. 실제 Compass 로그인은 미실행 |
-| Windows docker 명령 없음 | 공식 Windows CLI·Compose·Buildx 해시 검증·ZIP 동봉. 빈 프로필 버전 4개 통과. 실제 명령 34개 중 32개 성공, 파일 복사 2개 접근 거부. bind·입출력·로그 취소 잠금 해제·Compose 실행 통과. 기존 리소스 보존·중지 복원 확인. NSIS 제작과 실제 설치는 미완료. [구성·검증 범위](results/windows-cli-contract.md) |
+| Windows docker 명령 없음 | 공식 Windows CLI·Compose·Buildx 동봉. 빈 프로필 버전 4개 통과. 실제 명령 34개 중 32개 성공, 파일 복사 2개 접근 거부. bind·입출력·로그 취소 잠금 해제·Compose 실행 통과. 기존 리소스 보존·중지 복원 확인. 원격 설치 EXE 생성·해시 대조 완료, 실제 설치는 미검증. [구성·검증 범위](results/windows-cli-contract.md) |
 
 [최신 경로와 검증 범위](results/interaction-workflows.md)
 

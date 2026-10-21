@@ -53,12 +53,16 @@ try {
   for (const guide of ['guide.html', 'dist/guide.html']) {
     await open(guide);
     const artifacts = await evaluate(`[...document.querySelectorAll('[data-artifact]:not([hidden])')].map(a=>({name:a.dataset.artifact,url:a.href}))`);
-    assert(artifacts.length === 1 && artifacts[0].name.endsWith('.zip') && artifacts.every(a => fs.existsSync(fileURLToPath(a.url))), 'Complete ZIP download link missing in ' + guide);
+    assert(artifacts.length === 2 && artifacts.some(a => a.name === 'DockSlate_0.1.0_x64-setup.exe') && artifacts.some(a => a.name.endsWith('.zip')) && artifacts.every(a => fs.existsSync(fileURLToPath(a.url))), 'Installer and complete ZIP download links required in ' + guide);
     assert(await evaluate(`document.querySelector('[data-artifact="DockSlate.exe"]').hidden`), 'An obsolete standalone EXE is offered in ' + guide);
     assert(await evaluate(`document.querySelectorAll('main section').length===8&&document.querySelectorAll('#status tbody tr').length>=24`), 'Guide sections or request audit missing');
-    check(guide + ' offers the complete ZIP and hides the obsolete standalone EXE', artifacts);
+    check(guide + ' offers the installer and complete ZIP and hides the obsolete standalone EXE', artifacts);
   }
   await open('guide.html');
+  const setupName = 'DockSlate_0.1.0_x64-setup.exe';
+  await evaluate(`document.querySelector('[data-artifact="${setupName}"]').click()`);
+  await waitFor('Installer download', () => fs.existsSync(path.join(downloadDir, setupName)) && hash(path.join(downloadDir, setupName)) === hash(path.join(root, 'downloads', setupName)), 15000);
+  check('Installer button saves the exact verified setup executable without launching it', {sha256:hash(path.join(downloadDir, setupName))});
   const zipName = 'DockSlate-0.1.0-windows-x64.zip';
   await evaluate(`document.querySelector('[data-artifact="${zipName}"]').click()`);
   await waitFor('ZIP download', () => fs.existsSync(path.join(downloadDir, zipName)) && hash(path.join(downloadDir, zipName)) === hash(path.join(root, 'downloads', zipName)), 15000);
@@ -78,7 +82,17 @@ try {
     const links = await evaluate(`[...document.querySelectorAll('[data-artifact]:not([hidden])')].map(a=>a.href)`);
     assert(links.length === 1 && fs.existsSync(fileURLToPath(links[0])), 'Extracted package executable link missing');
     assert(hash(fileURLToPath(links[0])) === hash(path.join(root, 'src-tauri/target/release/dockslate.exe')), 'Extracted guide points to an obsolete executable');
+    assert(await evaluate(`document.querySelector('#download-note').textContent.includes('이 폴더의 DockSlate.exe')`), 'Packaged guide does not explain its adjacent executable');
     check('Extracted ZIP guide links to its adjacent executable', links);
+    const sharedDir = path.join(downloadDir, 'packaged-guide');
+    fs.mkdirSync(sharedDir);
+    await send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath:sharedDir, eventsEnabled:true});
+    await evaluate(`document.querySelector('#save-guide').click()`);
+    const shared = path.join(sharedDir, 'DockSlate-사용안내.html');
+    await waitFor('packaged guide export', () => fs.existsSync(shared), 10000);
+    await open(path.relative(root, shared));
+    assert(await evaluate(`!document.querySelector('.download-actions')&&document.querySelector('#download-note').textContent.includes('공유용')`), 'Packaged guide export still requires the application folder');
+    check('Guide exported from the package opens independently without application download links');
   }
   await open('guide.html');
   await send('Emulation.setDeviceMetricsOverride', {width:390,height:844,deviceScaleFactor:1,mobile:true});

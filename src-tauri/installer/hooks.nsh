@@ -43,7 +43,7 @@ Function DockSlateRequireWsl
   ${EndIf}
   Call DockSlateReadWslStatus
   ${If} $DockSlateWslStatus == "0"
-    DetailPrint "Microsoft WSL status check passed. The app verifies WSL 2 and installs its own Docker Engine during first-run setup."
+    DetailPrint "Microsoft WSL status check passed. The app verifies WSL 2 and prepares its Docker Engine during installation."
     ClearErrors
     Return
   ${EndIf}

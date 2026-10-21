@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-21T10:42:53.922Z",
+  "observedAt": "2026-10-21T11:48:42.278Z",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
   "checks": {
@@ -32,9 +32,10 @@
     "logFollowCancellationPassed": true,
     "originalResourcesPreserved": true,
     "guideDeliveryExit": 0,
-    "guideDeliveryChecks": 9,
+    "guideDeliveryChecks": 11,
     "portableInternalFilesVerified": 10,
-    "engineRestoredStopped": true
+    "engineRestoredStopped": true,
+    "remoteInstallerBuildExit": 0
   },
   "artifacts": [
     {
@@ -54,10 +55,10 @@
       "executionMode": "isolated native CLI checks"
     }
   ],
-  "installerFilePresent": false,
-  "blocker": "NSIS cannot open its original win.bmp; no installer produced. Native CLI file upload and overwrite fail with Access is denied. Causes are unconfirmed; security settings unchanged.",
+  "installerFilePresent": true,
+  "blocker": "Installer generated on remote Windows and downloaded with verified GitHub digest. Actual setup/cancel/uninstall not executed. Local NSIS and native host-file access errors remain.",
   "remaining": [
-    "Complete installer packaging and actual setup/cancel/uninstall validation.",
+    "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
     "Verify fresh-PC engine installation, installed PATH, Dockerfile build/load/save, attach and foreign-pipe rejection."
   ],
@@ -165,5 +166,23 @@
     "diskLastWriteUtc": "2026-10-21T10:35:29.6010428Z",
     "dataDeleted": false,
     "securitySettingsChanged": false
+  },
+  "installerDelivery": {
+    "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate_0.1.0_x64-setup.exe",
+    "bytes": 44613792,
+    "sha256": "6952BE7C27C057346E248978822117F2F1EBBA0927B0E73550F40A4FA49BC330",
+    "signatureStatus": "NotSigned",
+    "artifactId": 12342301337,
+    "archiveSha256": "84A7EED286CBF5F2FE9623678A78B889AF547B3CBABAEE0F9DEF93938E013342",
+    "githubDigestVerified": true,
+    "downloadSource": "nightly.link redirect to public GitHub artifact; verified against GitHub digest",
+    "installerExecuted": false,
+    "observedAt": "2026-10-21T11:21:12.4080277+00:00",
+    "repository": "seo-gali/dockslate",
+    "head": "581711c9f2c1c001354e4b54529c65448901aa7e",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/39590016647",
+    "runId": 39590016647,
+    "buildConclusion": "success",
+    "scope": "Initial remote installer verified; guide updated for the next build. Installer has not been executed."
   }
 }

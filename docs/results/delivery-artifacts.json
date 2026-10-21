@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-10-21T19:40:21.2099335+09:00",
+    "generatedAt":  "2026-10-21T20:27:49.8398305+09:00",
     "version":  "0.1.0",
     "platform":  "windows-x64",
     "scope":  "Local review ZIP; no public release upload. Any existing standalone EXE was preserved and is not refreshed by this package.",
@@ -14,8 +14,8 @@
     "files":  [
                   {
                       "file":  "DockSlate-0.1.0-windows-x64.zip",
-                      "bytes":  57868822,
-                      "sha256":  "5196650BBEEFB5AE252C167D947806FDEA928ACF0CE67D17AA9B14CF1513C0B3"
+                      "bytes":  57869846,
+                      "sha256":  "201FA6998D3C85B3D04593AAD227E1BC669450E47D9914A5BF4AB00A61ADFC6D"
                   }
               ]
 }
