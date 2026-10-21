@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-21T11:57:29.666Z",
+  "observedAt": "2026-10-21T12:32:12.7457515+00:00",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
   "checks": {
@@ -35,7 +35,10 @@
     "guideDeliveryChecks": 11,
     "portableInternalFilesVerified": 10,
     "engineRestoredStopped": true,
-    "remoteInstallerBuildExit": 0
+    "remoteInstallerBuildExit": 0,
+    "installerPathPreservationExit": 0,
+    "installerPathPreservationChecks": 8,
+    "correctedInstallerGuideChecks": 11
   },
   "artifacts": [
     {
@@ -56,7 +59,7 @@
     }
   ],
   "installerFilePresent": true,
-  "blocker": "Installer generated on remote Windows and downloaded with verified GitHub digest. Actual setup/cancel/uninstall not executed. Local NSIS and native host-file access errors remain.",
+  "blocker": "Previous setup aborted on a 1199-character user PATH. Corrected installer generated remotely, hash-verified and downloaded through the guide. Full setup/cancel/uninstall not executed by the agent. Local NSIS and native host-file access errors remain.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -169,21 +172,22 @@
   },
   "installerDelivery": {
     "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate_0.1.0_x64-setup.exe",
-    "bytes": 44608775,
-    "sha256": "AC863C1C07465A7377AD08B43F94AA74FC1994211208AAD1935081137C6C4923",
+    "bytes": 44609791,
+    "sha256": "DC633FE8DCFB93AB2CF9968C7F405CEF4C09715267F22B1B54146A0FCB424A72",
     "signatureStatus": "NotSigned",
-    "artifactId": 12342818757,
-    "archiveSha256": "5A9636451A0DB7C12F8CF4D1C6F7D465BA0075079949E7F36FE28D407EBB9606",
+    "artifactId": 12344784063,
+    "archiveSha256": "D99294BF53DF34DD8FCA820DAB598CF050C2C8CC30FFFBDF73336998494073F2",
     "githubDigestVerified": true,
     "downloadSource": "nightly.link redirect to public GitHub artifact; verified against GitHub digest",
     "installerExecuted": false,
-    "observedAt": "2026-10-21T11:55:34.1981022+00:00",
+    "observedAt": "2026-10-21T12:30:51.2020205+00:00",
+    "scope": "PATH-corrected installer built, hash-verified and downloaded through the guide; full setup/uninstall and Compass login not executed by the agent.",
     "repository": "seo-gali/dockslate",
-    "head": "c031978c226549eecf203a4da2422bf96346610a",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/39594732980",
-    "runId": 39594732980,
+    "artifactUrl": "https://github.com/seo-gali/dockslate/actions/runs/39599016660/artifacts/12344784063",
+    "runId": 39599016660,
     "buildConclusion": "success",
-    "artifactUrl": "https://github.com/seo-gali/dockslate/actions/runs/39594732980/artifacts/12342818757",
-    "scope": "Final installer generated and downloaded; installer, GUI setup and fresh-PC engine installation not executed."
-  }
+    "head": "528956828a8f1615bd9603c93ac1950da3cfee88",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/39599016660"
+  },
+  "installerPathRegressionReport": "docs/results/installer-path-e2e.json"
 }

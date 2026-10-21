@@ -1,6 +1,6 @@
 # 설치·Windows Docker 통합 검증
 
-Docker Desktop처럼 앱 설치 과정에서 내부 Linux 엔진과 Windows Docker 명령을 함께 준비한다. 기존 WSL·이미지·볼륨을 유지하며 별도 Linux 배포판을 사용자가 설치하는 과정을 요구하지 않는다. 별도 Windows 빌드에서 설치 EXE를 생성하고 GitHub 압축 파일 digest와 내부 EXE의 SHA-256을 대조해 로컬에 내려받았다. 설치기는 실행하지 않았으며 실제 설치·제거는 미검증이다.
+Docker Desktop처럼 앱 설치 과정에서 내부 Linux 엔진과 Windows Docker 명령을 함께 준비한다. 기존 WSL·이미지·볼륨을 유지하며 별도 Linux 배포판을 사용자가 설치하는 과정을 요구하지 않는다. 사용자 설치에서 발견된 긴 PATH 오류를 수정한 EXE를 별도 Windows 빌드로 생성하고 공식 GitHub digest와 내부 EXE 해시를 대조했다. 수정판은 자동 실행하지 않았으며 전체 설치·제거 완료는 미검증이다.
 
 완료 기준은 설치 파일 하나로 앱·Windows CLI를 설치하고, 승인한 Docker Engine을 준비한 뒤 새 터미널의 `docker`·`docker compose` 사용을 실제 확인하는 것이다. ZIP 생성과 개별 CLI 검증은 이 결과를 대신하지 않는다.
 
@@ -52,15 +52,15 @@ NSIS의 [ReadRegStr 제한](https://nsis.sourceforge.io/Reference/ReadRegStr)과
 | 엔진 없는 CLI | 새 빈 프로필에서 버전 조회 4개 종료 0: Docker 29.8.2, Compose 5.6.0, Buildx 0.38.0 |
 | 기존 엔진 상태 | 승인 후 기존 소유 엔진 시작·검증·중지 복원 성공. 기존 컨테이너 2개·이미지 2개·볼륨 2개·네트워크 3개의 ID 보존 |
 | 기존 디스크 | 검증 후 4,791,992,320 bytes. 엔진 실행으로 파일 크기·수정 시각은 변경됐으며, 디스크·WSL 등록·기존 리소스는 삭제하지 않음 |
-| 설치 hook | 앞선 payload 없는 fixture 컴파일 종료 0. fixture는 실행하지 않음 |
-| 설치판 제작 | 공식 구성 요소 배치 후 재실행도 종료 1: 원본 win.bmp 입력 열기 실패. 설치 파일 미생성 |
-| 원격 설치판 제작 | GitHub Windows 빌드 성공. 설치 EXE·SHA-256 산출물 생성, 내려받은 압축 파일의 공식 GitHub digest와 내부 EXE 해시 일치 확인. [빌드 결과](https://github.com/seo-gali/dockslate/actions/runs/39594732980) |
+| 설치 hook·PATH | Windows PowerShell 5.1의 임시 레지스트리 검증 8개 종료 0. 별도 Windows 환경에서도 같은 검증과 설치·제거 훅 컴파일 통과 |
+| 로컬 설치판 제작 | NSIS File 입력 읽기 오류가 남음. 최신 훅도 user-path.ps1 입력에서 종료 1. 보안 설정은 변경하지 않음 |
+| 원격 설치판 제작 | PATH 수정판 Windows 빌드 성공. 설치 EXE·SHA-256 산출물 생성, 공식 GitHub digest와 내부 EXE 해시 일치 확인. 가이드에서 수정 EXE 다운로드를 포함한 11개 검사 종료 0. [빌드 결과](https://github.com/seo-gali/dockslate/actions/runs/39599016660) |
 | 실제 CLI | 명령 34개 중 32개 종료 0. 엔진 ID 일치·두 bind 양식의 공백/한글 경로·exec·표준 입력/EOF·Compose config/up/exec/down 확인 |
 | 연결 종료 | 첫 연결의 출력 핸들 상속, exec 반종료, 취소 후 읽기 재시도 오류 수정. logs --follow 취소 후 배타적 엔진 lease 열기 성공 |
 | 파일 복사 | Windows→컨테이너 읽기 접근 거부. 컨테이너→Windows는 첫 새 파일 생성 성공 후 같은 파일 덮어쓰기 접근 거부. 최신 전체 명령은 실패 종료 1로 기록 |
-| 실제 설치·제거 | 설치 파일은 생성했으나 사용자 승인 범위에서 자동 실행을 제외해 실행하지 않음. 깨끗한 PC의 엔진 설치·PATH 등록·취소·제거와 데이터 보존은 미검증 |
+| 실제 설치·제거 | 기존 설치판은 사용자 PC의 긴 PATH로 중단됨. 수정판의 전체 설치·취소·제거와 깨끗한 PC의 엔진 설치는 미검증. 자동 실행하지 않음 |
 
-최신 릴리스 파일의 해시와 각 검사의 실제 실행 범위는 [산출물 기록](installer-engine-integration.json)에 남긴다. 이전 EXE의 네이티브 검사와 일반 프런트엔드 10개 검사는 새 엔진 연결부의 동작 검증으로 간주하지 않는다.
+최신 파일의 해시와 검사 범위는 [산출물 기록](installer-engine-integration.json), 긴 PATH 수정과 실제 엔진 조회는 [PATH 검증 기록](installer-path-e2e.json)에 남긴다. 이전 EXE의 네이티브 검사와 가이드 검사는 수정판 전체 설치의 동작 검증으로 간주하지 않는다.
 
 ## REA 근거와 남은 작업
 
