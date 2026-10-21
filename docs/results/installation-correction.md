@@ -44,7 +44,7 @@ Windows CLI는 Windows 파일과 환경 변수를 사용한다. 컨테이너 생
 | 기존 디스크 | 검증 후 4,791,992,320 bytes. 엔진 실행으로 파일 크기·수정 시각은 변경됐으며, 디스크·WSL 등록·기존 리소스는 삭제하지 않음 |
 | 설치 hook | 앞선 payload 없는 fixture 컴파일 종료 0. fixture는 실행하지 않음 |
 | 설치판 제작 | 공식 구성 요소 배치 후 재실행도 종료 1: 원본 win.bmp 입력 열기 실패. 설치 파일 미생성 |
-| 원격 설치판 제작 | GitHub Windows 빌드 성공. 설치 EXE·SHA-256 산출물 생성, 내려받은 압축 파일의 공식 GitHub digest와 내부 EXE 해시 일치 확인. [빌드 결과](https://github.com/seo-gali/dockslate/actions/runs/39590016647) |
+| 원격 설치판 제작 | GitHub Windows 빌드 성공. 설치 EXE·SHA-256 산출물 생성, 내려받은 압축 파일의 공식 GitHub digest와 내부 EXE 해시 일치 확인. [빌드 결과](https://github.com/seo-gali/dockslate/actions/runs/39594732980) |
 | 실제 CLI | 명령 34개 중 32개 종료 0. 엔진 ID 일치·두 bind 양식의 공백/한글 경로·exec·표준 입력/EOF·Compose config/up/exec/down 확인 |
 | 연결 종료 | 첫 연결의 출력 핸들 상속, exec 반종료, 취소 후 읽기 재시도 오류 수정. logs --follow 취소 후 배타적 엔진 lease 열기 성공 |
 | 파일 복사 | Windows→컨테이너 읽기 접근 거부. 컨테이너→Windows는 첫 새 파일 생성 성공 후 같은 파일 덮어쓰기 접근 거부. 최신 전체 명령은 실패 종료 1로 기록 |

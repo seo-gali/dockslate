@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-21T11:48:11.946Z",
+  "observedAt": "2026-10-21T11:55:56.840Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -53,7 +53,7 @@
       "name": "Installer button saves the exact verified setup executable without launching it",
       "passed": true,
       "evidence": {
-        "sha256": "6952BE7C27C057346E248978822117F2F1EBBA0927B0E73550F40A4FA49BC330"
+        "sha256": "AC863C1C07465A7377AD08B43F94AA74FC1994211208AAD1935081137C6C4923"
       }
     },
     {
