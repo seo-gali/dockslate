@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T11:48:17.130Z",
+  "observedAt": "2026-10-22T16:55:46.492Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -7,7 +7,7 @@
       "name": "index.html shows launch guidance and opens local HTML guide",
       "passed": true,
       "evidence": {
-        "text": "DockSlate\n\n컨테이너 관리는 Windows 앱에서 실행합니다.\n\n이 HTML은 앱의 화면 소스입니다. 아래 안내에서 EXE를 내려받거나 사용 방법을 확인하세요.\n\n실행 파일 · 사용 안내 열기\n개발 중이라면 npm run dev로 화면을 열거나 scripts/desktop.ps1 -Mode dev로 데스크톱 앱을 실행하세요.",
+        "text": "DockSlate 앱 화면\n\n이 파일은 DockSlate Windows 앱의 화면 진입점입니다.\n\n컨테이너 관리는 Windows 앱에서 실행하며, 아래 버튼은 로컬 사용 안내서를 엽니다.\n\n로컬 사용 안내 열기\n프로젝트 루트의 site-dist/index.html은 웹사이트 미리보기이고, site-publish/index.html은 GitHub Pages에 게시하는 메인 페이지입니다.\n개발 중이라면 npm run dev로 화면을 열거나 scripts/desktop.ps1 -Mode dev로 데스크톱 앱을 실행하세요.",
         "guide": "file:///D:/01_Programming/08_AI/REA/dockslate/guide.html",
         "root": true
       }
@@ -16,7 +16,7 @@
       "name": "dist/index.html shows launch guidance and opens local HTML guide",
       "passed": true,
       "evidence": {
-        "text": "DockSlate\n\n컨테이너 관리는 Windows 앱에서 실행합니다.\n\n이 HTML은 앱의 화면 소스입니다. 아래 안내에서 EXE를 내려받거나 사용 방법을 확인하세요.\n\n실행 파일 · 사용 안내 열기\n개발 중이라면 npm run dev로 화면을 열거나 scripts/desktop.ps1 -Mode dev로 데스크톱 앱을 실행하세요.",
+        "text": "DockSlate 앱 화면\n\n이 파일은 DockSlate Windows 앱의 화면 진입점입니다.\n\n컨테이너 관리는 Windows 앱에서 실행하며, 아래 버튼은 로컬 사용 안내서를 엽니다.\n\n로컬 사용 안내 열기\n프로젝트 루트의 site-dist/index.html은 웹사이트 미리보기이고, site-publish/index.html은 GitHub Pages에 게시하는 메인 페이지입니다.\n개발 중이라면 npm run dev로 화면을 열거나 scripts/desktop.ps1 -Mode dev로 데스크톱 앱을 실행하세요.",
         "guide": "file:///D:/01_Programming/08_AI/REA/dockslate/dist/guide.html",
         "root": true
       }

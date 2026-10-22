@@ -2,6 +2,25 @@
 
 프로젝트 소개·설치 EXE·포터블 ZIP·사용 방법을 제공하는 정적 페이지다. 데스크톱 앱의 Vite 진입점과 분리하며 Node 내장 기능만으로 빌드한다.
 
+Actions는 GitHub 서버에서 작업을 실행하는 기능이다. `Build Windows installer`는 설치 파일을 제작하고, `Publish download page`는 이미 제공된 Release 파일의 크기·해시를 확인한 뒤 사이트를 빌드·게시한다. 사이트 게시에 설치 빌드 재실행은 필요하지 않다. Pages 워크플로는 수동 실행이며, Actions 화면의 설치 빌드 성공만으로 사이트가 공개되지는 않는다.
+
+GitHub Pages는 별도 게시 워크플로 없이 브랜치의 정적 파일을 게시하는 방식도 지원한다. 이 프로젝트는 생성한 사이트만 업로드하도록 게시 워크플로를 선택했다. [GitHub의 게시 방식 안내](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
+## 어떤 index.html을 쓰나요?
+
+**Pages의 Source는 `GitHub Actions`다.** 루트 폴더를 `Deploy from a branch`로 게시하는 구성이 아니다. 워크플로가 `site-publish/`를 업로드하며, 그 안의 `index.html`이 공개 사이트의 첫 페이지가 된다.
+
+| 파일 | 역할 |
+| --- | --- |
+| 루트 `index.html` | 데스크톱 앱의 Vite·Tauri 진입점 |
+| `dist/index.html` | 빌드한 데스크톱 앱 화면 |
+| `guide.html` | 내려받은 폴더에서 보는 로컬 사용 안내서 |
+| `site/index.html` | 공개 사이트 원본 템플릿 |
+| `site-dist/index.html` | 실제 로컬 파일 다운로드를 확인하는 미리보기 |
+| `site-publish/index.html` | GitHub Pages에 업로드하는 공개용 빌드 결과 |
+
+`site/index.html`에는 버전·파일 링크를 채우는 템플릿 값이 있으므로 빌드한 결과를 사용한다. `site-dist`·`site-publish`는 Git에 넣지 않는다.
+
 ## 로컬 확인
 
 ```powershell
@@ -41,6 +60,7 @@ npm run build:site -- --publish
 | `npm run build:site` 구현 후 | 종료 0, 실제 파일 2개의 크기·SHA-256 확인 후 미리보기 생성 |
 | `npm run build:site -- --publish` | 종료 1, 공개 Release 파일의 실제 404를 감지. 깨진 공개 링크를 가진 사이트 출력·배포 없음 |
 | `node scripts/verify-site.mjs .analysis/site-browser-session.json` | 종료 0, 격리한 실제 Chrome 검사 16개 통과. [결과](results/pages-e2e.json) |
+| `npm run build` · `node scripts/verify-guide.mjs .analysis/guide-browser-readme-session.json` | 종료 0. 앱 진입점의 파일 역할 안내를 빌드하고, 실제 root/dist 로컬 안내·다운로드·공유 HTML 등 11개 확인. [결과](results/guide-delivery-e2e.json) |
 | 실제 브라우저 | 로컬 HTML·/dockslate/ 하위 경로·4개 사용법 탭·화살표/Home/End·명령어 클립보드·FAQ 클릭/Enter·EXE/ZIP 실제 다운로드와 원본 해시 일치 |
 | 반응형·접근성 | 1440·1024·390px에서 해시를 펼쳐도 가로 넘침 없음. 모션 축소 설정·JavaScript 비활성 상태에서도 다운로드/전체 안내 확인 |
 | 시각 확인 | 데스크톱·모바일 실제 캡처 확인. HTML·CSS·JS·자체 로고 합계 33,582바이트. 외부 폰트·래스터 이미지·추적 스크립트 없음 |
