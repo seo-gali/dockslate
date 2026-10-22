@@ -2,11 +2,12 @@ param()
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-& (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
 $downloadRoot = Join-Path $projectRoot 'downloads'
 $packageName = 'DockSlate-0.1.0-windows-x64'
 $exeSource = Join-Path $projectRoot 'src-tauri\target\release\dockslate.exe'
 $launcherSource = Join-Path $projectRoot 'src-tauri\target\release\docker.exe'
+& (Join-Path $PSScriptRoot 'verify-code-signatures.ps1') -Path @($exeSource, $launcherSource) | Out-Null
+& (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
 $nativeRoot = Join-Path $projectRoot 'src-tauri\target\windows-docker'
 $nativeManifest = Get-Content -LiteralPath (Join-Path $nativeRoot 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $buildRecord = Join-Path $projectRoot 'docs\results\installer-engine-integration.json'
@@ -65,7 +66,8 @@ DockSlate 0.1.0 - Windows x64
 4. Extract the complete ZIP and keep DockSlate.exe, bin and libexec together.
 5. bin\docker.exe is the launcher; libexec contains the official Windows CLI and plugins.
 
-Development build, unsigned. The reported security alert remains unresolved.
+Publisher signatures and timestamps were verified during packaging.
+The reported security alert remains unresolved; signing is not a malware scan.
 Do not disable protection or add an exception on this package's advice.
 Deleting this folder does not unregister the WSL distribution or delete volumes.
 '@

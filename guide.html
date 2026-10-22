@@ -8,7 +8,7 @@
   <style>
     :root{color-scheme:light;--bg:#f5f7fb;--paper:#fff;--text:#202c40;--muted:#5c6a7e;--line:#dce3ef;--blue:#2856d8;--soft:#eaf0ff;--warn:#fff6df}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 "Segoe UI",-apple-system,BlinkMacSystemFont,"Malgun Gothic",sans-serif}a{color:var(--blue);text-underline-offset:3px}button,a.button{font:inherit;cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:9px 14px;background:var(--paper);color:var(--text);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}button:hover,a.button:hover{border-color:var(--blue)}button:focus-visible,a:focus-visible{outline:3px solid #7296ff;outline-offset:3px}.primary{background:var(--blue)!important;color:white!important;border-color:var(--blue)!important}.shell{max-width:1160px;margin:auto;padding:28px 30px 72px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:24px;border-bottom:1px solid var(--line)}.brand{font-size:24px;font-weight:750;letter-spacing:-.7px}.caption{font-size:12px;color:var(--muted);margin:0}.actions{display:flex;flex-wrap:wrap;gap:8px}.layout{display:grid;grid-template-columns:188px minmax(0,1fr);gap:36px;margin-top:28px}nav{position:sticky;top:24px;align-self:start;display:grid;gap:5px}nav a{padding:9px 12px;color:var(--muted);border-radius:7px;text-decoration:none}nav a.active{background:var(--soft);color:var(--blue);font-weight:650}.section{scroll-margin-top:24px;margin-bottom:42px}h1{font-size:32px;letter-spacing:-1px;line-height:1.3;margin:0 0 12px}h2{font-size:22px;letter-spacing:-.5px;margin:0 0 16px}h3{font-size:16px;margin:0 0 10px}p{margin:8px 0 16px}.muted{color:var(--muted)}.card{background:var(--paper);border:1px solid var(--line);padding:22px;border-radius:12px;margin:14px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid .card{margin:0}.notice{background:var(--warn);border-left:3px solid #d6a52f;padding:12px 16px;border-radius:5px;margin:16px 0;font-size:13px}.pill{display:inline-block;font-size:11px;font-weight:650;padding:3px 8px;border-radius:5px;white-space:nowrap;background:var(--soft);color:var(--blue)}.pending{background:#fff0d5;color:#875300}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}table{width:100%;border-collapse:collapse;background:var(--paper);font-size:13px;text-align:left}th,td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf1f8;font-weight:650}tr:last-child td{border:0}td:first-child{min-width:120px}ol,ul{padding-left:23px;margin:12px 0}li{margin:7px 0}code{font:12px/1.6 Consolas,monospace;background:#edf1f8;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#152036;color:#e6edff;padding:16px;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 Consolas,monospace}details{border-bottom:1px solid var(--line);padding:13px 0}summary{cursor:pointer;font-weight:600}details p{margin:12px 0 4px;font-size:14px;color:var(--muted)}.steps{counter-reset:step;list-style:none;padding:0}.steps li{position:relative;padding-left:38px;margin:20px 0}.steps li:before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:25px;height:25px;text-align:center;border-radius:50%;background:var(--soft);color:var(--blue);font-size:13px;font-weight:700}.hash{font:11px/1.7 Consolas,monospace;word-break:break-all;color:var(--muted)}footer{border-top:1px solid var(--line);padding-top:20px;font-size:12px;color:var(--muted)}[hidden]{display:none!important}
     @media(max-width:760px){.shell{padding:20px 18px 48px}header{align-items:flex-start;flex-direction:column}.layout{display:block;margin-top:16px}nav{position:static;display:flex;overflow:auto;margin-bottom:24px;gap:5px}nav a{white-space:nowrap;font-size:13px}.grid{grid-template-columns:1fr}h1{font-size:27px}.card{padding:18px}th,td{padding:10px}.actions .button,.actions button{font-size:13px}}
-    @media print{body{background:white;font-size:11px}.shell{padding:0;max-width:none}.layout{display:block}nav,header .actions,.download-actions,#download-note{display:none!important}.section{margin-bottom:22px}.card{break-inside:avoid;padding:12px}h1{font-size:24px}h2{font-size:18px}details p{display:block}details{break-inside:avoid}a{color:inherit;text-decoration:none}table{font-size:11px}th,td{padding:7px}}
+    @media print{body{background:white;font-size:11px}.shell{padding:0;max-width:none}.layout{display:block}nav,header .actions{display:none!important}.section{margin-bottom:22px}.card{break-inside:avoid;padding:12px}h1{font-size:24px}h2{font-size:18px}details p{display:block}details{break-inside:avoid}a{color:inherit;text-decoration:none}table{font-size:11px}th,td{padding:7px}}
   </style>
 </head>
 <body>
@@ -26,16 +26,11 @@
         <h1>Docker Engine을 DockSlate에서 설치하고 사용합니다.</h1>
         <p class="muted">Linux용 Docker Engine은 전용 WSL 2 안에서 실행됩니다. Windows 앱에서 엔진을 설치하고, 컨테이너·Dockerfile·Compose를 관리합니다.</p>
         <div class="card" id="download-card">
-          <h3>Windows x64 다운로드</h3>
+          <h3>설치판·ZIP 제공 중단</h3>
           <p class="muted">설치판은 앱과 Windows 명령 진입점을 설치하고 Docker Engine 설치 대상을 확인합니다. 대상과 영향에 동의하면 엔진·Compose·Buildx 설치와 시작, Windows 명령 검증을 자동으로 진행합니다. Node.js와 Rust는 필요하지 않습니다.</p>
-          <div class="actions download-actions">
-            <a class="button" data-artifact="DockSlate_0.1.0_x64-setup.exe" href="./downloads/DockSlate_0.1.0_x64-setup.exe" download>Windows 설치 EXE</a>
-            <a class="button" data-artifact="DockSlate-0.1.0-windows-x64.zip" href="./downloads/DockSlate-0.1.0-windows-x64.zip" download>포터블 ZIP</a>
-            <a class="button" data-artifact="DockSlate.exe" href="./DockSlate.exe" download hidden>폴더의 EXE</a>
-          </div>
-          <p class="caption" id="download-note">설치 EXE를 실행하면 앱과 Windows 명령을 설치합니다. 포터블은 ZIP 전체를 풀고 DockSlate.exe와 bin·libexec 폴더를 함께 유지하세요.</p>
+          <p class="caption" id="download-note">현재 파일은 미서명입니다. 정식 서명과 보안 확인 전까지 설치판·ZIP 다운로드를 제공하지 않습니다.</p>
           <p class="caption">설치판과 ZIP에는 공식 Windows Docker CLI·Compose·Buildx를 포함합니다. 설치 파일 생성·해시 대조와 기존 엔진의 CLI·Compose 실행을 확인했으며, 실제 설치·제거 검증은 남아 있습니다.</p>
-          <div class="notice"><strong>현재 배포 상태: 개발 버전.</strong> EXE는 서명되지 않았고 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. CLI 검사는 별도 승인과 격리 프로필로 수행했으며, 보안 예외·신뢰 등록은 하지 않았습니다.</div>
+          <div class="notice"><strong>서명·보안 확인 미완료.</strong> 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. 코드 서명은 게시자와 무결성을 확인하며 악성코드 검사를 대신하지 않습니다. 보안 예외·신뢰 등록은 하지 않았습니다.</div>
         </div>
         <div class="grid">
           <div class="card"><h3>필요한 환경</h3><ul><li>Windows 11 x64</li><li>WSL 2.4.10 이상</li><li>Microsoft Edge WebView2 Runtime</li><li>엔진 최초 설치 시 인터넷 연결</li></ul></div>
@@ -110,7 +105,7 @@ docker compose up -d</pre><p>설치 과정에서 엔진 준비와 Windows 명령
           <tr><td>독립 WSL 엔진</td><td>설치·시작·중지</td><td>이전 실제 설치·API·컨테이너·포트·파일 마운트 검증 통과.</td></tr>
           <tr><td>디스크 압축</td><td>사전 조건·차단·승인</td><td><span class="pill pending">미검증</span> 실제 VHDX 압축·UAC 승인.</td></tr>
           <tr><td>보안 경고</td><td>조사 기록</td><td><span class="pill pending">미해결</span> 접근 대상 확인과 정상 보안 검사 남음.</td></tr>
-          <tr><td>실행 파일·배포 형식</td><td>설치판·EXE·ZIP</td><td>기존 EXE 검사와 새 설치판 검증은 구분합니다. 설치판의 실제 설치·제거 및 새 Windows CLI 검사는 별도 기록을 확인하세요.</td></tr>
+          <tr><td>실행 파일·배포 형식</td><td>서명 확인 전 제공 중단</td><td>현재 EXE는 미서명입니다. 정식 서명·보안 확인이 끝나기 전에는 설치판·ZIP을 제공하지 않습니다.</td></tr>
           <tr><td>Pull 진행·완료 팝업</td><td>실제 레이어 상태·닫기 버튼</td><td>기존 고정 digest 실제 Pull·진행 팝업·완료·닫기 통과. 새 이미지 전체 다운로드 검사는 아님.</td></tr>
           <tr><td>실행 폼·생성 후 이동</td><td>선택 이미지 바로 아래 / 목록만 이동</td><td>격리 컨테이너 실제 생성 후 목록 이동·강조, 자동 팝업 없음 확인. 검증 후 해당 컨테이너만 삭제.</td></tr>
           <tr><td>표 열 구분선·너비 조절</td><td>드래그·키보드·너비 저장</td><td>최신 실제 표의 드래그·저장, 별도 브라우저의 키보드·초기화·가로 스크롤 확인.</td></tr>
@@ -127,19 +122,13 @@ docker compose up -d</pre><p>설치 과정에서 엔진 준비와 Windows 명령
   (() => {
     const root = document.querySelector('meta[name="dockslate-root"]').content;
     const packaged = location.pathname.includes('/DockSlate-0.1.0-windows-x64/');
-    document.querySelectorAll('[data-artifact]').forEach(link => {
-      link.hidden = packaged ? link.dataset.artifact !== 'DockSlate.exe' : link.dataset.artifact === 'DockSlate.exe';
-      link.href = packaged ? './DockSlate.exe' : root + 'downloads/' + link.dataset.artifact;
-    });
-    if (packaged && document.querySelector('.download-actions')) document.getElementById('download-note').textContent = '이 폴더의 DockSlate.exe를 실행하세요. bin·libexec 구성 요소를 함께 유지하세요.';
     document.querySelectorAll('[data-doc]').forEach(link => {
       link.href = packaged ? './' + link.dataset.doc : root + link.dataset.doc;
     });
     document.getElementById('print-guide').addEventListener('click', () => { document.querySelectorAll('details').forEach(d => d.open = true); window.print(); });
     document.getElementById('save-guide').addEventListener('click', () => {
       const copy = document.documentElement.cloneNode(true);
-      copy.querySelectorAll('.download-actions').forEach(el => el.remove());
-      copy.querySelector('#download-note').textContent = '공유용 안내서입니다. 프로그램 실행 파일은 제공자에게 EXE 또는 ZIP으로 별도 전달받으세요.';
+      copy.querySelector('#download-note').textContent = '공유용 안내서입니다. 정식 서명·보안 확인 전까지 프로그램 실행 파일은 제공하지 않습니다.';
       copy.querySelectorAll('[data-doc]').forEach(link => { const text = document.createElement('span'); text.textContent = link.textContent; link.replaceWith(text); });
       const url = URL.createObjectURL(new Blob(['<!doctype html>\n' + copy.outerHTML], {type:'text/html;charset=utf-8'}));
       const a = document.createElement('a'); a.href = url; a.download = 'DockSlate-사용안내.html'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 10000);

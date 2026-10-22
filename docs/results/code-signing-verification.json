@@ -1,0 +1,73 @@
+{
+    "observedAt":  "2026-10-22T20:31:26.3468357+09:00",
+    "completed":  true,
+    "targetExecutablesLaunched":  false,
+    "checks":  [
+                   {
+                       "name":  "Trusted timestamped reference accepted",
+                       "passed":  true,
+                       "evidence":  {
+                                        "file":  "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+                                        "status":  "Valid",
+                                        "subject":  "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+                                        "thumbprint":  "6ACE61BAE3F09F4DD2697806D73E022CBFE70EB4",
+                                        "timestamped":  true,
+                                        "sha256":  "431EE314C83988CACDA86606356FD321B75AE0093481B97E3B738E99C412F2A0"
+                                    }
+                   },
+                   {
+                       "name":  "Missing identity rejected",
+                       "passed":  true,
+                       "rejection":  "DOCKSLATE_SIGNER_SUBJECT is not configured. Distribution is blocked; no signing identity has been selected."
+                   },
+                   {
+                       "name":  "Different publisher rejected",
+                       "passed":  true,
+                       "rejection":  "Distribution blocked: C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe was signed by a different publisher."
+                   },
+                   {
+                       "name":  "Actual unsigned installer rejected",
+                       "passed":  true,
+                       "rejection":  "Distribution blocked: D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate_0.1.0_x64-setup.exe has no valid embedded Authenticode signature (NotSigned)."
+                   },
+                   {
+                       "name":  "Missing file rejected",
+                       "passed":  true,
+                       "rejection":  "Missing executable: D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\no-such-signing-file.exe"
+                   },
+                   {
+                       "name":  "Batch containing unsigned installer rejected",
+                       "passed":  true,
+                       "rejection":  "Distribution blocked: D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate_0.1.0_x64-setup.exe has no valid embedded Authenticode signature (NotSigned)."
+                   },
+                   {
+                       "name":  "Modified signed copy rejected",
+                       "passed":  true,
+                       "rejection":  "Distribution blocked: D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\signature-check-db578715b27348d8935199a395f1e3cd\\tampered-signtool.exe has no valid embedded Authenticode signature (HashMismatch)."
+                   },
+                   {
+                       "name":  "Installer entry blocks missing identity before build",
+                       "passed":  true,
+                       "rejection":  "DOCKSLATE_SIGNER_SUBJECT is not configured. Installer distribution is blocked pending a verified signing identity."
+                   },
+                   {
+                       "name":  "ZIP entry blocks missing identity before packaging",
+                       "passed":  true,
+                       "rejection":  "DOCKSLATE_SIGNER_SUBJECT is not configured. Distribution is blocked; no signing identity has been selected."
+                   },
+                   {
+                       "name":  "Configured subject cannot make unsigned ZIP payload pass",
+                       "passed":  true,
+                       "rejection":  "Distribution blocked: D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe has no valid embedded Authenticode signature (NotSigned)."
+                   },
+                   {
+                       "name":  "Existing installer and ZIP remain unchanged",
+                       "passed":  true,
+                       "sha256":  [
+                                      "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094",
+                                      "5B480C1BFF505D5E8A9FDDEBFEA33BFCE60681733B979CB358AE8ADFACEADB8A"
+                                  ]
+                   }
+               ],
+    "failure":  null
+}

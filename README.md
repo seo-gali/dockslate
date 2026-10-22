@@ -4,18 +4,17 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 **현재 상태: 개발 버전. 요청 전체가 검증 완료된 상태는 아닙니다.**
 
-공식 Windows Docker CLI·Compose·Buildx를 포함한 설치 EXE를 제공합니다. 사용자 설치에서 발견한 긴 PATH 등록 오류를 수정하고 임시 레지스트리에서 등록·재설치·제거를 검증했습니다. 전체 설치·제거 완료 검증은 남아 있습니다. 기존 엔진 연결·한글 경로 연결·입출력·로그 취소·Compose 실행을 확인했으며, 개발 PC의 파일 복사는 접근 거부로 실패했습니다. [현재 결과](docs/results/installation-correction.md), [Docker Desktop 조사](docs/research/docker-desktop-4.96.0.md)
+**설치판·ZIP 배포 중단:** 현재 파일은 미서명이며 브라우징 데이터 접근 경고의 원인도 미확인입니다. 정식 서명과 보안 확인이 끝나기 전까지 설치용 다운로드로 안내하지 않습니다. [서명 상태와 완료 조건](docs/results/code-signing.md)
 
 ## 실행 · 다운로드
 
 | 찾는 것 | 파일 |
 | --- | --- |
 | 다운로드와 사용 안내 | **[guide.html](guide.html)** — 더블클릭해서 열기 |
-| 설치판 | [DockSlate_0.1.0_x64-setup.exe](downloads/DockSlate_0.1.0_x64-setup.exe) — 앱·Windows CLI 설치 → 승인한 엔진 준비 → 명령 확인 |
-| 앱·CLI·플러그인·안내서가 포함된 ZIP | [DockSlate-0.1.0-windows-x64.zip](downloads/DockSlate-0.1.0-windows-x64.zip) — 압축을 풀고 폴더 안의 DockSlate.exe 실행 |
+| 설치판·포터블 ZIP | 서명·보안 확인 전 제공 중단 |
 | 요청별 구현·검증 상태 | [체크리스트](docs/REQUEST_STATUS.md) |
 
-`downloads`는 로컬 빌드 결과라 Git 저장소에 포함하지 않습니다. 소스만 내려받았다면 아래 빌드 절차로 생성하거나 [Windows 빌드 산출물](https://github.com/seo-gali/dockslate/actions?query=branch%3Abuild%2Finstaller)을 받으세요. GitHub 산출물은 7일 보관하며 정식 릴리스는 아직 없습니다.
+기존 `downloads` 파일과 이전 GitHub 산출물은 미서명 조사 자료입니다. 정식 릴리스는 없습니다. 새 설치판·ZIP 제작과 CI 업로드는 지정 게시자의 유효한 Authenticode 서명·타임스탬프 검증을 통과해야 합니다. 개발용 `--no-bundle` 빌드는 별도로 사용할 수 있습니다.
 
 1. 설치판은 앱·Windows CLI를 복사하고 Docker Engine 설치 대상을 자동으로 확인합니다. 포터블은 ZIP을 풀고 EXE를 실행합니다.
 2. **Docker Engine 설치 및 시작**의 대상과 영향을 확인하고 동의하면 다운로드·설치·시작을 이어서 진행합니다. 기존 엔진은 소유권을 확인해 재사용하고, 중지 상태면 시작합니다. WSL을 삭제할 필요는 없습니다.
@@ -24,7 +23,7 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 필수 환경: Windows 11 x64, WSL 2.4.10 이상, WebView2. Node.js·Rust는 앱 사용자에게 필요하지 않습니다. 엔진 최초 설치에는 인터넷이 필요합니다.
 
-> **보안 확인 미완료:** EXE는 서명되지 않았습니다. 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. 새 후보의 CLI 검사는 별도 승인과 격리 프로필로 수행했습니다. 보안 예외·신뢰 등록은 하지 않았습니다. [확인한 내용](docs/results/browsing-data-alert.md)
+> **보안 확인 미완료:** 서명은 게시자와 파일 무결성을 확인하는 수단이며 악성코드 검사 결과를 대신하지 않습니다. 보안 예외·신뢰 등록은 하지 않았습니다. [접근 경고 조사](docs/results/browsing-data-alert.md)
 
 `index.html`과 `dist/index.html`은 앱 화면의 진입점입니다. 파일로 열면 실행·사용 안내가 표시됩니다. 엔진 관리는 Windows EXE에서 동작합니다.
 
@@ -63,10 +62,9 @@ npm ci
 .\scripts\prepare-windows-docker.ps1
 .\scripts\desktop.ps1 -Mode build
 .\scripts\build-cli.ps1
-npm run package:local
 ```
 
-결과: `downloads/DockSlate-0.1.0-windows-x64.zip` 안에 앱·bin·libexec를 함께 포함합니다. 기존 단독 EXE 다운로드는 갱신하지 않습니다. 패키징은 앱을 실행하거나 WSL을 변경하지 않습니다.
+결과는 `src-tauri/target/release`의 개발용 미서명 EXE입니다. 배포용 파일이 아닙니다. `npm run package:local`과 설치판 제작은 서명 검증에 실패하면 중단합니다. 패키징은 앱을 실행하거나 WSL을 변경하지 않습니다.
 
 Windows 구성 준비는 기본 오프라인 검사입니다. 승인한 공식 배포본과 고정 해시가 캐시에 있어야 합니다. 최초 다운로드와 CLI ZIP의 SHA-256 고정 절차는 [준비 스크립트](scripts/prepare-windows-docker.ps1), [구성 manifest](scripts/windows-docker.manifest.json)를 확인하세요.
 
