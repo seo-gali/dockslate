@@ -1,0 +1,75 @@
+{
+  "observedAt": "2026-10-22T22:21:35.138Z",
+  "target": "Actual published GitHub Pages in isolated Chrome; no native application or engine",
+  "completed": true,
+  "checks": [
+    {
+      "name": "Public homepage serves the corrected static source, not the application fallback",
+      "passed": true,
+      "evidence": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Public website loads its real styles and working usage tabs",
+      "passed": true,
+      "evidence": [
+        {
+          "kind": "installer",
+          "disabled": false
+        },
+        {
+          "kind": "zip",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "Actual public installer button downloads the exact verified binary without execution",
+      "passed": true,
+      "evidence": {
+        "file": "DockSlate_0.1.0_x64-setup.exe",
+        "bytes": 44620219,
+        "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094"
+      }
+    },
+    {
+      "name": "Actual public zip button downloads the exact verified binary without execution",
+      "passed": true,
+      "evidence": {
+        "file": "DockSlate-0.1.0-windows-x64.zip",
+        "bytes": 58057355,
+        "sha256": "98DEED8FCF148534A7E7C5490F7500E54D4D99EEB5B3C780F40E77EFC2AF54D7"
+      }
+    },
+    {
+      "name": "Public engine fee explanation links to the complete current notices",
+      "passed": true,
+      "evidence": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Public usage guide opens directly and has no export, print or download relay controls",
+      "passed": true
+    },
+    {
+      "name": "Guide returns to the complete homepage without the old redirect loop",
+      "passed": true
+    },
+    {
+      "name": "Google verification source is publicly served unchanged",
+      "passed": true,
+      "evidence": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Public desktop/mobile pages have no horizontal overflow or JavaScript exceptions",
+      "passed": true
+    }
+  ],
+  "failure": null,
+  "url": "https://seo-gali.github.io/dockslate/",
+  "sourceCommit": "9cf63d0"
+}

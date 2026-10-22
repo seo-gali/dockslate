@@ -47,8 +47,10 @@ npm run build:site -- --publish
 
 README의 [프로그램 캡처](assets/dockslate-disk.png)는 [B66E9FE7 실제 Windows 앱 검증](results/table-layout.md) 당시 화면이다. 웹페이지 작업 때문에 EXE·엔진을 다시 실행하지 않는다.
 
-검증 기록: [사이트](results/pages-e2e.json) · [로컬 안내서](results/guide-delivery-e2e.json). 공개 URL 확인과 로컬 브라우저 검증은 구분해 기록한다.
+검증 기록: [사이트](results/pages-e2e.json) · [로컬 안내서](results/guide-delivery-e2e.json) · [실제 공개 URL](results/public-pages-e2e.json). 공개 URL 확인과 로컬 브라우저 검증은 구분해 기록한다.
 
 최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 24개와 독립 사용 안내서 검사 8개 통과. 루트·기존 게시 폴더의 EXE·ZIP 실제 HTTP 응답과 크기·SHA-256 일치, 최신 고지 파일·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다. 실제 Vite 개발 서버도 src 앱 HTML·변환한 main.tsx·React 의존성 3개를 HTTP 200으로 제공하고 정상 종료했다.
+
+공개 사이트도 새 격리 Chrome에서 9개 검사를 통과했다. EXE·ZIP 버튼으로 실제 다운로드한 파일의 크기·SHA-256, 최신 고지 원문, Google 확인 파일 HTTP 200, 안내서 왕복, PC·모바일 레이아웃을 확인했다. 위 사이트·안내서 캡처는 이 공개 URL에서 저장했다. EXE 실행·설치나 Linux 패키지의 라이선스 검토를 수행한 결과는 아니다.
 
 [GitHub Pages 게시 방식](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
