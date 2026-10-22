@@ -50,9 +50,13 @@ const server = http.createServer((request, response) => {
   catch { response.writeHead(400).end(); return; }
   if (!pathname.startsWith('/dockslate/')) { response.writeHead(404).end(); return; }
   const published = pathname.startsWith('/dockslate/published/');
-  const directory = published ? path.join(root, 'docs') : output;
-  const prefix = published ? '/dockslate/published/' : '/dockslate/';
-  const file = path.resolve(directory, pathname.slice(prefix.length) || 'index.html');
+  const rootSite = pathname.startsWith('/dockslate/root/');
+  const application = pathname.startsWith('/dockslate/app/');
+  const directory = application ? path.join(root, 'dist') : rootSite ? root : published ? path.join(root, 'docs') : output;
+  const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : published ? '/dockslate/published/' : '/dockslate/';
+  const relative = pathname.slice(prefix.length) || 'index.html';
+  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg'].includes(relative)) { response.writeHead(404).end(); return; }
+  const file = path.resolve(directory, relative);
   if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
   const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(file)] ?? 'application/octet-stream';
   response.setHeader('Content-Type', type);
@@ -79,16 +83,24 @@ try {
   const verification = await fetch(origin + '/dockslate/google474f5421d7424578.html');
   assert(verification.status === 200 && await verification.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Google ownership file is not served unchanged');
   check('Google ownership file is served unchanged under the project URL');
-  await navigate(pageUrl + 'guide.html');
-  assert(await evaluate(`document.querySelectorAll('#quickstart li').length===3&&document.querySelector('main').innerText.length<900&&document.querySelectorAll('[data-artifact]:not([hidden])').length===0&&document.querySelector('#site-download').href===${JSON.stringify(pageUrl + '#download')}&&[...document.querySelectorAll('[data-doc]')].every(a=>a.href.startsWith('https://github.com/seo-gali/dockslate/'))`), 'Online guide is verbose or points to missing local downloads/documents');
-  await evaluate(`document.querySelector('#site-download').click()`);
-  await waitFor('Online guide returns to website downloads', () => evaluate(`location.href===${JSON.stringify(pageUrl + '#download')}`), 10000);
-  check('Compact online guide links to website downloads and repository documents');
+  await evaluate(`document.querySelector('.footer a[href="./guide.html"]').click()`);
+  await waitFor('Usage guide opens directly', () => evaluate(`!!document.querySelector('#quickstart')`), 10000);
+  assert(await evaluate(`document.querySelectorAll('#quickstart li').length===3&&!document.querySelector('button,#site-download,[data-artifact]')&&[...document.querySelectorAll('footer a')].every(a=>a.href.startsWith('https://github.com/seo-gali/dockslate/blob/main/'))`), 'Guide still has export/print/download relay controls');
+  check('Usage page opens directly without export, print or download relay controls');
   await navigate(pageUrl + 'published/');
   assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('script[src*="main.tsx"]')&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1&&[...document.querySelectorAll('[data-download]')].every(a=>a.matches('a[href^="https://github.com/seo-gali/dockslate/releases/download/"]')||a.matches('button:disabled'))`), 'main/docs static page is broken or offers missing files');
   const publicFile = await fetch(pageUrl + 'published/google474f5421d7424578.html');
   assert(publicFile.status === 200 && await publicFile.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Published Google ownership file changed');
   check('main/docs static page works with available links or disabled missing downloads and exact Google verification');
+  await navigate(pageUrl + 'root/');
+  assert(await evaluate(`!!document.querySelector('#features')&&document.querySelectorAll('[data-download]').length===2&&!document.querySelector('.file-start')&&getComputedStyle(document.body).backgroundColor==='rgb(11, 15, 20)'&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1`), 'Repository root still serves an empty app fallback or has broken CSS/script paths');
+  await evaluate(`document.querySelector('.footer a[href="./guide.html"]').click()`);
+  await waitFor('Root website usage navigation', () => evaluate(`!!document.querySelector('#quickstart')&&!document.querySelector('#site-download')`), 10000);
+  check('Repository root serves the complete styled website and usage without a redirect loop');
+  await navigate(pageUrl + 'app/');
+  await waitFor('Built desktop React application renders', () => evaluate(`!!document.querySelector('.app-shell .sidebar')`), 10000);
+  assert(await evaluate(`!!document.querySelector('#root .app-shell')&&!document.querySelector('[data-download]')`), 'Desktop build was replaced by the website');
+  check('Separated desktop production build still renders the actual React application');
   await navigate(pageUrl);
   const brokenAnchors = await evaluate(`[...document.querySelectorAll('a[href^="#"]')].map(a=>a.hash).filter(hash=>!document.getElementById(hash.slice(1)))`);
   assert(brokenAnchors.length === 0, 'Broken in-page links.');

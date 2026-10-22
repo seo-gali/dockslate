@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T21:50:37.127Z",
+  "observedAt": "2026-10-22T22:01:31.968Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -16,11 +16,19 @@
       "passed": true
     },
     {
-      "name": "Compact online guide links to website downloads and repository documents",
+      "name": "Usage page opens directly without export, print or download relay controls",
       "passed": true
     },
     {
       "name": "main/docs static page works with available links or disabled missing downloads and exact Google verification",
+      "passed": true
+    },
+    {
+      "name": "Repository root serves the complete styled website and usage without a redirect loop",
+      "passed": true
+    },
+    {
+      "name": "Separated desktop production build still renders the actual React application",
       "passed": true
     },
     {

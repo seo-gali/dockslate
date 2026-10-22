@@ -58,6 +58,12 @@ fs.writeFileSync(path.join(output, 'index.html'), html);
 for (const file of ['styles.css', 'main.js', 'icon.svg']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
 for (const file of ['guide.html', 'google474f5421d7424578.html']) fs.copyFileSync(path.join(root, file), path.join(output, file));
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
+if (production) {
+  let homepage = html;
+  for (const file of ['styles.css', 'main.js', 'icon.svg']) homepage = homepage.replaceAll(`./${file}`, `./site/${file}`);
+  fs.writeFileSync(path.join(root, 'index.html'), homepage);
+  fs.writeFileSync(path.join(root, '.nojekyll'), '');
+}
 if (!production) {
   fs.mkdirSync(path.join(output, 'downloads'));
   for (const key of ['installer', 'zip']) {

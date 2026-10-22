@@ -1,97 +1,59 @@
 {
-  "observedAt": "2026-10-22T21:50:38.820Z",
+  "observedAt": "2026-10-22T22:01:33.495Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
     {
-      "name": "index.html shows launch guidance and opens local HTML guide",
+      "name": "guide.html opens as a compact standalone usage page without download/print/export controls",
       "passed": true,
       "evidence": {
-        "text": "DockSlate\n빠른 시작",
-        "guide": "file:///D:/01_Programming/08_AI/REA/dockslate/guide.html",
-        "root": true
+        "steps": 3,
+        "details": 4,
+        "open": 0,
+        "buttons": 0,
+        "external": 0
       }
     },
     {
-      "name": "dist/index.html shows launch guidance and opens local HTML guide",
+      "name": "dist/guide.html opens as a compact standalone usage page without download/print/export controls",
       "passed": true,
       "evidence": {
-        "text": "DockSlate\n빠른 시작",
-        "guide": "file:///D:/01_Programming/08_AI/REA/dockslate/dist/guide.html",
-        "root": true
+        "steps": 3,
+        "details": 4,
+        "open": 0,
+        "buttons": 0,
+        "external": 0
       }
     },
     {
-      "name": "guide.html offers the installer and complete ZIP with unsigned and unresolved-alert notices",
+      "name": "docs/guide.html opens as a compact standalone usage page without download/print/export controls",
       "passed": true,
-      "evidence": [
-        {
-          "name": "DockSlate_0.1.0_x64-setup.exe",
-          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe"
-        },
-        {
-          "name": "DockSlate-0.1.0-windows-x64.zip",
-          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
-        }
-      ]
+      "evidence": {
+        "steps": 3,
+        "details": 4,
+        "open": 0,
+        "buttons": 0,
+        "external": 0
+      }
     },
     {
-      "name": "dist/guide.html offers the installer and complete ZIP with unsigned and unresolved-alert notices",
-      "passed": true,
-      "evidence": [
-        {
-          "name": "DockSlate_0.1.0_x64-setup.exe",
-          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe"
-        },
-        {
-          "name": "DockSlate-0.1.0-windows-x64.zip",
-          "url": "file:///D:/01_Programming/08_AI/REA/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip"
-        }
-      ]
-    },
-    {
-      "name": "Compact guide keeps advanced help collapsed and supports keyboard disclosure",
+      "name": "Root index is the complete website and opens usage without a download redirect",
       "passed": true
     },
     {
-      "name": "Installer button saves the exact setup executable without launching it",
-      "passed": true,
-      "evidence": {
-        "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094"
-      }
-    },
-    {
-      "name": "ZIP download button saves the exact local development package",
-      "passed": true,
-      "evidence": {
-        "sha256": "98DEED8FCF148534A7E7C5490F7500E54D4D99EEB5B3C780F40E77EFC2AF54D7"
-      }
-    },
-    {
-      "name": "Guide HTML download opens independently and remains downloadable",
-      "passed": true,
-      "evidence": {
-        "bytes": 7930,
-        "externalScriptOrStyles": 0
-      }
-    },
-    {
-      "name": "Extracted ZIP guide links to its adjacent unsigned development executable",
-      "passed": true,
-      "evidence": [
-        "file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/portable-extract/DockSlate-0.1.0-windows-x64/DockSlate.exe"
-      ]
-    },
-    {
-      "name": "Guide exported from the package opens independently without application download links",
+      "name": "Desktop React entry remains separate in src/index.html and dist/index.html",
       "passed": true
     },
     {
-      "name": "Guide fits a 390px mobile viewport",
+      "name": "Usage help opens and closes with keyboard and mouse",
       "passed": true
     },
     {
-      "name": "No JavaScript exceptions in local guide or downloaded standalone copy",
+      "name": "Usage page fits a 390px viewport",
+      "passed": true
+    },
+    {
+      "name": "No JavaScript exceptions in website or standalone usage pages",
       "passed": true
     }
   ],

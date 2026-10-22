@@ -20,7 +20,7 @@
 
 ## 산출물
 
-- [새 설치 EXE](../../downloads/DockSlate_0.1.0_x64-setup.exe)는 [Windows 빌드](https://github.com/seo-gali/dockslate/actions/runs/39767569820)에서 생성했다. 압축 파일의 공식 GitHub digest와 내부 EXE SHA-256을 확인했다.
+- [새 설치 EXE](../../downloads/DockSlate_0.1.0_x64-setup.exe)의 공식 GitHub digest와 내부 EXE SHA-256을 확인했다. 빌드 출처는 [산출물 기록](installer-engine-integration.json)에 남긴다.
 - [새 ZIP](../../downloads/DockSlate-0.1.0-windows-x64.zip)도 같은 표 수정으로 갱신하고 내부 구성 요소 10개의 해시를 대조했다.
 - 최종 `tauri build --no-bundle --ci -- --locked --offline`, `cargo check --bins --locked --offline`, `package-local.ps1`은 종료 0이다. 가이드에서 실제 새 EXE·ZIP·공유 HTML 다운로드 등 11개 검사도 종료 0이다.
 - 엔진은 작업 전후 모두 중지 상태다. 최종 EXE의 GUI 재실행과 설치·제거는 하지 않았으며 서명·보안 경고 원인은 해결된 것으로 표시하지 않는다.

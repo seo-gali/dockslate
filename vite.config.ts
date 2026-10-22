@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  root: 'src',
   base: './',
   clearScreen: false,
   server: {
@@ -9,5 +10,5 @@ export default defineConfig({
     strictPort: true,
     watch: { ignored: ['**/.analysis/**', '**/.tools/**', '**/src-tauri/**', '**/docs/**'] },
   },
-  build: { target: 'es2022', sourcemap: false },
+  build: { outDir: '../dist', emptyOutDir: true, target: 'es2022', sourcemap: false },
 });

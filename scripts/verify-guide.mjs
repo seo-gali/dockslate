@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL, fileURLToPath } from 'node:url';
-import { createHash, randomUUID } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
 import { waitFor } from './native-verification.mjs';
 
 const root = path.resolve('.');
@@ -39,88 +38,45 @@ const open = async relative => {
   await send('Page.navigate', {url});
   await waitFor(relative, () => evaluate(`location.href===${JSON.stringify(url)}&&document.readyState==='complete'`), 15000);
 };
-const hash = file => createHash('sha256').update(fs.readFileSync(file)).digest('hex').toUpperCase();
-const downloadDir = path.join(root, '.analysis', 'guide-download-test-' + randomUUID());
-fs.mkdirSync(downloadDir, {recursive:true});
 try {
   await send('Runtime.enable'); await send('Page.enable');
-  await send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath:downloadDir, eventsEnabled:true});
-  for (const entry of ['index.html', 'dist/index.html']) {
-    await open(entry);
-    const state = await evaluate(`({text:document.querySelector('.file-start')?.innerText,guide:document.querySelector('.file-start a')?.href,root:!!document.querySelector('#root')})`);
-    assert(state.text?.includes('DockSlate') && state.root && fs.existsSync(fileURLToPath(state.guide)), entry + ' missing real guide link');
-    await evaluate(`document.querySelector('.file-start a').click()`);
-    await waitFor('guide link navigation', () => evaluate(`!!document.querySelector('#save-guide')`), 10000);
-    check(entry + ' shows launch guidance and opens local HTML guide', state);
-  }
-  for (const guide of ['guide.html', 'dist/guide.html']) {
+  for (const guide of ['guide.html', 'dist/guide.html', 'docs/guide.html']) {
     await open(guide);
-    const artifacts = await evaluate(`[...document.querySelectorAll('[data-artifact]:not([hidden])')].map(a=>({name:a.dataset.artifact,url:a.href}))`);
-    assert(artifacts.length === 2 && artifacts.some(a => a.name === 'DockSlate_0.1.0_x64-setup.exe') && artifacts.some(a => a.name.endsWith('.zip')) && artifacts.every(a => fs.existsSync(fileURLToPath(a.url))), 'Installer and complete ZIP download links required in ' + guide);
-    assert(await evaluate(`document.querySelector('[data-artifact="DockSlate.exe"]').hidden`), 'An obsolete standalone EXE is offered in ' + guide);
-    assert(await evaluate(`document.querySelector('#download-note').textContent.includes('미서명')&&document.querySelector('.notice').textContent.includes('미확인')`), 'Unsigned status or unresolved alert is not explained in ' + guide);
-    assert(await evaluate(`document.querySelectorAll('#quickstart li').length===3&&!document.querySelector('#status')&&document.querySelectorAll('details').length===4&&document.querySelectorAll('details[open]').length===0&&document.querySelector('main').innerText.length<900`), 'Guide is no longer a compact start page');
-    check(guide + ' offers the installer and complete ZIP with unsigned and unresolved-alert notices', artifacts);
+    const state = await evaluate(`({steps:document.querySelectorAll('#quickstart li').length,details:document.querySelectorAll('details').length,open:document.querySelectorAll('details[open]').length,buttons:document.querySelectorAll('button,#site-download,[data-artifact]').length,external:document.querySelectorAll('script[src],link[rel="stylesheet"]').length})`);
+    assert(state.steps===3 && state.details===4 && state.open===0 && state.buttons===0 && state.external===0, 'Guide still contains controls or lacks standalone usage: '+guide);
+    check(guide+' opens as a compact standalone usage page without download/print/export controls', state);
   }
-  await open('guide.html');
+  await open('index.html');
+  assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('.file-start')&&!!document.getElementById('features')`), 'Root index is still an application fallback');
+  await evaluate(`document.querySelector('.footer a[href="./guide.html"]').click()`);
+  await waitFor('Root website opens usage directly',()=>evaluate(`!!document.querySelector('#quickstart')&&!document.querySelector('#site-download')`),10000);
+  check('Root index is the complete website and opens usage without a download redirect');
+  const application=fs.readFileSync('src/index.html','utf8');
+  const built=fs.readFileSync('dist/index.html','utf8');
+  assert(application.includes('id="root"')&&application.includes('src="./main.tsx"')&&built.includes('src="./assets/')&&!built.includes('data-download='),'Desktop application bootstrap was mixed with website markup');
+  check('Desktop React entry remains separate in src/index.html and dist/index.html');
   await evaluate(`document.querySelector('details summary').focus()`);
-  await send('Input.dispatchKeyEvent', {type:'keyDown',key:'Enter',code:'Enter',text:'\r'});
-  await send('Input.dispatchKeyEvent', {type:'keyUp',key:'Enter',code:'Enter'});
-  assert(await evaluate(`document.querySelector('details').open&&document.querySelector('details').innerText.includes('docker ps')`), 'CLI help does not open with the keyboard');
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',text:'\r'});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter'});
+  assert(await evaluate(`document.querySelector('details').open&&document.querySelector('details').innerText.includes('docker ps')`),'Keyboard help expansion failed');
   await evaluate(`document.querySelector('details summary').click()`);
-  assert(await evaluate(`!document.querySelector('details').open`), 'CLI help does not close');
-  check('Compact guide keeps advanced help collapsed and supports keyboard disclosure');
-  const setupName = 'DockSlate_0.1.0_x64-setup.exe';
-  await evaluate(`document.querySelector('[data-artifact="${setupName}"]').click()`);
-  await waitFor('Installer download', () => fs.existsSync(path.join(downloadDir, setupName)) && hash(path.join(downloadDir, setupName)) === hash(path.join(root, 'downloads', setupName)), 15000);
-  check('Installer button saves the exact setup executable without launching it', {sha256:hash(path.join(downloadDir, setupName))});
-  const zipName = 'DockSlate-0.1.0-windows-x64.zip';
-  await evaluate(`document.querySelector('[data-artifact="${zipName}"]').click()`);
-  await waitFor('ZIP download', () => fs.existsSync(path.join(downloadDir, zipName)) && hash(path.join(downloadDir, zipName)) === hash(path.join(root, 'downloads', zipName)), 15000);
-  check('ZIP download button saves the exact local development package', {sha256:hash(path.join(downloadDir, zipName))});
-  await evaluate(`document.querySelector('#save-guide').click()`);
-  const saved = path.join(downloadDir, 'DockSlate-사용안내.html');
-  await waitFor('standalone HTML download', () => fs.existsSync(saved), 10000);
-  const html = fs.readFileSync(saved, 'utf8');
-  assert(html.startsWith('<!doctype html>') && !html.includes('data-artifact='), 'Shared guide still offers application downloads');
-  await open(path.relative(root, saved));
-  assert(await evaluate(`!!document.querySelector('#save-guide')&&document.querySelector('#download-note').textContent.includes('공유용')`), 'Downloaded guide does not open standalone');
-  await evaluate(`document.querySelector('#save-guide').click()`);
-  check('Guide HTML download opens independently and remains downloadable', {bytes:fs.statSync(saved).size, externalScriptOrStyles:await evaluate(`document.querySelectorAll('script[src],link[rel="stylesheet"]').length`)});
-  const extractedGuide = '.analysis/portable-extract/DockSlate-0.1.0-windows-x64/guide.html';
-  if (fs.existsSync(extractedGuide)) {
-    await open(extractedGuide);
-    const links = await evaluate(`[...document.querySelectorAll('[data-artifact]:not([hidden])')].map(a=>a.href)`);
-    assert(links.length === 1 && fs.existsSync(fileURLToPath(links[0])), 'Extracted package executable link missing');
-    assert(hash(fileURLToPath(links[0])) === hash(path.join(root, 'src-tauri/target/release/dockslate.exe')), 'Extracted guide points to an obsolete executable');
-    assert(await evaluate(`document.querySelector('#download-note').textContent.includes('미서명')`), 'Packaged guide does not identify its unsigned executable');
-    check('Extracted ZIP guide links to its adjacent unsigned development executable', links);
-    const sharedDir = path.join(downloadDir, 'packaged-guide');
-    fs.mkdirSync(sharedDir);
-    await send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath:sharedDir, eventsEnabled:true});
-    await evaluate(`document.querySelector('#save-guide').click()`);
-    const shared = path.join(sharedDir, 'DockSlate-사용안내.html');
-    await waitFor('packaged guide export', () => fs.existsSync(shared), 10000);
-    await open(path.relative(root, shared));
-    assert(await evaluate(`!document.querySelector('.download-actions')&&document.querySelector('#download-note').textContent.includes('공유용')`), 'Packaged guide export still requires the application folder');
-    check('Guide exported from the package opens independently without application download links');
-  }
-  await open('guide.html');
-  await send('Emulation.setDeviceMetricsOverride', {width:390,height:844,deviceScaleFactor:1,mobile:true});
-  assert(await evaluate(`document.documentElement.scrollWidth<=innerWidth`), 'Guide overflows narrow viewport');
-  check('Guide fits a 390px mobile viewport');
+  assert(await evaluate(`!document.querySelector('details').open`),'Help did not collapse');
+  check('Usage help opens and closes with keyboard and mouse');
+  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
+  assert(await evaluate(`document.documentElement.scrollWidth<=innerWidth`),'Guide overflows mobile viewport');
+  check('Usage page fits a 390px viewport');
   for (const [name,width,height] of [['desktop',1280,960],['mobile',390,844]]) {
-    await send('Emulation.setDeviceMetricsOverride', {width,height,deviceScaleFactor:1,mobile:false});
+    await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
     await evaluate(`window.scrollTo({top:0,behavior:'instant'})`);
-    const screenshot = await send('Page.captureScreenshot', {format:'png'});
-    fs.writeFileSync(path.join(root, '.analysis', `guide-${name}.png`), Buffer.from(screenshot.data, 'base64'));
+    const screenshot=await send('Page.captureScreenshot',{format:'png'});
+    fs.writeFileSync(path.join(root,'.analysis',`guide-${name}.png`),Buffer.from(screenshot.data,'base64'));
   }
-  assert(errors.length === 0, 'Guide JavaScript exceptions: ' + errors.join('; '));
-  check('No JavaScript exceptions in local guide or downloaded standalone copy');
-  report.completed = true;
-} catch (error) { report.failure = String(error.stack ?? error); throw error; }
+  assert(errors.length===0,'Guide JavaScript exceptions: '+errors.join('; '));
+  check('No JavaScript exceptions in website or standalone usage pages');
+  report.completed=true;
+} catch(error) { report.failure=String(error.stack??error); throw error; }
 finally {
-  fs.writeFileSync('docs/results/guide-delivery-e2e.json', JSON.stringify(report, null, 2) + '\n');
-  for (const request of pending.values()) clearTimeout(request.timer);
+  fs.writeFileSync('docs/results/guide-delivery-e2e.json',JSON.stringify(report,null,2)+'\n');
+  for(const request of pending.values())clearTimeout(request.timer);
   socket.close();
 }

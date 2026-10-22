@@ -4,7 +4,7 @@ Docker Desktop처럼 앱 설치 과정에서 내부 Linux 엔진과 Windows Dock
 
 완료 기준은 설치 파일 하나로 앱·Windows CLI를 설치하고, 승인한 Docker Engine을 준비한 뒤 새 터미널의 `docker`·`docker compose` 사용을 실제 확인하는 것이다. ZIP 생성과 개별 CLI 검증은 이 결과를 대신하지 않는다.
 
-로컬 설치기 빌드의 같은 입력 오류를 최신 EXE로 재현했다. 사용자 승인으로 `seo-gali/dockslate`의 `build/installer` 브랜치에서 별도 Windows 빌드를 사용한다. [워크플로](../../.github/workflows/installer.yml)는 고정한 공식 GitHub Actions 3개와 기존 빌드 스크립트로 설치 EXE·SHA-256만 산출물로 올린다. 앱·설치 파일은 자동 실행하지 않으며 실제 원격 실행 결과는 별도로 확인한다.
+로컬 설치기 빌드의 같은 입력 오류를 최신 EXE로 재현했다. 검증한 설치 파일의 빌드 출처·해시·결과는 [산출물 기록](installer-engine-integration.json)에 남긴다. 앱·설치 파일은 자동 실행하지 않는다.
 
 ## 구성
 
@@ -54,7 +54,7 @@ NSIS의 [ReadRegStr 제한](https://nsis.sourceforge.io/Reference/ReadRegStr)과
 | 기존 디스크 | 검증 후 4,791,992,320 bytes. 엔진 실행으로 파일 크기·수정 시각은 변경됐으며, 디스크·WSL 등록·기존 리소스는 삭제하지 않음 |
 | 설치 hook·PATH | Windows PowerShell 5.1의 임시 레지스트리 검증 8개 종료 0. 별도 Windows 환경에서도 같은 검증과 설치·제거 훅 컴파일 통과 |
 | 로컬 설치판 제작 | NSIS File 입력 읽기 오류가 남음. 최신 훅도 user-path.ps1 입력에서 종료 1. 보안 설정은 변경하지 않음 |
-| 원격 설치판 제작 | PATH 수정판 Windows 빌드 성공. 설치 EXE·SHA-256 산출물 생성, 공식 GitHub digest와 내부 EXE 해시 일치 확인. 가이드에서 수정 EXE 다운로드를 포함한 11개 검사 종료 0. [빌드 결과](https://github.com/seo-gali/dockslate/actions/runs/39767569820) |
+| 설치판 산출물 검증 | PATH 수정판 설치 EXE·SHA-256 확인. 공식 GitHub digest와 내부 EXE 해시 일치. 가이드에서 수정 EXE 다운로드를 포함한 11개 검사 종료 0. [산출물 기록](installer-engine-integration.json) |
 | 실제 CLI | 명령 34개 중 32개 종료 0. 엔진 ID 일치·두 bind 양식의 공백/한글 경로·exec·표준 입력/EOF·Compose config/up/exec/down 확인 |
 | 연결 종료 | 첫 연결의 출력 핸들 상속, exec 반종료, 취소 후 읽기 재시도 오류 수정. logs --follow 취소 후 배타적 엔진 lease 열기 성공 |
 | 파일 복사 | Windows→컨테이너 읽기 접근 거부. 컨테이너→Windows는 첫 새 파일 생성 성공 후 같은 파일 덮어쓰기 접근 거부. 최신 전체 명령은 실패 종료 1로 기록 |
