@@ -1564,7 +1564,7 @@ fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Valu
         let unique = image["Size"].as_u64().zip(image["SharedSize"].as_u64()).map(|(size,shared)|size.saturating_sub(shared));
         if eligible { reclaimable = reclaimable.zip(unique).map(|(sum,unique)|sum.saturating_add(unique)); }
         let label = array(image,"RepoTags").iter().filter_map(Value::as_str).filter(|tag| *tag != "<none>:<none>").collect::<Vec<_>>().join(", ");
-        json!({"id":id,"label":if label.is_empty(){id.to_owned()}else{label},"size":image["Size"],"eligible":eligible,"reason":if referenced {Some("Referenced by an existing container")} else if !image_id(id) {Some("Invalid image identity")} else {None},"estimatedReclaimableBytes":unique})
+        json!({"id":id,"label":if label.is_empty(){id.to_owned()}else{label},"size":image["Size"],"createdAt":image["Created"],"eligible":eligible,"reason":if referenced {Some("Referenced by an existing container")} else if !image_id(id) {Some("Invalid image identity")} else {None},"estimatedReclaimableBytes":unique})
     }).collect();
     let build_cache: Vec<_> = caches.iter().map(|cache| {
         let id = text(cache,"ID");
@@ -1578,7 +1578,7 @@ fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Valu
             else if !cache_id(id) { Some("Invalid build cache identity") } else { None };
         if cache["InUse"].as_bool().is_none() || cache["Shared"].as_bool().is_none() { reclaimable = None; }
         if reason.is_none() { reclaimable = reclaimable.zip(cache["Size"].as_u64()).map(|(sum,size)|sum.saturating_add(size)); }
-        json!({"id":id,"label":cache["Description"].as_str().filter(|s|!s.is_empty()).unwrap_or(id),"size":cache["Size"],"eligible":reason.is_none(),"reason":reason})
+        json!({"id":id,"label":cache["Description"].as_str().filter(|s|!s.is_empty()).unwrap_or(id),"size":cache["Size"],"createdAt":cache["CreatedAt"],"eligible":reason.is_none(),"reason":reason})
     }).collect();
     let volume_bytes = volume_values.iter().try_fold(0u64, |sum, volume| {
         volume["UsageData"]["Size"]

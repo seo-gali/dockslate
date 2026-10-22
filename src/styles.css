@@ -248,9 +248,6 @@ button.metric:hover { border-color: var(--strong-border); background: var(--rais
 .selection-summary p { font-size: 0.846154rem; color: var(--muted); margin-top: 5px; }
 .candidate-table { min-width: 620px; }
 .candidate-table .selection-cell { width: 44px; padding-right: 0; }
-.candidate-table .type-cell { width: 110px; }
-.candidate-table .size-cell { width: 100px; }
-.candidate-table .state-cell { width: 140px; }
 .disk-list { display: flex; flex-direction: column; gap: 14px; }
 .disk-card { border: 1px solid var(--border); background: var(--surface); border-radius: 8px; overflow: hidden; }
 .disk-card-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--border); gap: 16px; }

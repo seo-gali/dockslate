@@ -40,6 +40,10 @@
   background: var(--strong-border);
 }
 
+.resizable-table th:last-child .column-resize-handle {
+  right: 0;
+}
+
 .column-resize-handle:hover::after,
 .column-resize-handle:focus-visible::after,
 .column-resize-handle.is-resizing::after {

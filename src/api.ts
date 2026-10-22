@@ -40,6 +40,7 @@ export interface DockerImage {
 export interface CleanupCandidate {
   id: string;
   label: string;
+  createdAt?: number | string | null;
   size: number | null;
   eligible: boolean;
   reason: string | null;

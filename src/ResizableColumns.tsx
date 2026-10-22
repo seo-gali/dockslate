@@ -40,7 +40,7 @@ function createController({ storageKey, columns }: Options) {
   let frame: number | null = null;
   let pending: number[] | null = null;
   let observer: ResizeObserver | null = null;
-  let fitted = restored;
+  let fitted = false;
   const listeners = new Set<() => void>();
   const indexOf = (id: string) => {
     const index = specs.findIndex(column => column.id === id);
@@ -74,7 +74,18 @@ function createController({ storageKey, columns }: Options) {
     observer?.disconnect();
     observer = null;
     const next = [...widths];
-    let remaining = Math.max(0, available - next.reduce((sum, width) => sum + width, 0));
+    let excess = Math.max(0, next.reduce((sum, width) => sum + width, 0) - available);
+    while (excess > 0) {
+      const shrinkable = specs.map((column, index) => index).filter(index => next[index] > specs[index].minWidth);
+      if (!shrinkable.length) break;
+      const share = Math.max(1, Math.floor(excess / shrinkable.length));
+      for (const index of shrinkable) {
+        const shrink = Math.min(share, excess, next[index] - specs[index].minWidth);
+        next[index] -= shrink;
+        excess -= shrink;
+      }
+    }
+    let remaining = restored ? 0 : Math.max(0, available - next.reduce((sum, width) => sum + width, 0));
     while (remaining > 0) {
       const growable = specs.map((column, index) => index).filter(index => next[index] < specs[index].maxWidth);
       if (!growable.length) break;

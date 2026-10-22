@@ -1,0 +1,127 @@
+{
+  "observedAt": "2026-10-21T13:05:58.568Z",
+  "native": true,
+  "backendInjected": false,
+  "artifactSha256": "B66E9FE702FD62531B64A66227677EFF96B51F42103B360F21974B472C589D68",
+  "completed": true,
+  "checks": [
+    {
+      "name": "Both tables fit their initial viewport at 1000px",
+      "passed": true,
+      "evidence": {
+        "containerFit": {
+          "available": 782,
+          "scrollWidth": 782,
+          "tableWidth": 782,
+          "columns": 7,
+          "handles": 6
+        },
+        "cleanupFit": {
+          "available": 767,
+          "scrollWidth": 767,
+          "tableWidth": 767,
+          "columns": 6,
+          "handles": 5
+        }
+      }
+    },
+    {
+      "name": "Both tables fit their initial viewport at 1200px",
+      "passed": true,
+      "evidence": {
+        "containerFit": {
+          "available": 986,
+          "scrollWidth": 986,
+          "tableWidth": 986,
+          "columns": 7,
+          "handles": 6
+        },
+        "cleanupFit": {
+          "available": 971,
+          "scrollWidth": 971,
+          "tableWidth": 971,
+          "columns": 6,
+          "handles": 5
+        }
+      }
+    },
+    {
+      "name": "Both tables fit their initial viewport at 1480px",
+      "passed": true,
+      "evidence": {
+        "containerFit": {
+          "available": 1266,
+          "scrollWidth": 1266,
+          "tableWidth": 1266,
+          "columns": 7,
+          "handles": 6
+        },
+        "cleanupFit": {
+          "available": 1251,
+          "scrollWidth": 1251,
+          "tableWidth": 1251,
+          "columns": 6,
+          "handles": 5
+        }
+      }
+    },
+    {
+      "name": "Real repository/tag, short ID and local tag search without per-image requests",
+      "passed": true,
+      "evidence": {
+        "imageCell": "mongo:latest\ndc28ed5a9d0f"
+      }
+    },
+    {
+      "name": "Container pointer resize remains available and saves its width",
+      "passed": true,
+      "evidence": {
+        "before": 237,
+        "after": 297
+      }
+    },
+    {
+      "name": "Previously saved wide columns fit a smaller window on first display",
+      "passed": true,
+      "evidence": {
+        "available": 782,
+        "scrollWidth": 782,
+        "tableWidth": 782,
+        "columns": 7,
+        "handles": 6
+      }
+    },
+    {
+      "name": "Cleanup creation dates match actual engine timestamps",
+      "passed": true,
+      "evidence": {
+        "datesChecked": 18,
+        "rows": 18
+      }
+    },
+    {
+      "name": "Cleanup pointer resize saves its independent column preference",
+      "passed": true,
+      "evidence": {
+        "before": 325,
+        "after": 375
+      }
+    },
+    {
+      "name": "No destructive commands or JavaScript exceptions",
+      "passed": true,
+      "evidence": {
+        "commands": [
+          "containers_list",
+          "images_list",
+          "disk_usage",
+          "dashboard_snapshot",
+          "plugin:event|listen",
+          "builds_snapshot",
+          "containers_metrics"
+        ]
+      }
+    }
+  ],
+  "failure": null
+}
