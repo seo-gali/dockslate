@@ -55,7 +55,7 @@ const server = http.createServer((request, response) => {
   const directory = application ? path.join(root, 'dist') : rootSite ? root : published ? path.join(root, 'docs') : output;
   const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : published ? '/dockslate/published/' : '/dockslate/';
   const relative = pathname.slice(prefix.length) || 'index.html';
-  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/'+release.installer.file,'downloads/'+release.zip.file].includes(relative)) { response.writeHead(404).end(); return; }
+  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/THIRD_PARTY_NOTICES.md','downloads/'+release.installer.file,'downloads/'+release.zip.file].includes(relative)) { response.writeHead(404).end(); return; }
   const file = path.resolve(directory, relative);
   if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
   const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(file)] ?? 'application/octet-stream';
@@ -80,6 +80,12 @@ try {
   await navigate(pageUrl);
   assert(await evaluate(`['features','start','download','faq'].every(id=>document.getElementById(id))&&document.querySelectorAll('.feature').length===3&&document.querySelectorAll('[data-download]').length===2`), 'Project introduction, usage or downloads missing.');
   check('GitHub Pages project path renders introduction, features, guide, downloads and FAQ');
+  assert(await evaluate(`document.querySelector('#engine-license').textContent.includes('엔진 사용료가 없습니다')&&document.querySelector('.footer a[href="./downloads/THIRD_PARTY_NOTICES.md"]')!==null`), 'Engine license explanation or notices link missing.');
+  for (const folder of ['', 'root/', 'published/']) {
+    const response = await fetch(pageUrl + folder + 'downloads/THIRD_PARTY_NOTICES.md');
+    assert(response.status === 200 && await response.text() === fs.readFileSync('THIRD_PARTY_NOTICES.md', 'utf8'), 'License notices missing or outdated: ' + folder);
+  }
+  check('Engine usage fee explanation links to exact current notices in preview and both publishing folders');
   const verification = await fetch(origin + '/dockslate/google474f5421d7424578.html');
   assert(verification.status === 200 && await verification.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Google ownership file is not served unchanged');
   check('Google ownership file is served unchanged under the project URL');

@@ -9,3 +9,4 @@ src-tauri/gen/
 /downloads/*
 !/downloads/DockSlate_0.1.0_x64-setup.exe
 !/downloads/DockSlate-0.1.0-windows-x64.zip
+!/downloads/THIRD_PARTY_NOTICES.md

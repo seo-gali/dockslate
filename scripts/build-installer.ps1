@@ -93,12 +93,9 @@ try {
             throw "Missing release executable $binary. Build the app and CLI launcher before bundling."
         }
     }
-    $guideSource = [IO.File]::ReadAllText((Join-Path $projectRoot 'guide.html'))
-    $guideMarker = "const packaged = location.pathname.includes('/DockSlate-0.1.0-windows-x64/');"
-    if (!$guideSource.Contains($guideMarker)) { throw 'The standalone guide marker is missing.' }
     $installerResources = Join-Path $targetRoot 'installer-resources'
     New-Item -ItemType Directory -Path $installerResources -Force | Out-Null
-    [IO.File]::WriteAllText((Join-Path $installerResources 'guide.html'), $guideSource.Replace($guideMarker, 'const packaged = true;'), [Text.UTF8Encoding]::new($false))
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'guide.html') -Destination (Join-Path $installerResources 'guide.html')
     & node.exe $cliEntry bundle --bundles nsis --config src-tauri/tauri.installer.conf.json --no-binary-patching --ci
     if ($LASTEXITCODE -ne 0) { throw "NSIS bundling failed (exit $LASTEXITCODE). No installer was executed." }
     $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'src-tauri\tauri.conf.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version

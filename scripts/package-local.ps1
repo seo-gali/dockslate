@@ -42,10 +42,7 @@ try {
     foreach ($name in @('USER_GUIDE.md', 'THIRD_PARTY_NOTICES.md')) {
         Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination (Join-Path $packageRoot $name)
     }
-    $guideSource = [IO.File]::ReadAllText((Join-Path $projectRoot 'guide.html'))
-    $packageMarker = "const packaged = location.pathname.includes('/DockSlate-0.1.0-windows-x64/');"
-    if (!$guideSource.Contains($packageMarker)) { throw 'Portable guide marker is missing.' }
-    [IO.File]::WriteAllText((Join-Path $packageRoot 'guide.html'), $guideSource.Replace($packageMarker, 'const packaged = true;'), [Text.UTF8Encoding]::new($false))
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'guide.html') -Destination (Join-Path $packageRoot 'guide.html')
     $docsRoot = Join-Path $packageRoot 'docs'
     New-Item -ItemType Directory -Path $docsRoot -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\REQUEST_STATUS.md') -Destination (Join-Path $docsRoot 'REQUEST_STATUS.md')

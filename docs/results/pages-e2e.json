@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T22:11:07.481Z",
+  "observedAt": "2026-10-22T22:19:05.116Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -9,6 +9,10 @@
     },
     {
       "name": "GitHub Pages project path renders introduction, features, guide, downloads and FAQ",
+      "passed": true
+    },
+    {
+      "name": "Engine usage fee explanation links to exact current notices in preview and both publishing folders",
       "passed": true
     },
     {

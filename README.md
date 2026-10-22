@@ -46,6 +46,10 @@ docker buildx version
 
 Docker Desktop을 따로 설치할 필요는 없습니다. Linux 컨테이너는 DockSlate 전용 WSL 2에서 실행합니다. Compose 가져오기는 제한된 구성을 지원하며 Kubernetes 배포는 지원하지 않습니다.
 
+Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/master/LICENSE) 오픈소스로 엔진 사용료가 없습니다. Docker Desktop 구독은 필요하지 않습니다. Docker Hub·컨테이너 이미지·외부 서비스에는 각각의 이용 조건이 적용됩니다.
+
+라이선스·저작권 고지는 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)에 정리했습니다. ZIP에 이 문서와 CLI·Compose·Buildx의 `libexec/licenses/`를 포함하고, 설치 EXE도 같은 파일을 포함하도록 구성했습니다. Ubuntu·Linux 엔진은 설치 시 공식 서버에서 내려받으며 패키지 고지는 전용 배포판의 `/usr/share/doc/<패키지>/copyright`에서 확인합니다. [포함 여부 검증](docs/results/license-delivery.json)은 통과했으며, 하위 의존성을 포함한 배포 라이선스 검토는 아직 완료되지 않았습니다.
+
 ## 개발
 
 Node.js/npm, Rust MSVC, Microsoft C++ Build Tools·Windows SDK가 필요합니다.

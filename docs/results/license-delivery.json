@@ -1,0 +1,38 @@
+{
+    "observedAt":  "2026-10-23T07:19:04.5289174+09:00",
+    "scope":  "Read-only ZIP contents and installer packaging configuration; no executable, runtime or engine launched",
+    "zipNoticesBytes":  603511,
+    "upstreamLicenseTexts":  [
+                                 {
+                                     "file":  "licenses/docker-cli/LICENSE",
+                                     "bytes":  10765,
+                                     "sha256":  "2d81ea060825006fc8f3fe28aa5dc0ffeb80faf325b612c955229157b8c10dc0"
+                                 },
+                                 {
+                                     "file":  "licenses/docker-cli/NOTICE",
+                                     "bytes":  635,
+                                     "sha256":  "a8c869fbda819afb8d80e0ac19bac52e766bc6c19cb38cf94f52d64c4be2aab6"
+                                 },
+                                 {
+                                     "file":  "licenses/compose/LICENSE",
+                                     "bytes":  11357,
+                                     "sha256":  "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+                                 },
+                                 {
+                                     "file":  "licenses/compose/NOTICE",
+                                     "bytes":  140,
+                                     "sha256":  "b7dca0a6b01fa7365e4892877a6321179ee343d72ee87a96cfc222141b99a1e6"
+                                 },
+                                 {
+                                     "file":  "licenses/buildx/LICENSE",
+                                     "bytes":  11358,
+                                     "sha256":  "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+                                 }
+                             ],
+    "packagingScriptsParse":  "passed",
+    "obsoleteGuideMarkerRemoved":  true,
+    "installerNoticeResourcesConfigured":  true,
+    "installerArchiveExtracted":  false,
+    "linuxRuntimeExamined":  false,
+    "completeRedistributionReview":  false
+}

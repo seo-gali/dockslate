@@ -2,6 +2,20 @@
 
 Locally verified dependencies and license texts for DockSlate 0.1.0, Windows x86_64 MSVC. Checked on 2026-10-14 using package-lock.json, src-tauri/Cargo.lock, and manifests/license files from installed official npm and crates.io packages. This document does not establish complete notices for external binary distribution.
 
+## Linux engine and license scope
+
+DockSlate runs Moby-based Docker Engine in its own WSL 2 Ubuntu distribution. The engine is open source under [Apache-2.0](https://github.com/moby/moby/blob/master/LICENSE), without an engine usage fee. DockSlate does not bundle or require Docker Desktop; its subscription terms are separate. Docker Hub, container images and external services have their own terms. This does not place all DockSlate components under Apache-2.0.
+
+The setup scripts download the Ubuntu 24.04.5 WSL image from Canonical and install pinned official Docker APT packages inside the new distribution. These Linux binaries are not embedded in the Windows EXE or ZIP. Ubuntu packages have individual licenses; see [Canonical's policy](https://canonical.com/legal/intellectual-property-policy). Their installed copyright and license records are under `/usr/share/doc/<package>/copyright`, including `docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin` and `docker-compose-plugin`. Source packages use the corresponding upstream and distribution repositories; a source URL alone is not a blanket fulfillment of source-availability obligations.
+
+| Linux component | Upstream licensing information |
+| --- | --- |
+| Moby / Docker Engine | [LICENSE](https://github.com/moby/moby/blob/master/LICENSE), [NOTICE](https://github.com/moby/moby/blob/master/NOTICE) |
+| containerd | [LICENSE](https://github.com/containerd/containerd/blob/main/LICENSE), [NOTICE](https://github.com/containerd/containerd/blob/main/NOTICE) |
+| runc | [LICENSE](https://github.com/opencontainers/runc/blob/main/LICENSE), [NOTICE](https://github.com/opencontainers/runc/blob/main/NOTICE) |
+
+These upstream links explain the component families, not an audit of the exact installed dependency graph. Linux package notices and source obligations, transitive Go dependency notices, and the missing texts listed below remain unverified. Existing release EXE/ZIP files are unchanged; this updated document is also supplied beside them on the download website. New packaging includes the current document. Complete redistribution compliance has not been established.
+
 ## Native Windows Docker components
 
 The preparation manifest is [scripts/windows-docker.manifest.json](scripts/windows-docker.manifest.json). It selects standalone official Windows releases; no Docker Desktop files are extracted or redistributed. `scripts/prepare-windows-docker.ps1` verifies cached sizes and hashes without downloading by default. Downloading requires its explicit `-AllowDownload` option. Installed and portable layouts preserve the upstream texts under `libexec/licenses/` and include a per-file SHA-256 receipt in `libexec/manifest.json`.
@@ -12,7 +26,7 @@ The preparation manifest is [scripts/windows-docker.manifest.json](scripts/windo
 | Docker Compose | 5.6.0 | [Windows x86_64 release](https://github.com/docker/compose/releases/download/v5.6.0/docker-compose-windows-x86_64.exe) | [Apache-2.0 LICENSE](https://github.com/docker/compose/blob/v5.6.0/LICENSE), [NOTICE](https://github.com/docker/compose/blob/v5.6.0/NOTICE) |
 | Docker Buildx | 0.38.0 | [Windows amd64 release](https://github.com/docker/buildx/releases/download/v0.38.0/buildx-v0.38.0.windows-amd64.exe) | [Apache-2.0 LICENSE](https://github.com/docker/buildx/blob/v0.38.0/LICENSE); the versioned root NOTICE URL returned HTTP 404 |
 
-Compose and Buildx release SHA-256 values are pinned in the preparation manifest. The Docker ZIP's public SHA-256 URL was unavailable: the initial manifest retains only the observed length (49,464,022 bytes) and HTTP ETag MD5 (`3c99c7cb8817cb4f81e076479b56c921`) as bootstrap metadata. This is not an independently verified SHA-256. The script blocks staging until the SHA-256 observed after an approved download is reviewed and pinned in that manifest. License/notice document sizes and SHA-256 values were checked from the versioned upstream raw texts and are pinned separately.
+Compose and Buildx release SHA-256 values are pinned in the preparation manifest. The Docker ZIP's public SHA-256 URL was unavailable: its hash was pinned after an approved download on 2026-10-20, with the observed length (49,464,022 bytes) and HTTP ETag MD5 (`3c99c7cb8817cb4f81e076479b56c921`) matching bootstrap metadata. This is a locally observed pin, not an independently published Docker SHA-256. The script verifies it before staging. License/notice document sizes and SHA-256 values are pinned separately.
 
 This records the source and preservation of the upstream root license/notice texts. It does not establish complete license coverage for the binaries' transitive Go dependencies or approval for external distribution. Binary preparation, packaging and execution validation are separate checks.
 

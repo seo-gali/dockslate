@@ -28,6 +28,8 @@ npm run build:site -- --publish
 
 파일이 없거나 크기·SHA-256이 다르면 사이트 생성을 중단한다. 빌드한 HTML·자산·실행 파일을 `main`에 함께 커밋·푸시한다. 빌드 자체는 공개 설정을 바꾸거나 파일을 전송하지 않는다.
 
+엔진 사용료와 라이선스 범위는 FAQ에 표시하고 최신 `THIRD_PARTY_NOTICES.md`를 실행 파일 옆에 제공한다. 기존 EXE·ZIP은 다시 만들지 않으며, 이후 패키징에서는 현재 고지와 독립 안내서를 그대로 복사한다. 하위 의존성까지 배포 조건 검토를 완료했다는 의미는 아니다.
+
 ## 실행 파일
 
 `site/release.json`의 버전·파일명·크기·SHA-256이 기준이다. 검증한 설치 EXE와 ZIP을 루트 `downloads/`에 포함하고 기존 게시 폴더에도 같은 파일을 복사한다. 두 경로의 동일 파일은 Git에서 같은 blob을 사용한다. 현재 파일은 미서명이며 이전 브라우징 데이터 접근 경고의 원인은 미확인이다.
@@ -47,6 +49,6 @@ README의 [프로그램 캡처](assets/dockslate-disk.png)는 [B66E9FE7 실제 W
 
 검증 기록: [사이트](results/pages-e2e.json) · [로컬 안내서](results/guide-delivery-e2e.json). 공개 URL 확인과 로컬 브라우저 검증은 구분해 기록한다.
 
-최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 23개와 독립 사용 안내서 검사 8개 통과. 루트·기존 게시 폴더의 EXE·ZIP 실제 HTTP 응답과 크기·SHA-256 일치, 사이트·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다. 실제 Vite 개발 서버도 src 앱 HTML·변환한 main.tsx·React 의존성 3개를 HTTP 200으로 제공하고 정상 종료했다.
+최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 24개와 독립 사용 안내서 검사 8개 통과. 루트·기존 게시 폴더의 EXE·ZIP 실제 HTTP 응답과 크기·SHA-256 일치, 최신 고지 파일·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다. 실제 Vite 개발 서버도 src 앱 HTML·변환한 main.tsx·React 의존성 3개를 HTTP 200으로 제공하고 정상 종료했다.
 
 [GitHub Pages 게시 방식](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)

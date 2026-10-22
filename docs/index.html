@@ -80,6 +80,7 @@ docker compose version</code></pre></div>
       <h2 id="faq-title">FAQ</h2>
       <div class="faq-list">
         <details><summary>Docker Desktop을 따로 설치해야 하나요?</summary><p>필요하지 않습니다. DockSlate는 전용 WSL 2 배포판에서 Moby 기반 Docker Engine을 실행합니다. 최초 엔진 설치에는 인터넷이 필요합니다.</p></details>
+        <details id="engine-license"><summary>Docker 엔진 사용료가 있나요?</summary><p>Moby 기반 Docker Engine은 Apache-2.0 오픈소스로 엔진 사용료가 없습니다. Docker Desktop 구독은 필요하지 않습니다. Docker Hub·이미지·외부 서비스는 각각의 이용 조건이 적용됩니다. <a href="./downloads/THIRD_PARTY_NOTICES.md">라이선스·저작권 고지</a>에서 구성 요소와 확인 범위를 볼 수 있습니다.</p></details>
         <details><summary>포터블은 어떻게 실행하나요?</summary><p>ZIP 전체를 풀고 DockSlate.exe를 실행합니다. bin·libexec 폴더를 함께 유지하세요.</p></details>
         <details><summary>앱을 삭제하면 데이터도 지워지나요?</summary><p>앱 제거로 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 엔진 중지도 데이터를 지우지 않습니다.</p></details>
         <details><summary>MongoDB에 연결이 안 돼요.</summary><p>컨테이너 실행 상태와 내 PC 포트를 확인하세요. 표가 32768 → 27017이면 Compass 주소는 mongodb://127.0.0.1:32768입니다. 실제 포트는 컨테이너마다 다릅니다.</p></details>
@@ -87,7 +88,7 @@ docker compose version</code></pre></div>
       </div>
     </section>
   </main>
-  <footer class="footer wrap"><a class="brand" href="#top"><img src="./icon.svg" width="26" height="26" alt=""><span>DockSlate</span></a><div><a href="./guide.html">빠른 시작</a><a href="https://github.com/seo-gali/dockslate">소스 코드</a><a href="https://github.com/seo-gali/dockslate/issues">문제 제보</a></div></footer>
+  <footer class="footer wrap"><a class="brand" href="#top"><img src="./icon.svg" width="26" height="26" alt=""><span>DockSlate</span></a><div><a href="./guide.html">빠른 시작</a><a href="./downloads/THIRD_PARTY_NOTICES.md">라이선스</a><a href="https://github.com/seo-gali/dockslate">소스 코드</a><a href="https://github.com/seo-gali/dockslate/issues">문제 제보</a></div></footer>
   <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
 </body>
 </html>

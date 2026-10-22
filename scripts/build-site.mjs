@@ -49,6 +49,9 @@ if (production) {
   fs.writeFileSync(path.join(root, '.nojekyll'), '');
 }
 fs.mkdirSync(path.join(output, 'downloads'), { recursive: true });
+const notices = 'THIRD_PARTY_NOTICES.md';
+fs.copyFileSync(path.join(root, notices), path.join(output, 'downloads', notices));
+if (production) fs.copyFileSync(path.join(root, notices), path.join(root, 'downloads', notices));
 for (const key of ['installer', 'zip']) {
   const file = release[key].file;
   fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
