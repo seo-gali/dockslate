@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-21T12:32:12.7457515+00:00",
+  "observedAt": "2026-10-22T11:13:29.896Z",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
   "checks": {
@@ -42,24 +42,24 @@
   },
   "artifacts": [
     {
-      "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe",
       "name": "dockslate.exe",
-      "bytes": 4691968,
-      "sha256": "0845BCC5529DBAB1C9399B9F61A53EB06698E6DE94679A73815127FE9DCC79DA",
-      "executed": true,
-      "executionMode": "--engine-proxy only; GUI and installer setup not executed"
+      "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe",
+      "bytes": 4869120,
+      "sha256": "6F7F8DBCDC772951B9F4E2F7AA3BFA3E62CB86F98EA263F5B4FE3B45B3D5DD6B",
+      "executed": false,
+      "executionMode": "Final table UI build after removing three unused CSS selectors; this exact executable was not launched."
     },
     {
-      "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\docker.exe",
       "name": "docker.exe",
+      "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\docker.exe",
       "bytes": 315904,
-      "sha256": "4F118A40B51E24A4BE0FA2982C773AEA8F0EB9FF6504458BA5893BE27DE17D22",
+      "sha256": "E1E2434EA25284972C815164FC1FACBC196A84793B014EA373C068624FD2D017",
       "executed": true,
-      "executionMode": "isolated native CLI checks"
+      "executionMode": "Four offline version checks in a fresh profile; no engine calls."
     }
   ],
   "installerFilePresent": true,
-  "blocker": "Previous setup aborted on a 1199-character user PATH. Corrected installer generated remotely, hash-verified and downloaded through the guide. Full setup/cancel/uninstall not executed by the agent. Local NSIS and native host-file access errors remain.",
+  "blocker": "The table UI and PATH-corrected installer was built and hash verified. The earlier PATH-corrected setup and docker ps succeeded in user screenshots; this table update full setup/cancel/uninstall was not executed by the agent. Local NSIS and native host-file access errors remain.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -172,22 +172,88 @@
   },
   "installerDelivery": {
     "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate_0.1.0_x64-setup.exe",
-    "bytes": 44609791,
-    "sha256": "DC633FE8DCFB93AB2CF9968C7F405CEF4C09715267F22B1B54146A0FCB424A72",
+    "bytes": 44620219,
+    "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094",
     "signatureStatus": "NotSigned",
-    "artifactId": 12344784063,
-    "archiveSha256": "D99294BF53DF34DD8FCA820DAB598CF050C2C8CC30FFFBDF73336998494073F2",
+    "artifactId": 12421560850,
+    "archiveSha256": "375A2BF7FC591DEAFA0D2AB70ED6EB3414B121B3679B8624DAB871CFFDA9F182",
     "githubDigestVerified": true,
     "downloadSource": "nightly.link redirect to public GitHub artifact; verified against GitHub digest",
     "installerExecuted": false,
-    "observedAt": "2026-10-21T12:30:51.2020205+00:00",
-    "scope": "PATH-corrected installer built, hash-verified and downloaded through the guide; full setup/uninstall and Compass login not executed by the agent.",
+    "observedAt": "2026-10-22T11:10:30.5631812+00:00",
     "repository": "seo-gali/dockslate",
-    "artifactUrl": "https://github.com/seo-gali/dockslate/actions/runs/39599016660/artifacts/12344784063",
-    "runId": 39599016660,
+    "head": "fff3670811a90a8f1367342ab6950410c9bd0ead",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/39767569820",
+    "runId": 39767569820,
     "buildConclusion": "success",
-    "head": "528956828a8f1615bd9603c93ac1950da3cfee88",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/39599016660"
+    "artifactUrl": "https://github.com/seo-gali/dockslate/actions/runs/39767569820/artifacts/12421560850",
+    "scope": "Container and cleanup table update; installer built and hash verified, not installed or uninstalled by the agent."
   },
-  "installerPathRegressionReport": "docs/results/installer-path-e2e.json"
+  "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
+  "tableUiBuild": {
+    "sourceHead": "fff3670811a90a8f1367342ab6950410c9bd0ead",
+    "builtAt": "2026-10-22T11:06:28.6349955+00:00",
+    "nativeReport": "docs/results/table-layout-e2e.json",
+    "nativeChecks": 9,
+    "nativeCandidateSha256": "B66E9FE702FD62531B64A66227677EFF96B51F42103B360F21974B472C589D68",
+    "finalDifference": "Three unused CSS selectors removed after native checks; final source compiled successfully.",
+    "finalExecutableExecuted": false,
+    "engineRestarted": false,
+    "wholeNativeReplayAfterEnglishAutomationAdded": false,
+    "offlineCli": {
+      "launcherSha256": "E1E2434EA25284972C815164FC1FACBC196A84793B014EA373C068624FD2D017",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "compose",
+            "version",
+            "--short"
+          ],
+          "exit": 0,
+          "output": "5.6.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+        }
+      ],
+      "existingProfileUsed": false,
+      "engineConnectionRequired": false
+    },
+    "installerSourceHead": "fff3670811a90a8f1367342ab6950410c9bd0ead",
+    "portableArchive": {
+      "file": "DockSlate-0.1.0-windows-x64.zip",
+      "bytes": 58053690,
+      "sha256": "5B480C1BFF505D5E8A9FDDEBFEA33BFCE60681733B979CB358AE8ADFACEADB8A"
+    },
+    "portableInternalFilesVerified": 10,
+    "guideChecks": 11,
+    "guideExit": 0,
+    "engineAfterDelivery": {
+      "observedAt": "2026-10-22T11:13:29.7219866+00:00",
+      "state": "stopped",
+      "keeperVerified": false,
+      "engineChangedByAgent": false,
+      "distribution": "DockSlate"
+    }
+  }
 }

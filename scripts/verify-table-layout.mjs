@@ -87,7 +87,9 @@ try {
   await c.setSelect('[data-page="Settings"] .appearance-panel select','en');
   await waitFor('English labels',()=>c.evaluate(`document.documentElement.lang==='en'`),15000);
   await c.evaluate(`localStorage.removeItem('dockslate.cleanup.columns.v1')`);
-  await reload();await nav('Disk Manager','Disk Manager','.candidate-table');
+  await reload();
+  await waitFor('English after reload',()=>c.evaluate(`document.documentElement.lang==='en'`),15000);
+  await nav('Disk Manager','Disk Manager','.candidate-table');
   const englishFit=await fit('.candidate-table');
   assert(englishFit.scrollWidth<=englishFit.available+1,'English cleanup headings overflow at the minimum window size');
   check('English cleanup table fits the minimum window size',englishFit);

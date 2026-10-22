@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-21T12:31:25.958Z",
+  "observedAt": "2026-10-22T11:12:33.683Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -53,14 +53,14 @@
       "name": "Installer button saves the exact verified setup executable without launching it",
       "passed": true,
       "evidence": {
-        "sha256": "DC633FE8DCFB93AB2CF9968C7F405CEF4C09715267F22B1B54146A0FCB424A72"
+        "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094"
       }
     },
     {
       "name": "ZIP download button saves the exact local review package",
       "passed": true,
       "evidence": {
-        "sha256": "201FA6998D3C85B3D04593AAD227E1BC669450E47D9914A5BF4AB00A61ADFC6D"
+        "sha256": "5B480C1BFF505D5E8A9FDDEBFEA33BFCE60681733B979CB358AE8ADFACEADB8A"
       }
     },
     {
