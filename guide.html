@@ -62,7 +62,7 @@ docker compose version</pre></details>
     if (siteDownload) siteDownload.hidden = !online;
     if (packaged && document.querySelector('.download-actions')) document.getElementById('download-note').textContent = '미서명 개발 빌드. 이 폴더의 DockSlate.exe와 bin·libexec 폴더를 함께 유지하세요.';
     document.querySelectorAll('[data-doc]').forEach(link => {
-      link.href = online ? 'https://github.com/seo-gali/dockslate/blob/build/installer/' + link.dataset.doc : (packaged ? './' : root) + link.dataset.doc;
+      link.href = online ? 'https://github.com/seo-gali/dockslate/blob/main/' + link.dataset.doc : (packaged ? './' : root) + link.dataset.doc;
     });
     document.getElementById('print-guide').addEventListener('click', () => { document.querySelectorAll('details').forEach(d => d.open = true); window.print(); });
     document.getElementById('save-guide').addEventListener('click', () => {

@@ -49,8 +49,11 @@ const server = http.createServer((request, response) => {
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch { response.writeHead(400).end(); return; }
   if (!pathname.startsWith('/dockslate/')) { response.writeHead(404).end(); return; }
-  const file = path.resolve(output, pathname.slice('/dockslate/'.length) || 'index.html');
-  if (!file.startsWith(output + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
+  const published = pathname.startsWith('/dockslate/published/');
+  const directory = published ? path.join(root, 'docs') : output;
+  const prefix = published ? '/dockslate/published/' : '/dockslate/';
+  const file = path.resolve(directory, pathname.slice(prefix.length) || 'index.html');
+  if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
   const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(file)] ?? 'application/octet-stream';
   response.setHeader('Content-Type', type);
   if (/\.(exe|zip)$/.test(file)) response.setHeader('Content-Disposition', `attachment; filename="${path.basename(file)}"`);
@@ -81,6 +84,11 @@ try {
   await evaluate(`document.querySelector('#site-download').click()`);
   await waitFor('Online guide returns to website downloads', () => evaluate(`location.href===${JSON.stringify(pageUrl + '#download')}`), 10000);
   check('Compact online guide links to website downloads and repository documents');
+  await navigate(pageUrl + 'published/');
+  assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('script[src*="main.tsx"]')&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1&&[...document.querySelectorAll('[data-download]')].every(a=>a.matches('a[href^="https://github.com/seo-gali/dockslate/releases/download/"]')||a.matches('button:disabled'))`), 'main/docs static page is broken or offers missing files');
+  const publicFile = await fetch(pageUrl + 'published/google474f5421d7424578.html');
+  assert(publicFile.status === 200 && await publicFile.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Published Google ownership file changed');
+  check('main/docs static page works with available links or disabled missing downloads and exact Google verification');
   await navigate(pageUrl);
   const brokenAnchors = await evaluate(`[...document.querySelectorAll('a[href^="#"]')].map(a=>a.hash).filter(hash=>!document.getElementById(hash.slice(1)))`);
   assert(brokenAnchors.length === 0, 'Broken in-page links.');

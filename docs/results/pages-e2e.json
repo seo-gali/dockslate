@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T17:22:54.289Z",
+  "observedAt": "2026-10-22T21:50:37.127Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -17,6 +17,10 @@
     },
     {
       "name": "Compact online guide links to website downloads and repository documents",
+      "passed": true
+    },
+    {
+      "name": "main/docs static page works with available links or disabled missing downloads and exact Google verification",
       "passed": true
     },
     {

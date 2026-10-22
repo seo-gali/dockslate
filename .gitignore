@@ -2,7 +2,6 @@
 node_modules/
 dist/
 site-dist/
-site-publish/
 src-tauri/target/
 src-tauri/gen/
 .tools/

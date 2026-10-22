@@ -4,7 +4,7 @@
 
 내려받은 폴더에서 `guide.html`을 더블클릭하면 설치·사용 방법을 볼 수 있습니다. 안내서에 연결된 실행 파일을 함께 전달받았을 때 다운로드 버튼을 사용할 수 있습니다. 상단 **안내서 HTML 다운로드**와 **인쇄 / PDF**도 지원합니다. 현재 파일은 미서명 개발 빌드입니다.
 
-GitHub Pages용 공개 사이트는 별도로 빌드합니다. 로컬 사이트 미리보기는 `site-dist/index.html`, Pages에 게시하는 메인 페이지는 `site-publish/index.html`입니다. 루트 `index.html`은 앱 화면의 진입점입니다. [웹사이트·Pages 안내](docs/PAGES.md)
+로컬 사이트 미리보기는 `site-dist/index.html`, Pages에 게시하는 메인 페이지는 `docs/index.html`입니다. Pages는 `main`의 `/docs` 폴더를 직접 게시하며 별도 Actions 설정을 사용하지 않습니다. 루트 `index.html`은 앱 화면의 진입점입니다. [웹사이트·Pages 안내](docs/PAGES.md)
 
 | 내용 | 바로가기 |
 | --- | --- |

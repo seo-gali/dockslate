@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T17:19:21.267Z",
+  "observedAt": "2026-10-22T21:50:38.820Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -71,7 +71,7 @@
       "name": "Guide HTML download opens independently and remains downloadable",
       "passed": true,
       "evidence": {
-        "bytes": 7941,
+        "bytes": 7930,
         "externalScriptOrStyles": 0
       }
     },

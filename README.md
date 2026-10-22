@@ -60,9 +60,9 @@ npm ci
 | ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
 
-사이트 원본은 `site/index.html`, 앱 진입점은 루트 `index.html`입니다. 실행 파일 준비·고정 해시·게시 조건은 [빌드·Pages 안내](docs/PAGES.md)를 확인하세요.
+작업은 `main`에서 진행합니다. 사이트 원본은 `site/index.html`, 게시 파일은 `docs/index.html`, 앱 진입점은 루트 `index.html`입니다. [빌드·Pages 안내](docs/PAGES.md)
 
-현재 공개 주소에는 이전 `main`의 앱 안내가 게시되어 있습니다. 새 사이트·Google 소유권 파일의 공개 반영과 Release 다운로드 등록은 남아 있습니다.
+Pages는 **Deploy from a branch → main → /docs**로 설정합니다. 별도 Actions 설정은 사용하지 않습니다. 공개 Release 파일이 등록되기 전에는 사이트의 다운로드 버튼을 비활성화합니다.
 
 [웹사이트 화면](docs/assets/site-desktop.png) · [모바일 화면](docs/assets/site-mobile.png) · [로컬 안내서](guide.html)
 
