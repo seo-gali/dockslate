@@ -24,13 +24,18 @@ npm run build:site
 npm run build:site -- --publish
 ```
 
-첫 명령은 로컬 EXE·ZIP의 크기·SHA-256을 확인하고 `site-dist`를 생성한다. 두 번째는 공개 Release 파일을 확인한 뒤 루트 메인과 기존 `/docs` 게시본을 함께 갱신한다. 기존 `/docs` 게시 설정에서도 같은 사이트가 보이도록 유지하며 Markdown·이미지는 삭제하지 않는다.
+첫 명령은 로컬 EXE·ZIP의 크기·SHA-256을 확인하고 `site-dist`를 생성한다. 두 번째는 같은 검증을 거쳐 루트 메인과 기존 `/docs` 게시본을 함께 갱신하고 실행 파일을 포함한다. 기존 `/docs` 게시 설정에서도 같은 사이트가 보이도록 유지하며 Markdown·이미지는 삭제하지 않는다.
 
-공개 Release 파일이 아직 없으면 해당 버튼을 비활성화한 채 사이트를 생성한다. 다른 HTTP 오류·전송 오류·해시 불일치는 실패로 처리한다. 파일을 올린 뒤 다시 빌드하고 `main`에 커밋·푸시하면 다운로드가 활성화된다. 빌드 자체는 공개 설정을 바꾸거나 파일을 전송하지 않는다.
+파일이 없거나 크기·SHA-256이 다르면 사이트 생성을 중단한다. 빌드한 HTML·자산·실행 파일을 `main`에 함께 커밋·푸시한다. 빌드 자체는 공개 설정을 바꾸거나 파일을 전송하지 않는다.
 
 ## 실행 파일
 
-`site/release.json`의 버전·파일명·크기·SHA-256이 기준이다. 검증한 설치 EXE와 ZIP을 GitHub Release `v0.1.0`의 Assets에 같은 이름으로 등록한다. 현재 파일은 미서명이며 이전 브라우징 데이터 접근 경고의 원인은 미확인이다.
+`site/release.json`의 버전·파일명·크기·SHA-256이 기준이다. 검증한 설치 EXE와 ZIP을 루트 `downloads/`에 포함하고 기존 게시 폴더에도 같은 파일을 복사한다. 두 경로의 동일 파일은 Git에서 같은 blob을 사용한다. 현재 파일은 미서명이며 이전 브라우징 데이터 접근 경고의 원인은 미확인이다.
+
+다운로드 주소:
+
+- [설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe)
+- [포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip)
 
 설치 EXE 제작은 로컬 `scripts/build-installer.ps1`, 포터블 ZIP 생성은 `npm run package:local`을 사용한다. GitHub에서 설치 파일을 자동 제작하지 않는다.
 
@@ -42,6 +47,6 @@ README의 [프로그램 캡처](assets/dockslate-disk.png)는 [B66E9FE7 실제 W
 
 검증 기록: [사이트](results/pages-e2e.json) · [로컬 안내서](results/guide-delivery-e2e.json). 공개 URL 확인과 로컬 브라우저 검증은 구분해 기록한다.
 
-최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 21개와 독립 사용 안내서 검사 8개 통과. 루트와 기존 게시 폴더의 사이트·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다. 실제 Vite 개발 서버도 src 앱 HTML·변환한 main.tsx·React 의존성 3개를 HTTP 200으로 제공하고 정상 종료했다.
+최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 23개와 독립 사용 안내서 검사 8개 통과. 루트·기존 게시 폴더의 EXE·ZIP 실제 HTTP 응답과 크기·SHA-256 일치, 사이트·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다. 실제 Vite 개발 서버도 src 앱 HTML·변환한 main.tsx·React 의존성 3개를 HTTP 200으로 제공하고 정상 종료했다.
 
 [GitHub Pages 게시 방식](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)

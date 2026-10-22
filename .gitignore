@@ -6,4 +6,6 @@ src-tauri/target/
 src-tauri/gen/
 .tools/
 *.log
-downloads/
+/downloads/*
+!/downloads/DockSlate_0.1.0_x64-setup.exe
+!/downloads/DockSlate-0.1.0-windows-x64.zip

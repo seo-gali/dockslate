@@ -4,6 +4,8 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 
 **[웹사이트](https://seo-gali.github.io/dockslate/)** · [빠른 시작](USER_GUIDE.md) · [지원·검증 현황](docs/REQUEST_STATUS.md)
 
+**[설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe)** · **[포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip)**
+
 > **미서명 개발 버전.** 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. [서명·보안 상태](docs/results/code-signing.md)
 
 ## 프로그램 화면
@@ -62,7 +64,7 @@ npm ci
 
 작업은 `main`에서 진행합니다. 웹사이트 메인은 루트 `index.html`, 앱 진입점은 `src/index.html`입니다. 사이트 템플릿은 `site/index.html`에서 관리합니다. [빌드·Pages 안내](docs/PAGES.md)
 
-Pages는 **Deploy from a branch → main → /(root)**로 설정합니다. 공개 Release 파일이 등록되기 전에는 사이트의 다운로드 버튼을 비활성화합니다.
+Pages는 **Deploy from a branch → main → /(root)**로 설정합니다. 검증한 설치 EXE·ZIP을 사이트의 `downloads/`에서 직접 제공합니다.
 
 [웹사이트 화면](docs/assets/site-desktop.png) · [모바일 화면](docs/assets/site-mobile.png) · [로컬 안내서](guide.html)
 

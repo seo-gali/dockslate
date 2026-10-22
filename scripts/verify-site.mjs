@@ -55,7 +55,7 @@ const server = http.createServer((request, response) => {
   const directory = application ? path.join(root, 'dist') : rootSite ? root : published ? path.join(root, 'docs') : output;
   const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : published ? '/dockslate/published/' : '/dockslate/';
   const relative = pathname.slice(prefix.length) || 'index.html';
-  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg'].includes(relative)) { response.writeHead(404).end(); return; }
+  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/'+release.installer.file,'downloads/'+release.zip.file].includes(relative)) { response.writeHead(404).end(); return; }
   const file = path.resolve(directory, relative);
   if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
   const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(file)] ?? 'application/octet-stream';
@@ -88,10 +88,21 @@ try {
   assert(await evaluate(`document.querySelectorAll('#quickstart li').length===3&&!document.querySelector('button,#site-download,[data-artifact]')&&[...document.querySelectorAll('footer a')].every(a=>a.href.startsWith('https://github.com/seo-gali/dockslate/blob/main/'))`), 'Guide still has export/print/download relay controls');
   check('Usage page opens directly without export, print or download relay controls');
   await navigate(pageUrl + 'published/');
-  assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('script[src*="main.tsx"]')&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1&&[...document.querySelectorAll('[data-download]')].every(a=>a.matches('a[href^="https://github.com/seo-gali/dockslate/releases/download/"]')||a.matches('button:disabled'))`), 'main/docs static page is broken or offers missing files');
+  assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('script[src*="main.tsx"]')&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1&&[...document.querySelectorAll('[data-download]')].every(a=>a.matches('a[download][href]')&&new URL(a.href).origin===location.origin)`), 'Published page does not include direct downloads');
   const publicFile = await fetch(pageUrl + 'published/google474f5421d7424578.html');
   assert(publicFile.status === 200 && await publicFile.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Published Google ownership file changed');
-  check('main/docs static page works with available links or disabled missing downloads and exact Google verification');
+  check('main/docs static page includes direct downloads and exact Google verification');
+  for (const folder of ['root','published']) {
+    for (const key of ['installer','zip']) {
+      const asset=release[key];
+      const response=await fetch(pageUrl+folder+'/downloads/'+encodeURIComponent(asset.file));
+      assert(response.status===200,'Bundled download is missing: '+folder+'/'+asset.file);
+      const checksum=createHash('sha256');let bytes=0;
+      for await (const chunk of response.body) { bytes+=chunk.length;checksum.update(chunk); }
+      assert(bytes===asset.bytes&&checksum.digest('hex').toUpperCase()===asset.sha256,'Bundled download differs: '+folder+'/'+asset.file);
+    }
+    check(folder+' serves both complete bundled downloads with exact sizes and SHA-256');
+  }
   await navigate(pageUrl + 'root/');
   assert(await evaluate(`!!document.querySelector('#features')&&document.querySelectorAll('[data-download]').length===2&&!document.querySelector('.file-start')&&getComputedStyle(document.body).backgroundColor==='rgb(11, 15, 20)'&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1`), 'Repository root still serves an empty app fallback or has broken CSS/script paths');
   await evaluate(`document.querySelector('.footer a[href="./guide.html"]').click()`);

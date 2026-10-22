@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T22:01:31.968Z",
+  "observedAt": "2026-10-22T22:11:07.481Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -20,7 +20,15 @@
       "passed": true
     },
     {
-      "name": "main/docs static page works with available links or disabled missing downloads and exact Google verification",
+      "name": "main/docs static page includes direct downloads and exact Google verification",
+      "passed": true
+    },
+    {
+      "name": "root serves both complete bundled downloads with exact sizes and SHA-256",
+      "passed": true
+    },
+    {
+      "name": "published serves both complete bundled downloads with exact sizes and SHA-256",
       "passed": true
     },
     {
