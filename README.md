@@ -8,6 +8,8 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 ## 실행 · 다운로드
 
+GitHub Pages용 프로젝트 소개·다운로드·사용 방법 페이지는 [site/index.html](site/index.html)에서 관리합니다. `npm run build:site`로 실제 EXE·ZIP을 포함한 로컬 미리보기를 만들며, `site-dist/index.html`을 열어 확인합니다. 공개 게시는 아직 하지 않았습니다. [Pages 게시 절차](docs/PAGES.md)
+
 | 찾는 것 | 파일 |
 | --- | --- |
 | 다운로드와 사용 안내 | **[guide.html](guide.html)** — 더블클릭해서 열기 |

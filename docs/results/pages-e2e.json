@@ -1,0 +1,81 @@
+{
+  "observedAt": "2026-10-22T16:42:49.125Z",
+  "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
+  "completed": true,
+  "checks": [
+    {
+      "name": "Local HTML opens with working guide tabs",
+      "passed": true
+    },
+    {
+      "name": "GitHub Pages project path renders introduction, features, guide, downloads and FAQ",
+      "passed": true
+    },
+    {
+      "name": "Navigation anchors resolve within the page",
+      "passed": true
+    },
+    {
+      "name": "All four guide tabs show only their selected panel",
+      "passed": true
+    },
+    {
+      "name": "Keyboard arrows, Home and End move selection and focus",
+      "passed": true
+    },
+    {
+      "name": "Copy button writes the exact installation commands to the clipboard",
+      "passed": true
+    },
+    {
+      "name": "FAQ expands with native mouse and keyboard support",
+      "passed": true
+    },
+    {
+      "name": "installer downloads the exact verified binary without executing it",
+      "passed": true,
+      "evidence": {
+        "bytes": 44620219,
+        "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094"
+      }
+    },
+    {
+      "name": "zip downloads the exact verified binary without executing it",
+      "passed": true,
+      "evidence": {
+        "bytes": 58057355,
+        "sha256": "98DEED8FCF148534A7E7C5490F7500E54D4D99EEB5B3C780F40E77EFC2AF54D7"
+      }
+    },
+    {
+      "name": "Unsigned status, unresolved alert and exact SHA-256 remain visible",
+      "passed": true
+    },
+    {
+      "name": "No page overflow at 1440px, including expanded checksums",
+      "passed": true
+    },
+    {
+      "name": "No page overflow at 1024px, including expanded checksums",
+      "passed": true
+    },
+    {
+      "name": "No page overflow at 390px, including expanded checksums",
+      "passed": true
+    },
+    {
+      "name": "Reduced-motion preference disables smooth scrolling",
+      "passed": true
+    },
+    {
+      "name": "Downloads and complete usage guide remain available with JavaScript disabled",
+      "passed": true
+    },
+    {
+      "name": "No JavaScript exceptions in actual file or HTTP pages",
+      "passed": true
+    }
+  ],
+  "failure": null,
+  "publicDeploymentTested": false
+}
