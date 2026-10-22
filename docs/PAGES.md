@@ -33,7 +33,9 @@ npm run build:site
 
 ## 공개 게시 준비
 
-예상 주소는 `https://seo-gali.github.io/dockslate/`다. 현재 주소가 게시됐다는 의미는 아니다.
+공개 주소는 [seo-gali.github.io/dockslate](https://seo-gali.github.io/dockslate/)다. 2026-10-23 확인 결과 기존 `main`의 앱용 `index.html`이 게시되어 있고, 새 사이트 원본과 게시 워크플로는 작업 브랜치에만 있다. 공개 첫 화면은 앱 안내가 아닌 `site-publish/index.html`이어야 한다. `guide.html`은 짧은 사용 안내를 직접 열 때만 사용하며 메인 페이지를 대신하지 않는다.
+
+Google 소유권 확인 파일 `google474f5421d7424578.html`을 저장소 루트와 사이트 빌드 결과에 포함한다. 확인 주소는 `/dockslate/google474f5421d7424578.html`이다. 안내서도 사이트 빌드에 포함하므로 `/dockslate/guide.html`로 접근할 수 있다.
 
 1. `site/release.json`에 고정한 EXE와 ZIP을 GitHub Release `v0.1.0`의 Assets에 같은 파일명으로 올린다. 미서명 개발 버전임을 Release 본문에도 표시한다.
 2. 사이트 소스·워크플로를 검토한 뒤 기본 브랜치에 반영한다. Pages 워크플로는 자동 게시하지 않고 수동 실행만 허용한다.
@@ -59,15 +61,19 @@ npm run build:site -- --publish
 | `npm run build:site` 구현 전 | 종료 1, 빌드 스크립트 없음 확인 |
 | `npm run build:site` 구현 후 | 종료 0, 실제 파일 2개의 크기·SHA-256 확인 후 미리보기 생성 |
 | `npm run build:site -- --publish` | 종료 1, 공개 Release 파일의 실제 404를 감지. 깨진 공개 링크를 가진 사이트 출력·배포 없음 |
-| `node scripts/verify-site.mjs .analysis/site-browser-session.json` | 종료 0, 격리한 실제 Chrome 검사 16개 통과. [결과](results/pages-e2e.json) |
-| `npm run build` · `node scripts/verify-guide.mjs .analysis/guide-browser-readme-session.json` | 종료 0. 앱 진입점의 파일 역할 안내를 빌드하고, 실제 root/dist 로컬 안내·다운로드·공유 HTML 등 11개 확인. [결과](results/guide-delivery-e2e.json) |
+| `node scripts/verify-site.mjs .analysis/site-browser-session.json` | 종료 0, 격리한 실제 Chrome 검사 18개 통과. Google 확인 파일의 원문 제공·온라인 안내서까지 포함. [결과](results/pages-e2e.json) |
+| `npm run build` · `node scripts/verify-guide.mjs .analysis/guide-browser-session.json` | 종료 0. 실제 root/dist 로컬 안내·다운로드·공유 HTML·접힌 도움말 키보드 조작 등 12개 확인. [결과](results/guide-delivery-e2e.json) |
 | 실제 브라우저 | 로컬 HTML·/dockslate/ 하위 경로·4개 사용법 탭·화살표/Home/End·명령어 클립보드·FAQ 클릭/Enter·EXE/ZIP 실제 다운로드와 원본 해시 일치 |
 | 반응형·접근성 | 1440·1024·390px에서 해시를 펼쳐도 가로 넘침 없음. 모션 축소 설정·JavaScript 비활성 상태에서도 다운로드/전체 안내 확인 |
-| 시각 확인 | 데스크톱·모바일 실제 캡처 확인. HTML·CSS·JS·자체 로고 합계 33,582바이트. 외부 폰트·래스터 이미지·추적 스크립트 없음 |
+| 시각 확인 | 데스크톱·모바일 실제 캡처 확인. 사이트 HTML·CSS·JS·자체 로고 합계 19,886바이트. 외부 폰트·래스터 이미지·추적 스크립트 없음 |
+| 안내서 축소 | 29,467 → 8,626바이트. 8개 절·표 4개를 다운로드·시작 3단계·접힌 도움말로 축소. HTML 저장·인쇄 유지 |
+| 프로그램 화면 | README의 [Windows 앱 캡처](assets/dockslate-disk.png)는 [B66E9FE7 검증](results/table-layout.md) 때의 실제 화면. 이번 작업에서 EXE·엔진을 새로 실행하지 않음 |
 
-Windows 클립보드의 CRLF 줄바꿈과 Enter 키 문자 입력을 테스트에 반영한 뒤 최종 검사를 통과했다. 신규 npm 의존성·패키지 버전·lock 변경 및 삭제 파일은 없다.
+Chrome 시작 중 포트 파일의 일시적 ENOENT·EBUSY만 재시도하도록 수정한 뒤 최종 검사를 통과했다. 신규 npm 의존성·패키지 버전·lock 변경 및 삭제 파일은 없다. 안내서의 개발·작업 현황 표와 미사용 내비게이션·스타일을 제거했다.
 
-공개 Release 업로드·기본 브랜치 변경·Pages 활성화·배포는 실행하지 않았다. 실제 게시 URL과 공개 다운로드의 성공 검증은 파일 등록 후에 수행해야 한다. 앱·설치판·엔진은 실행하지 않았다.
+[사이트 데스크톱](assets/site-desktop.png) · [사이트 모바일](assets/site-mobile.png) · [안내서 데스크톱](assets/guide-desktop.png) · [안내서 모바일](assets/guide-mobile.png) · [구성도](assets/architecture.svg)
+
+사용자가 Pages를 활성화했다. 에이전트는 공개 Release 업로드·기본 브랜치 변경·Pages 설정 변경·배포를 실행하지 않았다. 현재 공개 앱 안내와 준비된 사이트의 교체 및 공개 다운로드 검증은 파일 등록·게시 설정 반영 후에 수행해야 한다. 앱·설치판·엔진은 실행하지 않았다.
 
 공개 페이지는 앱의 안전성 인증이 아니다. 현재 파일은 미서명이며 이전 브라우징 데이터 접근 경고의 원인은 미확인이다.
 

@@ -3,107 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Windows용 Docker 관리 앱 DockSlate. 전용 Docker Engine과 Windows CLI를 준비하고 컨테이너, 이미지, Dockerfile, Compose를 한 곳에서 관리하세요.">
+  <meta name="description" content="DockSlate Windows용 Docker 관리 앱. 설치 파일 다운로드와 사용 방법.">
   <meta name="theme-color" content="#0b0f14">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'">
-  <title>DockSlate · Windows용 Docker 관리</title>
+  <title>DockSlate · 다운로드</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
   <script defer src="./main.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 이동</a>
-  <header class="header">
-    <div class="header-inner wrap">
-      <a class="brand" href="#top" aria-label="DockSlate 처음으로"><img src="./icon.svg" width="36" height="36" alt=""><span>DockSlate</span></a>
-      <nav aria-label="주요 메뉴"><a href="#features">기능</a><a href="#start">사용 방법</a><a href="#download">다운로드</a><a href="#faq">FAQ</a></nav>
-      <a class="source-link" href="https://github.com/seo-gali/dockslate">GitHub <span aria-hidden="true">↗</span></a>
-    </div>
-  </header>
-  <main id="main">
-    <section class="hero wrap" id="top" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="tiny-square" aria-hidden="true"></span> WINDOWS 11 · X64</p>
-        <h1 id="hero-title">컨테이너 작업을,<br><span>한 곳에서.</span></h1>
-        <p class="hero-description">Docker Engine부터 컨테이너, 이미지, Compose까지.<br class="desktop-break"> DockSlate는 Windows에서 쓰는 Docker 관리 앱입니다.</p>
-        <div class="hero-actions"><a class="button primary" href="#download"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m-4-4 4 4 4-4M4 13v4h12v-4"/></svg>Windows용 다운로드</a><a class="text-link" href="#start">처음 사용하는 방법 <span aria-hidden="true">→</span></a></div>
-        <p class="hero-note">v{{VERSION}} <span aria-hidden="true">·</span> 미서명 개발 버전 <span aria-hidden="true">·</span> 설치 EXE / 포터블 ZIP</p>
-      </div>
-      <figure class="architecture">
-        <figcaption><span class="eyebrow">INSIDE DOCKSLATE</span><span class="diagram-caption">앱 · 명령어 · 엔진</span></figcaption>
-        <div class="architecture-top">
-          <div class="architecture-node"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8m-4-3v3M3 8h18"/></svg><strong>DockSlate 앱</strong><span>화면에서 작업</span></div>
-          <span class="plus" aria-hidden="true">+</span>
-          <div class="architecture-node"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3m6 0h4"/></svg><strong>Windows CLI</strong><span>터미널에서 작업</span></div>
-        </div>
-        <div class="connector" aria-hidden="true"><span>전용 연결</span></div>
-        <div class="engine-node"><div class="engine-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10"/></svg></div><div><strong>Docker Engine <span class="tag">Moby</span></strong><p>DockSlate 전용 WSL 2에서 실행</p></div></div>
-        <p class="architecture-note">Docker Desktop 별도 설치 없이<br>앱 설치 과정에서 엔진과 Windows 명령을 함께 준비합니다.</p>
-      </figure>
-    </section>
-    <div class="capability-strip"><div class="wrap"><span>Containers</span><i aria-hidden="true"></i><span>Images</span><i aria-hidden="true"></i><span>Dockerfile &amp; Compose</span><i aria-hidden="true"></i><span>Volumes &amp; Networks</span></div></div>
-
-    <section class="section wrap" id="features" aria-labelledby="features-title">
-      <div class="section-heading"><div><p class="eyebrow">YOUR DAILY WORKSPACE</p><h2 id="features-title">확인하고, 실행하고, 정리하세요.</h2></div><p>자주 쓰는 Docker 작업을<br>하나의 작업 공간에 모았습니다.</p></div>
-      <div class="feature-grid">
-        <article class="feature"><span class="feature-number">01 / MONITOR</span><svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10"/></svg><h3>컨테이너를 한눈에</h3><p>상태와 포트를 확인하고 시작·중지합니다. 이름을 누르면 상세, 통계, 실시간 로그, 터미널, 파일을 탭으로 볼 수 있습니다.</p><span class="feature-detail">상태 · 로그 · 터미널 · 파일</span></article>
-        <article class="feature"><span class="feature-number">02 / BUILD</span><svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 9-4 9 4-9 4-9-4Zm0 6 9 4 9-4M3 18l9 4 9-4"/></svg><h3>이미지에서 실행까지</h3><p>Docker Hub에서 이미지를 찾고, 진행 상황을 보며 받습니다. Dockerfile·Compose 파일을 가져와 지원하는 구성으로 빌드할 수 있습니다.</p><span class="feature-detail">이미지 Pull · Dockerfile · Compose</span></article>
-        <article class="feature"><span class="feature-number">03 / MANAGE</span><svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14l3 12v6H2v-6L5 3ZM2 15h20M6 18h.01M10 18h.01"/></svg><h3>리소스를 직접 관리</h3><p>볼륨과 네트워크를 만들고 참조 관계를 확인합니다. 디스크 관리에서는 정리 대상을 골라 확인한 뒤 삭제합니다.</p><span class="feature-detail">볼륨 · 네트워크 · 선택 정리</span></article>
-      </div>
-    </section>
-
-    <section class="section guide-section" id="start" aria-labelledby="start-title">
-      <div class="wrap">
-        <div class="section-heading"><div><p class="eyebrow">GET STARTED</p><h2 id="start-title">첫 설치부터 실제 작업까지.</h2></div><p>Node.js와 Rust는<br>앱 사용자에게 필요하지 않습니다.</p></div>
-        <div class="guide-tabs" role="tablist" aria-label="사용 방법" hidden>
-          <button id="tab-install" type="button" role="tab" aria-controls="panel-install" aria-selected="true">설치하기</button>
-          <button id="tab-container" type="button" role="tab" aria-controls="panel-container" aria-selected="false" tabindex="-1">컨테이너 실행</button>
-          <button id="tab-build" type="button" role="tab" aria-controls="panel-build" aria-selected="false" tabindex="-1">Dockerfile · Compose</button>
-          <button id="tab-cli" type="button" role="tab" aria-controls="panel-cli" aria-selected="false" tabindex="-1">터미널에서 사용</button>
-        </div>
-        <div class="guide-panel" id="panel-install" role="tabpanel" aria-labelledby="tab-install" tabindex="0">
-          <div><h3>설치 EXE로 시작하세요.</h3><ol class="steps"><li><strong>파일 다운로드</strong><p>아래에서 Windows x64 설치 EXE를 받습니다. 현재는 미서명 개발 빌드입니다.</p></li><li><strong>앱과 엔진 준비</strong><p>설치 중 엔진 대상과 영향을 확인하고 동의하면 전용 Docker Engine의 설치·시작을 이어서 진행합니다.</p></li><li><strong>새 터미널에서 확인</strong><p>설치가 끝나면 새 CMD 또는 PowerShell 창에서 Docker 명령을 확인합니다.</p></li></ol></div>
-          <div class="guide-aside"><div class="terminal"><div class="terminal-heading"><span>PowerShell / CMD</span><button type="button" data-copy-target="install-command" aria-label="설치 확인 명령어 복사">복사</button></div><pre><code id="install-command">docker ps
-docker compose version
-docker buildx version</code></pre></div><div class="tip"><strong>필요한 환경</strong><p>Windows 11 x64 · WSL 2.4.10 이상 · WebView2<br>첫 엔진 설치에는 인터넷 연결이 필요합니다. WSL 기능 설정에 따라 재시작이 필요할 수 있습니다.</p></div></div>
-        </div>
-        <div class="guide-panel" id="panel-container" role="tabpanel" aria-labelledby="tab-container" tabindex="0">
-          <div><h3>이미지를 받고 실행합니다.</h3><ol class="steps"><li><strong>이미지 준비</strong><p>이미지 메뉴에서 Docker Hub를 검색하거나 이미지 이름과 태그를 입력해 받습니다.</p></li><li><strong>실행 설정</strong><p>로컬 이미지의 실행 버튼을 눌러 이름, 포트, 볼륨 등 필요한 항목을 설정합니다.</p></li><li><strong>상태와 로그 확인</strong><p>컨테이너 메뉴에서 실행 상태를 확인합니다. 이름을 누르면 상세·로그·터미널·파일이 열립니다.</p></li></ol></div>
-          <div class="guide-aside"><div class="explain-card"><span class="eyebrow">PORT MAPPING</span><div class="port-mapping"><code>내 PC 포트</code><span aria-hidden="true">→</span><code>컨테이너 포트</code></div><p>자동 할당된 포트를 썼다면 컨테이너 표에 표시된 <strong>내 PC 포트</strong>로 접속하세요. MongoDB 같은 데이터베이스 포트는 웹 페이지가 아닙니다.</p></div><div class="tip"><strong>실행하자마자 중지되나요?</strong><p><code>hello-world</code>는 메시지를 출력하고 종료하는 이미지입니다. 상세의 종료 코드와 로그를 함께 확인하세요.</p></div></div>
-        </div>
-        <div class="guide-panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build" tabindex="0">
-          <div><h3>프로젝트 파일로 빌드합니다.</h3><ol class="steps"><li><strong>파일 가져오기</strong><p>빌드 메뉴에서 Dockerfile 또는 Compose 파일을 선택합니다.</p></li><li><strong>설정 확인 후 빌드</strong><p>프로젝트와 지원되는 구성을 확인합니다. Dockerfile의 부모 폴더가 기본 빌드 컨텍스트입니다.</p></li><li><strong>결과 확인 후 실행</strong><p>생성된 이미지 또는 Compose 구성을 확인하고 실행 대상을 승인합니다.</p></li></ol></div>
-          <div class="guide-aside"><div class="terminal"><div class="terminal-heading"><span>프로젝트 폴더에서 사용하는 CLI 예시</span><button type="button" data-copy-target="build-command" aria-label="빌드 예시 명령어 복사">복사</button></div><pre><code id="build-command">docker build -t my-app .
-docker compose up -d</code></pre></div><div class="tip"><strong>Compose 가져오기 범위</strong><p>프로젝트 내부 상대 경로, 새 named volume, bridge 등 제한된 구성을 지원합니다. 임의의 Kubernetes YAML 배포나 모든 Compose 옵션을 지원하는 것은 아닙니다.</p></div></div>
-        </div>
-        <div class="guide-panel" id="panel-cli" role="tabpanel" aria-labelledby="tab-cli" tabindex="0">
-          <div><h3>익숙한 Docker 명령 그대로.</h3><ol class="steps"><li><strong>새 터미널 열기</strong><p>설치판은 현재 사용자 PATH에 DockSlate의 bin 폴더를 등록합니다. 설치 전에 열었던 터미널은 다시 열어주세요.</p></li><li><strong>엔진 상태 확인</strong><p>앱의 설정 → 런타임에서 전용 엔진이 실행 중인지 확인합니다.</p></li><li><strong>평소 명령 사용</strong><p>Windows Docker CLI·Compose·Buildx가 포함됩니다. 포터블에서는 압축을 푼 폴더의 bin\docker.exe를 사용합니다.</p></li></ol></div>
-          <div class="guide-aside"><div class="terminal"><div class="terminal-heading"><span>PowerShell / CMD</span><button type="button" data-copy-target="cli-command" aria-label="Docker 명령어 예시 복사">복사</button></div><pre><code id="cli-command">docker ps
-docker images
-docker compose version</code></pre></div><div class="tip"><strong>포터블로 사용한다면</strong><p>ZIP 전체를 압축 해제하고 <code>DockSlate.exe</code>, <code>bin</code>, <code>libexec</code>를 같은 폴더에 유지하세요.</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section wrap download-section" id="download" aria-labelledby="download-title">
-      <div class="section-heading"><div><p class="eyebrow">DOWNLOAD</p><h2 id="download-title">Windows에서 시작하세요.</h2></div><span class="version-tag">v{{VERSION}} <span>개발 버전</span></span></div>
+  <header class="header"><div class="header-inner wrap">
+    <a class="brand" href="#top"><img src="./icon.svg" width="30" height="30" alt=""><span>DockSlate</span></a>
+    <nav aria-label="주요 메뉴"><a href="#download">다운로드</a><a href="#features">기능</a><a href="#start">사용 방법</a><a href="#faq">FAQ</a></nav>
+    <a class="source-link" href="https://github.com/seo-gali/dockslate">GitHub ↗</a>
+  </div></header>
+  <main id="main" class="wrap">
+    <section class="section download-section" id="download" aria-labelledby="download-title">
+      <div class="section-heading" id="top"><h1 id="download-title">DockSlate</h1><span class="version-tag">v{{VERSION}}</span></div>
+      <ul class="requirements" aria-label="필수 환경"><li>Windows 11 x64</li><li>WSL 2.4.10+</li><li>WebView2</li></ul>
       <div class="download-grid">
-        <article class="download-card"><div class="download-card-heading"><h3>Windows 설치판</h3><span class="tag">권장</span></div><p>앱·Windows CLI·시작 메뉴·제거 항목을 설치합니다. 승인 후 전용 Docker Engine을 준비합니다.</p><a class="button primary download-button" data-download="installer" href="{{INSTALLER_URL}}" download><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m-4-4 4 4 4-4M4 13v4h12v-4"/></svg>설치 EXE 다운로드</a><div class="file-meta">Windows x64 <span>EXE · {{INSTALLER_SIZE}}</span></div><details class="checksum"><summary>SHA-256 확인</summary><code id="installer-hash">{{INSTALLER_SHA256}}</code><button type="button" data-copy-target="installer-hash" aria-label="설치 EXE SHA-256 복사">해시 복사</button></details></article>
-        <article class="download-card"><div class="download-card-heading"><h3>포터블 ZIP</h3><span class="format-tag">전체 패키지</span></div><p>앱·CLI·플러그인·안내서가 들어 있습니다. 전체 압축을 풀고 DockSlate.exe를 실행하세요.</p><a class="button secondary download-button" data-download="zip" href="{{ZIP_URL}}" download><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m-4-4 4 4 4-4M4 13v4h12v-4"/></svg>포터블 ZIP 다운로드</a><div class="file-meta">Windows x64 <span>ZIP · {{ZIP_SIZE}}</span></div><details class="checksum"><summary>SHA-256 확인</summary><code id="zip-hash">{{ZIP_SHA256}}</code><button type="button" data-copy-target="zip-hash" aria-label="포터블 ZIP SHA-256 복사">해시 복사</button></details></article>
+        <article class="download-card">
+          <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H4V4Zm4 16h8m-4-4v4"/></svg>
+          <h2>Windows 설치판</h2><p class="file-meta">EXE · {{INSTALLER_SIZE}}</p>
+          <a class="button primary download-button" data-download="installer" href="{{INSTALLER_URL}}" download>설치 EXE 다운로드 <span aria-hidden="true">↓</span></a>
+          <details class="checksum"><summary>SHA-256</summary><code id="installer-hash">{{INSTALLER_SHA256}}</code><button type="button" data-copy-target="installer-hash" aria-label="설치 EXE SHA-256 복사">복사</button></details>
+        </article>
+        <article class="download-card">
+          <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 9-4 9 4v12l-9 4-9-4V6Zm0 0 9 4 9-4m-9 4v12"/></svg>
+          <h2>포터블 ZIP</h2><p class="file-meta">ZIP · {{ZIP_SIZE}}</p>
+          <a class="button secondary download-button" data-download="zip" href="{{ZIP_URL}}" download>포터블 ZIP 다운로드 <span aria-hidden="true">↓</span></a>
+          <details class="checksum"><summary>SHA-256</summary><code id="zip-hash">{{ZIP_SHA256}}</code><button type="button" data-copy-target="zip-hash" aria-label="포터블 ZIP SHA-256 복사">복사</button></details>
+        </article>
       </div>
-      <aside class="security-note" aria-label="다운로드 전 확인"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 10 18H2L12 3Zm0 6v5m0 3v.1"/></svg><div><strong>현재 파일은 미서명 개발 빌드입니다.</strong><p>Windows나 보안 제품에서 경고하거나 실행을 차단할 수 있습니다. 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. 해시 일치는 악성코드가 없다는 보증이 아닙니다.</p></div></aside>
+      <aside class="security-note"><strong>미서명 개발 버전</strong><p>Windows·보안 제품에서 경고할 수 있습니다. 이전 브라우징 데이터 접근 경고는 원인 미확인이며, 해시 일치는 안전성을 보증하지 않습니다.</p></aside>
     </section>
-
-    <section class="section wrap faq-section" id="faq" aria-labelledby="faq-title"><div class="section-heading"><div><p class="eyebrow">GOOD TO KNOW</p><h2 id="faq-title">설치 전에 궁금한 것들.</h2></div></div><div class="faq-list">
-      <details><summary>Docker Desktop을 따로 설치해야 하나요?</summary><p>별도로 설치할 필요가 없습니다. DockSlate는 전용 WSL 2 배포판 안에서 Moby 기반 Docker Engine을 실행합니다. 앱과 Windows Docker CLI를 설치하고, 승인한 대상에 엔진을 준비하는 구성입니다.</p></details>
-      <details><summary>WSL 없이도 Linux 컨테이너를 실행할 수 있나요?</summary><p>현재 DockSlate의 Linux 컨테이너 엔진은 WSL 2를 사용합니다. Windows 11 x64와 WSL 2.4.10 이상이 필요합니다. 이 페이지나 HTML 파일 자체가 엔진을 실행하는 것은 아닙니다.</p></details>
-      <details><summary>앱을 삭제하면 이미지와 볼륨도 지워지나요?</summary><p>앱과 전용 WSL 데이터는 별개입니다. 앱 제거 또는 포터블 폴더 삭제로 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 엔진 중지도 데이터를 삭제하지 않습니다.</p></details>
-      <details><summary>MongoDB 연결이 거부되면 무엇을 확인하나요?</summary><p>컨테이너가 실행 중인지 확인하고, 표에 표시된 내 PC 포트를 사용하세요. 예를 들어 127.0.0.1:32768 → 27017이면 Compass 연결 주소는 mongodb://127.0.0.1:32768입니다. 실제 할당된 포트는 컨테이너마다 다를 수 있습니다.</p></details>
-      <details><summary>미서명이면 악성코드인가요?</summary><p>미서명은 검증된 게시자 서명이 없다는 뜻이며, 그 자체로 악성코드 판정은 아닙니다. 반대로 서명이 있다고 안전성이 보장되는 것도 아닙니다. DockSlate의 이전 접근 경고는 아직 원인 미확인이며, 이 페이지에서 보안 보호 해제나 예외 등록을 권하지 않습니다.</p></details>
-      <details><summary>현재 어느 정도까지 검증됐나요?</summary><p>개발 환경에서 엔진 연결·컨테이너·로그·표 조절과 Windows 명령을 확인했습니다. 모든 PC에서의 설치·제거와 모든 Docker 기능을 검증한 제품은 아닙니다. 지원 범위와 미검증 항목은 <a href="https://github.com/seo-gali/dockslate/blob/build/installer/docs/REQUEST_STATUS.md">요청·검증 현황</a>에서 확인하세요.</p></details>
-    </div></section>
+    <section class="section" id="features" aria-labelledby="features-title">
+      <h2 id="features-title">기능</h2>
+      <div class="feature-grid">
+        <article class="feature"><svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm0 10 9-5M12 12 3 7m9 5v10"/></svg><h3>컨테이너</h3><p>시작·중지 · 로그·터미널·파일</p></article>
+        <article class="feature"><svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 9-4 9 4-9 4-9-4Zm0 6 9 4 9-4M3 18l9 4 9-4"/></svg><h3>이미지 · 빌드</h3><p>Docker Hub · Dockerfile · Compose</p></article>
+        <article class="feature"><svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14l3 12v6H2v-6L5 3ZM2 15h20M6 18h.01M10 18h.01"/></svg><h3>리소스</h3><p>볼륨·네트워크 · 디스크 관리</p></article>
+      </div>
+    </section>
+    <section class="section" id="start" aria-labelledby="start-title">
+      <h2 id="start-title">사용 방법</h2>
+      <div class="guide-tabs" role="tablist" aria-label="사용 방법" hidden>
+        <button id="tab-install" type="button" role="tab" aria-controls="panel-install" aria-selected="true">설치</button>
+        <button id="tab-container" type="button" role="tab" aria-controls="panel-container" aria-selected="false" tabindex="-1">컨테이너</button>
+        <button id="tab-build" type="button" role="tab" aria-controls="panel-build" aria-selected="false" tabindex="-1">Dockerfile · Compose</button>
+        <button id="tab-cli" type="button" role="tab" aria-controls="panel-cli" aria-selected="false" tabindex="-1">CLI</button>
+      </div>
+      <div class="guide-panel" id="panel-install" role="tabpanel" aria-labelledby="tab-install" tabindex="0">
+        <ol class="steps"><li>설치 EXE를 실행합니다.</li><li>엔진 준비 대상과 영향을 확인하고 <strong>Docker Engine 설치 및 시작</strong>을 승인합니다.</li><li>설치 후 새 CMD·PowerShell에서 확인합니다.</li></ol>
+        <div class="terminal"><div class="terminal-heading"><span>PowerShell / CMD</span><button type="button" data-copy-target="install-command" aria-label="설치 확인 명령어 복사">복사</button></div><pre><code id="install-command">docker ps
+docker compose version
+docker buildx version</code></pre></div>
+      </div>
+      <div class="guide-panel" id="panel-container" role="tabpanel" aria-labelledby="tab-container" tabindex="0">
+        <ol class="steps"><li><strong>이미지 → 이미지 받기</strong>에서 이미지를 받습니다.</li><li>실행을 누르고 이름과 내 PC 포트를 설정합니다.</li><li>컨테이너를 생성한 뒤 목록에서 상태·로그를 확인합니다.</li></ol>
+        <div class="terminal"><div class="terminal-heading"><span>CLI</span><button type="button" data-copy-target="container-command" aria-label="컨테이너 예시 명령어 복사">복사</button></div><pre><code id="container-command">docker run --name my-web -p 127.0.0.1:8080:80 nginx:stable</code></pre></div>
+      </div>
+      <div class="guide-panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build" tabindex="0">
+        <ol class="steps"><li><strong>빌드 → 파일 가져오기</strong>에서 Dockerfile 또는 Compose를 선택합니다.</li><li>프로젝트와 지원 구성을 확인하고 빌드합니다.</li><li>결과를 확인하고 실행합니다.</li></ol>
+        <div class="terminal"><div class="terminal-heading"><span>프로젝트 폴더</span><button type="button" data-copy-target="build-command" aria-label="빌드 예시 명령어 복사">복사</button></div><pre><code id="build-command">docker build -t my-app .
+docker compose up -d</code></pre></div>
+      </div>
+      <div class="guide-panel" id="panel-cli" role="tabpanel" aria-labelledby="tab-cli" tabindex="0">
+        <ol class="steps"><li>설치 후 새 CMD·PowerShell을 엽니다.</li><li>앱의 <strong>설정 → 런타임</strong>에서 엔진 상태를 확인합니다.</li><li>포터블은 전체 압축을 풀고 <code>bin\docker.exe</code>를 사용합니다.</li></ol>
+        <div class="terminal"><div class="terminal-heading"><span>PowerShell / CMD</span><button type="button" data-copy-target="cli-command" aria-label="Docker 명령어 예시 복사">복사</button></div><pre><code id="cli-command">docker ps
+docker images
+docker compose version</code></pre></div>
+      </div>
+    </section>
+    <section class="section faq-section" id="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQ</h2>
+      <div class="faq-list">
+        <details><summary>Docker Desktop을 따로 설치해야 하나요?</summary><p>필요하지 않습니다. DockSlate는 전용 WSL 2 배포판에서 Moby 기반 Docker Engine을 실행합니다. 최초 엔진 설치에는 인터넷이 필요합니다.</p></details>
+        <details><summary>포터블은 어떻게 실행하나요?</summary><p>ZIP 전체를 풀고 DockSlate.exe를 실행합니다. bin·libexec 폴더를 함께 유지하세요.</p></details>
+        <details><summary>앱을 삭제하면 데이터도 지워지나요?</summary><p>앱 제거로 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 엔진 중지도 데이터를 지우지 않습니다.</p></details>
+        <details><summary>MongoDB에 연결이 안 돼요.</summary><p>컨테이너 실행 상태와 내 PC 포트를 확인하세요. 표가 32768 → 27017이면 Compass 주소는 mongodb://127.0.0.1:32768입니다. 실제 포트는 컨테이너마다 다릅니다.</p></details>
+        <details><summary>지원 범위와 검증 상태는?</summary><p>Compose 가져오기는 제한된 구성을 지원하며 Kubernetes 배포는 지원하지 않습니다. 설치·제거·파일 복사 등 미검증 항목은 <a href="https://github.com/seo-gali/dockslate/blob/build/installer/docs/REQUEST_STATUS.md">지원·검증 현황</a>을 확인하세요.</p></details>
+      </div>
+    </section>
   </main>
-  <footer class="footer wrap"><a class="brand" href="#top"><img src="./icon.svg" width="30" height="30" alt=""><span>DockSlate</span></a><p>Windows를 위한 Docker 작업 공간.</p><div><a href="https://github.com/seo-gali/dockslate">소스 코드 <span aria-hidden="true">↗</span></a><a href="https://github.com/seo-gali/dockslate/issues">문제 제보 <span aria-hidden="true">↗</span></a></div></footer>
+  <footer class="footer wrap"><a class="brand" href="#top"><img src="./icon.svg" width="26" height="26" alt=""><span>DockSlate</span></a><div><a href="./guide.html">빠른 시작</a><a href="https://github.com/seo-gali/dockslate">소스 코드</a><a href="https://github.com/seo-gali/dockslate/issues">문제 제보</a></div></footer>
   <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
 </body>
 </html>

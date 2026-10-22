@@ -49,6 +49,7 @@ fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output);
 fs.writeFileSync(path.join(output, 'index.html'), html);
 for (const file of ['styles.css', 'main.js', 'icon.svg']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
+for (const file of ['guide.html', 'google474f5421d7424578.html']) fs.copyFileSync(path.join(root, file), path.join(output, file));
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 fs.writeFileSync(path.join(output, 'SHA256SUMS.txt'), checksums.join('\n') + '\n');
 if (!production) {

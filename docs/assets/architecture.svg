@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" role="img" aria-labelledby="title desc">
+  <title id="title">DockSlate 구성</title>
+  <desc id="desc">Windows 앱과 Docker CLI가 DockSlate 전용 WSL 2의 Docker Engine에 연결됩니다.</desc>
+  <rect width="900" height="250" rx="12" fill="#0b0f14"/>
+  <g fill="#151d28" stroke="#293545">
+    <rect x="24" y="24" width="300" height="90" rx="8"/>
+    <rect x="24" y="136" width="300" height="90" rx="8"/>
+    <rect x="424" y="24" width="452" height="202" rx="8"/>
+  </g>
+  <g fill="none" stroke="#79b1ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M324 69h50v56h50m-100 56h50v-56m40-7 10 7-10 7"/>
+    <path d="M51 50h25v20H51zM57 78h13m-7-8v8M50 168l8 8-8 8m15 0h12"/>
+  </g>
+  <g fill="#f0f4f8" font-family="Segoe UI,Malgun Gothic,sans-serif" font-size="20" font-weight="600">
+    <text x="96" y="66">DockSlate 앱</text>
+    <text x="96" y="178">Docker CLI</text>
+    <text x="452" y="65">DockSlate WSL 2</text>
+    <text x="452" y="126" fill="#79b1ff">Docker Engine · Moby</text>
+  </g>
+  <g fill="#a0afbf" font-family="Segoe UI,Malgun Gothic,sans-serif" font-size="14">
+    <text x="96" y="91">Windows</text>
+    <text x="96" y="202">Compose · Buildx</text>
+    <text x="452" y="160">컨테이너 · 이미지 · 볼륨 · 네트워크</text>
+    <text x="452" y="198">앱 제거 시 엔진 데이터를 자동 삭제하지 않음</text>
+  </g>
+</svg>

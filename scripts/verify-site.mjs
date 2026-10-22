@@ -10,8 +10,10 @@ const output = path.join(root, 'site-dist');
 const release = JSON.parse(fs.readFileSync('site/release.json', 'utf8'));
 const session = JSON.parse(fs.readFileSync(process.argv[2] ?? '.analysis/site-browser-session.json', 'utf8').replace(/^\uFEFF/, ''));
 if (!session.frontendOnly || session.nativeBackendInjected !== false || !path.resolve(session.profile).startsWith(path.join(root, '.analysis', 'site-browser-'))) throw Error('A fresh isolated website browser is required.');
-await waitFor('Website browser port', () => fs.existsSync(session.portFile), 10000);
-const browserPort = Number(fs.readFileSync(session.portFile, 'utf8').split('\n')[0]);
+const browserPort = await waitFor('Website browser port', () => {
+  try { return Number(fs.readFileSync(session.portFile, 'utf8').split('\n')[0]); }
+  catch (error) { if (['ENOENT', 'EBUSY'].includes(error.code)) return false; throw error; }
+}, 10000);
 if (!Number.isInteger(browserPort) || browserPort < 1 || browserPort > 65535) throw Error('Invalid local browser port.');
 const targets = await (await fetch(`http://127.0.0.1:${browserPort}/json/list`)).json();
 const target = targets.find(item => item.type === 'page' && item.url === 'about:blank');
@@ -71,6 +73,15 @@ try {
   await navigate(pageUrl);
   assert(await evaluate(`['features','start','download','faq'].every(id=>document.getElementById(id))&&document.querySelectorAll('.feature').length===3&&document.querySelectorAll('[data-download]').length===2`), 'Project introduction, usage or downloads missing.');
   check('GitHub Pages project path renders introduction, features, guide, downloads and FAQ');
+  const verification = await fetch(origin + '/dockslate/google474f5421d7424578.html');
+  assert(verification.status === 200 && await verification.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Google ownership file is not served unchanged');
+  check('Google ownership file is served unchanged under the project URL');
+  await navigate(pageUrl + 'guide.html');
+  assert(await evaluate(`document.querySelectorAll('#quickstart li').length===3&&document.querySelector('main').innerText.length<900&&document.querySelectorAll('[data-artifact]:not([hidden])').length===0&&document.querySelector('#site-download').href===${JSON.stringify(pageUrl + '#download')}&&[...document.querySelectorAll('[data-doc]')].every(a=>a.href.startsWith('https://github.com/seo-gali/dockslate/'))`), 'Online guide is verbose or points to missing local downloads/documents');
+  await evaluate(`document.querySelector('#site-download').click()`);
+  await waitFor('Online guide returns to website downloads', () => evaluate(`location.href===${JSON.stringify(pageUrl + '#download')}`), 10000);
+  check('Compact online guide links to website downloads and repository documents');
+  await navigate(pageUrl);
   const brokenAnchors = await evaluate(`[...document.querySelectorAll('a[href^="#"]')].map(a=>a.hash).filter(hash=>!document.getElementById(hash.slice(1)))`);
   assert(brokenAnchors.length === 0, 'Broken in-page links.');
   check('Navigation anchors resolve within the page');
@@ -119,6 +130,7 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   assert(await evaluate(`getComputedStyle(document.documentElement).scrollBehavior==='auto'`), 'Reduced-motion preference ignored.');
   check('Reduced-motion preference disables smooth scrolling');
+  await evaluate(`document.querySelectorAll('.checksum').forEach(item=>item.open=false)`);
   for (const [name, width, height] of [['desktop',1440,1000],['mobile',390,844]]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
     await evaluate(`window.scrollTo({top:0,behavior:'instant'})`);

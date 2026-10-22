@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T16:42:49.125Z",
+  "observedAt": "2026-10-22T17:22:54.289Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -9,6 +9,14 @@
     },
     {
       "name": "GitHub Pages project path renders introduction, features, guide, downloads and FAQ",
+      "passed": true
+    },
+    {
+      "name": "Google ownership file is served unchanged under the project URL",
+      "passed": true
+    },
+    {
+      "name": "Compact online guide links to website downloads and repository documents",
       "passed": true
     },
     {
