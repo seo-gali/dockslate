@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T11:12:33.683Z",
+  "observedAt": "2026-10-22T11:48:17.130Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -22,7 +22,7 @@
       }
     },
     {
-      "name": "guide.html offers the installer and complete ZIP and hides the obsolete standalone EXE",
+      "name": "guide.html offers the installer and complete ZIP with unsigned and unresolved-alert notices",
       "passed": true,
       "evidence": [
         {
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "name": "dist/guide.html offers the installer and complete ZIP and hides the obsolete standalone EXE",
+      "name": "dist/guide.html offers the installer and complete ZIP with unsigned and unresolved-alert notices",
       "passed": true,
       "evidence": [
         {
@@ -50,29 +50,29 @@
       ]
     },
     {
-      "name": "Installer button saves the exact verified setup executable without launching it",
+      "name": "Installer button saves the exact setup executable without launching it",
       "passed": true,
       "evidence": {
         "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094"
       }
     },
     {
-      "name": "ZIP download button saves the exact local review package",
+      "name": "ZIP download button saves the exact local development package",
       "passed": true,
       "evidence": {
-        "sha256": "5B480C1BFF505D5E8A9FDDEBFEA33BFCE60681733B979CB358AE8ADFACEADB8A"
+        "sha256": "98DEED8FCF148534A7E7C5490F7500E54D4D99EEB5B3C780F40E77EFC2AF54D7"
       }
     },
     {
       "name": "Guide HTML download opens independently and remains downloadable",
       "passed": true,
       "evidence": {
-        "bytes": 28761,
+        "bytes": 28796,
         "externalScriptOrStyles": 0
       }
     },
     {
-      "name": "Extracted ZIP guide links to its adjacent executable",
+      "name": "Extracted ZIP guide links to its adjacent unsigned development executable",
       "passed": true,
       "evidence": [
         "file:///D:/01_Programming/08_AI/REA/dockslate/.analysis/portable-extract/DockSlate-0.1.0-windows-x64/DockSlate.exe"

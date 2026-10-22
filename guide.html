@@ -26,9 +26,14 @@
         <h1>Docker Engine을 DockSlate에서 설치하고 사용합니다.</h1>
         <p class="muted">Linux용 Docker Engine은 전용 WSL 2 안에서 실행됩니다. Windows 앱에서 엔진을 설치하고, 컨테이너·Dockerfile·Compose를 관리합니다.</p>
         <div class="card" id="download-card">
-          <h3>설치판·ZIP 제공 중단</h3>
+          <h3>Windows x64 다운로드 · 미서명 개발 빌드</h3>
           <p class="muted">설치판은 앱과 Windows 명령 진입점을 설치하고 Docker Engine 설치 대상을 확인합니다. 대상과 영향에 동의하면 엔진·Compose·Buildx 설치와 시작, Windows 명령 검증을 자동으로 진행합니다. Node.js와 Rust는 필요하지 않습니다.</p>
-          <p class="caption" id="download-note">현재 파일은 미서명입니다. 정식 서명과 보안 확인 전까지 설치판·ZIP 다운로드를 제공하지 않습니다.</p>
+          <div class="actions download-actions">
+            <a class="button" data-artifact="DockSlate_0.1.0_x64-setup.exe" href="./downloads/DockSlate_0.1.0_x64-setup.exe" download>Windows 설치 EXE</a>
+            <a class="button" data-artifact="DockSlate-0.1.0-windows-x64.zip" href="./downloads/DockSlate-0.1.0-windows-x64.zip" download>포터블 ZIP</a>
+            <a class="button" data-artifact="DockSlate.exe" href="./DockSlate.exe" download hidden>폴더의 EXE</a>
+          </div>
+          <p class="caption" id="download-note">현재 파일은 미서명 개발 빌드입니다. 설치 EXE를 실행하거나 ZIP 전체를 풀고 DockSlate.exe와 bin·libexec 폴더를 함께 유지하세요.</p>
           <p class="caption">설치판과 ZIP에는 공식 Windows Docker CLI·Compose·Buildx를 포함합니다. 설치 파일 생성·해시 대조와 기존 엔진의 CLI·Compose 실행을 확인했으며, 실제 설치·제거 검증은 남아 있습니다.</p>
           <div class="notice"><strong>서명·보안 확인 미완료.</strong> 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. 코드 서명은 게시자와 무결성을 확인하며 악성코드 검사를 대신하지 않습니다. 보안 예외·신뢰 등록은 하지 않았습니다.</div>
         </div>
@@ -105,7 +110,7 @@ docker compose up -d</pre><p>설치 과정에서 엔진 준비와 Windows 명령
           <tr><td>독립 WSL 엔진</td><td>설치·시작·중지</td><td>이전 실제 설치·API·컨테이너·포트·파일 마운트 검증 통과.</td></tr>
           <tr><td>디스크 압축</td><td>사전 조건·차단·승인</td><td><span class="pill pending">미검증</span> 실제 VHDX 압축·UAC 승인.</td></tr>
           <tr><td>보안 경고</td><td>조사 기록</td><td><span class="pill pending">미해결</span> 접근 대상 확인과 정상 보안 검사 남음.</td></tr>
-          <tr><td>실행 파일·배포 형식</td><td>서명 확인 전 제공 중단</td><td>현재 EXE는 미서명입니다. 정식 서명·보안 확인이 끝나기 전에는 설치판·ZIP을 제공하지 않습니다.</td></tr>
+          <tr><td>실행 파일·배포 형식</td><td>미서명 설치 EXE·포터블 ZIP</td><td>개발 빌드 다운로드 제공. 서명·보안 확인은 미완료이며, 설치·제거 검증 범위는 별도 기록을 확인하세요.</td></tr>
           <tr><td>Pull 진행·완료 팝업</td><td>실제 레이어 상태·닫기 버튼</td><td>기존 고정 digest 실제 Pull·진행 팝업·완료·닫기 통과. 새 이미지 전체 다운로드 검사는 아님.</td></tr>
           <tr><td>실행 폼·생성 후 이동</td><td>선택 이미지 바로 아래 / 목록만 이동</td><td>격리 컨테이너 실제 생성 후 목록 이동·강조, 자동 팝업 없음 확인. 검증 후 해당 컨테이너만 삭제.</td></tr>
           <tr><td>표 열 구분선·너비 조절</td><td>드래그·키보드·너비 저장</td><td>최신 실제 표의 드래그·저장, 별도 브라우저의 키보드·초기화·가로 스크롤 확인.</td></tr>
@@ -122,13 +127,19 @@ docker compose up -d</pre><p>설치 과정에서 엔진 준비와 Windows 명령
   (() => {
     const root = document.querySelector('meta[name="dockslate-root"]').content;
     const packaged = location.pathname.includes('/DockSlate-0.1.0-windows-x64/');
+    document.querySelectorAll('[data-artifact]').forEach(link => {
+      link.hidden = packaged ? link.dataset.artifact !== 'DockSlate.exe' : link.dataset.artifact === 'DockSlate.exe';
+      link.href = packaged ? './DockSlate.exe' : root + 'downloads/' + link.dataset.artifact;
+    });
+    if (packaged && document.querySelector('.download-actions')) document.getElementById('download-note').textContent = '이 폴더의 DockSlate.exe는 미서명 개발 빌드입니다. bin·libexec 구성 요소를 함께 유지하세요.';
     document.querySelectorAll('[data-doc]').forEach(link => {
       link.href = packaged ? './' + link.dataset.doc : root + link.dataset.doc;
     });
     document.getElementById('print-guide').addEventListener('click', () => { document.querySelectorAll('details').forEach(d => d.open = true); window.print(); });
     document.getElementById('save-guide').addEventListener('click', () => {
       const copy = document.documentElement.cloneNode(true);
-      copy.querySelector('#download-note').textContent = '공유용 안내서입니다. 정식 서명·보안 확인 전까지 프로그램 실행 파일은 제공하지 않습니다.';
+      copy.querySelectorAll('.download-actions').forEach(el => el.remove());
+      copy.querySelector('#download-note').textContent = '공유용 안내서입니다. 미서명 개발 빌드의 설치 EXE 또는 전체 ZIP은 제공자에게 별도로 전달받으세요.';
       copy.querySelectorAll('[data-doc]').forEach(link => { const text = document.createElement('span'); text.textContent = link.textContent; link.replaceWith(text); });
       const url = URL.createObjectURL(new Blob(['<!doctype html>\n' + copy.outerHTML], {type:'text/html;charset=utf-8'}));
       const a = document.createElement('a'); a.href = url; a.download = 'DockSlate-사용안내.html'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 10000);

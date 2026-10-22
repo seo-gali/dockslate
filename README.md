@@ -4,17 +4,18 @@ Windows 11용 Docker Engine 관리 앱. Docker Desktop처럼 앱·내부 Linux �
 
 **현재 상태: 개발 버전. 요청 전체가 검증 완료된 상태는 아닙니다.**
 
-**설치판·ZIP 배포 중단:** 현재 파일은 미서명이며 브라우징 데이터 접근 경고의 원인도 미확인입니다. 정식 서명과 보안 확인이 끝나기 전까지 설치용 다운로드로 안내하지 않습니다. [서명 상태와 완료 조건](docs/results/code-signing.md)
+**미서명 개발 빌드:** 설치 EXE와 포터블 ZIP을 다운로드할 수 있습니다. Windows·보안 제품에서 경고하거나 실행을 차단할 수 있으며, 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. [서명·보안 상태](docs/results/code-signing.md)
 
 ## 실행 · 다운로드
 
 | 찾는 것 | 파일 |
 | --- | --- |
 | 다운로드와 사용 안내 | **[guide.html](guide.html)** — 더블클릭해서 열기 |
-| 설치판·포터블 ZIP | 서명·보안 확인 전 제공 중단 |
+| 설치판 | [DockSlate_0.1.0_x64-setup.exe](downloads/DockSlate_0.1.0_x64-setup.exe) — 미서명 개발 빌드 |
+| 앱·CLI·플러그인·안내서가 포함된 ZIP | [DockSlate-0.1.0-windows-x64.zip](downloads/DockSlate-0.1.0-windows-x64.zip) — 전체 압축 해제 후 DockSlate.exe 실행 |
 | 요청별 구현·검증 상태 | [체크리스트](docs/REQUEST_STATUS.md) |
 
-기존 `downloads` 파일과 이전 GitHub 산출물은 미서명 조사 자료입니다. 정식 릴리스는 없습니다. 새 설치판·ZIP 제작과 CI 업로드는 지정 게시자의 유효한 Authenticode 서명·타임스탬프 검증을 통과해야 합니다. 개발용 `--no-bundle` 빌드는 별도로 사용할 수 있습니다.
+`downloads`는 로컬 빌드 결과라 Git 저장소에 포함하지 않습니다. 소스만 내려받았다면 아래 빌드 절차로 생성하거나 [Windows 빌드 산출물](https://github.com/seo-gali/dockslate/actions?query=branch%3Abuild%2Finstaller)을 받으세요. GitHub 산출물은 7일 보관하며 정식 릴리스는 아직 없습니다. 개발 빌드는 서명 없이 제작·다운로드할 수 있고, SHA-256으로 파일 일치 여부를 확인합니다.
 
 1. 설치판은 앱·Windows CLI를 복사하고 Docker Engine 설치 대상을 자동으로 확인합니다. 포터블은 ZIP을 풀고 EXE를 실행합니다.
 2. **Docker Engine 설치 및 시작**의 대상과 영향을 확인하고 동의하면 다운로드·설치·시작을 이어서 진행합니다. 기존 엔진은 소유권을 확인해 재사용하고, 중지 상태면 시작합니다. WSL을 삭제할 필요는 없습니다.
@@ -62,9 +63,10 @@ npm ci
 .\scripts\prepare-windows-docker.ps1
 .\scripts\desktop.ps1 -Mode build
 .\scripts\build-cli.ps1
+npm run package:local
 ```
 
-결과는 `src-tauri/target/release`의 개발용 미서명 EXE입니다. 배포용 파일이 아닙니다. `npm run package:local`과 설치판 제작은 서명 검증에 실패하면 중단합니다. 패키징은 앱을 실행하거나 WSL을 변경하지 않습니다.
+결과: `downloads/DockSlate-0.1.0-windows-x64.zip` 안에 앱·bin·libexec를 함께 포함합니다. 패키징은 소스 빌드 기록과 공식 구성 요소의 고정 해시를 확인하며, 앱을 실행하거나 WSL을 변경하지 않습니다. 현재 EXE는 미서명입니다.
 
 Windows 구성 준비는 기본 오프라인 검사입니다. 승인한 공식 배포본과 고정 해시가 캐시에 있어야 합니다. 최초 다운로드와 CLI ZIP의 SHA-256 고정 절차는 [준비 스크립트](scripts/prepare-windows-docker.ps1), [구성 manifest](scripts/windows-docker.manifest.json)를 확인하세요.
 

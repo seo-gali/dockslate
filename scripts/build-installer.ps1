@@ -8,9 +8,6 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-if (!$CheckToolsOnly -and [string]::IsNullOrWhiteSpace($env:DOCKSLATE_SIGNER_SUBJECT)) {
-    throw 'DOCKSLATE_SIGNER_SUBJECT is not configured. Installer distribution is blocked pending a verified signing identity.'
-}
 $cliRoot = Join-Path $projectRoot 'node_modules\@tauri-apps\cli'
 $cliManifest = Join-Path $cliRoot 'package.json'
 if (!(Test-Path -LiteralPath $cliManifest -PathType Leaf)) {
@@ -96,10 +93,6 @@ try {
             throw "Missing release executable $binary. Build the app and CLI launcher before bundling."
         }
     }
-    & (Join-Path $PSScriptRoot 'verify-code-signatures.ps1') -Path @(
-        (Join-Path $targetRoot 'release\dockslate.exe'),
-        (Join-Path $targetRoot 'release\docker.exe')
-    ) | Out-Null
     $guideSource = [IO.File]::ReadAllText((Join-Path $projectRoot 'guide.html'))
     $guideMarker = "const packaged = location.pathname.includes('/DockSlate-0.1.0-windows-x64/');"
     if (!$guideSource.Contains($guideMarker)) { throw 'The standalone guide marker is missing.' }
@@ -111,7 +104,6 @@ try {
     $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'src-tauri\tauri.conf.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
     $installer = Join-Path $targetRoot "release\bundle\nsis\DockSlate_${version}_x64-setup.exe"
     if (!(Test-Path -LiteralPath $installer -PathType Leaf)) { throw 'The NSIS command completed without the expected x64 installer.' }
-    & (Join-Path $PSScriptRoot 'verify-code-signatures.ps1') -Path $installer | Out-Null
     [ordered]@{
         installerPath = $installer
         bytes = (Get-Item -LiteralPath $installer).Length

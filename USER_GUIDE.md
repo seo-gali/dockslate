@@ -2,7 +2,7 @@
 
 **[HTML 안내서 열기](guide.html)**
 
-브라우저에서 `guide.html`을 열면 사용 방법을 볼 수 있습니다. 현재 설치판·ZIP은 미서명·보안 확인 미완료로 다운로드 제공을 중단했습니다. 상단 **안내서 HTML 다운로드** 버튼과 **인쇄 / PDF**는 사용할 수 있습니다.
+브라우저에서 `guide.html`을 열면 설치 EXE·포터블 ZIP 다운로드와 사용 방법을 볼 수 있습니다. 현재 파일은 미서명 개발 빌드입니다. 상단 **안내서 HTML 다운로드** 버튼과 **인쇄 / PDF**도 사용할 수 있습니다.
 
 | 내용 | 바로가기 |
 | --- | --- |
@@ -15,4 +15,4 @@
 | 정상 종료·앱 제거·deployment.yaml·보안 경고 | [자주 묻는 질문](guide.html#questions) |
 | 구현한 것과 검증이 남은 것 | [작업 현황](guide.html#status) · [상세 체크리스트](docs/REQUEST_STATUS.md) |
 
-HTML만 공유하면 프로그램 EXE가 함께 전달되지는 않습니다. 기존 미서명 EXE·ZIP은 배포하지 않습니다. [서명 상태와 완료 조건](docs/results/code-signing.md)을 확인하세요.
+HTML만 공유하면 프로그램 EXE가 함께 전달되지는 않습니다. 실행 파일이 필요하면 설치 EXE 또는 전체 ZIP도 함께 전달하세요. 미서명 상태·미해결 접근 경고 등 [서명·보안 상태](docs/results/code-signing.md)를 확인하세요.
