@@ -97,5 +97,11 @@
     "Linux packages are downloaded directly from upstream and are not Windows bundle contents; their five pinned package notices are recorded separately from Ubuntu/WSL components.",
     "The upstream NSIS helper publishes manifest version ranges without Cargo.lock; applicable upstream license families and source are preserved without inventing exact compiled dependency versions.",
     "Installer and application were not executed or installed. Artifacts remain unsigned."
-  ]
+  ],
+  "publicVerification": {
+    "report": "public-pages-e2e.json",
+    "sourceCommit": "5804132",
+    "checks": 10,
+    "threeDownloadsMatchReleaseHashes": true
+  }
 }

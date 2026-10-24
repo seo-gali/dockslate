@@ -54,4 +54,6 @@ README의 [프로그램 캡처](assets/dockslate-disk.png)는 [B66E9FE7 실제 W
 
 공개 사이트 검증은 별도 기록의 대상 커밋·파일 SHA-256을 기준으로 구분한다. 설치 EXE·포터블·고지 ZIP에는 원문 362개·소스 11개·vendor 목록 2개를 직접 대조했다. [배포물 고지 검증](results/license-delivery.json)은 EXE·엔진 실행이나 설치 검증과 구분한다.
 
+새 공개 배포의 Chrome 검사 10개도 통과했다. EXE·포터블·고지 ZIP을 실제로 내려받아 크기·SHA-256을 확인했으며 안내서·Google 원문·PC·모바일 화면을 확인했다. 원격 제작에 사용한 임시 workflow는 제거했다.
+
 [GitHub Pages 게시 방식](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
