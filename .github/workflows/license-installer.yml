@@ -23,11 +23,24 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Restore reviewed dependencies
+      - name: Restore reviewed binaries and locked tooling
         run: |
-          $compiler = rustc -vV
-          if ($LASTEXITCODE -ne 0 -or $compiler -notcontains 'commit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4') { throw 'The reviewed Rust compiler is required.' }
+          $release = Get-Content -Raw site/release.json | ConvertFrom-Json
+          $portable = Join-Path 'downloads' $release.zip.file
+          if ((Get-FileHash -LiteralPath $portable -Algorithm SHA256).Hash -cne $release.zip.sha256) { throw 'Portable input differs from its verified receipt.' }
+          Expand-Archive -LiteralPath $portable -DestinationPath '.analysis/reviewed-binaries'
+          $source = '.analysis/reviewed-binaries/DockSlate-0.1.0-windows-x64'
+          $build = Get-Content -Raw docs/results/installer-engine-integration.json | ConvertFrom-Json
+          New-Item -ItemType Directory -Path 'src-tauri/target/release' -Force | Out-Null
+          foreach ($item in @(@{source='DockSlate.exe';name='dockslate.exe'},@{source='bin/docker.exe';name='docker.exe'})) {
+            $file = Join-Path $source $item.source
+            $record = @($build.artifacts | Where-Object name -CEQ $item.name)
+            if ($record.Count -ne 1 -or (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash -cne $record[0].sha256) { throw 'Reviewed application or launcher hash differs.' }
+            Copy-Item -LiteralPath $file -Destination (Join-Path 'src-tauri/target/release' $item.name)
+          }
           npm ci
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm run build
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cargo fetch --manifest-path src-tauri/Cargo.toml --locked
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -40,7 +53,7 @@ jobs:
         run: |
           & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -File ./scripts/verify-installer-path.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & ./scripts/build-installer.ps1 -AllowToolDownload
+          & ./scripts/build-installer.ps1 -SkipBuild -AllowToolDownload
       - name: Record installer checksum
         run: |
           $directory = 'src-tauri/target/release/bundle/nsis'
