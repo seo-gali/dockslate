@@ -92,5 +92,5 @@
       "destination": "licenses/buildx/LICENSE"
     }
   ],
-  "noticeScope": "Preserves the versioned upstream root LICENSE and existing NOTICE files. Buildx v0.38.0 has no root NOTICE at the checked upstream URL (HTTP 404). Complete transitive Go dependency license coverage and external distribution review remain unverified."
+  "noticeScope": "Preserves versioned upstream root LICENSE and existing NOTICE files. Transitive Windows dependency notices and required source archives are indexed under the project licenses/inventory.json and verified before packaging. Buildx v0.38.0 has no upstream root NOTICE at the checked version."
 }

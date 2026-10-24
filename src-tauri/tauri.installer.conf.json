@@ -18,7 +18,8 @@
       "../docs/REQUEST_STATUS.md": "docs/REQUEST_STATUS.md",
       "../docs/results/refinement-verification.md": "docs/results/refinement-verification.md",
       "../USER_GUIDE.md": "USER_GUIDE.md",
-      "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md"
+      "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
+      "../licenses/": "licenses/"
     },
     "windows": {
       "allowDowngrades": false,
