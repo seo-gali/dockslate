@@ -11,7 +11,7 @@ const app = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))
 if (release.version !== app.version || !/^\d+\.\d+\.\d+$/.test(release.version)) throw Error('Website version must match the application version.');
 const values = { VERSION: release.version };
 let verifiedDownloads = 0;
-for (const key of ['installer', 'zip']) {
+for (const key of ['installer', 'zip', 'licenses']) {
   const asset = release[key];
   if (!asset || !/^[A-Za-z0-9_.-]+\.(exe|zip)$/.test(asset.file) || !/^[A-F0-9]{64}$/.test(asset.sha256) || !Number.isSafeInteger(asset.bytes) || asset.bytes <= 0) throw Error(`Invalid release metadata: ${key}`);
   const prefix = key.toUpperCase();
@@ -31,6 +31,7 @@ for (const key of ['installer', 'zip']) {
   if (bytes !== asset.bytes || hash.digest('hex').toUpperCase() !== asset.sha256) throw Error(`Download differs from its verified size or SHA-256: ${asset.file}`);
   verifiedDownloads++;
 }
+if (!fs.readFileSync(path.join(root, 'THIRD_PARTY_NOTICES.md'), 'utf8').includes(release.licenses.file)) throw Error('Notices must link to the current license/source archive.');
 let html = fs.readFileSync(path.join(root, 'site/index.html'), 'utf8');
 for (const [key, value] of Object.entries(values)) html = html.replaceAll(`{{${key}}}`, value);
 if (/\{\{[A-Z0-9_]+\}\}/.test(html)) throw Error('An unresolved website placeholder remains.');
@@ -52,7 +53,7 @@ fs.mkdirSync(path.join(output, 'downloads'), { recursive: true });
 const notices = 'THIRD_PARTY_NOTICES.md';
 fs.copyFileSync(path.join(root, notices), path.join(output, 'downloads', notices));
 if (production) fs.copyFileSync(path.join(root, notices), path.join(root, 'downloads', notices));
-for (const key of ['installer', 'zip']) {
+for (const key of ['installer', 'zip', 'licenses']) {
   const file = release[key].file;
   fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
 }

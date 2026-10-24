@@ -28,7 +28,7 @@ npm run build:site -- --publish
 
 파일이 없거나 크기·SHA-256이 다르면 사이트 생성을 중단한다. 빌드한 HTML·자산·실행 파일을 `main`에 함께 커밋·푸시한다. 빌드 자체는 공개 설정을 바꾸거나 파일을 전송하지 않는다.
 
-엔진 사용료와 라이선스 범위는 FAQ에 표시하고 최신 `THIRD_PARTY_NOTICES.md`를 실행 파일 옆에 제공한다. 기존 EXE·ZIP은 다시 만들지 않으며, 이후 패키징에서는 현재 고지와 독립 안내서를 그대로 복사한다. 하위 의존성까지 배포 조건 검토를 완료했다는 의미는 아니다.
+엔진 사용료와 라이선스 범위는 FAQ에 표시한다. EXE·ZIP에 `THIRD_PARTY_NOTICES.md`와 구성 요소별 원문·소스의 `licenses` 폴더를 포함한다. 별도 고지·소스 ZIP도 다운로드 폴더에 제공한다. 라이선스 목록과 잠금 파일·공식 바이너리·원문 해시가 다르면 패키징을 중단한다.
 
 ## 실행 파일
 
@@ -38,8 +38,9 @@ npm run build:site -- --publish
 
 - [설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe)
 - [포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip)
+- [고지·소스 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-third-party-licenses.zip)
 
-설치 EXE 제작은 로컬 `scripts/build-installer.ps1`, 포터블 ZIP 생성은 `npm run package:local`을 사용한다. GitHub에서 설치 파일을 자동 제작하지 않는다.
+설치 EXE 제작은 `scripts/build-installer.ps1`, 포터블 ZIP 생성은 `npm run package:local`을 사용한다. 상시 자동 제작 workflow는 두지 않는다.
 
 ## 화면과 검증
 
@@ -49,8 +50,8 @@ README의 [프로그램 캡처](assets/dockslate-disk.png)는 [B66E9FE7 실제 W
 
 검증 기록: [사이트](results/pages-e2e.json) · [로컬 안내서](results/guide-delivery-e2e.json) · [실제 공개 URL](results/public-pages-e2e.json). 공개 URL 확인과 로컬 브라우저 검증은 구분해 기록한다.
 
-최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 24개와 독립 사용 안내서 검사 8개 통과. 루트·기존 게시 폴더의 EXE·ZIP 실제 HTTP 응답과 크기·SHA-256 일치, 최신 고지 파일·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다. 실제 Vite 개발 서버도 src 앱 HTML·변환한 main.tsx·React 의존성 3개를 HTTP 200으로 제공하고 정상 종료했다.
+최종 확인: `npm run build`, `npm run build:site`, `npm run build:site -- --publish` 종료 0. 사이트의 실제 Chrome 검사 25개와 앞서 수행한 독립 사용 안내서 검사 8개 통과. 루트·기존 게시 폴더의 EXE·ZIP·고지 소스 ZIP의 실제 HTTP 응답과 크기·SHA-256 일치, 최신 고지 파일·직접 사용 안내·Google 원문·분리한 React 앱 렌더링을 확인했다.
 
-공개 사이트도 새 격리 Chrome에서 9개 검사를 통과했다. EXE·ZIP 버튼으로 실제 다운로드한 파일의 크기·SHA-256, 최신 고지 원문, Google 확인 파일 HTTP 200, 안내서 왕복, PC·모바일 레이아웃을 확인했다. 위 사이트·안내서 캡처는 이 공개 URL에서 저장했다. EXE 실행·설치나 Linux 패키지의 라이선스 검토를 수행한 결과는 아니다.
+공개 사이트 검증은 별도 기록의 대상 커밋·파일 SHA-256을 기준으로 구분한다. 설치 EXE·포터블·고지 ZIP에는 원문 362개·소스 11개·vendor 목록 2개를 직접 대조했다. [배포물 고지 검증](results/license-delivery.json)은 EXE·엔진 실행이나 설치 검증과 구분한다.
 
 [GitHub Pages 게시 방식](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)

@@ -1,38 +1,101 @@
 {
-    "observedAt":  "2026-10-23T07:19:04.5289174+09:00",
-    "scope":  "Read-only ZIP contents and installer packaging configuration; no executable, runtime or engine launched",
-    "zipNoticesBytes":  603511,
-    "upstreamLicenseTexts":  [
-                                 {
-                                     "file":  "licenses/docker-cli/LICENSE",
-                                     "bytes":  10765,
-                                     "sha256":  "2d81ea060825006fc8f3fe28aa5dc0ffeb80faf325b612c955229157b8c10dc0"
-                                 },
-                                 {
-                                     "file":  "licenses/docker-cli/NOTICE",
-                                     "bytes":  635,
-                                     "sha256":  "a8c869fbda819afb8d80e0ac19bac52e766bc6c19cb38cf94f52d64c4be2aab6"
-                                 },
-                                 {
-                                     "file":  "licenses/compose/LICENSE",
-                                     "bytes":  11357,
-                                     "sha256":  "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
-                                 },
-                                 {
-                                     "file":  "licenses/compose/NOTICE",
-                                     "bytes":  140,
-                                     "sha256":  "b7dca0a6b01fa7365e4892877a6321179ee343d72ee87a96cfc222141b99a1e6"
-                                 },
-                                 {
-                                     "file":  "licenses/buildx/LICENSE",
-                                     "bytes":  11358,
-                                     "sha256":  "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
-                                 }
-                             ],
-    "packagingScriptsParse":  "passed",
-    "obsoleteGuideMarkerRemoved":  true,
-    "installerNoticeResourcesConfigured":  true,
-    "installerArchiveExtracted":  false,
-    "linuxRuntimeExamined":  false,
-    "completeRedistributionReview":  false
+  "observedAt": "2026-10-24T08:29:52.477Z",
+  "scope": "Windows x64 EXE and ZIP; normal/build Rust and installed npm graphs, CLI/Buildx vendor supersets and exact Compose embedded module list; external Linux downloads are separate",
+  "reviewCompletedForRecordedScope": true,
+  "components": 555,
+  "componentGroups": {
+    "cargo": 242,
+    "npm": 24,
+    "go": 276,
+    "support": 8,
+    "external-linux": 5
+  },
+  "noticeTexts": 362,
+  "sourceArchives": 11,
+  "vendorManifests": 2,
+  "missingRecordedNotices": 0,
+  "licenseFamiliesAreClassificationOnly": true,
+  "sourceProvision": {
+    "rustMplArchives": 5,
+    "goMplArchives": 4,
+    "nsisSourceArchives": 2,
+    "goModuleZipsVerifiedAgainstH1": 30
+  },
+  "webview2": {
+    "version": "1.0.3800.47",
+    "officialNugetStaticLoaderSha256": "89c6b872783b8f6c3cedbff618adb42082d455c615453ae10cfc753f1e8f25d8",
+    "matchesLinkedCrate": true
+  },
+  "rustCompiler": {
+    "version": "1.99.0",
+    "commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
+    "matchesReviewedApplicationBuild": true
+  },
+  "corruptionGuard": {
+    "corruptTextRejected": true,
+    "negativeExit": 1,
+    "restoredExit": 0
+  },
+  "installer": {
+    "file": "DockSlate_0.1.0_x64-setup.exe",
+    "bytes": 49212456,
+    "sha256": "B0B322B140C99F812C6829D681F3831249D968656F162CFA65EE94A50CC02DD8",
+    "noticeTexts": 362,
+    "sourceArchives": 11,
+    "vendorManifests": 2,
+    "verifiedLicenseFiles": 375,
+    "indexesMatch": true,
+    "reviewedBinariesMatch": true,
+    "executableLaunched": false,
+    "installerInstalled": false
+  },
+  "archives": [
+    {
+      "file": "downloads/DockSlate-0.1.0-windows-x64.zip",
+      "noticeTexts": 362,
+      "sourceArchives": 11,
+      "vendorManifests": 2,
+      "verifiedLicenseFiles": 375,
+      "indexesMatch": true,
+      "reviewedBinariesMatch": true,
+      "executableLaunched": false,
+      "nativeBinariesIncluded": true
+    },
+    {
+      "file": "downloads/DockSlate-0.1.0-third-party-licenses.zip",
+      "noticeTexts": 362,
+      "sourceArchives": 11,
+      "vendorManifests": 2,
+      "verifiedLicenseFiles": 375,
+      "indexesMatch": true,
+      "reviewedBinariesMatch": null,
+      "executableLaunched": false,
+      "nativeBinariesIncluded": false
+    }
+  ],
+  "remotePackaging": {
+    "runId": 40077308404,
+    "sourceCommit": "43889e5",
+    "artifactId": 12553807261,
+    "artifactDigest": "sha256:d4c80ce0c5095f7496a693f58d57df68e87992763251fca5cc179927f21f9c92",
+    "archiveBytes": 49207135,
+    "reportedBytes": 49207135,
+    "githubDigestVerified": true,
+    "installerExecuted": false,
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/40077308404",
+    "conclusion": "success",
+    "reviewedExistingBinariesReused": true,
+    "temporaryWorkflowRemoved": true
+  },
+  "localInstallerBuild": {
+    "exit": 1,
+    "stage": "NSIS File command could not open project user-path.ps1",
+    "causeConfirmed": false,
+    "securitySettingsChanged": false
+  },
+  "limits": [
+    "Linux packages are downloaded directly from upstream and are not Windows bundle contents; their five pinned package notices are recorded separately from Ubuntu/WSL components.",
+    "The upstream NSIS helper publishes manifest version ranges without Cargo.lock; applicable upstream license families and source are preserved without inventing exact compiled dependency versions.",
+    "Installer and application were not executed or installed. Artifacts remain unsigned."
+  ]
 }

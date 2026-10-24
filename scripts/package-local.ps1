@@ -7,6 +7,8 @@ $packageName = 'DockSlate-0.1.0-windows-x64'
 $exeSource = Join-Path $projectRoot 'src-tauri\target\release\dockslate.exe'
 $launcherSource = Join-Path $projectRoot 'src-tauri\target\release\docker.exe'
 & (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
+& node.exe (Join-Path $PSScriptRoot 'verify-license-inventory.mjs')
+if ($LASTEXITCODE -ne 0) { throw 'License inventory verification failed.' }
 $nativeRoot = Join-Path $projectRoot 'src-tauri\target\windows-docker'
 $nativeManifest = Get-Content -LiteralPath (Join-Path $nativeRoot 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $buildRecord = Join-Path $projectRoot 'docs\results\installer-engine-integration.json'
@@ -42,6 +44,7 @@ try {
     foreach ($name in @('USER_GUIDE.md', 'THIRD_PARTY_NOTICES.md')) {
         Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination (Join-Path $packageRoot $name)
     }
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'licenses') -Destination (Join-Path $packageRoot 'licenses') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'guide.html') -Destination (Join-Path $packageRoot 'guide.html')
     $docsRoot = Join-Path $packageRoot 'docs'
     New-Item -ItemType Directory -Path $docsRoot -Force | Out-Null

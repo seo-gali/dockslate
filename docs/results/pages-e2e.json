@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T22:19:05.116Z",
+  "observedAt": "2026-10-24T08:36:16.343Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -28,11 +28,11 @@
       "passed": true
     },
     {
-      "name": "root serves both complete bundled downloads with exact sizes and SHA-256",
+      "name": "root serves installer, portable and license/source downloads with exact sizes and SHA-256",
       "passed": true
     },
     {
-      "name": "published serves both complete bundled downloads with exact sizes and SHA-256",
+      "name": "published serves installer, portable and license/source downloads with exact sizes and SHA-256",
       "passed": true
     },
     {
@@ -67,16 +67,24 @@
       "name": "installer downloads the exact verified binary without executing it",
       "passed": true,
       "evidence": {
-        "bytes": 44620219,
-        "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094"
+        "bytes": 49212456,
+        "sha256": "B0B322B140C99F812C6829D681F3831249D968656F162CFA65EE94A50CC02DD8"
       }
     },
     {
       "name": "zip downloads the exact verified binary without executing it",
       "passed": true,
       "evidence": {
-        "bytes": 58057355,
-        "sha256": "98DEED8FCF148534A7E7C5490F7500E54D4D99EEB5B3C780F40E77EFC2AF54D7"
+        "bytes": 63157816,
+        "sha256": "B9112C113C59B947E19A0C5045302B056359C3A5CD8B068998B9059C49DDB8A9"
+      }
+    },
+    {
+      "name": "licenses downloads the exact verified binary without executing it",
+      "passed": true,
+      "evidence": {
+        "bytes": 5159580,
+        "sha256": "75138F3B5BEBD3AB59A0509B1316E072F335C17F1188FAE799E88F6BFFFEB787"
       }
     },
     {

@@ -55,7 +55,7 @@ const server = http.createServer((request, response) => {
   const directory = application ? path.join(root, 'dist') : rootSite ? root : published ? path.join(root, 'docs') : output;
   const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : published ? '/dockslate/published/' : '/dockslate/';
   const relative = pathname.slice(prefix.length) || 'index.html';
-  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/THIRD_PARTY_NOTICES.md','downloads/'+release.installer.file,'downloads/'+release.zip.file].includes(relative)) { response.writeHead(404).end(); return; }
+  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/THIRD_PARTY_NOTICES.md','downloads/'+release.installer.file,'downloads/'+release.zip.file,'downloads/'+release.licenses.file].includes(relative)) { response.writeHead(404).end(); return; }
   const file = path.resolve(directory, relative);
   if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
   const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(file)] ?? 'application/octet-stream';
@@ -80,7 +80,7 @@ try {
   await navigate(pageUrl);
   assert(await evaluate(`['features','start','download','faq'].every(id=>document.getElementById(id))&&document.querySelectorAll('.feature').length===3&&document.querySelectorAll('[data-download]').length===2`), 'Project introduction, usage or downloads missing.');
   check('GitHub Pages project path renders introduction, features, guide, downloads and FAQ');
-  assert(await evaluate(`document.querySelector('#engine-license').textContent.includes('엔진 사용료가 없습니다')&&document.querySelector('.footer a[href="./downloads/THIRD_PARTY_NOTICES.md"]')!==null`), 'Engine license explanation or notices link missing.');
+  assert(await evaluate(`document.querySelector('#engine-license').textContent.includes('엔진 사용료가 없습니다')&&document.querySelector('.footer a[data-license-download][download]')!==null`), 'Engine license explanation or sources link missing.');
   for (const folder of ['', 'root/', 'published/']) {
     const response = await fetch(pageUrl + folder + 'downloads/THIRD_PARTY_NOTICES.md');
     assert(response.status === 200 && await response.text() === fs.readFileSync('THIRD_PARTY_NOTICES.md', 'utf8'), 'License notices missing or outdated: ' + folder);
@@ -99,7 +99,7 @@ try {
   assert(publicFile.status === 200 && await publicFile.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Published Google ownership file changed');
   check('main/docs static page includes direct downloads and exact Google verification');
   for (const folder of ['root','published']) {
-    for (const key of ['installer','zip']) {
+    for (const key of ['installer','zip','licenses']) {
       const asset=release[key];
       const response=await fetch(pageUrl+folder+'/downloads/'+encodeURIComponent(asset.file));
       assert(response.status===200,'Bundled download is missing: '+folder+'/'+asset.file);
@@ -107,7 +107,7 @@ try {
       for await (const chunk of response.body) { bytes+=chunk.length;checksum.update(chunk); }
       assert(bytes===asset.bytes&&checksum.digest('hex').toUpperCase()===asset.sha256,'Bundled download differs: '+folder+'/'+asset.file);
     }
-    check(folder+' serves both complete bundled downloads with exact sizes and SHA-256');
+    check(folder+' serves installer, portable and license/source downloads with exact sizes and SHA-256');
   }
   await navigate(pageUrl + 'root/');
   assert(await evaluate(`!!document.querySelector('#features')&&document.querySelectorAll('[data-download]').length===2&&!document.querySelector('.file-start')&&getComputedStyle(document.body).backgroundColor==='rgb(11, 15, 20)'&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1`), 'Repository root still serves an empty app fallback or has broken CSS/script paths');
@@ -150,8 +150,9 @@ try {
   assert(await evaluate(`!document.querySelector('.faq-list details').open`), 'FAQ keyboard interaction failed.');
   check('FAQ expands with native mouse and keyboard support');
   await send('Browser.setDownloadBehavior', { behavior: 'allow', downloadPath: downloadDir });
-  for (const key of ['installer', 'zip']) {
-    await evaluate(`document.querySelector('[data-download="${key}"]').click()`);
+  for (const key of ['installer', 'zip', 'licenses']) {
+    const selector = key === 'licenses' ? '[data-license-download]' : `[data-download="${key}"]`;
+    await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
     const asset = release[key], downloaded = path.join(downloadDir, asset.file);
     await waitFor('Actual ' + key + ' download', () => fs.existsSync(downloaded) && fs.statSync(downloaded).size === asset.bytes && hash(downloaded) === asset.sha256, 20000);
     check(key + ' downloads the exact verified binary without executing it', { bytes: asset.bytes, sha256: asset.sha256 });
