@@ -1,0 +1,277 @@
+{
+  "observedAt": "2026-10-25T15:13:08.859Z",
+  "artifactSha256": "6F7F8DBCDC772951B9F4E2F7AA3BFA3E62CB86F98EA263F5B4FE3B45B3D5DD6B",
+  "native": true,
+  "mockBackend": false,
+  "fixtureRoot": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-6c9d39b32661\\샘플 프로젝트",
+  "checks": [
+    {
+      "name": "Actual Windows Compose file picker selects the isolated Korean/spaces project",
+      "passed": true,
+      "evidence": {
+        "processId": 26708,
+        "dialogClass": "#32770",
+        "filenameControlId": 1148,
+        "action": "select",
+        "title": "������ Compose ���� ����"
+      }
+    },
+    {
+      "name": "Compose builds the Dockerfile image and creates no service before run approval",
+      "passed": true,
+      "evidence": {
+        "project": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014",
+        "imageId": "sha256:171c39705bfed7b986d7de8f24e45ff3af380a24dbf9eda14bded2b1d7764c99"
+      }
+    },
+    {
+      "name": "Run confirmation names the project/service and requires acknowledgment",
+      "passed": true,
+      "evidence": {
+        "initiallyDisabled": true
+      }
+    },
+    {
+      "name": "Compose creates and mounts a new writable named volume with matching project ownership",
+      "passed": true,
+      "evidence": {
+        "containerId": "b3fd1b25f12eabbb24816173ce818f16d6f7a304674caf4d8e21c892560600bc",
+        "volume": {
+          "activeReferences": 1,
+          "containers": [
+            {
+              "id": "b3fd1b25f12eabbb24816173ce818f16d6f7a304674caf4d8e21c892560600bc",
+              "name": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014-probe-1",
+              "state": "running"
+            }
+          ],
+          "createdAt": "2026-10-26T00:13:27+09:00",
+          "driver": "local",
+          "fileSupported": true,
+          "labels": {
+            "com.docker.compose.config-hash": "df626f1d8edfefa23e7ce432d839a7986c8b5abb2f3ede945e722814ec0185d7",
+            "com.docker.compose.project": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "state",
+            "io.dockslate.import": "28404838fb71cf1f2faa9d7b321e6014"
+          },
+          "mountpoint": "/var/lib/docker/volumes/dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state/_data",
+          "name": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state",
+          "options": null,
+          "referenceCount": 1,
+          "scope": "local",
+          "sizeBytes": 209787979
+        }
+      }
+    },
+    {
+      "name": "Real Windows MongoDB client connects through the published port and inserts, reads, updates with journal acknowledgment",
+      "passed": true,
+      "evidence": {
+        "host": "127.0.0.1",
+        "port": 32768,
+        "result": {
+          "database": "dockslate_fixture_6c9d39b32661",
+          "version": "9.0.4",
+          "document": {
+            "_id": "6c9d39b32661",
+            "nonce": "560dc385816ad0a967d2108d53174f69",
+            "counter": 2
+          }
+        },
+        "exitCode": 0,
+        "writeConcern": {
+          "w": 1,
+          "j": true
+        }
+      }
+    },
+    {
+      "name": "Official Compose CLI recreates the MongoDB container; the same database document and Windows access persist",
+      "passed": true,
+      "evidence": {
+        "originalContainerId": "b3fd1b25f12eabbb24816173ce818f16d6f7a304674caf4d8e21c892560600bc",
+        "recreatedContainerId": "fbbb8f393adbcc1d96eaf99710279643366c05ca5be9214205e41673c4e78999",
+        "volumeName": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state",
+        "firstPort": 32768,
+        "secondPort": 32769,
+        "bodyBefore": "{\"database\":\"dockslate_fixture_6c9d39b32661\",\"version\":\"9.0.4\",\"document\":{\"_id\":\"6c9d39b32661\",\"nonce\":\"560dc385816ad0a967d2108d53174f69\",\"counter\":2}}",
+        "bodyAfter": "{\"database\":\"dockslate_fixture_6c9d39b32661\",\"version\":\"9.0.4\",\"document\":{\"_id\":\"6c9d39b32661\",\"nonce\":\"560dc385816ad0a967d2108d53174f69\",\"counter\":2}}",
+        "recreation": {
+          "stdout": "",
+          "stderr": " Container dockslate-import-28404838fb71cf1f2faa9d7b321e6014-probe-1 Recreate \n Container dockslate-import-28404838fb71cf1f2faa9d7b321e6014-probe-1 Recreated \n Container dockslate-import-28404838fb71cf1f2faa9d7b321e6014-probe-1 Starting \n Container dockslate-import-28404838fb71cf1f2faa9d7b321e6014-probe-1 Started \n",
+          "exitCode": 0
+        }
+      }
+    },
+    {
+      "name": "Only new fixture image/container/network removed; original IDs and container states preserved",
+      "passed": true,
+      "evidence": {
+        "original": {
+          "containers": [
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+          ],
+          "images": [
+            "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+            "sha256:dc28ed5a9d0fc616903c3f463bb1e53b92b49f441721b91926e87d90bf957ce8"
+          ],
+          "volumes": [
+            "6a9bd9dc0586bf275f35ace5f3de5d654ab90d3d78a38e81eb74f4ce6ebdb9d3",
+            "6fb2d9d4859015bdcc8c2680b7d65b4f096e670b1638103009a4c742791ebfb8",
+            "dockslate-import-a904008a9a22db56acddda1a83730c59_state"
+          ],
+          "networks": [
+            "1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+            "282125dd1aaf07ec7a974ddd4eb563ffc646b37affc662df4ed420916b83f789",
+            "2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231"
+          ]
+        },
+        "after": {
+          "containers": [
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+          ],
+          "images": [
+            "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+            "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+            "sha256:dc28ed5a9d0fc616903c3f463bb1e53b92b49f441721b91926e87d90bf957ce8"
+          ],
+          "volumes": [
+            "6a9bd9dc0586bf275f35ace5f3de5d654ab90d3d78a38e81eb74f4ce6ebdb9d3",
+            "6fb2d9d4859015bdcc8c2680b7d65b4f096e670b1638103009a4c742791ebfb8",
+            "dockslate-import-a904008a9a22db56acddda1a83730c59_state"
+          ],
+          "networks": [
+            "1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+            "282125dd1aaf07ec7a974ddd4eb563ffc646b37affc662df4ed420916b83f789",
+            "2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231"
+          ]
+        },
+        "buildCacheRetained": true,
+        "retainedVolume": {
+          "name": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state",
+          "reason": "Test database preserved; no drop/delete/reset was executed."
+        }
+      }
+    },
+    {
+      "name": "Test DB ports close after cleanup; existing MongoDB and original volume metadata remain unchanged",
+      "passed": true,
+      "evidence": {
+        "releasedPorts": [
+          {
+            "port": 32768,
+            "error": "ECONNREFUSED"
+          },
+          {
+            "port": 32769,
+            "error": "ECONNREFUSED"
+          }
+        ],
+        "originalVolumeMetadataUnchanged": true,
+        "databaseDropDeleteResetExecuted": false
+      }
+    }
+  ],
+  "completed": true,
+  "failure": null,
+  "engine": {
+    "apiVersion": "1.55",
+    "context": "dockslate",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": "moby",
+    "message": "Verified independent DockSlate Moby Engine",
+    "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "provider": "DockSlate",
+    "serverVersion": "29.8.2",
+    "state": "connected"
+  },
+  "baseline": {
+    "containers": [
+      "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+    ],
+    "images": [
+      "sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa",
+      "sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "sha256:dc28ed5a9d0fc616903c3f463bb1e53b92b49f441721b91926e87d90bf957ce8"
+    ],
+    "volumes": [
+      "6a9bd9dc0586bf275f35ace5f3de5d654ab90d3d78a38e81eb74f4ce6ebdb9d3",
+      "6fb2d9d4859015bdcc8c2680b7d65b4f096e670b1638103009a4c742791ebfb8",
+      "dockslate-import-a904008a9a22db56acddda1a83730c59_state"
+    ],
+    "networks": [
+      "1f9f5a22c8f57efca0345307ccebb05877e636157d688a81dcf1c9088d1e755d",
+      "282125dd1aaf07ec7a974ddd4eb563ffc646b37affc662df4ed420916b83f789",
+      "2cb593bc43ea064021470ac6f65ad78634f9187196ffee948b9e0f3a68666231"
+    ]
+  },
+  "fixture": {
+    "Dockerfile": "FROM mongo:latest\nLABEL io.dockslate.compose-smoke=\"6c9d39b32661\"\n",
+    "compose.yaml": "services:\n  probe:\n    build:\n      context: .\n      dockerfile: Dockerfile\n    restart: \"no\"\n    ports:\n      - \"127.0.0.1::27017\"\n    volumes:\n      - state:/data/db\n      - config:/data/configdb\n    command: [\"mongod\",\"--bind_ip_all\",\"--wiredTigerCacheSizeGB\",\"0.25\",\"--setParameter\",\"diagnosticDataCollectionEnabled=false\"]\nvolumes:\n  state: {}\n  config: {}\n"
+  },
+  "client": {
+    "name": "MongoDB Shell",
+    "platform": "Windows x64",
+    "version": "v2.14.0",
+    "source": "https://github.com/mongodb-js/mongosh/releases/tag/v2.14.0",
+    "archiveSha256": "5fb0a939744e653d4832debf93c26abc3f82282870a15c75124f893117df4ffe",
+    "executableSha256": "66898EA24EDF0C30AAAA96110104E9F1D576370F9C5551F925D457CA45F0E162",
+    "authenticode": "NotSigned",
+    "isolatedProfile": true,
+    "telemetryDisabled": true
+  },
+  "build": {
+    "state": "completed",
+    "text": "파일에서 빌드\nDockerfile 선택\nCompose 파일 선택\n선택 파일\nD:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-6c9d39b32661\\샘플 프로젝트\\compose.yaml\n프로젝트\ndockslate-import-28404838fb71cf1f2faa9d7b321e6014\n대상 엔진\n12f63594-ea3a-45f9-adf2-c594dc91cbc5\n서비스 / 이미지\t빌드 폴더\t공개 포트\t볼륨 연결\nprobe\ndockslate-import-28404838fb71cf1f2faa9d7b321e6014-probe:import\n\t\nD:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-6c9d39b32661\\샘플 프로젝트\nD:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-6c9d39b32661\\샘플 프로젝트\\Dockerfile\n\t127.0.0.1:자동 → 27017/tcp\tstate → /data/db, config → /data/configdb\n\n새 리소스: 볼륨 dockslate-import-28404838fb71cf1f2faa9d7b321e6014_config · 볼륨 dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state · 네트워크 dockslate-import-28404838fb71cf1f2faa9d7b321e6014_default\n\nCompose 빌드 · 완료\n실행 미리보기\n\nCompose 빌드 작업이 종료되었습니다. 서비스별 이미지와 전체 새로고침 결과를 확인하세요.",
+    "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-6c9d39b32661\\샘플 프로젝트\\compose.yaml",
+    "project": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014",
+    "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5"
+  },
+  "retainedVolume": {
+    "name": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state",
+    "reason": "Test database preserved; no drop/delete/reset was executed."
+  },
+  "retainedConfigVolume": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_config",
+  "limits": [
+    "First creation/build/run uses the actual app UI; same-project recreation uses the official guest Compose CLI because the app import flow intentionally blocks existing project replacement.",
+    "One isolated standalone MongoDB, loopback access and journaled insert/read/update; no user database, authentication/TLS, replication, transaction or migration tested."
+  ],
+  "retainedVolumes": [
+    {
+      "name": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_config",
+      "bytes": 0,
+      "referenceCount": 0,
+      "labels": {
+        "com.docker.compose.config-hash": "702fbeb69cfe487e3e522e811d381a2c9f8e881a0e9265c8c48f8ed6fa908017",
+        "com.docker.compose.project": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014",
+        "com.docker.compose.version": "5.6.0",
+        "com.docker.compose.volume": "config",
+        "io.dockslate.import": "28404838fb71cf1f2faa9d7b321e6014"
+      }
+    },
+    {
+      "name": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014_state",
+      "bytes": 210046348,
+      "referenceCount": 0,
+      "labels": {
+        "com.docker.compose.config-hash": "df626f1d8edfefa23e7ce432d839a7986c8b5abb2f3ede945e722814ec0185d7",
+        "com.docker.compose.project": "dockslate-import-28404838fb71cf1f2faa9d7b321e6014",
+        "com.docker.compose.version": "5.6.0",
+        "com.docker.compose.volume": "state",
+        "io.dockslate.import": "28404838fb71cf1f2faa9d7b321e6014"
+      }
+    }
+  ],
+  "runtime": {
+    "before": "stopped",
+    "after": "stopped",
+    "distribution": "DockSlate",
+    "installPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "restored": true
+  },
+  "verificationCommand": "node scripts/verify-compose-import.mjs .analysis/compose-smoke-session.json --isolated-fixture --mongodb",
+  "postVerification": "Port closure/original resource and volume metadata comparison/runtime restoration via separate Node native session.",
+  "finishedAt": "2026-10-25T15:16:09.579Z"
+}
