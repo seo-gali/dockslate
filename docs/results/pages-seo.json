@@ -67,5 +67,80 @@
       "resolution": "Updated both public guides to the existing UI label."
     }
   ],
-  "publicDeploymentTested": false
+  "publicDeploymentTested": true,
+  "publicVerification": {
+    "observedAt": "2026-10-26T10:27:17.521Z",
+    "sourceCommit": "e1f8c4d",
+    "completed": true,
+    "checks": [
+      {
+        "name": "Complete public crawler HTML matches the generated page: /",
+        "passed": true,
+        "evidence": {
+          "status": 200,
+          "canonical": "https://seo-gali.github.io/dockslate/"
+        }
+      },
+      {
+        "name": "Complete public crawler HTML matches the generated page: guide.html",
+        "passed": true,
+        "evidence": {
+          "status": 200,
+          "canonical": "https://seo-gali.github.io/dockslate/guide.html"
+        }
+      },
+      {
+        "name": "Published sitemap.xml matches the verified build",
+        "passed": true,
+        "evidence": {
+          "status": 200,
+          "contentType": "application/xml"
+        }
+      },
+      {
+        "name": "Published robots.txt matches the verified build",
+        "passed": true,
+        "evidence": {
+          "status": 200,
+          "contentType": "text/plain; charset=utf-8"
+        }
+      },
+      {
+        "name": "Nested missing public URL returns the exact branded page with real HTTP 404",
+        "passed": true,
+        "evidence": {
+          "status": 404
+        }
+      },
+      {
+        "name": "All published internal pages, assets and downloads resolve directly",
+        "passed": true,
+        "evidence": {
+          "checked": 9
+        }
+      },
+      {
+        "name": "Google ownership verification remains unchanged",
+        "passed": true,
+        "evidence": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Host root robots remains absent; project robots does not masquerade as host policy",
+        "passed": true,
+        "evidence": {
+          "status": 404
+        }
+      },
+      {
+        "name": "Only the expected single trailing-slash redirect leads to the canonical main URL",
+        "passed": true,
+        "evidence": {
+          "status": 301,
+          "target": "https://seo-gali.github.io/dockslate/"
+        }
+      }
+    ]
+  }
 }

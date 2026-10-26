@@ -69,4 +69,6 @@ README의 [프로그램 캡처](assets/dockslate-disk.png)는 [B66E9FE7 실제 W
 
 이전 고지 배포의 공개 Chrome 검사 10개도 통과했다. EXE·포터블·고지 ZIP을 실제로 내려받아 크기·SHA-256을 확인했으며 안내서·Google 원문·PC·모바일 화면을 확인했다. 원격 제작에 사용한 임시 workflow는 제거했다. 이번 SEO 변경의 공개 확인은 별도 SEO 기록에서 구분한다.
 
+SEO 소스 `e1f8c4d` 반영 후 실제 공개 HTTP 검사 9개도 통과했다. 메인·안내서의 생성 HTML 일치, Sitemap·robots 원문, 중첩 URL의 HTTP 404, 내부 페이지·자산·다운로드의 직접 응답, Google 확인 원문, 호스트 루트 robots 404와 단일 trailing-slash 이동을 확인했다. Search Console는 연결 브라우저의 로그인 부재로 제출 미완료다.
+
 [GitHub Pages 게시 방식](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
