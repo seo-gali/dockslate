@@ -72,4 +72,4 @@ Pages는 **Deploy from a branch → main → /(root)**로 설정합니다. 검�
 
 [웹사이트 화면](docs/assets/site-desktop.png) · [모바일 화면](docs/assets/site-mobile.png) · [로컬 안내서](guide.html)
 
-[작업 지침](AGENTS.md) · [코딩 표준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) · [외부 구성 요소 고지](THIRD_PARTY_NOTICES.md)
+[작업 지침](AGENTS.md) · [코딩 표준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) · [배포 전 점검](docs/results/production-readiness.md) · [외부 구성 요소 고지](THIRD_PARTY_NOTICES.md)
