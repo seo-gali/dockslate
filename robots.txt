@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://seo-gali.github.io/dockslate/sitemap.xml

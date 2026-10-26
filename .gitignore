@@ -1,4 +1,5 @@
 .analysis/
+.playwright-mcp/
 node_modules/
 dist/
 site-dist/

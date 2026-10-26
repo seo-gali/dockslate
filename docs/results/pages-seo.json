@@ -1,0 +1,71 @@
+{
+  "observedAt": "2026-10-26T10:20:48.813Z",
+  "localCompleted": true,
+  "rendering": "Complete static HTML generated at build time; no request-time server on GitHub Pages",
+  "sitemapUrls": [
+    "https://seo-gali.github.io/dockslate/",
+    "https://seo-gali.github.io/dockslate/guide.html"
+  ],
+  "htmlFilesScanned": 12,
+  "noindexMeta": 0,
+  "browserChecks": 28,
+  "guards": {
+    "checks": [
+      {
+        "name": "noindex",
+        "exitCode": 1,
+        "expectedFailure": true
+      },
+      {
+        "name": "redirect",
+        "exitCode": 1,
+        "expectedFailure": true
+      }
+    ],
+    "sourceRestored": true
+  },
+  "externalLinks": [
+    {
+      "url": "https://github.com/seo-gali/dockslate",
+      "status": 200,
+      "redirects": []
+    },
+    {
+      "url": "https://github.com/seo-gali/dockslate/blob/main/docs/REQUEST_STATUS.md",
+      "status": 200,
+      "redirects": []
+    },
+    {
+      "url": "https://github.com/seo-gali/dockslate/issues",
+      "status": 200,
+      "redirects": []
+    },
+    {
+      "url": "https://github.com/seo-gali/dockslate/blob/main/USER_GUIDE.md",
+      "status": 200,
+      "redirects": []
+    }
+  ],
+  "hostRootRobots": {
+    "url": "https://seo-gali.github.io/robots.txt",
+    "observedStatus": 404,
+    "projectRobotsIsHostPolicy": false
+  },
+  "searchConsole": {
+    "submitted": false,
+    "reason": "Connected browser redirects to Google sign-in; no authenticated session."
+  },
+  "conflicts": [
+    {
+      "documentation": [
+        "site/index.html",
+        "guide.html"
+      ],
+      "before": "빌드 → 파일 가져오기",
+      "code": "src/pages/Builds.tsx",
+      "actual": "파일에서 빌드",
+      "resolution": "Updated both public guides to the existing UI label."
+    }
+  ],
+  "publicDeploymentTested": false
+}

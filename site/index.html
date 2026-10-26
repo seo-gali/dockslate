@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#0b0f14">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'">
   <title>DockSlate · 다운로드</title>
+  <link rel="canonical" href="{{SITE_URL}}">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
   <script defer src="./main.js"></script>
@@ -65,7 +66,7 @@ docker buildx version</code></pre></div>
         <div class="terminal"><div class="terminal-heading"><span>CLI</span><button type="button" data-copy-target="container-command" aria-label="컨테이너 예시 명령어 복사">복사</button></div><pre><code id="container-command">docker run --name my-web -p 127.0.0.1:8080:80 nginx:stable</code></pre></div>
       </div>
       <div class="guide-panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build" tabindex="0">
-        <ol class="steps"><li><strong>빌드 → 파일 가져오기</strong>에서 Dockerfile 또는 Compose를 선택합니다.</li><li>프로젝트와 지원 구성을 확인하고 빌드합니다.</li><li>결과를 확인하고 실행합니다.</li></ol>
+        <ol class="steps"><li><strong>빌드 → 파일에서 빌드</strong>에서 Dockerfile 또는 Compose를 선택합니다.</li><li>프로젝트와 지원 구성을 확인하고 빌드합니다.</li><li>결과를 확인하고 실행합니다.</li></ol>
         <div class="terminal"><div class="terminal-heading"><span>프로젝트 폴더</span><button type="button" data-copy-target="build-command" aria-label="빌드 예시 명령어 복사">복사</button></div><pre><code id="build-command">docker build -t my-app .
 docker compose up -d</code></pre></div>
       </div>

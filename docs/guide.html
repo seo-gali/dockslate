@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b0f14">
+  <meta name="description" content="DockSlate 설치, 컨테이너 실행, Dockerfile·Compose 빌드와 Windows Docker CLI 사용 방법.">
   <title>DockSlate · 사용 방법</title>
+  <link rel="canonical" href="https://seo-gali.github.io/dockslate/guide.html">
   <style>
     :root{color-scheme:dark;font-family:"Segoe UI Variable","Segoe UI","Malgun Gothic",sans-serif;color:#f0f4f8;background:#0b0f14}*{box-sizing:border-box}body{margin:0;font-size:15px;line-height:1.8}a{color:#79b1ff;text-underline-offset:3px}a:focus-visible,summary:focus-visible{outline:2px solid #79b1ff;outline-offset:4px}.shell{max-width:880px;margin:auto;padding:28px 24px 40px}header{padding-bottom:22px;border-bottom:1px solid #293545}.brand{display:inline-flex;align-items:center;gap:10px;color:#f0f4f8;font-size:20px;font-weight:650;text-decoration:none}.brand svg{width:30px;height:30px}h1{font-size:28px;line-height:1.4;margin:28px 0 14px}h2{font-size:20px;margin:0 0 14px}.card{background:#151d28;border:1px solid #293545;border-radius:9px;padding:24px;margin:22px 0}.requirements,footer{color:#a0afbf;font-size:13px}.steps{display:grid;gap:20px;margin:0;padding-left:24px}.steps li{padding-left:6px}p{margin:4px 0 0;color:#a0afbf}details{padding:15px 0;border-bottom:1px solid #293545}summary{font-weight:600;cursor:pointer}details p{margin-top:12px}code{font:13px/1.8 Consolas,monospace;overflow-wrap:anywhere}pre{padding:14px;background:#0e151e;border-radius:6px;white-space:pre-wrap;overflow-wrap:anywhere}.notice{background:#262219;border-left:3px solid #e6b866;padding:12px 15px;margin-top:24px;font-size:13px}footer{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px}@media(max-width:560px){.shell{padding:20px 16px 32px}.card{padding:20px}h1{font-size:25px}}
   </style>
@@ -28,7 +30,7 @@
       <h2>도움말</h2>
       <details><summary>터미널에서 Docker 명령 쓰기</summary><p>설치 후 새 CMD·PowerShell을 여세요. 포터블은 ZIP 전체를 풀고 <code>bin\docker.exe</code>를 사용합니다.</p><pre>docker ps
 docker compose version</pre></details>
-      <details><summary>Dockerfile · Compose로 빌드하기</summary><p>빌드 → 파일 가져오기에서 파일을 선택합니다. 지원 구성을 확인하고 빌드한 뒤 실행합니다. Compose 가져오기는 제한된 구성을 지원합니다.</p></details>
+      <details><summary>Dockerfile · Compose로 빌드하기</summary><p><b>빌드 → 파일에서 빌드</b>를 열어 파일을 선택합니다. 지원 구성을 확인하고 빌드한 뒤 실행합니다. Compose 가져오기는 제한된 구성을 지원합니다.</p></details>
       <details><summary>MongoDB에 연결이 안 될 때</summary><p>컨테이너 실행 상태와 <b>내 PC 포트</b>를 확인하세요. <code>32768 → 27017</code>이면 Compass 주소는 <code>mongodb://127.0.0.1:32768/</code>입니다. 실제 포트는 컨테이너마다 다릅니다.</p></details>
       <details><summary>앱을 지우면 데이터도 사라지나요?</summary><p>앱 제거로 전용 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다. 엔진 중지도 데이터를 지우지 않습니다.</p></details>
     </section>

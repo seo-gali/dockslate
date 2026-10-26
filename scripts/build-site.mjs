@@ -9,7 +9,8 @@ if (process.argv.slice(2).some(arg => arg !== '--publish')) throw Error('Use bui
 const release = JSON.parse(fs.readFileSync(path.join(root, 'site/release.json'), 'utf8'));
 const app = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 if (release.version !== app.version || !/^\d+\.\d+\.\d+$/.test(release.version)) throw Error('Website version must match the application version.');
-const values = { VERSION: release.version };
+const siteUrl = 'https://seo-gali.github.io/dockslate/';
+const values = { VERSION: release.version, SITE_URL: siteUrl };
 let verifiedDownloads = 0;
 for (const key of ['installer', 'zip', 'licenses']) {
   const asset = release[key];
@@ -35,18 +36,34 @@ if (!fs.readFileSync(path.join(root, 'THIRD_PARTY_NOTICES.md'), 'utf8').includes
 let html = fs.readFileSync(path.join(root, 'site/index.html'), 'utf8');
 for (const [key, value] of Object.entries(values)) html = html.replaceAll(`{{${key}}}`, value);
 if (/\{\{[A-Z0-9_]+\}\}/.test(html)) throw Error('An unresolved website placeholder remains.');
+const pages = new Map([
+  ['index.html', html],
+  ['guide.html', fs.readFileSync(path.join(root, 'guide.html'), 'utf8')],
+  ['404.html', fs.readFileSync(path.join(root, 'site/404.html'), 'utf8').replaceAll('{{SITE_URL}}', siteUrl)],
+]);
+for (const [file, content] of pages) {
+  if ((content.match(/<meta\b[^>]*>/gi) ?? []).some(tag => /\bname\s*=\s*["'](?:robots|googlebot)["']/i.test(tag) && /\bnoindex\b/i.test(tag))) throw Error(`Public page blocks indexing: ${file}`);
+  if (/<meta\b[^>]*http-equiv\s*=\s*["']refresh["']/i.test(content)) throw Error(`Public page contains a redirect: ${file}`);
+  if (file !== '404.html' && !content.includes(`<link rel="canonical" href="${new URL(file === 'index.html' ? '' : file, siteUrl)}">`)) throw Error(`Missing or incorrect canonical URL: ${file}`);
+}
+const sitemapUrls = [...pages.keys()].filter(file => file !== '404.html').map(file => new URL(file === 'index.html' ? '' : file, siteUrl).href);
+const metadata = new Map([
+  ['sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map(url => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`],
+  ['robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}sitemap.xml\n`],
+]);
 const output = path.join(root, production ? 'docs' : 'site-dist');
 if (!output.startsWith(root) || (fs.existsSync(output) && fs.realpathSync(output).toLowerCase() !== output.toLowerCase())) throw Error('Refusing to replace a website output outside the workspace.');
 if (!production) fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
-fs.writeFileSync(path.join(output, 'index.html'), html);
+for (const [file, content] of [...pages, ...metadata]) fs.writeFileSync(path.join(output, file), content);
 for (const file of ['styles.css', 'main.js', 'icon.svg']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
-for (const file of ['guide.html', 'google474f5421d7424578.html']) fs.copyFileSync(path.join(root, file), path.join(output, file));
+fs.copyFileSync(path.join(root, 'google474f5421d7424578.html'), path.join(output, 'google474f5421d7424578.html'));
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 if (production) {
   let homepage = html;
   for (const file of ['styles.css', 'main.js', 'icon.svg']) homepage = homepage.replaceAll(`./${file}`, `./site/${file}`);
   fs.writeFileSync(path.join(root, 'index.html'), homepage);
+  for (const [file, content] of [...metadata, ['404.html', pages.get('404.html')]]) fs.writeFileSync(path.join(root, file), content);
   fs.writeFileSync(path.join(root, '.nojekyll'), '');
 }
 fs.mkdirSync(path.join(output, 'downloads'), { recursive: true });
@@ -57,4 +74,4 @@ for (const key of ['installer', 'zip', 'licenses']) {
   const file = release[key].file;
   fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
 }
-console.log(JSON.stringify({ output, version: release.version, mode: production ? 'static-pages' : 'local-preview', verifiedDownloads, deployed: false }));
+console.log(JSON.stringify({ output, version: release.version, mode: production ? 'static-pages' : 'local-preview', verifiedDownloads, sitemapUrls, deployed: false }));

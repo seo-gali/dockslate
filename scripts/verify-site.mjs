@@ -55,12 +55,17 @@ const server = http.createServer((request, response) => {
   const directory = application ? path.join(root, 'dist') : rootSite ? root : published ? path.join(root, 'docs') : output;
   const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : published ? '/dockslate/published/' : '/dockslate/';
   const relative = pathname.slice(prefix.length) || 'index.html';
-  if (rootSite && !['index.html','guide.html','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/THIRD_PARTY_NOTICES.md','downloads/'+release.installer.file,'downloads/'+release.zip.file,'downloads/'+release.licenses.file].includes(relative)) { response.writeHead(404).end(); return; }
+  const notFound = () => {
+    const fallback = path.join(directory, '404.html');
+    response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' }).end(fs.existsSync(fallback) ? fs.readFileSync(fallback) : undefined);
+  };
+  if (rootSite && !['index.html','guide.html','404.html','robots.txt','sitemap.xml','google474f5421d7424578.html','site/styles.css','site/main.js','site/icon.svg','downloads/THIRD_PARTY_NOTICES.md','downloads/'+release.installer.file,'downloads/'+release.zip.file,'downloads/'+release.licenses.file].includes(relative)) { notFound(); return; }
   const file = path.resolve(directory, relative);
-  if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404).end(); return; }
-  const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(file)] ?? 'application/octet-stream';
+  if (!file.startsWith(directory + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { notFound(); return; }
+  const type = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' }[path.extname(file)] ?? 'application/octet-stream';
   response.setHeader('Content-Type', type);
   if (/\.(exe|zip)$/.test(file)) response.setHeader('Content-Disposition', `attachment; filename="${path.basename(file)}"`);
+  if (request.method === 'HEAD') { response.end(); return; }
   fs.createReadStream(file).on('error', () => response.destroy()).pipe(response);
 });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -78,6 +83,31 @@ try {
   assert(await evaluate(`document.title.includes('DockSlate')&&!document.querySelector('[role="tablist"]').hidden&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1`), 'Local file preview is blank or its script failed.');
   check('Local HTML opens with working guide tabs');
   await navigate(pageUrl);
+  const publicBase = 'https://seo-gali.github.io/dockslate/';
+  for (const folder of ['', 'root/', 'published/']) {
+    for (const page of ['', 'guide.html']) {
+      const response = await fetch(pageUrl + folder + page, { redirect: 'manual', headers: { 'User-Agent': 'Googlebot' } });
+      const body = await response.text();
+      assert(response.status === 200 && !/noindex/i.test(response.headers.get('x-robots-tag') ?? '') && body.includes(`<link rel="canonical" href="${publicBase + page}">`) && (page ? body.includes('id="quickstart"') : body.includes('data-download="installer"') && body.includes('id="features"')), 'Crawler HTML/canonical is incomplete: ' + folder + page);
+    }
+    const response = await fetch(pageUrl + folder + 'sitemap.xml');
+    const xml = await response.text();
+    assert(response.status === 200 && response.headers.get('content-type').includes('xml'), 'Sitemap HTTP/type incorrect');
+    const parsed = await evaluate(`(()=>{const d=new DOMParser().parseFromString(${JSON.stringify(xml)},'application/xml');return {invalid:!!d.querySelector('parsererror'),namespace:d.documentElement.namespaceURI,urls:[...d.querySelectorAll('loc')].map(e=>e.textContent)}})()`);
+    assert(!parsed.invalid && parsed.namespace === 'http://www.sitemaps.org/schemas/sitemap/0.9' && JSON.stringify(parsed.urls) === JSON.stringify([publicBase, publicBase + 'guide.html']), 'Sitemap includes invalid, duplicate or noncanonical routes');
+    const robots = await fetch(pageUrl + folder + 'robots.txt');
+    const rules = await robots.text();
+    assert(robots.status === 200 && /^User-agent: \*$/m.test(rules) && /^Allow: \/$/m.test(rules) && !/^Disallow:\s*\S/m.test(rules) && rules.includes('Sitemap: ' + publicBase + 'sitemap.xml'), 'Project robots has missing sitemap/blocking rules');
+    const missing = await fetch(pageUrl + folder + 'missing/deep/page', { redirect: 'manual' });
+    assert(missing.status === 404 && (await missing.text()).includes('<p class="code">404</p>') && !missing.headers.has('location'), 'Unknown URL must return a real branded 404 without redirecting');
+  }
+  check('Preview/root/docs serve complete crawler HTML, canonical URLs, generated sitemap, permissive robots and true custom 404');
+  const localLinks = await evaluate(`[...new Set([...document.querySelectorAll('a[href],link[href],script[src]')].map(e=>e.href||e.src).filter(value=>value&&new URL(value).origin===location.origin).map(value=>value.split('#')[0]))]`);
+  for (const url of localLinks) {
+    const response = await fetch(url, { method: 'HEAD', redirect: 'manual' });
+    assert(response.status === 200 && !response.headers.has('location'), 'Broken or redirected internal link/resource: ' + url);
+  }
+  check('Every internal page, download and asset link resolves directly without redirect chains', { checked: localLinks.length });
   assert(await evaluate(`['features','start','download','faq'].every(id=>document.getElementById(id))&&document.querySelectorAll('.feature').length===3&&document.querySelectorAll('[data-download]').length===2`), 'Project introduction, usage or downloads missing.');
   check('GitHub Pages project path renders introduction, features, guide, downloads and FAQ');
   assert(await evaluate(`document.querySelector('#engine-license').textContent.includes('엔진 사용료가 없습니다')&&document.querySelector('.footer a[data-license-download][download]')!==null`), 'Engine license explanation or sources link missing.');
@@ -178,7 +208,17 @@ try {
   await send('Emulation.setScriptExecutionDisabled', { value: true });
   await navigate(pageUrl);
   assert(await evaluate(`document.querySelectorAll('[data-download][href]').length===2&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===4`), 'Downloads or guide content require JavaScript.');
+  const indexBlocked = `[...document.querySelectorAll('meta[name]')].some(m=>/^(robots|googlebot)$/i.test(m.name)&&/(^|[^a-z])noindex([^a-z]|$)/i.test(m.content))`;
+  assert(!await evaluate(indexBlocked), 'Public page contains a noindex directive');
+  await evaluate(`(()=>{const m=document.createElement('meta');m.name='robots';m.content='noindex, follow';m.id='seo-test-robots';document.head.append(m)})()`);
+  assert(await evaluate(indexBlocked), 'Browser indexing guard failed to detect injected noindex');
+  await evaluate(`document.getElementById('seo-test-robots').remove()`);
   check('Downloads and complete usage guide remain available with JavaScript disabled');
+  await navigate(pageUrl + 'missing/deep/page');
+  await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: false });
+  assert(await evaluate(`document.querySelector('h1')&&document.querySelectorAll('nav a').length===2&&[...document.querySelectorAll('nav a')].every(a=>a.href.startsWith(${JSON.stringify(publicBase)}))&&document.documentElement.scrollWidth<=innerWidth&&!document.querySelector('script,meta[http-equiv="refresh"]')`), '404 recovery is broken on nested URLs or without JavaScript');
+  fs.writeFileSync(path.join(root, '.analysis', 'site-404-mobile.png'), Buffer.from((await send('Page.captureScreenshot', { format: 'png' })).data, 'base64'));
+  check('Nested missing URL has a styled mobile 404 and absolute recovery links without JavaScript');
   await send('Emulation.setScriptExecutionDisabled', { value: false });
   assert(exceptions.length === 0, 'Website JavaScript exceptions: ' + exceptions.join('; '));
   check('No JavaScript exceptions in actual file or HTTP pages');

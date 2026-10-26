@@ -1,11 +1,22 @@
 {
-  "observedAt": "2026-10-24T08:36:16.343Z",
+  "observedAt": "2026-10-26T10:24:56.944Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
     {
       "name": "Local HTML opens with working guide tabs",
       "passed": true
+    },
+    {
+      "name": "Preview/root/docs serve complete crawler HTML, canonical URLs, generated sitemap, permissive robots and true custom 404",
+      "passed": true
+    },
+    {
+      "name": "Every internal page, download and asset link resolves directly without redirect chains",
+      "passed": true,
+      "evidence": {
+        "checked": 9
+      }
     },
     {
       "name": "GitHub Pages project path renders introduction, features, guide, downloads and FAQ",
@@ -109,6 +120,10 @@
     },
     {
       "name": "Downloads and complete usage guide remain available with JavaScript disabled",
+      "passed": true
+    },
+    {
+      "name": "Nested missing URL has a styled mobile 404 and absolute recovery links without JavaScript",
       "passed": true
     },
     {
