@@ -1,5 +1,6 @@
 {
-  "observedAt": "2026-10-22T11:13:29.896Z",
+  "observedAt": "2026-10-27T13:02:35.493Z",
+  "scope": "artifacts and currentBuild describe the current packaging inputs. Other checks, installer deliveries and integration observations are historical unless currentBuild explicitly repeats them; they do not certify the current installer or a full regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
   "checks": {
@@ -44,22 +45,22 @@
     {
       "name": "dockslate.exe",
       "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\dockslate.exe",
-      "bytes": 4869120,
-      "sha256": "6F7F8DBCDC772951B9F4E2F7AA3BFA3E62CB86F98EA263F5B4FE3B45B3D5DD6B",
-      "executed": false,
-      "executionMode": "Final table UI build after removing three unused CSS selectors; this exact executable was not launched."
+      "bytes": 4878848,
+      "sha256": "E20E1E20BF1616E74BD3F0662676EF2AD3DA2968B1523393FF55EC48FE0BB560",
+      "executed": true,
+      "executionMode": "Actual native WSL recovery checks and approved VM shutdown UI; see wsl-recovery-e2e.json and wsl-compaction-e2e.json. Elevated GUI compaction and installer execution were not tested."
     },
     {
       "name": "docker.exe",
       "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\release\\docker.exe",
       "bytes": 315904,
-      "sha256": "E1E2434EA25284972C815164FC1FACBC196A84793B014EA373C068624FD2D017",
+      "sha256": "30B7278966607AD6F7FB49C7BDAA2F98E4ADA5DF0FB13FAAFAE9C488A7003049",
       "executed": true,
       "executionMode": "Four offline version checks in a fresh profile; no engine calls."
     }
   ],
   "installerFilePresent": true,
-  "blocker": "The table UI and PATH-corrected installer was built and hash verified. The earlier PATH-corrected setup and docker ps succeeded in user screenshots; this table update full setup/cancel/uninstall was not executed by the agent. Local NSIS and native host-file access errors remain.",
+  "blocker": "The published installer still contains the previous application. Current local NSIS packaging fails opening installer/user-path.ps1, including outside the sandbox and with Windows administrator rights. No protection settings were changed; the cause is unresolved. Full setup/cancel/uninstall and the two historical CLI host-file failures remain unverified.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -255,5 +256,77 @@
       "engineChangedByAgent": false,
       "distribution": "DockSlate"
     }
+  },
+  "currentBuild": {
+    "sourceCommit": "6ad209e",
+    "checkedAt": "2026-10-27T13:03:08.920Z",
+    "commands": [
+      {
+        "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
+        "exit": 0,
+        "scope": "2026-10-27 Windows release build; wsl-compaction-recovery.md"
+      },
+      {
+        "command": "cargo check --manifest-path src-tauri/Cargo.toml --locked --offline",
+        "exit": 0
+      },
+      {
+        "command": "npm run build",
+        "exit": 0
+      }
+    ],
+    "nativeRecoveryReport": "docs/results/wsl-recovery-e2e.json",
+    "approvedCompactionReport": "docs/results/wsl-compaction-e2e.json",
+    "inspectLifecycleReport": "docs/results/inspect-lifecycle-e2e.json",
+    "inspectScope": "Inspector-only candidate tested before final WSL recovery build; same Inspector code, not the same app hash.",
+    "offlineCli": {
+      "observedAt": "2026-10-27T13:02:35.493Z",
+      "sha256": "30B7278966607AD6F7FB49C7BDAA2F98E4ADA5DF0FB13FAAFAE9C488A7003049",
+      "existingProfileUsed": false,
+      "engineConnectionRequired": false,
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "Docker version 29.8.2, build 7fc2dff",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "Docker version 29.8.2, build 7fc2dff",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "compose",
+            "version",
+            "--short"
+          ],
+          "exit": 0,
+          "stdout": "5.6.0",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "stdout": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5",
+          "stderr": ""
+        }
+      ]
+    },
+    "installerBuildExit": 1,
+    "installerBuildError": "NSIS cannot open src-tauri/installer/user-path.ps1; reproduced with administrator rights.",
+    "installerInstalledOrUninstalled": false,
+    "securitySettingsChanged": false,
+    "dependenciesOrLocksChanged": false
   }
 }
