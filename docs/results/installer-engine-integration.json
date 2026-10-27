@@ -198,7 +198,35 @@
     "temporaryWorkflowRemoved": true,
     "installerExecuted": false,
     "installedOrUninstalled": false,
-    "scope": "One approved Windows packaging run reused the tested app and launcher without binary patching. Installer extracted and compared; no local installation or engine changes."
+    "scope": "One approved Windows packaging run reused the tested app and launcher without binary patching. Installer extracted and compared; no local installation or engine changes.",
+    "publicVerification": {
+      "observedAt": "2026-10-27T14:49:11.7693481Z",
+      "sourceCommit": "b3d0c3cab6bc6f9645cb91ac87bea353015276a8",
+      "homepageDownloadReceiptsMatch": true,
+      "files": [
+        {
+          "observedAt": "2026-10-27T14:49:04.5695143Z",
+          "sourceCommit": "b3d0c3cab6bc6f9645cb91ac87bea353015276a8",
+          "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe",
+          "file": "DockSlate_0.1.0_x64-setup.exe",
+          "bytes": 49205746,
+          "sha256": "7008F093E8D1A32AA6835520D6B76D7453985B731F657ECBBBE48A55945DF621",
+          "matches": true,
+          "executed": false
+        },
+        {
+          "observedAt": "2026-10-27T14:49:11.7693481Z",
+          "sourceCommit": "b3d0c3cab6bc6f9645cb91ac87bea353015276a8",
+          "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip",
+          "file": "DockSlate-0.1.0-windows-x64.zip",
+          "bytes": 63187844,
+          "sha256": "CEE6DAFB55BB4A8A93B6CB33D32406A708F51D876B03126BE7A719D5D5A68DD7",
+          "matches": true,
+          "executed": false
+        }
+      ],
+      "installerExecuted": false
+    }
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
