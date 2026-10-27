@@ -1,6 +1,6 @@
 {
-  "observedAt": "2026-10-27T13:02:35.493Z",
-  "scope": "artifacts and currentBuild describe the current packaging inputs. Other checks, installer deliveries and integration observations are historical unless currentBuild explicitly repeats them; they do not certify the current installer or a full regression run.",
+  "observedAt": "2026-10-27T14:44:55.161Z",
+  "scope": "artifacts, currentBuild and installerDelivery describe the current delivery. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
   "checks": {
@@ -60,7 +60,7 @@
     }
   ],
   "installerFilePresent": true,
-  "blocker": "The published installer still contains the previous application. Current local NSIS packaging fails opening installer/user-path.ps1, including outside the sandbox and with Windows administrator rights. No protection settings were changed; the cause is unresolved. Full setup/cancel/uninstall and the two historical CLI host-file failures remain unverified.",
+  "blocker": "Installer packaging and embedded file verification succeeded. Local NSIS still cannot open installer/user-path.ps1; its cause is unresolved. Full setup/uninstall, signing, the original security alert and two historical CLI host-file failures remain unverified.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -172,23 +172,33 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "path": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate_0.1.0_x64-setup.exe",
-    "bytes": 44620219,
-    "sha256": "8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094",
+    "observedAt": "2026-10-27T14:44:55.162Z",
+    "file": "DockSlate_0.1.0_x64-setup.exe",
+    "bytes": 49205746,
+    "sha256": "7008F093E8D1A32AA6835520D6B76D7453985B731F657ECBBBE48A55945DF621",
     "signatureStatus": "NotSigned",
-    "artifactId": 12421560850,
-    "archiveSha256": "375A2BF7FC591DEAFA0D2AB70ED6EB3414B121B3679B8624DAB871CFFDA9F182",
-    "githubDigestVerified": true,
-    "downloadSource": "nightly.link redirect to public GitHub artifact; verified against GitHub digest",
-    "installerExecuted": false,
-    "observedAt": "2026-10-22T11:10:30.5631812+00:00",
-    "repository": "seo-gali/dockslate",
-    "head": "fff3670811a90a8f1367342ab6950410c9bd0ead",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/39767569820",
-    "runId": 39767569820,
+    "appSha256": "E20E1E20BF1616E74BD3F0662676EF2AD3DA2968B1523393FF55EC48FE0BB560",
+    "launcherSha256": "30B7278966607AD6F7FB49C7BDAA2F98E4ADA5DF0FB13FAAFAE9C488A7003049",
+    "runId": 40522674675,
+    "sourceCommit": "6a6c2a97f7a8d72d0059d4cbd6987b7e6ea4aeb6",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/40522674675",
     "buildConclusion": "success",
-    "artifactUrl": "https://github.com/seo-gali/dockslate/actions/runs/39767569820/artifacts/12421560850",
-    "scope": "Container and cleanup table update; installer built and hash verified, not installed or uninstalled by the agent."
+    "artifactId": 12740749367,
+    "artifactDigest": "sha256:f044552c40b753e54c942b0c8ff90b42063c4c4a4abfd417e5a8121505cb0766",
+    "archiveBytes": 49200413,
+    "githubDigestVerified": true,
+    "embeddedApplicationAndLauncherMatch": true,
+    "embeddedPathHelperMatches": true,
+    "verifiedLicenseFiles": 375,
+    "licenseIndexesMatch": true,
+    "zipFile": "DockSlate-0.1.0-windows-x64.zip",
+    "zipSha256": "CEE6DAFB55BB4A8A93B6CB33D32406A708F51D876B03126BE7A719D5D5A68DD7",
+    "portableVerifiedBinaryFiles": 10,
+    "portableVerifiedLicenseFiles": 375,
+    "temporaryWorkflowRemoved": true,
+    "installerExecuted": false,
+    "installedOrUninstalled": false,
+    "scope": "One approved Windows packaging run reused the tested app and launcher without binary patching. Installer extracted and compared; no local installation or engine changes."
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -323,10 +333,12 @@
         }
       ]
     },
-    "installerBuildExit": 1,
-    "installerBuildError": "NSIS cannot open src-tauri/installer/user-path.ps1; reproduced with administrator rights.",
     "installerInstalledOrUninstalled": false,
     "securitySettingsChanged": false,
-    "dependenciesOrLocksChanged": false
+    "dependenciesOrLocksChanged": false,
+    "localInstallerBuildExit": 1,
+    "localInstallerBuildError": "NSIS cannot open src-tauri/installer/user-path.ps1; reproduced with administrator rights.",
+    "remoteInstallerBuildExit": 0,
+    "installerPackagingSourceCommit": "6a6c2a97f7a8d72d0059d4cbd6987b7e6ea4aeb6"
   }
 }
