@@ -1,0 +1,167 @@
+{
+  "observedAt": "2026-10-27T10:44:04.134Z",
+  "artifactSha256": "E20E1E20BF1616E74BD3F0662676EF2AD3DA2968B1523393FF55EC48FE0BB560",
+  "userApproved": true,
+  "approvedScope": {
+    "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+    "distributions": [
+      "DockSlate"
+    ],
+    "globalShutdown": true,
+    "compactionWithoutBackup": true
+  },
+  "nativeUiShutdown": true,
+  "automaticRecheck": true,
+  "checks": [
+    {
+      "detail": "WSL 2 registration: DockSlate; owner: DockSlate",
+      "name": "ownership",
+      "status": "passed"
+    },
+    {
+      "detail": "DockSlate ownership marker, installation ID, completed operation, WSL registration ID, and dedicated BasePath were verified. Metadata and the existing runtime mutation lock remain read-locked.",
+      "name": "runtimeOwner",
+      "status": "passed"
+    },
+    {
+      "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
+      "name": "diskTools",
+      "status": "passed"
+    },
+    {
+      "detail": "The Windows process token is not elevated.",
+      "name": "administrator",
+      "status": "blocked"
+    },
+    {
+      "detail": "WSL reports no running distribution. No shutdown command is issued.",
+      "name": "wslStopped",
+      "status": "passed"
+    },
+    {
+      "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+      "name": "runtimeExited",
+      "status": "passed"
+    },
+    {
+      "detail": "Windows Virtual Disk API: detached dynamic VHDX without a parent; disk ID b5dbb1e7-2276-4cff-b996-ecceb554cbff",
+      "name": "detachedDynamicVhdx",
+      "status": "passed"
+    },
+    {
+      "detail": "An exclusive read handle acquired the registered VHDX without creating or modifying it.",
+      "name": "exclusiveLock",
+      "status": "passed"
+    },
+    {
+      "detail": "The exclusively locked original disk identity, length and last-write timestamp bind this approval to the registered VHDX.",
+      "name": "sourceIdentity",
+      "status": "passed"
+    }
+  ],
+  "remaining": [
+    "An elevated Windows administrator session is required."
+  ],
+  "compactionExecuted": true,
+  "compactionMethod": "The repository PowerShell backend embedded in the tested EXE, run by an elevated verification driver with a fresh preview fingerprint; no privileged WebView debugging",
+  "compaction": {
+    "observedAt": "2026-10-27T10:47:19.6820103Z",
+    "userApproved": true,
+    "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+    "backupCreated": false,
+    "phase": "completed",
+    "completed": true,
+    "scriptSha256": "F183881602A5F215FAD4C5C2AB028F46EF3BCA90685CE483B499A80A6ED33F66",
+    "previewChecks": [
+      {
+        "name": "ownership",
+        "status": "passed",
+        "detail": "WSL 2 registration: DockSlate; owner: DockSlate"
+      },
+      {
+        "name": "runtimeOwner",
+        "status": "passed",
+        "detail": "DockSlate ownership marker, installation ID, completed operation, WSL registration ID, and dedicated BasePath were verified. Metadata and the existing runtime mutation lock remain read-locked."
+      },
+      {
+        "name": "diskTools",
+        "status": "passed",
+        "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk"
+      },
+      {
+        "name": "administrator",
+        "status": "passed",
+        "detail": "The Windows process token is elevated."
+      },
+      {
+        "name": "wslStopped",
+        "status": "passed",
+        "detail": "WSL reports no running distribution. No shutdown command is issued."
+      },
+      {
+        "name": "runtimeExited",
+        "status": "passed",
+        "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open."
+      },
+      {
+        "name": "detachedDynamicVhdx",
+        "status": "passed",
+        "detail": "Windows Virtual Disk API: detached dynamic VHDX without a parent; disk ID b5dbb1e7-2276-4cff-b996-ecceb554cbff"
+      },
+      {
+        "name": "exclusiveLock",
+        "status": "passed",
+        "detail": "An exclusive read handle acquired the registered VHDX without creating or modifying it."
+      },
+      {
+        "name": "sourceIdentity",
+        "status": "passed",
+        "detail": "The exclusively locked original disk identity, length and last-write timestamp bind this approval to the registered VHDX."
+      }
+    ],
+    "virtualDiskId": "b5dbb1e7-2276-4cff-b996-ecceb554cbff",
+    "beforeBytes": 5125439488,
+    "result": {
+      "status": "completed",
+      "diskId": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+      "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+      "beforeBytes": 5125439488,
+      "afterBytes": 5124390912,
+      "vhdxReductionBytes": 1048576,
+      "allocatedBeforeBytes": 5125439488,
+      "allocatedAfterBytes": 5124390912,
+      "reclaimedBytes": 1048576,
+      "method": "CompactVirtualDisk",
+      "warnings": [
+        "백업 없이 원본 VHDX를 변경합니다. 실패하면 DockSlate에서 데이터를 복구할 수 없습니다.",
+        "엔진 종료와 디스크 분리는 자동으로 수행하지 않습니다.",
+        "Windows 내장 압축으로 0이 채워진 빈 블록을 회수합니다. 파일 크기가 줄어들지 않을 수 있습니다.",
+        "실행 직전에 모든 안전 조건을 다시 확인합니다.",
+        "회수량은 이 파일의 Windows 할당 크기 감소량입니다. 다른 앱의 여유 공간 변화나 SSD 물리 블록 회수량과는 다릅니다."
+      ],
+      "backupCreated": false
+    },
+    "afterBytes": 5124390912
+  },
+  "postCheck": {
+    "engineReopened": true,
+    "existingContainersUnchanged": true,
+    "existingVolumesUnchanged": true,
+    "existingImageIdsUnchanged": true,
+    "existingNetworkSettingsAndReferencesUnchanged": true,
+    "builtinNetworkIdChanges": [
+      {
+        "name": "bridge",
+        "before": "c05c57b9087639c5bd32f2a575dc1302045643246b6bc0256562da80c177a2c2",
+        "after": "7b19b6f9c96afad911ca34b8ff1837f59add7f1937eda500dcc33c036547018a"
+      }
+    ],
+    "finalRuntimeState": "stopped",
+    "databaseContentsRead": false,
+    "finalVmShutdown": true,
+    "finalDiskReleased": true,
+    "finalFileBytes": 5132779520
+  },
+  "fullGuiCompactionTested": false,
+  "completed": true
+}

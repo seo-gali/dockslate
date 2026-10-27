@@ -1,0 +1,101 @@
+{
+  "observedAt": "2026-10-27T10:40:27.612Z",
+  "artifactSha256": "E20E1E20BF1616E74BD3F0662676EF2AD3DA2968B1523393FF55EC48FE0BB560",
+  "native": true,
+  "backendInjected": false,
+  "checks": [
+    {
+      "name": "invalid target, missing approval and unknown token are rejected",
+      "passed": true
+    },
+    {
+      "name": "running distribution blocks shutdown preparation without stopping it",
+      "passed": true
+    },
+    {
+      "name": "actual stopped distribution retains the VHDX lock",
+      "passed": true
+    },
+    {
+      "name": "shutdown preview is separate from approval and cannot authorize compaction",
+      "passed": true
+    },
+    {
+      "name": "real UI exposes recovery and shows disk, all distributions and separate compaction consent",
+      "passed": true
+    },
+    {
+      "name": "acknowledgment enables action; cancel performs no shutdown or compaction",
+      "passed": true
+    },
+    {
+      "name": "original stopped state restored; existing containers and volumes preserved",
+      "passed": true
+    },
+    {
+      "name": "no renderer exception",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "globalShutdownApproved": false,
+  "compactionExecuted": false,
+  "disk": {
+    "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+    "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+    "beforeBytes": 5118099456
+  },
+  "prerequisites": [
+    {
+      "detail": "WSL 2 registration: DockSlate; owner: DockSlate",
+      "name": "ownership",
+      "status": "passed"
+    },
+    {
+      "detail": "DockSlate ownership marker, installation ID, completed operation, WSL registration ID, and dedicated BasePath were verified. Metadata and the existing runtime mutation lock remain read-locked.",
+      "name": "runtimeOwner",
+      "status": "passed"
+    },
+    {
+      "detail": "Windows 디스크 조회·압축을 사용할 수 있습니다: CompactVirtualDisk",
+      "name": "diskTools",
+      "status": "passed"
+    },
+    {
+      "detail": "The Windows process token is not elevated.",
+      "name": "administrator",
+      "status": "blocked"
+    },
+    {
+      "detail": "WSL reports no running distribution. No shutdown command is issued.",
+      "name": "wslStopped",
+      "status": "passed"
+    },
+    {
+      "detail": "No supported desktop runtime or helper process is running. DockSlate Linux engine and keeper require the owned WSL distribution to remain stopped; the management UI may stay open.",
+      "name": "runtimeExited",
+      "status": "passed"
+    },
+    {
+      "detail": "\"1\"개의 인수가 있는 \"Inspect\"을(를) 호출하는 동안 예외가 발생했습니다. \"OpenVirtualDisk failed (5): Access is denied\"",
+      "name": "detachedDynamicVhdx",
+      "status": "blocked"
+    },
+    {
+      "detail": "\"2\"개의 인수가 있는 \"OpenRegular\"을(를) 호출하는 동안 예외가 발생했습니다. \"The process cannot access the file because it is being used by another process\"",
+      "name": "exclusiveLock",
+      "status": "blocked"
+    },
+    {
+      "detail": "Disk identity inspection requires the verified owner and an exclusive file handle.",
+      "name": "sourceIdentity",
+      "status": "blocked"
+    }
+  ],
+  "shutdownPreview": {
+    "path": "D:\\Program Files\\DockSlate\\runtime\\wsl\\ext4.vhdx",
+    "distributions": [
+      "DockSlate"
+    ]
+  }
+}

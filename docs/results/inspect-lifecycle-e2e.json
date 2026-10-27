@@ -1,0 +1,87 @@
+{
+  "observedAt": "2026-10-27T10:26:04.629Z",
+  "artifactSha256": "8E3ED7AB97C15B0E17F94B618DAB906539F42394220CB50708BF0489950D7B25",
+  "fixtureId": "a6777c18ad725c25c9bc356bba80860e7bca57fe96a048bc7ac39fd7727a296a",
+  "realNativeBackend": true,
+  "syntheticResponseData": false,
+  "injection": "Delay delivery of real Inspect results; one invalid-ID request to the real Rust backend per failure scenario",
+  "checks": [
+    {
+      "name": "tab: late response leaves hidden Inspect unchanged",
+      "passed": true
+    },
+    {
+      "name": "tab: return reuses real cached Inspect without another IPC",
+      "passed": true
+    },
+    {
+      "name": "menu: late response leaves hidden Inspect unchanged",
+      "passed": true
+    },
+    {
+      "name": "menu: return reuses real cached Inspect without another IPC",
+      "passed": true
+    },
+    {
+      "name": "failed Inspect retries when the tab is reopened",
+      "passed": true
+    },
+    {
+      "name": "manual retry still returns real fixture data",
+      "passed": true
+    },
+    {
+      "name": "no renderer exception",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "beforeFix": {
+    "observedAt": "2026-10-26T13:04:56.285Z",
+    "artifactSha256": "6F7F8DBCDC772951B9F4E2F7AA3BFA3E62CB86F98EA263F5B4FE3B45B3D5DD6B",
+    "fixtureId": "a6777c18ad725c25c9bc356bba80860e7bca57fe96a048bc7ac39fd7727a296a",
+    "realNativeBackend": true,
+    "syntheticResponseData": false,
+    "injection": "Delay delivery of real Inspect results; one invalid-ID request to the real Rust backend per failure scenario",
+    "checks": [
+      {
+        "name": "tab: late response leaves hidden Inspect unchanged",
+        "passed": false
+      },
+      {
+        "name": "tab: return reuses real cached Inspect without another IPC",
+        "passed": true
+      },
+      {
+        "name": "menu: late response leaves hidden Inspect unchanged",
+        "passed": false
+      },
+      {
+        "name": "menu: return reuses real cached Inspect without another IPC",
+        "passed": true
+      },
+      {
+        "name": "failed Inspect retries when the tab is reopened",
+        "passed": false
+      },
+      {
+        "name": "manual retry still returns real fixture data",
+        "passed": true
+      },
+      {
+        "name": "no renderer exception",
+        "passed": true
+      }
+    ],
+    "completed": false,
+    "exitCode": 1
+  },
+  "cleanup": {
+    "fixtureDeleted": true,
+    "existingContainersUnchanged": true,
+    "existingVolumesUnchanged": true,
+    "existingImageAndNetworkIdsUnchanged": true,
+    "initialRuntimeState": "stopped",
+    "finalRuntimeState": "stopped"
+  }
+}

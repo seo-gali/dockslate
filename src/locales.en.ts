@@ -1,4 +1,11 @@
 export const english: Readonly<Record<string, string>> = {
+  "WSL 가상 머신 종료…": "Shut down WSL virtual machine…",
+  "WSL 가상 머신 종료": "Shut down WSL virtual machine",
+  "WSL 가상 머신 종료 확인": "Confirm WSL virtual machine shutdown",
+  "등록된 배포판:": "Registered distributions:",
+  "배포판이 중지되어도 WSL 가상 머신이 VHDX를 사용 중일 수 있습니다. 가상 머신 종료 대상을 확인하고 승인한 뒤 다시 검사하세요.": "The WSL virtual machine may still hold the VHDX after distributions stop. Review and approve its shutdown, then check again.",
+  "모든 배포판이 중지된 상태에서 공유 WSL 가상 머신을 종료합니다. 실행 중인 배포판이 발견되면 중단합니다. 저장된 컨테이너·이미지·볼륨은 유지됩니다.": "Shut down the shared WSL virtual machine while all distributions are stopped. Abort if a running distribution is found. Saved containers, images and volumes are retained.",
+  "가상 머신 종료 후 디스크를 다시 검사합니다. 압축은 별도로 승인하며, 엔진은 필요할 때 다시 시작할 수 있습니다.": "Recheck the disk after shutdown. Compaction needs separate approval. You can start the engine again when needed.",
   "다운로드 다시 시도…": "Retry download…",
   "가져오기 전에 실패한 다운로드를 다시 시도합니다. 대상과 영향을 확인하고 새로 승인하세요.": "Retry the download that failed before import. Review the target and impact, then approve again.",
   "다운로드 실패 원인을 해결한 뒤 새로 승인하여 다시 시도할 수 있습니다.": "Resolve the download error, then approve again to retry.",

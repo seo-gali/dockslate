@@ -413,6 +413,14 @@ async fn wsl_preview(disk_id: String) -> Result<Value, String> {
     read(move || wsl::preview(disk_id)).await
 }
 #[tauri::command]
+async fn wsl_shutdown_preview(disk_id: String) -> Result<Value, String> {
+    read(move || wsl::shutdown_preview(disk_id)).await
+}
+#[tauri::command]
+async fn wsl_shutdown(token: String, approved: bool) -> Result<Value, String> {
+    mutate(move || wsl::shutdown(token, approved)).await
+}
+#[tauri::command]
 async fn wsl_compact(token: String, approved: bool) -> Result<Value, String> {
     mutate(move || wsl::compact(token, approved)).await
 }
@@ -621,6 +629,8 @@ fn main() {
             destructive_execute,
             wsl_inventory,
             wsl_preview,
+            wsl_shutdown_preview,
+            wsl_shutdown,
             wsl_compact,
             runtime_status,
             runtime_install_preview,

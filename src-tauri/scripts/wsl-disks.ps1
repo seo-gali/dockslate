@@ -636,6 +636,48 @@ function Get-PublicPreflight($preflight) {
     return $preflight | Select-Object diskId, path, distribution, owner, eligible, requiresBackup, method, diskTools, blockedReasons, checks, warnings, fileSizeBytes, fingerprint
 }
 
+function Get-ShutdownPreview {
+    $preflight = Get-Preflight
+    try {
+        if ($preflight.owner -cne 'DockSlate' -or !$preflight.ownedRuntime) { throw 'WSL shutdown recovery requires the verified DockSlate disk.' }
+        foreach ($name in @('ownership', 'runtimeOwner', 'wslStopped', 'runtimeExited')) {
+            $check = @($preflight.checks | Where-Object { $_.name -ceq $name -and $_.status -ceq 'passed' })
+            if ($check.Count -ne 1) { throw ('Complete the prerequisite before WSL shutdown: ' + $name) }
+        }
+        $distributions = @(Invoke-WslList $false | Sort-Object)
+        if ($distributions -cnotcontains $preflight.distribution -or @(Invoke-WslList $true).Count -gt 0) { throw 'Stop all WSL distributions before approving virtual machine shutdown.' }
+        $fingerprint = [pscustomobject]@{ action = 'shutdown'; diskId = $preflight.diskId; path = $preflight.path; distributions = ($distributions -join "`n"); ownerId = $preflight.ownedRuntime.ownerId; markerSha256 = $preflight.ownedRuntime.markerSha256; operationSha256 = $preflight.ownedRuntime.operationSha256 }
+        return [pscustomobject]@{ eligible = $true; diskId = $preflight.diskId; path = $preflight.path; distributions = $distributions; fingerprint = $fingerprint }
+    } finally { Close-Preflight $preflight }
+}
+
+function Invoke-Shutdown {
+    if ($request.approved -ne $true -or !$request.expected -or $request.expected.action -cne 'shutdown') { throw 'A separate WSL shutdown preview and explicit approval are required.' }
+    $preview = Get-ShutdownPreview
+    foreach ($property in $preview.fingerprint.PSObject.Properties) {
+        if ([string]$request.expected.($property.Name) -cne [string]$property.Value) { throw ('The WSL shutdown preview changed: ' + $property.Name + '. Create a new preview.') }
+    }
+    $info = [Diagnostics.ProcessStartInfo]::new()
+    $info.FileName = Join-Path ([Environment]::GetFolderPath('System')) 'wsl.exe'
+    $info.Arguments = '--shutdown'
+    $info.UseShellExecute = $false
+    $info.CreateNoWindow = $true
+    $info.RedirectStandardOutput = $true
+    $info.RedirectStandardError = $true
+    $child = [Diagnostics.Process]::new()
+    $child.StartInfo = $info
+    try {
+        if (!$child.Start()) { throw 'WSL virtual machine shutdown could not start.' }
+        $outTask = $child.StandardOutput.ReadToEndAsync()
+        $errTask = $child.StandardError.ReadToEndAsync()
+        if (!$child.WaitForExit(30000)) { $child.Kill(); throw 'WSL shutdown timed out. Disk separation remains unverified.' }
+        $null = $outTask.GetAwaiter().GetResult()
+        $null = $errTask.GetAwaiter().GetResult()
+        if ($child.ExitCode -ne 0 -or @(Invoke-WslList $true).Count -gt 0) { throw 'WSL virtual machine shutdown could not be verified. Inspect the disk before retrying.' }
+    } finally { $child.Dispose() }
+    return [pscustomobject]@{ status = 'completed'; diskId = $preview.diskId; path = $preview.path }
+}
+
 function Invoke-Compaction {
     if ($request.approved -ne $true -or !$request.expected) { throw 'A backend preview and explicit approval are required.' }
     $preflight = Get-Preflight
@@ -693,6 +735,8 @@ try {
             finally { Close-Preflight $preflight }
         }
         'compact' { $result = Invoke-Compaction }
+        'shutdown_preview' { $result = Get-ShutdownPreview }
+        'shutdown' { $result = Invoke-Shutdown }
         default { throw 'Unsupported disk command.' }
     }
     $result | ConvertTo-Json -Depth 12 -Compress

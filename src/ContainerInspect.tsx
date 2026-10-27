@@ -24,16 +24,19 @@ export function ContainerInspect({ container, revision, active = true, focusSect
   const deferredSearch = useDeferredValue(search.trim().toLowerCase());
   const [copied, setCopied] = useState(false);
   const request = useRef(0);
+  const [loadedRevision, setLoadedRevision] = useState(-1);
   const read = async () => {
     const current = ++request.current;
     setLoading(true); setError(null);
-    try { const value = await readMetadata<Record<string, unknown>>('container_inspect', container.id, revision); if (request.current === current) setData(value); }
+    try { const value = await readMetadata<Record<string, unknown>>('container_inspect', container.id, revision); if (request.current === current) { setData(value); setLoadedRevision(revision); } }
     catch (failure) { if (request.current === current) setError(errorMessage(failure)); }
     finally { if (request.current === current) setLoading(false); }
   };
-  useEffect(() => () => { request.current++; }, []);
-  const [loadedRevision, setLoadedRevision] = useState(-1);
-  useEffect(() => { if (active && loadedRevision !== revision) { setLoadedRevision(revision); void read(); } }, [container.id, revision, active]);
+  useEffect(() => {
+    if (active && loadedRevision !== revision) void read();
+    if (!active) setLoading(false);
+    return () => { request.current++; };
+  }, [container.id, revision, active]);
   useEffect(() => { if (focusSection) setSection(focusSection); }, [focusSection]);
   const json = useMemo(() => {
     if (!data) return '';

@@ -306,6 +306,14 @@ pub fn runtime_mutation_guard() -> Result<MutexGuard<'static, ()>, String> {
 }
 
 pub fn preview(disk_id: String) -> Result<Value, String> {
+    prepare(disk_id, "preview")
+}
+
+pub fn shutdown_preview(disk_id: String) -> Result<Value, String> {
+    prepare(disk_id, "shutdown_preview")
+}
+
+fn prepare(disk_id: String, mode: &str) -> Result<Value, String> {
     let _mutation = MUTATION
         .try_lock()
         .map_err(|_| "Another WSL disk safety check or optimization is running.".to_string())?;
@@ -317,7 +325,7 @@ pub fn preview(disk_id: String) -> Result<Value, String> {
         return Err("The disk ID is invalid.".into());
     }
     let mut result = read_only(
-        json!({"mode":"preview", "diskId":disk_id}),
+        json!({"mode":mode, "diskId":disk_id}),
         Duration::from_secs(45),
     )?;
     let object = result
@@ -352,6 +360,32 @@ pub fn preview(disk_id: String) -> Result<Value, String> {
         object.insert("expiresAt".into(), Value::Null);
     }
     Ok(result)
+}
+
+pub fn shutdown(token: String, approved: bool) -> Result<Value, String> {
+    if !approved {
+        return Err("Explicit approval is required to shut down the WSL virtual machine.".into());
+    }
+    let _mutation = runtime_mutation_guard()?;
+    assert_idle()?;
+    if crate::runtime::is_mutating() {
+        return Err("The owned runtime is changing. WSL shutdown remains blocked.".into());
+    }
+    let approval = state()
+        .lock()
+        .map_err(|_| "Disk approval state is unavailable.".to_string())?
+        .approvals
+        .remove(&token)
+        .ok_or("The shutdown approval is missing or already used. Create a new preview.")?;
+    if approval.created.elapsed() >= PREVIEW_LIFETIME
+        || approval.fingerprint["action"] != "shutdown"
+    {
+        return Err("Create a new WSL shutdown approval preview.".into());
+    }
+    read_only(
+        json!({"mode":"shutdown", "diskId":approval.fingerprint["diskId"], "approved":true, "expected":approval.fingerprint}),
+        Duration::from_secs(45),
+    )
 }
 
 pub fn compact(token: String, approved: bool) -> Result<Value, String> {
