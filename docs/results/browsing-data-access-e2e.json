@@ -1,0 +1,143 @@
+{
+  "observedAt": "2026-10-27T14:11:31.2542961Z",
+  "scope": "Installer first screen, installer setup UI with isolated WebView2 profile, and uninstaller confirmation screen; all cancelled. No installation, engine approval, app-data deletion or full uninstall.",
+  "method": "Microsoft-signed Process Monitor 4.12; filesystem events only; drop-filtered-events enabled; actual recorded PIDs selected",
+  "tools": {
+    "procmonVersion": "4.12",
+    "procmonSha256": "28495E642B2A465474A4EDC58380EAF8B7EE580F3FBCB4141061DEADAFE9B885",
+    "authenticode": "Valid; Microsoft Corporation",
+    "projectDependencyAdded": false,
+    "reaToolsAvailable": false,
+    "wprFileEvents": 0,
+    "wprAcceptedAsValidation": false
+  },
+  "commands": [
+    {
+      "command": "powershell -NoProfile -File .analysis/exercise-privacy-final.ps1",
+      "exit": 0
+    },
+    {
+      "command": "powershell -NoProfile -File .analysis/analyze-privacy-final.ps1",
+      "exit": 0
+    },
+    {
+      "command": "Process Monitor /Terminate, then /OpenLog /LoadConfig /SaveApplyFilter /SaveAs",
+      "captureExit": 1,
+      "exportExit": 0,
+      "note": "Capture returned 1 after explicit termination. Validated exported file events and positive coverage for each phase; not reported as a capture exit-0 pass."
+    }
+  ],
+  "artifacts": {
+    "installerSha256": "B0B322B140C99F812C6829D681F3831249D968656F162CFA65EE94A50CC02DD8",
+    "appSha256": "6F7F8DBCDC772951B9F4E2F7AA3BFA3E62CB86F98EA263F5B4FE3B45B3D5DD6B",
+    "uninstallerSha256": "B5124F5CFDB9C4FB46EE0232270712B63FFDC0838195659E1C38247EA573E4B5",
+    "uninstallerSignature": "NotSigned",
+    "uninstallerProduct": "DockSlate 0.1.0",
+    "uninstallerPeHeaderMatchesInstallerAfterIconPatch": true,
+    "completeUninstallerBodyComparedToInstaller": false
+  },
+  "filter": {
+    "eventClass": "File System",
+    "dropFilteredEvents": true,
+    "sha256": "753604286DE51D3C0CE0AD4E41E375A0656EC4CE01EA54CD42C70DBD2831F6FC"
+  },
+  "capture": {
+    "pmlSha256": "593640D48BB89A91676ABB641309F3E924225977B3B4099B1DF0DAC52E0D58CF",
+    "csvSha256": "1800D412C45776D808EB1A4A9557524FBCBF6F81FF33BF0CFD6BA28136EA5FED",
+    "pmlBytes": 15843364,
+    "csvBytes": 4370158,
+    "rawLogsCommitted": false
+  },
+  "events": 17751,
+  "processEvents": [
+    {
+      "process": "DockSlate_0.1.0_x64-setup.exe, 17348",
+      "events": 2020
+    },
+    {
+      "process": "dockslate.exe, 18624",
+      "events": 447
+    },
+    {
+      "process": "msedgewebview2.exe, 3880",
+      "events": 9378
+    },
+    {
+      "process": "msedgewebview2.exe, 9256",
+      "events": 102
+    },
+    {
+      "process": "msedgewebview2.exe, 10596",
+      "events": 2967
+    },
+    {
+      "process": "msedgewebview2.exe, 14904",
+      "events": 1788
+    },
+    {
+      "process": "msedgewebview2.exe, 2844",
+      "events": 224
+    },
+    {
+      "process": "msedgewebview2.exe, 14156",
+      "events": 253
+    },
+    {
+      "process": "Un.exe, 13020",
+      "events": 572
+    }
+  ],
+  "phases": {
+    "installer": {
+      "exit": 2,
+      "result": "Cancelled before installation; no target install folder created."
+    },
+    "setup": {
+      "exit": 2,
+      "result": "Cancelled; isolated WebView2 profile; no engine change approval."
+    },
+    "uninstaller": {
+      "exit": 2,
+      "result": "Cancelled at confirmation; disposable target directory; app-data deletion was not selected or executed."
+    }
+  },
+  "isolatedWebViewEvents": 6868,
+  "observedOwnBrowserData": [
+    "<isolated-profile>/EBWebView/Local State",
+    "<isolated-profile>/EBWebView/Default/History",
+    "<isolated-profile>/EBWebView/Default/Network/Cookies"
+  ],
+  "observedOwnBrowserDataOperations": [
+    "CreateFile",
+    "ReadFile",
+    "WriteFile"
+  ],
+  "otherObservedPaths": [
+    "Windows system DLLs",
+    "NSIS temporary plugin DLLs",
+    "<user>/AppData/LocalLow/NVIDIA/DXCache"
+  ],
+  "personalChromeEdgeFirefoxProfileEvents": 0,
+  "browserNamedPathsOutsideIsolatedProfile": [],
+  "fileContentsCollected": false,
+  "securitySettingsChanged": false,
+  "trustOrExceptionsAdded": false,
+  "existingUserDataDeleted": false,
+  "engineChangesApproved": false,
+  "finalEngineState": "DockSlate stopped",
+  "vhdxBeforeAndAfter": {
+    "bytes": 5132779520,
+    "lastWriteUtc": "2026-10-27T10:51:34.948Z",
+    "unchanged": true
+  },
+  "testProcessesLeftRunning": false,
+  "fullInstallationAndRemovalTested": false,
+  "originalAlertTargetConfirmed": false,
+  "latestE20ApplicationPrivacyTraceRepeated": false,
+  "limits": [
+    "The trace covers the published installer and its older application, not the latest E20E1E20 application.",
+    "Successful full setup, approved engine startup, optional app-data deletion and complete removal were not executed.",
+    "An isolated WebView2 profile was used; no personal browser file contents were read.",
+    "The historical IObit event omits its target path. This replay does not prove the original alert was benign or eliminate future alerts."
+  ]
+}
