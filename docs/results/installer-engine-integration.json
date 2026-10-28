@@ -431,7 +431,17 @@
       "downloads/INSTALLER-SHA256SUMS.txt"
     ],
     "signatureStatus": "NotSigned",
-    "publicVerification": null,
-    "scope": "Repackaged the existing verified app and launcher into a local directory and ZIP. No application source change, recompilation, installer rebuild, installation or engine connection. Public ZIP verification is pending."
+    "publicVerification": {
+      "observedAt": "2026-10-28T13:01:45.6163782Z",
+      "sourceCommit": "d2757b998c7643cc5be24930ccc9d195b00226ad",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip",
+      "file": "DockSlate-0.1.0-windows-x64.zip",
+      "bytes": 63188514,
+      "sha256": "B520C844CA5AF4FEFF519929E3399907E9742F309A7C9947F24648CD5D86BC0B",
+      "matches": true,
+      "homepageDownloadReceiptMatches": true,
+      "executed": false
+    },
+    "scope": "Repackaged the existing verified app and launcher into a local directory and ZIP. No application source change, recompilation, installer rebuild, installation or engine connection. The canonical public ZIP was downloaded and its size and SHA-256 matched; the homepage receipt also matched."
   }
 }
