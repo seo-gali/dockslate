@@ -4,6 +4,7 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $downloadRoot = Join-Path $projectRoot 'downloads'
 $packageName = 'DockSlate-0.1.0-windows-x64'
+$portableRoot = Join-Path $downloadRoot $packageName
 $exeSource = Join-Path $projectRoot 'src-tauri\target\release\dockslate.exe'
 $launcherSource = Join-Path $projectRoot 'src-tauri\target\release\docker.exe'
 & (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
@@ -91,14 +92,26 @@ Deleting this folder does not unregister the WSL distribution or delete volumes.
     } finally { $archive.Dispose() }
     Copy-Item -LiteralPath $tempZip -Destination $zipPath -Force
 
-    $artifacts = @(($packageName + '.zip'))
+    $resolvedPortable = [IO.Path]::GetFullPath($portableRoot)
+    if ([IO.Path]::GetDirectoryName($resolvedPortable) -cne $downloadRoot -or [IO.Path]::GetFileName($resolvedPortable) -cne $packageName) {
+        throw 'Refusing to replace a portable directory outside the download folder.'
+    }
+    if (Test-Path -LiteralPath $resolvedPortable) { Remove-Item -LiteralPath $resolvedPortable -Recurse -Force }
+    Move-Item -LiteralPath $packageRoot -Destination $resolvedPortable
+    foreach ($obsolete in @('DockSlate.exe', 'INSTALLER-SHA256SUMS.txt')) {
+        $obsoletePath = Join-Path $downloadRoot $obsolete
+        if (Test-Path -LiteralPath $obsoletePath -PathType Leaf) { Remove-Item -LiteralPath $obsoletePath -Force }
+    }
+
+    $release = Get-Content -LiteralPath (Join-Path $projectRoot 'site\release.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    $artifacts = @($release.installer.file, ($packageName + '.zip'), $release.licenses.file) | Where-Object { Test-Path -LiteralPath (Join-Path $downloadRoot $_) -PathType Leaf }
     $files = @($artifacts | ForEach-Object {
         $filePath = Join-Path $downloadRoot $_
         [ordered]@{ file = $_; bytes = (Get-Item -LiteralPath $filePath).Length; sha256 = (Get-FileHash -LiteralPath $filePath -Algorithm SHA256).Hash }
     })
     $manifest = [ordered]@{
         generatedAt = (Get-Date).ToString('o'); version = '0.1.0'; platform = 'windows-x64'
-        scope = 'Local review ZIP; no public release upload. Any existing standalone EXE was preserved and is not refreshed by this package.'; distribution = 'Complete portable ZIP with DockSlate.exe, bin and libexec'; packagingLaunchedExecutable = $false
+        scope = 'Local portable directory and ZIP; no public release upload. Obsolete standalone EXE and duplicate installer checksum removed.'; distribution = 'Complete portable directory and ZIP with DockSlate.exe, bin and libexec'; portableDirectory = $packageName; packagingLaunchedExecutable = $false
         nativeWindowsComponentsLaunched = $false
         archiveContentVerified = $true; verifiedFiles = $containedArtifact.files.Count
         nativeUiVerificationPerformed = [bool]$build.checks.latestNativeFlowExecuted

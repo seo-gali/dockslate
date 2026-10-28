@@ -1,6 +1,6 @@
 {
   "observedAt": "2026-10-27T14:44:55.161Z",
-  "scope": "artifacts, currentBuild and installerDelivery describe the current delivery. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
+  "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
   "checks": {
@@ -368,5 +368,70 @@
     "localInstallerBuildError": "NSIS cannot open src-tauri/installer/user-path.ps1; reproduced with administrator rights.",
     "remoteInstallerBuildExit": 0,
     "installerPackagingSourceCommit": "6a6c2a97f7a8d72d0059d4cbd6987b7e6ea4aeb6"
+  },
+  "portableDelivery": {
+    "observedAt": "2026-10-28T12:56:58.5035560Z",
+    "command": "npm run package:local (initial creation and replacement)",
+    "packagingExits": [
+      0,
+      0
+    ],
+    "directory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\DockSlate-0.1.0-windows-x64",
+    "appSha256": "E20E1E20BF1616E74BD3F0662676EF2AD3DA2968B1523393FF55EC48FE0BB560",
+    "binaryFilesVerified": 10,
+    "legalFilesVerified": 377,
+    "sameFilesVerifiedInsideZip": 387,
+    "obsoleteOutputsAbsent": true,
+    "downloadChecksumsVerified": 3,
+    "installerUnchanged": true,
+    "appRecompiled": false,
+    "engineOrDataChanged": false,
+    "installerExecuted": false,
+    "file": "DockSlate-0.1.0-windows-x64.zip",
+    "bytes": 63188514,
+    "sha256": "B520C844CA5AF4FEFF519929E3399907E9742F309A7C9947F24648CD5D86BC0B",
+    "binarySourceCommit": "6ad209e",
+    "launcherSha256": "30B7278966607AD6F7FB49C7BDAA2F98E4ADA5DF0FB13FAAFAE9C488A7003049",
+    "offlineCliChecks": [
+      {
+        "args": [
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "--debug",
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "compose",
+          "version",
+          "--short"
+        ],
+        "exit": 0,
+        "output": "5.6.0"
+      },
+      {
+        "args": [
+          "buildx",
+          "version"
+        ],
+        "exit": 0,
+        "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+      }
+    ],
+    "deletedOutputs": [
+      "downloads/DockSlate.exe",
+      "downloads/INSTALLER-SHA256SUMS.txt"
+    ],
+    "signatureStatus": "NotSigned",
+    "publicVerification": null,
+    "scope": "Repackaged the existing verified app and launcher into a local directory and ZIP. No application source change, recompilation, installer rebuild, installation or engine connection. Public ZIP verification is pending."
   }
 }

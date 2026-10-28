@@ -63,8 +63,10 @@ npm ci
 | --- | --- |
 | 앱 빌드 | `.\scripts\desktop.ps1 -Mode build` |
 | CLI 빌드 | `.\scripts\build-cli.ps1` |
-| ZIP 생성 | `npm run package:local` |
+| 포터블 폴더·ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
+
+포터블 생성 시 `downloads/DockSlate-0.1.0-windows-x64/`와 ZIP을 함께 갱신하고, 이전 단독 EXE와 중복 설치 파일 체크섬을 제거합니다.
 
 작업은 `main`에서 진행합니다. 웹사이트 메인은 루트 `index.html`, 앱 진입점은 `src/index.html`입니다. 사이트 템플릿은 `site/index.html`에서 관리합니다. [빌드·Pages 안내](docs/PAGES.md)
 
