@@ -8,7 +8,7 @@ src-tauri/gen/
 .tools/
 *.log
 /downloads/*
-!/downloads/DockSlate_0.1.0_x64-setup.exe
-!/downloads/DockSlate-0.1.0-windows-x64.zip
+!/downloads/DockSlate_0.1.1_x64-setup.exe
+!/downloads/DockSlate-0.1.1-windows-x64.zip
 !/downloads/THIRD_PARTY_NOTICES.md
-!/downloads/DockSlate-0.1.0-third-party-licenses.zip
+!/downloads/DockSlate-0.1.1-third-party-licenses.zip

@@ -160,7 +160,7 @@ fn probe_transport(
         client.engine_cpu_count = info["NCPU"].as_u64().filter(|count| *count > 0);
         client.memory_total_bytes = info["MemTotal"].as_u64().filter(|bytes| *bytes > 0);
         Ok((
-            json!({"state":"connected","context":context,"endpoint":ENDPOINT,"engine":"moby","provider":"DockSlate","serverVersion":server,"apiVersion":api,"ownerPath":owner,"message":"Verified independent DockSlate Moby Engine"}),
+            json!({"state":"connected","context":context,"endpoint":ENDPOINT,"engine":"moby","provider":"DockSlate","serverVersion":server,"apiVersion":api,"ownerPath":owner,"message":"Verified independent DockSlate Moby Engine", "id":info["ID"],"os":info["OperatingSystem"],"kernel":info["KernelVersion"],"architecture":info["Architecture"],"storageDriver":info["Driver"],"cpuCount":info["NCPU"],"memoryTotalBytes":info["MemTotal"],"dockerRootDir":info["DockerRootDir"],"appVersion":env!("CARGO_PKG_VERSION")}),
             Some(client),
         ))
     })();
@@ -1382,15 +1382,15 @@ pub fn images_list() -> Result<Value, String> {
     Ok(normalize_images(&client.images()?, &containers))
 }
 fn normalize_images(images: &[Value], containers: &[Value]) -> Value {
-    let mut references = HashMap::<&str, usize>::new();
+    let mut references = HashMap::<&str, Vec<Value>>::new();
     for container in containers {
-        *references.entry(text(container, "ImageID")).or_default() += 1;
+        references.entry(text(container, "ImageID")).or_default().push(json!({"id":container["Id"],"name":container["Names"].as_array().and_then(|names| names.first()).and_then(Value::as_str).unwrap_or("").trim_start_matches('/'),"state":container["State"]}));
     }
     let values: Vec<_> = images.iter().map(|image| {
         let id = text(image, "Id");
-        let count = references.get(id).copied().unwrap_or(0);
+        let references = references.get(id).map(Vec::as_slice).unwrap_or(&[]);
         let tags: Vec<_> = array(image, "RepoTags").into_iter().filter(|tag| tag.as_str() != Some("<none>:<none>")).collect();
-        json!({"id":id,"tags":tags,"size":image["Size"],"containers":count,"created":image["Created"]})
+        json!({"id":id,"tags":tags,"size":image["Size"],"containers":references.len(),"references":references,"created":image["Created"]})
     }).collect();
     json!(values)
 }
@@ -1780,7 +1780,7 @@ pub fn destructive_preview(request: Value) -> Result<Value, String> {
         json!({"token":token,"kind":kind,"targets":targets,"impact":impact,"recoverable":false,"expiresAt":expires,"estimatedBytes":if kind=="container_delete"{None}else{estimated}}),
     )
 }
-pub fn destructive_execute(token: String, approved: bool) -> Result<Value, String> {
+pub fn destructive_execute(token: String, approved: bool, progress: impl Fn(Value)) -> Result<Value, String> {
     if !approved {
         return Err("Explicit user approval is required".into());
     }
@@ -1803,10 +1803,13 @@ pub fn destructive_execute(token: String, approved: bool) -> Result<Value, Strin
             "Engine identity or context changed after approval; create a new preview".into(),
         );
     }
+    let total = preview.ids.len() + preview.image_ids.len() + preview.cache_ids.len();
+    progress(json!({"phase":"validating","completed":0,"total":total}));
     validate_selection(&client, &preview)?;
     let mut deleted = Vec::new();
     let mut failed = Vec::new();
     for id in &preview.ids {
+        progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total,"target":id}));
         let selected = Preview {
             ids: vec![id.clone()],
             image_ids: Vec::new(),
@@ -1819,8 +1822,10 @@ pub fn destructive_execute(token: String, approved: bool) -> Result<Value, Strin
             Ok(_) => deleted.push(id.clone()),
             Err(error) => failed.push(json!({"id":id,"error":error})),
         };
+        progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total}));
     }
     for id in &preview.image_ids {
+        progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total,"target":id}));
         let selected = Preview {
             ids: Vec::new(),
             image_ids: vec![id.clone()],
@@ -1837,8 +1842,10 @@ pub fn destructive_execute(token: String, approved: bool) -> Result<Value, Strin
             Ok(_) => deleted.push(id.clone()),
             Err(error) => failed.push(json!({"id":id,"error":error})),
         };
+        progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total}));
     }
     for id in &preview.cache_ids {
+        progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total,"target":id}));
         let selected = Preview {
             ids: Vec::new(),
             image_ids: Vec::new(),
@@ -1853,6 +1860,7 @@ pub fn destructive_execute(token: String, approved: bool) -> Result<Value, Strin
                 let removed = array(&report, "CachesDeleted");
                 if removed.iter().any(|removed| removed.as_str() != Some(id)) {
                     failed.push(json!({"id":id,"error":"Engine returned an unexpected cache ID; stop cleanup and inspect the engine"}));
+                    progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total}));
                     break;
                 }
                 if removed.iter().any(|removed| removed.as_str() == Some(id)) {
@@ -1863,6 +1871,7 @@ pub fn destructive_execute(token: String, approved: bool) -> Result<Value, Strin
             }
             Err(error) => failed.push(json!({"id":id,"error":error})),
         }
+        progress(json!({"phase":"deleting","completed":deleted.len()+failed.len(),"total":total}));
     }
     Ok(
         json!({"message":format!("{}: {} deleted, {} failed",preview.kind,deleted.len(),failed.len()),"deleted":deleted,"failed":failed}),

@@ -32,7 +32,7 @@ export default function Settings(props: EngineProps & { runtime: ReturnType<type
         <dt>{t("연결 대상")}</dt><dd>{engine?.context ?? t("미확인")}</dd><dt>{t("엔진 종류")}</dt><dd>{engine?.engine ?? t("미확인")}</dd>
         <dt>{t("서버 버전")}</dt><dd>{engine?.serverVersion ?? t("미확인")}</dd><dt>{t("API 버전")}</dt><dd>{engine?.apiVersion ?? t("미확인")}</dd>
         <dt>Endpoint</dt><dd className="mono">{engine?.endpoint ?? t("미확인")}</dd><dt>{t("런타임 확인 경로")}</dt><dd className="mono">{engine?.ownerPath ?? t("미확인")}</dd>
-        <dt>{t("진단")}</dt><dd>{engine?.message ?? (props.engineLoading ? t("연결 정보를 확인하고 있습니다.") : props.engineError ?? t("엔진 정보를 읽지 못했습니다."))}</dd>
+        <dt>{t("진단")}</dt><dd>{(engine?.message ? t(engine.message) : null) ?? (props.engineLoading ? t("연결 정보를 확인하고 있습니다.") : props.engineError ?? t("엔진 정보를 읽지 못했습니다."))}</dd>
       </dl>
     </section>
   </>;

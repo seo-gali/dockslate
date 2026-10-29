@@ -10,6 +10,15 @@ export interface EngineStatus {
   serverVersion: string | null;
   apiVersion: string | null;
   ownerPath: string | null;
+  id?: string;
+  os?: string;
+  kernel?: string;
+  architecture?: string;
+  storageDriver?: string;
+  cpuCount?: number;
+  memoryTotalBytes?: number;
+  dockerRootDir?: string;
+  appVersion?: string;
   message: string;
 }
 export interface OverviewData {
@@ -35,6 +44,7 @@ export interface DockerImage {
   tags: string[];
   size: number | null;
   containers: number;
+  references: { id: string; name: string; state: string }[];
   created: number;
 }
 export interface CleanupCandidate {

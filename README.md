@@ -4,23 +4,23 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 
 **[웹사이트](https://seo-gali.github.io/dockslate/)** · [빠른 시작](USER_GUIDE.md) · [지원·검증 현황](docs/REQUEST_STATUS.md)
 
-**[설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.0_x64-setup.exe)** · **[포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.0-windows-x64.zip)**
+**[설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.1_x64-setup.exe)** · **[포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.1-windows-x64.zip)**
 
 > **미서명 개발 버전.** 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. [서명·보안 상태](docs/results/code-signing.md)
 
 ## 프로그램 화면
 
-![DockSlate Windows 앱의 디스크 관리 화면](docs/assets/dockslate-disk.png)
+![DockSlate Windows 앱의 이미지와 참조 컨테이너](docs/assets/dockslate-images.png)
 
-실제 Windows 앱 검증 중 캡처한 화면입니다. [검증 기록](docs/results/table-layout.md)
+0.1.1 Windows 앱 검증 중 캡처한 화면입니다. [검증 기록](docs/results/release-0.1.1.md)
 
 ## 기능
 
 | 작업 | 지원 기능 |
 | --- | --- |
-| 컨테이너 | 시작·중지, 포트, 로그·터미널·파일 |
+| 컨테이너 | 시작·중지, 이름·포트·네트워크·볼륨 수정, 로그·터미널·파일 |
 | 이미지·빌드 | Docker Hub, Dockerfile·Compose 가져오기 |
-| 리소스 | 볼륨·네트워크, 선택 정리, WSL 디스크 상태 |
+| 리소스 | 볼륨·네트워크·이미지의 참조 컨테이너, 선택 정리, WSL 디스크 상태 |
 
 ## 시작하기
 
@@ -39,6 +39,8 @@ docker buildx version
 ```
 
 포터블은 `bin`·`libexec`를 함께 유지하고 `bin\docker.exe`를 사용합니다. 앱 제거로 전용 WSL 배포판·이미지·볼륨을 자동 삭제하지 않습니다.
+
+컨테이너의 **작업 → 수정…**에서 변경 내용을 확인하고 적용합니다. 포트·볼륨·네트워크 변경은 재생성이 필요하며 기존 파일은 로컬 이미지에 보존합니다. 볼륨은 삭제하지 않습니다. [수정 범위와 주의사항](USER_GUIDE.md)
 
 ## 구성
 
@@ -66,7 +68,7 @@ npm ci
 | 포터블 폴더·ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
 
-포터블 생성 시 `downloads/DockSlate-0.1.0-windows-x64/`와 ZIP을 함께 갱신하고, 이전 단독 EXE와 중복 설치 파일 체크섬을 제거합니다.
+포터블 생성 시 `downloads/DockSlate-0.1.1-windows-x64/`와 ZIP을 함께 갱신하고, 이전 단독 EXE와 중복 설치 파일 체크섬을 제거합니다.
 
 작업은 `main`에서 진행합니다. 웹사이트 메인은 루트 `index.html`, 앱 진입점은 `src/index.html`입니다. 사이트 템플릿은 `site/index.html`에서 관리합니다. [빌드·Pages 안내](docs/PAGES.md)
 

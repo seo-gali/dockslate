@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-10-29T09:35:29.233Z",
+  "artifactSha256": "F7F5ED582AF19840F6B6181F1BEDDF47C39D705F569E9B379FDE7CAEBD9A4CC3",
+  "native": true,
+  "backendInjected": false,
+  "checks": [
+    {
+      "name": "An occupied port fails recreation and restores the original container ID, name, settings, running state and files",
+      "passed": true
+    },
+    {
+      "name": "A failed recreation still consumes its approval token",
+      "passed": true
+    },
+    {
+      "name": "Only the two verified BusyBox fixtures are removed; original containers are unchanged",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "fixtureIds": [
+    "9731a6a4b85424e64dc503aa86d623310285c4f16520e791559ff1e810f70620",
+    "feabde49dc38a39873d9453ac7b8c2803943a9dfbf4da14ba4700ffd071667e9"
+  ],
+  "databaseContentsRead": false,
+  "volumesCreated": 0,
+  "volumesDeleted": 0,
+  "savedImageRetained": true
+}

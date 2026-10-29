@@ -1,0 +1,75 @@
+{
+  "observedAt": "2026-10-29T09:33:14.838Z",
+  "artifactSha256": "F7F5ED582AF19840F6B6181F1BEDDF47C39D705F569E9B379FDE7CAEBD9A4CC3",
+  "native": true,
+  "backendInjected": false,
+  "checks": [
+    {
+      "name": "Image sizes sort numerically in both directions and the third click restores original order",
+      "passed": true
+    },
+    {
+      "name": "Image usage filter selects matching rows and All restores them",
+      "passed": true
+    },
+    {
+      "name": "Volume, network, history and builder tables expose data sorting and categorical filters; history dates sort chronologically",
+      "passed": true
+    },
+    {
+      "name": "Cleanup availability can be selected independently of text search",
+      "passed": true
+    },
+    {
+      "name": "Real deletion reports validation, current target and 1/2 then 2/2 completed items",
+      "passed": true,
+      "evidence": [
+        {
+          "completed": 0,
+          "phase": "validating",
+          "requestId": "f443a249-a488-46ce-a1e9-b884d670a0af",
+          "total": 2
+        },
+        {
+          "completed": 0,
+          "phase": "deleting",
+          "requestId": "f443a249-a488-46ce-a1e9-b884d670a0af",
+          "target": "5aef8431e90ee96f5a6ba2f08199cbf047acf66ac98784740cb3bfd91a1db79b",
+          "total": 2
+        },
+        {
+          "completed": 1,
+          "phase": "deleting",
+          "requestId": "f443a249-a488-46ce-a1e9-b884d670a0af",
+          "total": 2
+        },
+        {
+          "completed": 1,
+          "phase": "deleting",
+          "requestId": "f443a249-a488-46ce-a1e9-b884d670a0af",
+          "target": "d990730c25cf4e2ef0acd7c6fd09382a03707e42bae3d52dc9da243c178cdaa6",
+          "total": 2
+        },
+        {
+          "completed": 2,
+          "phase": "deleting",
+          "requestId": "f443a249-a488-46ce-a1e9-b884d670a0af",
+          "total": 2
+        }
+      ]
+    },
+    {
+      "name": "Only the two owned BusyBox fixtures were deleted; existing containers and volumes were preserved",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "fixtureIds": [
+    "5aef8431e90ee96f5a6ba2f08199cbf047acf66ac98784740cb3bfd91a1db79b",
+    "d990730c25cf4e2ef0acd7c6fd09382a03707e42bae3d52dc9da243c178cdaa6"
+  ],
+  "volumesCreated": 0,
+  "volumesDeleted": 0,
+  "databaseContentsRead": false
+}

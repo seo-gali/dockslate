@@ -1,0 +1,163 @@
+{
+  "observedAt": "2026-10-29T09:36:38.830Z",
+  "artifactSha256": "F7F5ED582AF19840F6B6181F1BEDDF47C39D705F569E9B379FDE7CAEBD9A4CC3",
+  "native": true,
+  "backendInjected": false,
+  "checks": [
+    {
+      "name": "Actual Docker Hub result table uses the shared column controls",
+      "passed": true,
+      "evidence": {
+        "columns": 3,
+        "handles": 3,
+        "overflow": [],
+        "resizeTooltips": 0
+      }
+    },
+    {
+      "name": "Actual native Compose file selection renders its resizable summary without creating services",
+      "passed": true,
+      "evidence": {
+        "columns": 4,
+        "handles": 4,
+        "overflow": [],
+        "resizeTooltips": 0
+      }
+    },
+    {
+      "name": "Compose summary labels follow the selected English language",
+      "passed": true
+    },
+    {
+      "name": "Image column minimums and full timestamps fit at en/12px/1000px",
+      "passed": true,
+      "evidence": {
+        "columns": 6,
+        "handles": 6,
+        "overflow": [],
+        "resizeTooltips": 0,
+        "dates": [
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "10/29/2026, 6:35:51 PM"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "10/29/2026, 6:34:39 PM"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "10/17/2026, 9:32:45 AM"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "9/27/2024, 6:31:42 AM"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Image column minimums and full timestamps fit at ko/12px/1000px",
+      "passed": true,
+      "evidence": {
+        "columns": 6,
+        "handles": 6,
+        "overflow": [],
+        "resizeTooltips": 0,
+        "dates": [
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2026. 10. 29. 오후 6:35:51"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2026. 10. 29. 오후 6:34:39"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2026. 10. 17. 오전 9:32:45"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2024. 9. 27. 오전 6:31:42"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Image column minimums and full timestamps fit at en/16px/1200px",
+      "passed": true,
+      "evidence": {
+        "columns": 6,
+        "handles": 6,
+        "overflow": [],
+        "resizeTooltips": 0,
+        "dates": [
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "10/29/2026, 6:35:51 PM"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "10/29/2026, 6:34:39 PM"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "10/17/2026, 9:32:45 AM"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "9/27/2024, 6:31:42 AM"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Image column minimums and full timestamps fit at ko/16px/1200px",
+      "passed": true,
+      "evidence": {
+        "columns": 6,
+        "handles": 6,
+        "overflow": [],
+        "resizeTooltips": 0,
+        "dates": [
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2026. 10. 29. 오후 6:35:51"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2026. 10. 29. 오후 6:34:39"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2026. 10. 17. 오전 9:32:45"
+          },
+          {
+            "width": 190,
+            "break": "normal",
+            "text": "2024. 9. 27. 오전 6:31:42"
+          }
+        ]
+      }
+    }
+  ],
+  "completed": true,
+  "serviceCreationExecuted": false,
+  "imageBuildExecuted": false
+}

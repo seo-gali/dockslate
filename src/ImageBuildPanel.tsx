@@ -16,7 +16,7 @@ export function ImageBuildPanel({ build, connected, blocked, onClose }: { build:
     catch (failure) { setCopyError(`로그 복사 실패: ${errorMessage(failure)}`); }
   };
   return <section className="panel image-build-panel" aria-label={t("이미지 빌드")} aria-busy={build.busy}>
-    <div className="section-heading"><h2>{t("이미지 빌드")}</h2><button type="button" className="icon-button" disabled={build.busy || build.picking} onClick={onClose} aria-label={t("빌드 패널 닫기")} title={t("빌드 패널 닫기")}><Icon name="close" /></button></div>
+    <div className="section-heading"><h2>{t("이미지 빌드")}</h2><button type="button" className="icon-button" disabled={build.busy || build.picking} onClick={onClose} aria-label={t("빌드 패널 닫기")} data-tooltip={t("빌드 패널 닫기")}><Icon name="close" /></button></div>
     <p className="usage-note" aria-label={t("이미지 빌드 대상")}>{t("빌드 대상:") + " "}{build.targetLoading ? t("확인 중…") : build.target ? `${build.target.name} · ${build.target.driver}` : t("선택 필요")}{build.target?.nodes.map(node => ` · ${node.endpoint}`).join('')}</p>
     {build.target && build.target.driver !== 'docker' && <p className="usage-note">{t("선택한 빌더의 노드로 빌드 소스를 전송합니다. Builds의 빌더 목록에서 대상을 변경할 수 있습니다.")}</p>}
     {build.targetError && <p className="dialog-error" role="alert">{build.targetError}</p>}

@@ -1,15 +1,18 @@
+import { ResizableTable } from './ResizableColumns';
+import { useTableRows } from './TableRows';
 import { ConfirmDialog, Icon } from './components';
 import { t } from './i18n';
 import type { ComposePreview, ComposeService, useComposeImport } from './ComposeImport';
 
 function ports(service: ComposeService) {
-  return service.ports?.map(port => `${port.host_ip ? `${port.host_ip}:` : ''}${port.published || '자동'} → ${port.target}/${port.protocol || 'tcp'}`).join(', ') || '없음';
+  return service.ports?.map(port => `${port.host_ip ? `${port.host_ip}:` : ''}${port.published || t('자동')} → ${port.target}/${port.protocol || 'tcp'}`).join(', ') || t('없음');
 }
 function ComposeSummary({ preview }: { preview: ComposePreview }) {
+  const services = useTableRows(preview.services, [{ value: service => service.name }, { value: service => service.build?.contextPath }, { value: ports }, { value: service => service.volumes?.map(volume => volume.target).join(', ') }]);
   return <>
     <dl className="detail-grid"><dt>{t("선택 파일")}</dt><dd className="mono">{preview.path}</dd><dt>{t("프로젝트")}</dt><dd className="mono">{preview.project}</dd><dt>{t("대상 엔진")}</dt><dd className="mono">{preview.engineId}</dd></dl>
-    <div className="table-wrap"><table><thead><tr><th>{t("서비스 / 이미지")}</th><th>{t("빌드 폴더")}</th><th>{t("공개 포트")}</th><th>{t("볼륨 연결")}</th></tr></thead><tbody>{preview.services.map(service => <tr key={service.name}><td><strong>{service.name}</strong><div className="mono">{service.image}</div>{service.environmentKeys.length > 0 && <div className="usage-note">{t("환경 변수") + " "}{service.environmentKeys.length}{t("개")}</div>}</td><td className="mono">{service.build ? <><div>{service.build.contextPath}</div><div className="usage-note">{service.build.dockerfile}</div></> : t("로컬 이미지 사용")}</td><td className="mono">{ports(service)}</td><td className="mono">{service.volumes?.map(volume => `${volume.source} → ${volume.target}${volume.read_only ? ' (읽기 전용)' : ''}`).join(', ') || t("없음")}</td></tr>)}</tbody></table></div>
-    {preview.resources.length > 0 && <p className="usage-note">{t("새 리소스:") + " "}{preview.resources.map(resource => `${resource.kind === 'volumes' ? '볼륨' : '네트워크'} ${resource.name}`).join(' · ')}</p>}
+    <div className="table-wrap"><ResizableTable storageKey="compose-services" controls={services} widths={[300,260,180,300]}><thead><tr><th>{t("서비스 / 이미지")}</th><th>{t("빌드 폴더")}</th><th>{t("공개 포트")}</th><th>{t("볼륨 연결")}</th></tr></thead><tbody>{services.rows.map(service => <tr key={service.name}><td><strong>{service.name}</strong><div className="mono">{service.image}</div>{service.environmentKeys.length > 0 && <div className="usage-note">{t("환경 변수") + " "}{service.environmentKeys.length}{t("개")}</div>}</td><td className="mono">{service.build ? <><div>{service.build.contextPath}</div><div className="usage-note">{service.build.dockerfile}</div></> : t("로컬 이미지 사용")}</td><td className="mono">{ports(service)}</td><td className="mono">{service.volumes?.map(volume => `${volume.source} → ${volume.target}${volume.read_only ? ` (${t('읽기 전용')})` : ''}`).join(', ') || t("없음")}</td></tr>)}</tbody></ResizableTable></div>
+    {preview.resources.length > 0 && <p className="usage-note">{t("새 리소스:") + " "}{preview.resources.map(resource => `${resource.kind === 'volumes' ? t('볼륨') : t('네트워크')} ${resource.name}`).join(' · ')}</p>}
   </>;
 }
 

@@ -3,7 +3,8 @@ param()
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $downloadRoot = Join-Path $projectRoot 'downloads'
-$packageName = 'DockSlate-0.1.0-windows-x64'
+$version = (Get-Content -LiteralPath (Join-Path $projectRoot 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+$packageName = "DockSlate-$version-windows-x64"
 $portableRoot = Join-Path $downloadRoot $packageName
 $exeSource = Join-Path $projectRoot 'src-tauri\target\release\dockslate.exe'
 $launcherSource = Join-Path $projectRoot 'src-tauri\target\release\docker.exe'
@@ -57,8 +58,8 @@ try {
         files = @([ordered]@{file = 'DockSlate.exe'; bytes = (Get-Item -LiteralPath $exeSource).Length; sha256 = $exeHash}, [ordered]@{file = 'bin/docker.exe'; bytes = (Get-Item -LiteralPath $launcherSource).Length; sha256 = (Get-FileHash -LiteralPath $launcherSource -Algorithm SHA256).Hash}) + @($nativeManifest.files | ForEach-Object { [ordered]@{file = ('libexec/' + $_.file); bytes = $_.bytes; sha256 = $_.sha256} })
     }
     [IO.File]::WriteAllText((Join-Path $docsRoot 'results\delivery-artifacts.json'), ($containedArtifact | ConvertTo-Json -Depth 6), [Text.UTF8Encoding]::new($false))
-    $helpText = @'
-DockSlate 0.1.0 - Windows x64
+    $helpText = @"
+DockSlate $version - Windows x64
 
 1. Open guide.html for instructions and current verification limits.
 2. DockSlate.exe is the desktop application. HTML files do not control WSL.
@@ -69,9 +70,9 @@ DockSlate 0.1.0 - Windows x64
 Unsigned development build. The reported security alert remains unresolved.
 Do not disable protection or add an exception on this package's advice.
 Deleting this folder does not unregister the WSL distribution or delete volumes.
-'@
+"@
     [IO.File]::WriteAllText((Join-Path $packageRoot 'START-HERE.txt'), $helpText, [Text.UTF8Encoding]::new($false))
-    $packageReadme = "# DockSlate 0.1.0`n`n[Open the HTML guide](guide.html) | [Desktop executable](DockSlate.exe) | [Request status](docs/REQUEST_STATUS.md)`n`n" + $helpText
+    $packageReadme = "# DockSlate $version`n`n[Open the HTML guide](guide.html) | [Desktop executable](DockSlate.exe) | [Request status](docs/REQUEST_STATUS.md)`n`n" + $helpText
     [IO.File]::WriteAllText((Join-Path $packageRoot 'README.md'), $packageReadme, [Text.UTF8Encoding]::new($false))
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $zipPath = Join-Path $downloadRoot ($packageName + '.zip')
@@ -110,7 +111,7 @@ Deleting this folder does not unregister the WSL distribution or delete volumes.
         [ordered]@{ file = $_; bytes = (Get-Item -LiteralPath $filePath).Length; sha256 = (Get-FileHash -LiteralPath $filePath -Algorithm SHA256).Hash }
     })
     $manifest = [ordered]@{
-        generatedAt = (Get-Date).ToString('o'); version = '0.1.0'; platform = 'windows-x64'
+        generatedAt = (Get-Date).ToString('o'); version = $version; platform = 'windows-x64'
         scope = 'Local portable directory and ZIP; no public release upload. Obsolete standalone EXE and duplicate installer checksum removed.'; distribution = 'Complete portable directory and ZIP with DockSlate.exe, bin and libexec'; portableDirectory = $packageName; packagingLaunchedExecutable = $false
         nativeWindowsComponentsLaunched = $false
         archiveContentVerified = $true; verifiedFiles = $containedArtifact.files.Count

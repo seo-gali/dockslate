@@ -1,13 +1,27 @@
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export function Tooltip({ text, children }: { text: string; children: ReactNode }) {
-  const id = useId();
-  const anchor = useRef<HTMLSpanElement>(null);
-  const [position, setPosition] = useState<{ left: number; top: number } | null>(null);
-  const show = () => {
-    const bounds = anchor.current?.getBoundingClientRect();
-    if (bounds) setPosition({ left: Math.max(12, Math.min(bounds.right - 300, window.innerWidth - 312)), top: Math.max(12, bounds.top - 10) });
-  };
-  return <span className="tooltip-anchor" ref={anchor} tabIndex={0} aria-describedby={position ? id : undefined} onMouseEnter={show} onMouseLeave={() => setPosition(null)} onFocus={show} onBlur={() => setPosition(null)} onKeyDown={event => { if (event.key === 'Escape') setPosition(null); }}>{children}{position && createPortal(<span id={id} role="tooltip" className="floating-tooltip" style={{ left: position.left, top: position.top }}>{text}</span>, document.body)}</span>;
+export function TooltipLayer() {
+  const [target, setTarget] = useState<HTMLElement | null>(null);
+  const bubble = useRef<HTMLSpanElement>(null);
+  const [position, setPosition] = useState({ left: 0, top: 0 });
+  useEffect(() => {
+    const enter = (event: Event) => setTarget(event.target instanceof Element ? event.target.closest<HTMLElement>('[data-tooltip]') : null);
+    const leave = (event: Event) => { const related = (event as MouseEvent).relatedTarget; if (!(related instanceof Element) || !related.closest('[data-tooltip]')) setTarget(null); };
+    const close = () => setTarget(null);
+    document.addEventListener('pointerover', enter);
+    document.addEventListener('pointerout', leave);
+    document.addEventListener('focusin', enter);
+    document.addEventListener('focusout', close);
+    document.addEventListener('keydown', close);
+    window.addEventListener('scroll', close, true);
+    window.addEventListener('resize', close);
+    return () => { document.removeEventListener('pointerover', enter); document.removeEventListener('pointerout', leave); document.removeEventListener('focusin', enter); document.removeEventListener('focusout', close); document.removeEventListener('keydown', close); window.removeEventListener('scroll', close, true); window.removeEventListener('resize', close); };
+  }, []);
+  useLayoutEffect(() => {
+    if (!target || !bubble.current) return;
+    const bounds = target.getBoundingClientRect(), size = bubble.current.getBoundingClientRect();
+    setPosition({ left: Math.max(8, Math.min(bounds.left, innerWidth - size.width - 8)), top: bounds.bottom + size.height + 8 < innerHeight ? bounds.bottom + 8 : Math.max(8, bounds.top - size.height - 8) });
+  }, [target]);
+  return target?.dataset.tooltip ? createPortal(<span ref={bubble} role="tooltip" className="action-tooltip" style={position}>{target.dataset.tooltip}</span>, document.body) : null;
 }

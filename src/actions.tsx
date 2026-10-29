@@ -1,14 +1,16 @@
 import { useRef, useState } from 'react';
+import { listen } from '@tauri-apps/api/event';
 import { backend, refreshDashboardAfterMutation, type DestructivePreview, type DestructiveRequest, type DestructiveResult } from './api';
-import { ConfirmDialog, Icon, errorMessage, formatBytes } from './components';
+import { ConfirmDialog, Icon, TaskProgress, errorMessage, formatBytes } from './components';
 import { getLocale, t } from "./i18n";
 
 
 export type Operation = { tone: 'accent' | 'success' | 'warning' | 'danger'; message: string } | null;
+interface DeletionProgress { requestId: string; phase: 'validating' | 'deleting'; completed: number; total: number; target?: string }
 
 export function OperationNotice({ operation, onDismiss }: { operation: Operation; onDismiss?: () => void }) {
   if (!operation) return null;
-  return <div className={`operation-banner ${operation.tone}`} role={operation.tone === 'danger' ? 'alert' : 'status'}><Icon name={operation.tone === 'danger' || operation.tone === 'warning' ? 'warning' : operation.tone === 'success' ? 'check' : 'refresh'} /><span>{operation.message}</span>{onDismiss && operation.tone !== 'accent' && <button className="icon-button" onClick={onDismiss} title={t("알림 닫기")} aria-label={t("알림 닫기")}><Icon name="close" size={16} /></button>}</div>;
+  return <div className={`operation-banner ${operation.tone}`} role={operation.tone === 'danger' ? 'alert' : 'status'}><Icon name={operation.tone === 'danger' || operation.tone === 'warning' ? 'warning' : operation.tone === 'success' ? 'check' : 'refresh'} />{operation.tone === 'accent' ? <TaskProgress label={operation.message} /> : <span>{operation.message}</span>}{onDismiss && operation.tone !== 'accent' && <button className="icon-button" onClick={onDismiss} data-tooltip={t("알림 닫기")} aria-label={t("알림 닫기")}><Icon name="close" size={16} /></button>}</div>;
 }
 
 export function useDestructiveAction(onComplete: (result: DestructiveResult) => void | Promise<void>) {
@@ -17,6 +19,7 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
   const [preview, setPreview] = useState<DestructivePreview | null>(null);
   const [validating, setValidating] = useState(false);
   const [executing, setExecuting] = useState(false);
+  const [progress, setProgress] = useState<DeletionProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [acknowledged, setAcknowledged] = useState(false);
   const [operation, setOperation] = useState<Operation>(null);
@@ -57,9 +60,15 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
     if (preview.expiresAt <= Date.now()) { setError(t("승인 정보가 만료되었습니다. 대상을 다시 검사하세요.")); setPreview(null); setAcknowledged(false); return; }
     execution.current = true;
     setExecuting(true);
+    setProgress(null);
     setError(null);
+    let unlisten: (() => void) | undefined;
     try {
-      const result = await backend<DestructiveResult>('destructive_execute', { token: preview.token, approved: true });
+      const requestId = crypto.randomUUID();
+      unlisten = await listen<DeletionProgress>('destructive-progress', event => {
+        if (event.payload.requestId === requestId) setProgress(event.payload);
+      });
+      const result = await backend<DestructiveResult>('destructive_execute', { token: preview.token, approved: true, requestId });
       open.current = false;
       setRequest(null); setPreview(null);
       setAcknowledged(false);
@@ -71,6 +80,7 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
       setError(errorMessage(failure));
       setPreview(null); setAcknowledged(false);
     } finally {
+      unlisten?.();
       await refreshDashboardAfterMutation();
       execution.current = false;
       setExecuting(false);
@@ -79,15 +89,14 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
 
   const title = request?.kind === 'container_delete' ? t("컨테이너 삭제 확인") : request?.kind === 'image_delete' ? t("이미지 삭제 확인") : t("선택한 데이터 정리 확인");
   const displayTargets = preview?.targets.map(target => targets.find(label => label.endsWith(` · ${target}`)) ?? target) ?? targets;
-  const dialog = request && <ConfirmDialog title={title} label={request.kind === 'cleanup' ? t("선택한 데이터 정리") : t("삭제 실행")} busy={executing} ready={!!preview && !validating} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={cancel} onConfirm={() => void execute()}><p>{t("다음 대상에만 작업을 적용합니다.")}</p><ul className="dialog-target-list">{displayTargets.map((target, index) => <li key={`${target}-${index}`}>{target}</li>)}</ul>{validating && <p className="loading-line" role="status">{t("대상과 현재 참조 상태를 검사하고 있습니다. 검사 후에 승인할 수 있습니다.")}</p>}{preview && <>{preview.impact.map((impact, index) => <p key={index}>{impactText(impact)}</p>)}{preview.estimatedBytes !== null && <p>{t("Docker 정리 가능 추정치:") + " "}<strong>{formatBytes(preview.estimatedBytes)}</strong></p>}<p>{t("승인 정보 만료:") + " "}{new Date(preview.expiresAt).toLocaleTimeString(getLocale())}</p></>}<p className="danger">{t("이 작업은 DockSlate에서 되돌릴 수 없습니다. 필요한 데이터는 실행 전에 별도로 보관하세요.")}</p>{!validating && !preview && <button className="button small" disabled={executing} onClick={() => void validate(request)}>{t("대상 다시 검사")}</button>}</ConfirmDialog>;
+  const dialog = request && <ConfirmDialog title={title} label={request.kind === 'cleanup' ? t("선택한 데이터 정리") : t("삭제 실행")} busy={executing} progress={{ label: t(progress?.phase === 'deleting' ? '선택한 대상 삭제 중…' : '대상 상태 재확인 중…'), completed: progress?.completed, total: progress?.total, detail: progress?.target }} ready={!!preview && !validating} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={cancel} onConfirm={() => void execute()}><ul className="dialog-target-list">{displayTargets.map((target, index) => <li key={`${target}-${index}`}>{target}</li>)}</ul>{validating && <p className="loading-line" role="status">{t("대상과 현재 참조 상태를 검사하고 있습니다. 검사 후에 승인할 수 있습니다.")}</p>}{preview && <>{preview.impact.map(impactText).filter(Boolean).map((impact, index) => <p key={index}>{impact}</p>)}{preview.estimatedBytes !== null && <p>{t("Docker 정리 가능 추정치:") + " "}<strong>{formatBytes(preview.estimatedBytes)}</strong></p>}<p>{t("승인 정보 만료:") + " "}{new Date(preview.expiresAt).toLocaleTimeString(getLocale())}</p></>}<p className="danger">{t("선택한 대상만 삭제하며 볼륨은 유지합니다. 삭제한 데이터는 복구할 수 없습니다.")}</p>{!validating && !preview && <button className="button small" disabled={executing} onClick={() => void validate(request)}>{t("대상 다시 검사")}</button>}</ConfirmDialog>;
   return { busy: executing || request !== null, prepare, dialog, operation, setOperation };
 }
 
-function impactText(value: string): string {
-  if (value === 'Deletion is irreversible within DockSlate.') return t("삭제한 데이터는 DockSlate에서 되돌릴 수 없습니다.");
-  if (value === 'Existing volumes are retained. Force deletion and system-wide prune are excluded.') return t("기존 볼륨은 유지됩니다. 강제 삭제와 엔진 전체 정리는 실행하지 않습니다.");
-  if (value.startsWith('Only selected images are requested for deletion;')) return t("선택한 이미지의 메타데이터와 참조되지 않는 레이어를 삭제합니다. 다시 다운로드하려면 원본 레지스트리에 접근할 수 있어야 합니다.");
+function impactText(value: string): string | null {
+  if (value === 'Deletion is irreversible within DockSlate.' || value === 'Existing volumes are retained. Force deletion and system-wide prune are excluded.') return null;
+  if (value.startsWith('Only selected images are requested for deletion;')) return t("이미지와 미참조 레이어를 삭제합니다. 다시 받으려면 원본 레지스트리에 접근할 수 있어야 합니다.");
   if (value.startsWith('The stopped container writable layer and configuration')) return t("선택한 중지된 컨테이너의 쓰기 가능한 레이어와 설정을 삭제합니다. 이미지와 이름 있는 볼륨·익명 볼륨은 유지됩니다.");
-  if (value.startsWith('Only exact selected unused, unshared build cache IDs')) return t("선택한 미사용·비공유 빌드 캐시 ID만 정리합니다. 다음 이미지 빌드에는 시간이 더 걸릴 수 있습니다.");
+  if (value.startsWith('Only exact selected unused, unshared build cache IDs')) return t("선택한 빌드 캐시를 삭제합니다. 다음 빌드가 더 오래 걸릴 수 있습니다.");
   return value;
 }

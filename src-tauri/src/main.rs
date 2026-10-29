@@ -4,6 +4,7 @@ mod builds;
 mod cli_platform;
 mod compose;
 mod container_tools;
+mod container_edit;
 mod desktop;
 mod docker;
 mod image_build;
@@ -289,6 +290,12 @@ async fn container_inspect(id: String) -> Result<Value, String> {
     read(move || docker::container_inspect(id)).await
 }
 #[tauri::command]
+async fn container_edit_read(id: String) -> Result<Value, String> { read(move || container_edit::read(id)).await }
+#[tauri::command]
+async fn container_edit_preview(request: container_edit::Request) -> Result<Value, String> { read(move || container_edit::preview(request)).await }
+#[tauri::command]
+async fn container_edit_execute(token: String, approved: bool) -> Result<Value, String> { mutate(move || container_edit::execute(token, approved)).await }
+#[tauri::command]
 async fn container_stats(id: String) -> Result<Value, String> {
     read(move || docker::container_stats(id)).await
 }
@@ -401,8 +408,15 @@ async fn destructive_preview(request: Value) -> Result<Value, String> {
     read(move || docker::destructive_preview(request)).await
 }
 #[tauri::command]
-async fn destructive_execute(token: String, approved: bool) -> Result<Value, String> {
-    mutate(move || docker::destructive_execute(token, approved)).await
+async fn destructive_execute(app: tauri::AppHandle, token: String, approved: bool, request_id: Option<String>) -> Result<Value, String> {
+    let request_id = request_id.unwrap_or_default();
+    if request_id.len() > 128 || !request_id.bytes().all(|byte| byte.is_ascii_alphanumeric() || b"_-".contains(&byte)) {
+        return Err("Invalid cleanup request identifier".into());
+    }
+    mutate(move || docker::destructive_execute(token, approved, move |mut progress| {
+        progress["requestId"] = Value::String(request_id.clone());
+        let _ = app.emit("destructive-progress", progress);
+    })).await
 }
 #[tauri::command]
 async fn wsl_inventory() -> Result<Value, String> {
@@ -488,7 +502,7 @@ fn verify_read_only(report: &str) -> Result<(), String> {
         "diskUsage": docker::disk_usage(),
         "wsl": wsl::inventory(),
         "invalidDiskPreview": wsl::preview("dockslate-invalid-verification-disk".into()),
-        "unapprovedDelete": docker::destructive_execute("invalid-verification-token".into(), false),
+        "unapprovedDelete": docker::destructive_execute("invalid-verification-token".into(), false, |_| {}),
         "unapprovedCompact": wsl::compact("invalid-verification-token".into(), false),
         "invalidPull": docker::image_pull("--invalid-reference".into()),
         "runtime": runtime::status(),
@@ -607,6 +621,7 @@ fn main() {
             overview,
             containers_list,
             container_inspect,
+            container_edit_read, container_edit_preview, container_edit_execute,
             container_stats,
             containers_metrics,
             container_open_port,

@@ -31,7 +31,7 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
   const [acknowledged, setAcknowledged] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [revision, setRevision] = useState(0);
-  const [progress, setProgress] = useState('');
+  const [progress, setProgress] = useState({ completed: 0, detail: '' });
   const generation = useRef(0);
   const inFlight = useRef(false);
   const callbacks = useRef({ onBusy, onClose, onComplete });
@@ -75,12 +75,13 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
       for (let index = 0; index < checked.length; index += 1) {
         const result = checked[index];
         if (!result.preview?.token || !result.preview.expiresAt || result.preview.expiresAt <= Date.now()) { failed.push({ id: result.image.id, error: '승인 정보가 만료되어 후속 삭제를 중단했습니다.' }); break; }
-        setProgress(`${index + 1} / ${checked.length} 이미지 처리 중…`);
+        setProgress({ completed: index, detail: result.image.tags[0] ?? result.image.id });
         try {
           const removed = await backend<ImageRemovalResult>('image_removal_execute', { token: result.preview.token, approved: true });
           deleted.push(...removed.deleted);
           removed.deleted.forEach(id => remaining.delete(id));
           failed.push(...removed.failed);
+          setProgress({ completed: index + 1, detail: result.image.tags[0] ?? result.image.id });
           if (removed.failed.length) break;
         } catch (failure) { failed.push({ id: result.image.id, error: errorMessage(failure) }); break; }
       }
@@ -91,12 +92,11 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
     callbacks.current.onComplete({ message: `이미지 삭제: ${deleted.length}개 삭제, ${failed.length}개 실패${remaining.size ? ` · ${remaining.size}개 미완료` : ''}`, deleted, failed, remaining: [...remaining] });
     callbacks.current.onClose();
   };
-  return <ConfirmDialog title={t("이미지 삭제 확인")} label="선택한 대상 삭제" busy={executing} ready={ready} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={() => { if (!inFlight.current) callbacks.current.onClose(); }} onConfirm={() => void execute()}>
+  return <ConfirmDialog title={t("이미지 삭제 확인")} label="선택한 대상 삭제" busy={executing} progress={{ label: t('이미지 삭제 중…'), completed: progress.completed, total: checked.length, detail: progress.detail }} ready={ready} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={() => { if (!inFlight.current) callbacks.current.onClose(); }} onConfirm={() => void execute()}>
     <p>{t("선택한 이미지") + " "}{images.length}{t("개와 현재 참조 컨테이너를 검사합니다.")}</p>
     <label className="checkbox-control" style={{ margin: '14px 0' }}><input type="checkbox" checked={cascade} disabled={executing || validating} onChange={event => { setCascade(event.target.checked); setAcknowledged(false); }} />{t("참조 컨테이너도 함께 삭제")}</label>
     <p className="usage-note">{t("이 옵션은 처음에는 선택되지 않습니다. 선택하면 현재 중지된 참조 컨테이너를 삭제 대상에 포함합니다. 실행 중인 컨테이너는 자동으로 중지하지 않습니다.")}</p>
     {validating && <p className="loading-line" role="status">{t("이미지와 컨테이너의 실제 상태를 검사하고 있습니다. (")}{checked.filter(result => result.preview || result.error).length}/{images.length})</p>}
-    {executing && <p className="loading-line" role="status">{progress}</p>}
     {checked.map(result => <section key={result.image.id} style={{ margin: '16px 0' }} aria-label={`${result.image.tags[0] ?? result.image.id} 삭제 대상`}><div className="dialog-target">{(result.preview?.image.tags ?? result.image.tags).join(', ') || '<untagged>'}<small className="selectable">{result.image.id}</small></div>{result.preview && <><StatusBadge tone={result.preview.eligible ? 'warning' : 'danger'}>{result.preview.eligible ? t("삭제 가능") : t("삭제 차단")}</StatusBadge>{result.preview.containers.length ? <><p>{cascade ? t("함께 삭제할 참조 컨테이너") : t("이미지를 참조하는 컨테이너")}</p><ul className="dialog-target-list">{result.preview.containers.map(container => <li key={container.id}><strong>{container.name}</strong> · {container.state}<small className="mono selectable">{container.id}</small></li>)}</ul></> : <p className="usage-note">{t("참조하는 컨테이너가 없습니다.")}</p>}{result.preview.blockedReasons.map(reason => <p className="danger" key={reason}>{reasonText(reason)}</p>)}{result.preview.expiresAt && <p className="usage-note">{t("승인 만료:") + " "}{new Date(result.preview.expiresAt).toLocaleTimeString()}</p>}</>}{result.error && <p className="danger" role="alert">{t("대상 검사 실패:") + " "}{result.error}</p>}</section>)}
     <p className="danger">{t("컨테이너를 함께 삭제하면 쓰기 가능한 레이어의 파일과 컨테이너 설정이 영구 삭제됩니다. 이름 있는 볼륨과 익명 볼륨은 모두 유지합니다.")}</p>
     <p>{t("선택한 이미지의 태그, 메타데이터와 참조되지 않는 레이어를 삭제합니다. 다시 다운로드하려면 원본 레지스트리에 접근할 수 있어야 합니다.")}</p>

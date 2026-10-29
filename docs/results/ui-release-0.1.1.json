@@ -1,0 +1,213 @@
+{
+  "observedAt": "2026-10-29T09:34:04.872Z",
+  "version": "0.1.1",
+  "artifactSha256": "F7F5ED582AF19840F6B6181F1BEDDF47C39D705F569E9B379FDE7CAEBD9A4CC3",
+  "native": true,
+  "backendInjected": false,
+  "checks": [
+    {
+      "name": "Overview exposes real engine details and removes the unit footnote",
+      "passed": true
+    },
+    {
+      "name": "Images minimum columns contain controls and have no resize tooltips",
+      "passed": true,
+      "evidence": [
+        {
+          "width": 986,
+          "available": 986,
+          "minimum": 712,
+          "resizeTooltips": 0,
+          "overflow": []
+        }
+      ]
+    },
+    {
+      "name": "Images show all tags, full IDs, complete timestamps and referencing containers",
+      "passed": true
+    },
+    {
+      "name": "Resources minimum columns contain controls and have no resize tooltips",
+      "passed": true,
+      "evidence": [
+        {
+          "width": 986,
+          "available": 986,
+          "minimum": 567,
+          "resizeTooltips": 0,
+          "overflow": []
+        }
+      ]
+    },
+    {
+      "name": "Volume rows expose referencing container names and states",
+      "passed": true
+    },
+    {
+      "name": "Resources minimum columns contain controls and have no resize tooltips",
+      "passed": true,
+      "evidence": [
+        {
+          "width": 986,
+          "available": 986,
+          "minimum": 577,
+          "resizeTooltips": 0,
+          "overflow": []
+        }
+      ]
+    },
+    {
+      "name": "Network table resizes and exposes references without native tooltips",
+      "passed": true
+    },
+    {
+      "name": "Builds minimum columns contain controls and have no resize tooltips",
+      "passed": true,
+      "evidence": [
+        {
+          "width": 971,
+          "available": 971,
+          "minimum": 661,
+          "resizeTooltips": 0,
+          "overflow": []
+        }
+      ]
+    },
+    {
+      "name": "Build history gives most space to its name column",
+      "passed": true,
+      "evidence": [
+        452,
+        115,
+        190,
+        137,
+        77
+      ]
+    },
+    {
+      "name": "Builds minimum columns contain controls and have no resize tooltips",
+      "passed": true,
+      "evidence": [
+        {
+          "width": 986,
+          "available": 986,
+          "minimum": 428,
+          "resizeTooltips": 0,
+          "overflow": []
+        }
+      ]
+    },
+    {
+      "name": "Builder table fits its initial viewport",
+      "passed": true
+    },
+    {
+      "name": "Disk Manager minimum columns contain controls and have no resize tooltips",
+      "passed": true,
+      "evidence": [
+        {
+          "width": 971,
+          "available": 971,
+          "minimum": 778,
+          "resizeTooltips": 0,
+          "overflow": []
+        }
+      ]
+    },
+    {
+      "name": "Existing keyboard column resizing still works",
+      "passed": true
+    },
+    {
+      "name": "Korean mode translates backend usage warnings",
+      "passed": true
+    },
+    {
+      "name": "Korean engine status is localized",
+      "passed": true
+    },
+    {
+      "name": "Cancelling container editing changes no configuration",
+      "passed": true
+    },
+    {
+      "name": "Native rename dialog preserves the container ID and running state",
+      "passed": true
+    },
+    {
+      "name": "Invalid container names are rejected before mutation",
+      "passed": true
+    },
+    {
+      "name": "Native recreation preserves writable files and volume data and applies ports, networks and added volumes",
+      "passed": true,
+      "evidence": {
+        "id": "393bff8f8a4a1eed3b4333972417b6adcabfc24202923b851de35b4aaf6f9d34",
+        "mounts": [
+          {
+            "name": "dockslate-edit-e2e-1793196176929-data",
+            "readOnly": false,
+            "target": "/data"
+          },
+          {
+            "name": "dockslate-edit-e2e-1793196176929-extra",
+            "readOnly": false,
+            "target": "/extra"
+          }
+        ],
+        "name": "dockslate-edit-e2e-1793266451810-renamed",
+        "networks": [
+          "ebeb553c3ab8ff592b3685f374dc3ec4cbc6c649784d951da09f9308a1f6b1d4"
+        ],
+        "ports": [
+          {
+            "containerPort": 8080,
+            "hostIp": "127.0.0.1",
+            "hostPort": 59228,
+            "protocol": "tcp"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Volume file table uses the shared column controls on real fixture data",
+      "passed": true
+    },
+    {
+      "name": "Container file table uses the shared column controls on real fixture data",
+      "passed": true
+    },
+    {
+      "name": "Approval is required and tokens cannot be replayed",
+      "passed": true
+    },
+    {
+      "name": "Only the newly created fixture container was removed; volumes and snapshot images were retained",
+      "passed": true
+    },
+    {
+      "name": "All original containers retain their ID, name and state; original images remain",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\ui-release-0.1.1\\images.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\ui-release-0.1.1\\volumes.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\ui-release-0.1.1\\build-history.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\ui-release-0.1.1\\usage-ko.png",
+    "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\ui-release-0.1.1\\container-edit.png"
+  ],
+  "completed": true,
+  "fixture": {
+    "originalId": "ba95bdfdd8d0ec3dfb5f0c12568b2bbbc61e806295f4709a33f4f478358fccfe",
+    "currentId": "393bff8f8a4a1eed3b4333972417b6adcabfc24202923b851de35b4aaf6f9d34",
+    "name": "dockslate-edit-e2e-1793266451810",
+    "volumes": [
+      "dockslate-edit-e2e-1793196176929-data",
+      "dockslate-edit-e2e-1793196176929-extra"
+    ],
+    "network": "ebeb553c3ab8ff592b3685f374dc3ec4cbc6c649784d951da09f9308a1f6b1d4",
+    "removed": true
+  },
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5"
+}

@@ -17,6 +17,11 @@
       "target/installer-resources/guide.html": "guide.html",
       "../docs/REQUEST_STATUS.md": "docs/REQUEST_STATUS.md",
       "../docs/results/refinement-verification.md": "docs/results/refinement-verification.md",
+      "../docs/results/release-0.1.1.md": "docs/results/release-0.1.1.md",
+      "../docs/results/ui-release-0.1.1.json": "docs/results/ui-release-0.1.1.json",
+      "../docs/results/container-edit-recovery-0.1.1.json": "docs/results/container-edit-recovery-0.1.1.json",
+      "../docs/results/ui-extra-0.1.1.json": "docs/results/ui-extra-0.1.1.json",
+      "../docs/results/table-controls-0.1.1.json": "docs/results/table-controls-0.1.1.json",
       "../USER_GUIDE.md": "USER_GUIDE.md",
       "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
       "../licenses/": "licenses/"
