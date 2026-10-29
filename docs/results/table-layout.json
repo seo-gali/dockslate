@@ -1,0 +1,330 @@
+{
+  "observedAt": "2026-10-29T12:25:12.182Z",
+  "artifact": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\table-layout-native\\dockslate.exe",
+  "sha256": "28D11804D3CEB6292A95AB6506096F401AA77316C30A45AF4E8ED5845EDA89C4",
+  "checks": [
+    {
+      "name": "Containers at 1000x640",
+      "passed": true,
+      "evidence": {
+        "page": "Containers",
+        "viewport": 1000,
+        "available": 782,
+        "width": 782,
+        "minima": 742,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 84,
+        "scrollHeight": 84,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Container and image IDs removed only from container rows",
+      "passed": true
+    },
+    {
+      "name": "Existing container table refits after widening the window",
+      "passed": true,
+      "evidence": {
+        "page": "Containers",
+        "viewport": 1668,
+        "available": 1454,
+        "width": 1454,
+        "minima": 742,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 84,
+        "scrollHeight": 84,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Manual column resizing keeps the full table width",
+      "passed": true,
+      "evidence": {
+        "page": "Containers",
+        "viewport": 1668,
+        "available": 1454,
+        "width": 1464,
+        "minima": 742,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 84,
+        "scrollHeight": 84,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Container detail retains its ID",
+      "passed": true
+    },
+    {
+      "name": "Images 1668",
+      "passed": true,
+      "evidence": {
+        "page": "Images",
+        "viewport": 1668,
+        "available": 1454,
+        "width": 1454,
+        "minima": 712,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 330,
+        "scrollHeight": 330,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Native select popup uses the shared theme",
+      "passed": true,
+      "evidence": {
+        "appearance": "base-select",
+        "background": "rgb(21, 29, 40)",
+        "radius": "6px"
+      }
+    },
+    {
+      "name": "Volumes 1668",
+      "passed": true,
+      "evidence": {
+        "page": "Resources",
+        "viewport": 1668,
+        "available": 1454,
+        "width": 1454,
+        "minima": 567,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 427,
+        "scrollHeight": 427,
+        "filterWidths": [
+          57.41250228881836,
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Networks 1668",
+      "passed": true,
+      "evidence": {
+        "page": "Resources",
+        "viewport": 1668,
+        "available": 1454,
+        "width": 1454,
+        "minima": 577,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 353,
+        "scrollHeight": 353,
+        "filterWidths": [
+          57.41250228881836,
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Build history 1668",
+      "passed": true,
+      "evidence": {
+        "page": "Builds",
+        "viewport": 1668,
+        "available": 1439,
+        "width": 1439,
+        "minima": 650,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 551,
+        "scrollHeight": 837,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Builders 1668",
+      "passed": true,
+      "evidence": {
+        "page": "Builds",
+        "viewport": 1668,
+        "available": 1454,
+        "width": 1454,
+        "minima": 428,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 85,
+        "scrollHeight": 85,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Cleanup 1668",
+      "passed": true,
+      "evidence": {
+        "page": "Disk Manager",
+        "viewport": 1668,
+        "available": 1439,
+        "width": 1439,
+        "minima": 753,
+        "mainHeight": 842,
+        "mainScroll": 842,
+        "height": 421,
+        "scrollHeight": 1237,
+        "filterWidths": [
+          57.41250228881836,
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Cleanup header stays visible when rows scroll 1668",
+      "passed": true,
+      "evidence": {
+        "top": 280.7875061035156,
+        "cell": 431.1875,
+        "wrap": 430.38751220703125
+      }
+    },
+    {
+      "name": "Images 1000",
+      "passed": true,
+      "evidence": {
+        "page": "Images",
+        "viewport": 1000,
+        "available": 767,
+        "width": 767,
+        "minima": 712,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 271,
+        "scrollHeight": 570,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Volumes 1000",
+      "passed": true,
+      "evidence": {
+        "page": "Resources",
+        "viewport": 1000,
+        "available": 767,
+        "width": 767,
+        "minima": 567,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 279,
+        "scrollHeight": 427,
+        "filterWidths": [
+          57.41250228881836,
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Networks 1000",
+      "passed": true,
+      "evidence": {
+        "page": "Resources",
+        "viewport": 1000,
+        "available": 767,
+        "width": 767,
+        "minima": 577,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 277,
+        "scrollHeight": 451,
+        "filterWidths": [
+          57.41250228881836,
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Build history 1000",
+      "passed": true,
+      "evidence": {
+        "page": "Builds",
+        "viewport": 1000,
+        "available": 767,
+        "width": 767,
+        "minima": 650,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 287,
+        "scrollHeight": 1035,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Builders 1000",
+      "passed": true,
+      "evidence": {
+        "page": "Builds",
+        "viewport": 1000,
+        "available": 782,
+        "width": 782,
+        "minima": 428,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 85,
+        "scrollHeight": 85,
+        "filterWidths": [
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Cleanup 1000",
+      "passed": true,
+      "evidence": {
+        "page": "Disk Manager",
+        "viewport": 1000,
+        "available": 767,
+        "width": 767,
+        "minima": 753,
+        "mainHeight": 582,
+        "mainScroll": 582,
+        "height": 144,
+        "scrollHeight": 1893,
+        "filterWidths": [
+          57.41250228881836,
+          57.41250228881836
+        ]
+      }
+    },
+    {
+      "name": "Cleanup header stays visible when rows scroll 1000",
+      "passed": true,
+      "evidence": {
+        "top": 278.7875061035156,
+        "cell": 429.1875,
+        "wrap": 428.38751220703125
+      }
+    },
+    {
+      "name": "Active-build empty state has no duplicate summaries",
+      "passed": true
+    },
+    {
+      "name": "No container changes or renderer exceptions",
+      "passed": true
+    }
+  ],
+  "mutations": false,
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "appVersion": "0.1.3",
+  "passed": true
+}

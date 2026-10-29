@@ -22,7 +22,7 @@ const shot = async name => { const value = await c.send('Page.captureScreenshot'
 const table = async (page, sorters, filters) => {
   await waitFor(page + ' visible table', () => c.evaluate(`[...document.querySelectorAll('[data-page="${page}"] table')].some(t=>t.getClientRects().length)`));
   const value = await c.evaluate(`(()=>{const page=document.querySelector('[data-page="${page}"]');const table=[...page.querySelectorAll('table')].find(t=>t.getClientRects().length);const filters=[...page.querySelectorAll('.table-filter')].filter(e=>e.getClientRects().length);return{headerSelects:table.tHead.querySelectorAll('select').length,sorters:table.querySelectorAll('.table-sort').length,filters:filters.length,filtersOutsideTable:filters.every(e=>!e.closest('table')),headerHeight:table.tHead.getBoundingClientRect().height,filterWidths:filters.map(e=>e.getBoundingClientRect().width)}})()`);
-  assert.equal(value.headerSelects, 0); assert.equal(value.sorters, sorters); assert.equal(value.filters, filters); assert.equal(value.filtersOutsideTable, true); assert.ok(value.headerHeight <= 60); assert.ok(value.filterWidths.every(width => width >= 140));
+  assert.equal(value.headerSelects, 0); assert.equal(value.sorters, sorters); assert.equal(value.filters, filters); assert.equal(value.filtersOutsideTable, true); assert.ok(value.headerHeight <= 60); assert.ok(value.filterWidths.every(width => width >= 50));
   check(page + ' compact headers and external filters', value);
 };
 const choose = file => execute('powershell.exe', ['-NoProfile', '-File', 'scripts/select-native-import-file.ps1', '-TargetProcessId', String(session.pid), '-Path', file], { windowsHide: true, encoding: 'utf8', timeout: 45000 });

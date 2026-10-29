@@ -6,7 +6,9 @@
 }
 
 .resizable-table th {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 3;
   overflow: visible;
 }
 
@@ -68,5 +70,5 @@
 .table-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; margin-bottom: 12px; }
 .toolbar .table-filters { margin-bottom: 0; }
 .table-filter-field { display: inline-flex; align-items: center; gap: 8px; font-size: .923077rem; color: var(--muted); }
-.table-filter { width: 148px; min-width: 0; padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; color: var(--text); background: var(--surface); font: inherit; }
+.table-filter { font: inherit; }
 .table-sort:focus-visible, .table-filter:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

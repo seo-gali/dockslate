@@ -42,7 +42,7 @@ function createController({ storageKey, columns }: Options) {
   let frame: number | null = null;
   let pending: number[] | null = null;
   let observer: ResizeObserver | null = null;
-  let fitted = false;
+  let fittedWidth = 0;
   const listeners = new Set<() => void>();
   const indexOf = (id: string) => {
     const index = specs.findIndex(column => column.id === id);
@@ -90,7 +90,7 @@ function createController({ storageKey, columns }: Options) {
       changed ||= next !== spec.minWidth;
       spec.minWidth = next; spec.maxWidth = Math.max(spec.baseMaxWidth, next);
     });
-    if (changed) { fitted = false; apply(widths.map((width, index) => bounded(index, width))); listeners.forEach(listener => listener()); }
+    if (changed) { fittedWidth = 0; apply(widths.map((width, index) => bounded(index, width))); listeners.forEach(listener => listener()); }
   };
   const persist = () => {
     try { localStorage.setItem(storageKey, JSON.stringify({ version: 1, widths: Object.fromEntries(specs.map((column, index) => [column.id, widths[index]])) })); }
@@ -103,10 +103,8 @@ function createController({ storageKey, columns }: Options) {
   };
   const fit = () => {
     const available = table?.parentElement?.clientWidth ?? 0;
-    if (fitted || available === 0) return;
-    fitted = true;
-    observer?.disconnect();
-    observer = null;
+    if (available === fittedWidth || available === 0 || drag) return;
+    fittedWidth = available;
     const next = [...widths];
     let excess = Math.max(0, next.reduce((sum, width) => sum + width, 0) - available);
     while (excess > 0) {
@@ -136,8 +134,7 @@ function createController({ storageKey, columns }: Options) {
     measureMinimums();
     paint();
     fit();
-    if (!fitted && table?.parentElement && typeof ResizeObserver !== 'undefined') {
-      observer?.disconnect();
+    if (!observer && table?.parentElement && typeof ResizeObserver !== 'undefined') {
       observer = new ResizeObserver(fit);
       observer.observe(table.parentElement);
     }

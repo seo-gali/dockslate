@@ -1,0 +1,14 @@
+name: dockslate-basic-web
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dockslate-basic-web:latest
+    ports:
+      - "127.0.0.1:18080:8080"
+    volumes:
+      - check-data:/data
+    restart: "no"
+volumes:
+  check-data: {}

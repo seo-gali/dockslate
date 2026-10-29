@@ -17,7 +17,7 @@ export default function Resources(props: EngineProps & { onBusy?: (busy: boolean
       <button role="tab" aria-selected={tab === 'volumes'} className={tab === 'volumes' ? 'active' : ''} onClick={() => setTab('volumes')}>{t("볼륨")}</button>
       <button role="tab" aria-selected={tab === 'networks'} className={tab === 'networks' ? 'active' : ''} onClick={() => setTab('networks')}>{t("네트워크")}</button>
     </div>
-    <div hidden={tab !== 'volumes'}><Volumes {...props} noPageHeader onBusy={setVolumeBusy} /></div>
-    <div hidden={tab !== 'networks'}><Networks {...props} noPageHeader onBusy={setNetworkBusy} /></div>
+    <div className="list-pane" hidden={tab !== 'volumes'}><Volumes {...props} noPageHeader onBusy={setVolumeBusy} /></div>
+    <div className="list-pane" hidden={tab !== 'networks'}><Networks {...props} noPageHeader onBusy={setNetworkBusy} /></div>
   </>;
 }

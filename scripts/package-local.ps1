@@ -47,15 +47,21 @@ try {
         Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination (Join-Path $packageRoot $name)
     }
     Copy-Item -LiteralPath (Join-Path $projectRoot 'licenses') -Destination (Join-Path $packageRoot 'licenses') -Recurse
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'examples') -Destination (Join-Path $packageRoot 'examples') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'guide.html') -Destination (Join-Path $packageRoot 'guide.html')
     $docsRoot = Join-Path $packageRoot 'docs'
     New-Item -ItemType Directory -Path $docsRoot -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\REQUEST_STATUS.md') -Destination (Join-Path $docsRoot 'REQUEST_STATUS.md')
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\results') -Destination (Join-Path $docsRoot 'results') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\research') -Destination (Join-Path $docsRoot 'research') -Recurse
+    $exampleFiles = @('Dockerfile', 'compose.yaml', 'index.html', 'README.md') | ForEach-Object {
+        $relative = 'examples/basic-web/' + $_
+        $filePath = Join-Path $packageRoot $relative
+        [ordered]@{file = $relative; bytes = (Get-Item -LiteralPath $filePath).Length; sha256 = (Get-FileHash -LiteralPath $filePath).Hash}
+    }
     $containedArtifact = [ordered]@{
         generatedAt = (Get-Date).ToString('o'); scope = 'Complete portable ZIP requires DockSlate.exe, bin and libexec together; outer ZIP hash is in the separate SHA256SUMS.txt'
-        files = @([ordered]@{file = 'DockSlate.exe'; bytes = (Get-Item -LiteralPath $exeSource).Length; sha256 = $exeHash}, [ordered]@{file = 'bin/docker.exe'; bytes = (Get-Item -LiteralPath $launcherSource).Length; sha256 = (Get-FileHash -LiteralPath $launcherSource -Algorithm SHA256).Hash}) + @($nativeManifest.files | ForEach-Object { [ordered]@{file = ('libexec/' + $_.file); bytes = $_.bytes; sha256 = $_.sha256} })
+        files = @([ordered]@{file = 'DockSlate.exe'; bytes = (Get-Item -LiteralPath $exeSource).Length; sha256 = $exeHash}, [ordered]@{file = 'bin/docker.exe'; bytes = (Get-Item -LiteralPath $launcherSource).Length; sha256 = (Get-FileHash -LiteralPath $launcherSource -Algorithm SHA256).Hash}) + @($nativeManifest.files | ForEach-Object { [ordered]@{file = ('libexec/' + $_.file); bytes = $_.bytes; sha256 = $_.sha256} }) + @($exampleFiles)
     }
     [IO.File]::WriteAllText((Join-Path $docsRoot 'results\delivery-artifacts.json'), ($containedArtifact | ConvertTo-Json -Depth 6), [Text.UTF8Encoding]::new($false))
     $helpText = @"
@@ -104,8 +110,7 @@ Deleting this folder does not unregister the WSL distribution or delete volumes.
         if (Test-Path -LiteralPath $obsoletePath -PathType Leaf) { Remove-Item -LiteralPath $obsoletePath -Force }
     }
 
-    $release = Get-Content -LiteralPath (Join-Path $projectRoot 'site\release.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    $artifacts = @($release.installer.file, ($packageName + '.zip'), $release.licenses.file) | Where-Object { Test-Path -LiteralPath (Join-Path $downloadRoot $_) -PathType Leaf }
+    $artifacts = @("DockSlate_${version}_x64-setup.exe", ($packageName + '.zip'), "DockSlate-$version-third-party-licenses.zip") | Where-Object { Test-Path -LiteralPath (Join-Path $downloadRoot $_) -PathType Leaf }
     $files = @($artifacts | ForEach-Object {
         $filePath = Join-Path $downloadRoot $_
         [ordered]@{ file = $_; bytes = (Get-Item -LiteralPath $filePath).Length; sha256 = (Get-FileHash -LiteralPath $filePath -Algorithm SHA256).Hash }

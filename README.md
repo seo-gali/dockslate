@@ -30,6 +30,8 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 2. **이미지 → Docker Hub**에서 검색·선택해 받은 뒤, **로컬 이미지 → 실행**에서 컨테이너를 생성합니다.
 3. 컨테이너 목록에서 상태와 포트를 확인합니다. 이름을 누르면 로그·터미널·파일이 열립니다.
 
+직접 빌드·실행할 파일은 [examples/basic-web](examples/basic-web/README.md)에 있습니다. Dockerfile과 Compose 파일을 앱에서 선택해 사용할 수 있으며 컨테이너를 자동 실행하지 않습니다.
+
 설치 후 새 CMD·PowerShell에서 사용할 수 있습니다.
 
 ```powershell
@@ -47,6 +49,8 @@ docker buildx version
 ![Windows 앱·Docker CLI와 전용 WSL 2의 Docker Engine 구성](docs/assets/architecture.svg)
 
 Docker Desktop을 따로 설치할 필요는 없습니다. Linux 컨테이너는 DockSlate 전용 WSL 2에서 실행합니다. Compose 가져오기는 제한된 구성을 지원하며 Kubernetes 배포는 지원하지 않습니다.
+
+소스 작업 폴더의 `.analysis`는 조사·검증용 임시 자료이며 앱 실행이나 엔진 설치에 필요하지 않습니다. 다운로드 사본·압축 해제본·테스트 브라우저 캐시가 포함될 수 있습니다. 실제 WSL·Docker 데이터와 분리되어 있으며, 실행 중인 검증과 조사 원본을 확인한 뒤 정리합니다.
 
 Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/master/LICENSE) 오픈소스로 엔진 사용료가 없습니다. Docker Desktop 구독은 필요하지 않습니다. Docker Hub·컨테이너 이미지·외부 서비스에는 각각의 이용 조건이 적용됩니다.
 

@@ -1,103 +1,109 @@
+import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {connectNative, waitFor} from './native-verification.mjs';
+import { createHash } from 'node:crypto';
+import { connectNative, waitFor, pause } from './native-verification.mjs';
 
-const session = JSON.parse(fs.readFileSync(process.argv[2], 'utf8').replace(/^\uFEFF/, ''));
-if (!session.isolatedProfile || !session.readOnlyVerification) throw Error('Owned isolated native session required');
+const session = JSON.parse(fs.readFileSync(process.argv[2] ?? '.analysis/table-layout-session.json', 'utf8').replace(/^\uFEFF/, ''));
+if (!session.isolatedProfile || !session.readOnlyVerification) throw Error('Owned isolated read-only native session required');
+assert.equal(createHash('sha256').update(fs.readFileSync(session.artifact)).digest('hex').toUpperCase(), session.sha256);
 const c = await connectNative(session.portFile);
-const report = {observedAt:new Date().toISOString(), native:true, backendInjected:false, artifactSha256:session.sha256, completed:false, checks:[], failure:null};
-const assert = (condition, message) => {if (!condition) throw Error(message);};
-const check = (name, evidence) => {report.checks.push({name,passed:true,evidence});console.log(JSON.stringify({name,passed:true}));};
-const nav = async (page, label, selector) => {
-  await c.evaluate(`(()=>{const button=[...document.querySelectorAll('nav button')].find(b=>b.textContent.trim()===${JSON.stringify(label)});if(!button)throw Error('Navigation missing');button.click()})()`);
-  await waitFor(page,()=>c.evaluate(`!!document.querySelector('[data-page="${page}"]:not([hidden]) ${selector}')`),30000);
+const report = { observedAt: new Date().toISOString(), artifact: session.artifact, sha256: session.sha256, checks: [], mutations: false };
+const check = (name, evidence) => { report.checks.push({ name, passed: true, evidence }); console.log(name); };
+const click = async (selector, text) => {
+  await waitFor(text, () => c.evaluate(`[...document.querySelectorAll(${JSON.stringify(selector)})].some(e=>e.getClientRects().length&&e.textContent.trim()===${JSON.stringify(text)})`));
+  await c.evaluate(`[...document.querySelectorAll(${JSON.stringify(selector)})].find(e=>e.getClientRects().length&&e.textContent.trim()===${JSON.stringify(text)}).click()`);
 };
-const fit = selector => c.evaluate(`(()=>{const table=document.querySelector(${JSON.stringify(selector)}),wrap=table.closest('.table-wrap');return{available:wrap.clientWidth,scrollWidth:wrap.scrollWidth,tableWidth:table.getBoundingClientRect().width,columns:table.querySelectorAll('col').length,handles:table.querySelectorAll('[role="separator"]').length}})()`);
-const reload = async () => {
-  await c.send('Page.reload');
-  await waitFor('connected app',()=>c.evaluate(`!!document.querySelector('nav button')&&!document.querySelector('.page-header .refresh-button[disabled]')`),30000);
-};
-const resize = async (selector, distance) => {
-  const before=await c.evaluate(`Number(document.querySelector(${JSON.stringify(selector)}).getAttribute('aria-valuenow'))`);
-  const point=await c.evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`);
-  await c.send('Input.dispatchMouseEvent',{type:'mousePressed',...point,button:'left',buttons:1,clickCount:1});
-  await c.send('Input.dispatchMouseEvent',{type:'mouseMoved',x:point.x+distance,y:point.y,button:'left',buttons:1});
-  await c.send('Input.dispatchMouseEvent',{type:'mouseReleased',x:point.x+distance,y:point.y,button:'left',buttons:0,clickCount:1});
-  await waitFor('column resized',()=>c.evaluate(`Number(document.querySelector(${JSON.stringify(selector)}).getAttribute('aria-valuenow'))>${before}`),5000);
-  return {before,after:await c.evaluate(`Number(document.querySelector(${JSON.stringify(selector)}).getAttribute('aria-valuenow'))`)};
+const metrics = () => c.evaluate(`(()=>{
+  const page=document.querySelector('[data-page]:not([hidden])');
+  const table=[...page.querySelectorAll('table')].find(e=>e.getClientRects().length);
+  if(!table)return null;
+  const wrap=table.parentElement, main=document.querySelector('main');
+  const minima=[...table.querySelectorAll('[role=separator]')].reduce((sum,e)=>sum+Number(e.getAttribute('aria-valuemin')),0);
+  return {page:page.dataset.page,viewport:innerWidth,available:wrap.clientWidth,width:table.getBoundingClientRect().width,minima,
+    mainHeight:main.clientHeight,mainScroll:main.scrollHeight,height:wrap.clientHeight,scrollHeight:wrap.scrollHeight,
+    filterWidths:[...page.querySelectorAll('.table-filter')].filter(e=>e.getClientRects().length).map(e=>e.getBoundingClientRect().width)};
+})()`);
+const fit = async name => {
+  await waitFor(name, async () => !!await metrics()); await pause(150);
+  const value = await metrics();
+  assert.ok(value.height > 35, JSON.stringify(value));
+  assert.ok(value.mainScroll <= value.mainHeight + 2, JSON.stringify(value));
+  if (value.available >= value.minima) assert.ok(Math.abs(value.width - value.available) <= 2, JSON.stringify(value));
+  assert.ok(value.filterWidths.every(width => width > 40 && width < 140), JSON.stringify(value));
+  check(name, value); return value;
 };
 try {
-  if (await c.evaluate(`document.documentElement.lang==='en'`)) {
-    await nav('Settings','Settings','.appearance-panel select');
-    await c.setSelect('[data-page="Settings"] .appearance-panel select','ko');
-    await waitFor('Korean test baseline',()=>c.evaluate(`document.documentElement.lang==='ko'`),15000);
+  await c.evaluate(`localStorage.setItem('dockslate.language','en');location.reload()`);
+  await waitFor('English app', () => c.evaluate(`document.documentElement.lang==='en'&&!!document.querySelector('nav')`));
+  const original = await c.invoke('containers_list');
+  const engine = await c.invoke('engine_status'); report.engineId = engine.id; report.appVersion = engine.appVersion;
+  assert.equal(engine.state, 'connected');
+  assert.equal(engine.appVersion, JSON.parse(fs.readFileSync('package.json', 'utf8')).version);
+  await c.send('Emulation.setDeviceMetricsOverride', { width: 1000, height: 640, deviceScaleFactor: 1, mobile: false });
+  await c.nav('Containers'); await fit('Containers at 1000x640');
+  const ids = original.flatMap(row => [row.id, row.image]);
+  const text = await c.evaluate(`document.querySelector('[data-page="Containers"] tbody').innerText`);
+  assert.ok(ids.every(id => !text.includes(id))); check('Container and image IDs removed only from container rows');
+  await c.send('Emulation.setDeviceMetricsOverride', { width: 1668, height: 900, deviceScaleFactor: 1, mobile: false });
+  await fit('Existing container table refits after widening the window');
+  const beforeResize = await c.evaluate(`(()=>{const handle=document.querySelector('[data-page="Containers"] [role=separator]');handle.focus();return Number(handle.getAttribute('aria-valuenow'))})()`);
+  await c.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39 });
+  await c.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39 });
+  const resized = await metrics();
+  const afterResize = await c.evaluate(`Number(document.querySelector('[data-page="Containers"] [role=separator]').getAttribute('aria-valuenow'))`);
+  assert.equal(afterResize, beforeResize + 10);
+  assert.equal(await c.evaluate(`JSON.parse(localStorage.getItem('dockslate.containers.columns.v1')).widths.name`), afterResize);
+  assert.ok(resized.width >= resized.available - 2, JSON.stringify(resized));
+  check('Manual column resizing keeps the full table width', resized);
+  if (original.length) {
+    await c.evaluate(`document.querySelector('[data-page="Containers"] tbody .name-button').click()`);
+    await waitFor('Container detail ID', () => c.evaluate(`!!document.querySelector('.container-dialog .detail-meta')`));
+    assert.ok(await c.evaluate(`document.querySelector('.container-dialog .detail-meta').innerText.includes(${JSON.stringify(original[0].id)})`));
+    await c.evaluate(`document.querySelector('.container-dialog header .icon-button').click()`);
+    check('Container detail retains its ID');
   }
-  const [containers,images,usage]=await Promise.all([c.invoke('containers_list'),c.invoke('images_list'),c.invoke('disk_usage')]);
-  const named=containers.map(container=>({container,image:images.find(image=>image.id===container.image&&image.tags.length)})).find(row=>row.image);
-  assert(named,'A real container created from an image ID and a tagged local image are required');
-  for (const width of [1000,1200,1480]) {
-    await c.send('Emulation.setDeviceMetricsOverride',{width,height:780,deviceScaleFactor:1,mobile:false});
-    await c.evaluate(`localStorage.removeItem('dockslate.containers.columns.v1');localStorage.removeItem('dockslate.cleanup.columns.v1')`);
-    await reload();
-    await nav('Containers','컨테이너','.container-table');
-    const containerFit=await fit('.container-table');
-    assert(containerFit.scrollWidth<=containerFit.available+1,`Containers overflow at ${width}px`);
-    await nav('Disk Manager','디스크 관리','.candidate-table');
-    const cleanupFit=await fit('.candidate-table');
-    assert(cleanupFit.scrollWidth<=cleanupFit.available+1,`Cleanup overflows at ${width}px`);
-    assert(cleanupFit.columns===6&&cleanupFit.handles===5,'Cleanup columns or resize handles missing');
-    check(`Both tables fit their initial viewport at ${width}px`,{containerFit,cleanupFit});
+  for (const size of [{width:1668,height:900}, {width:1000,height:640}]) {
+    await c.send('Emulation.setDeviceMetricsOverride', { ...size, deviceScaleFactor: 1, mobile: false });
+    await c.nav('Images'); await fit('Images ' + size.width);
+    const images = await c.invoke('images_list');
+    const imageText = await c.evaluate(`document.querySelector('[data-page="Images"] tbody').innerText`);
+    assert.ok(images.every(image=>imageText.includes(image.id)));
+    if(size.width===1668) {
+      await c.evaluate(`document.querySelector('[data-page="Images"] .table-filter').focus()`);
+      await c.send('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowDown',code:'ArrowDown',modifiers:1,windowsVirtualKeyCode:40});
+      await c.send('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowDown',code:'ArrowDown',modifiers:1,windowsVirtualKeyCode:40});
+      await waitFor('Styled select popup',()=>c.evaluate(`document.querySelector('[data-page="Images"] .table-filter').matches(':open')`),5000);
+      const popup=await c.evaluate(`(()=>{const s=getComputedStyle(document.querySelector('[data-page="Images"] .table-filter'),'::picker(select)');return {appearance:s.appearance,background:s.backgroundColor,radius:s.borderRadius}})()`);
+      assert.equal(popup.appearance,'base-select'); assert.equal(popup.radius,'6px');
+      await c.send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+      await c.send('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+      check('Native select popup uses the shared theme',popup);
+    }
+    await c.nav('Resources');
+    await click('[data-page="Resources"] .page-tabs button', 'Volume'); await fit('Volumes ' + size.width);
+    await click('[data-page="Resources"] .page-tabs button', 'Network'); await fit('Networks ' + size.width);
+    await c.nav('Builds');
+    await click('[data-page="Builds"] .page-tabs button', 'Build history'); const history=await fit('Build history ' + size.width);
+    if(size.width===1000) assert.ok(history.scrollHeight > history.height);
+    await click('[data-page="Builds"] .page-tabs button', 'Builders'); await fit('Builders ' + size.width);
+    assert.ok(await c.evaluate(`(()=>{const row=document.querySelector('.builder-name'),button=row.querySelector('button').getBoundingClientRect(),badge=row.querySelector('.status-badge').getBoundingClientRect();return Math.abs(button.y+button.height/2-badge.y-badge.height/2)<2})()`));
+    await c.nav('Disk Manager'); const cleanup=await fit('Cleanup ' + size.width);
+    assert.ok(cleanup.scrollHeight > cleanup.height);
+    const sticky=await c.evaluate(`(()=>{const t=document.querySelector('[data-page="Disk Manager"] table'),wrap=t.parentElement;wrap.scrollTop=150;return new Promise(resolve=>requestAnimationFrame(()=>resolve({top:t.tHead.getBoundingClientRect().top,cell:t.tHead.rows[0].cells[0].getBoundingClientRect().top,wrap:wrap.getBoundingClientRect().top})))})()`);
+    assert.ok(Math.abs(sticky.cell-sticky.wrap-1)<2, JSON.stringify(sticky));
+    check('Cleanup header stays visible when rows scroll ' + size.width, sticky);
   }
-  await nav('Containers','컨테이너','.container-table');
-  const rowSelector=`.container-table tr[data-container-id="${named.container.id}"]`;
-  const imageCell=await c.evaluate(`document.querySelector(${JSON.stringify(rowSelector)})?.cells[2].innerText`);
-  assert(imageCell?.includes(named.image.tags[0])&&imageCell.includes(named.container.image.replace(/^sha256:/,'').slice(0,12)),'Repository/tag and short image ID missing');
-  await c.setInput('[data-page="Containers"] .toolbar input',named.image.tags[0]);
-  await waitFor('tag search',()=>c.evaluate(`document.querySelectorAll('.container-table tr[data-container-id]').length>0`),5000);
-  assert(await c.evaluate(`!!document.querySelector(${JSON.stringify(rowSelector)})`),'Image-name search lost the matching container');
-  assert(!c.calls.some(call=>call.command==='image_details'),'Image names caused individual image requests');
-  check('Real repository/tag, short ID and local tag search without per-image requests',{imageCell});
-  await c.setInput('[data-page="Containers"] .toolbar input','');
-  const containerResize=await resize('.container-table th:first-child [role="separator"]',60);
-  const saved=await c.evaluate(`JSON.parse(localStorage.getItem('dockslate.containers.columns.v1')).widths.name`);
-  assert(saved===containerResize.after,'Container resize was not persisted');
-  check('Container pointer resize remains available and saves its width',containerResize);
-  await c.evaluate(`localStorage.setItem('dockslate.containers.columns.v1',JSON.stringify({version:1,widths:{name:720,status:300,image:900,ports:800,cpu:250,memory:350,actions:84}}))`);
-  await c.send('Emulation.setDeviceMetricsOverride',{width:1000,height:780,deviceScaleFactor:1,mobile:false});
-  await reload();await nav('Containers','컨테이너','.container-table');
-  const restored=await fit('.container-table');
-  assert(restored.scrollWidth<=restored.available+1,'Oversized saved widths caused initial overflow');
-  check('Previously saved wide columns fit a smaller window on first display',restored);
-  await nav('Disk Manager','디스크 관리','.candidate-table');
-  const candidates=[...usage.images,...usage.buildCache];
-  const rows=await c.evaluate(`[...document.querySelectorAll('.candidate-table tbody tr')].map(row=>({identity:row.cells[2].title,date:row.cells[3].innerText}))`);
-  let datesChecked=0;
-  for(const row of rows){
-    const item=candidates.find(candidate=>row.identity.includes(candidate.id));
-    assert(item,'Displayed cleanup item missing from the actual engine snapshot');
-    const milliseconds=typeof item.createdAt==='number'?item.createdAt*1000:Date.parse(item.createdAt??'');
-    if(Number.isFinite(milliseconds)&&milliseconds>0){assert(row.date!=='미확인'&&row.date.includes(String(new Date(milliseconds).getFullYear())),'Engine creation date was not displayed');datesChecked++;}
-    else assert(row.date==='미확인','Unknown creation date was fabricated');
-  }
-  assert(datesChecked>0,'No real engine dates were checked');
-  check('Cleanup creation dates match actual engine timestamps',{datesChecked,rows:rows.length});
-  const cleanupResize=await resize('.candidate-table th:nth-child(3) [role="separator"]',50);
-  assert(await c.evaluate(`JSON.parse(localStorage.getItem('dockslate.cleanup.columns.v1')).widths.target`)===cleanupResize.after,'Cleanup resize was not persisted');
-  check('Cleanup pointer resize saves its independent column preference',cleanupResize);
-  await nav('Settings','설정','.appearance-panel select');
-  await c.setSelect('[data-page="Settings"] .appearance-panel select','en');
-  await waitFor('English labels',()=>c.evaluate(`document.documentElement.lang==='en'`),15000);
-  await c.evaluate(`localStorage.removeItem('dockslate.cleanup.columns.v1')`);
-  await reload();
-  await waitFor('English after reload',()=>c.evaluate(`document.documentElement.lang==='en'`),15000);
-  await nav('Disk Manager','Disk Manager','.candidate-table');
-  const englishFit=await fit('.candidate-table');
-  assert(englishFit.scrollWidth<=englishFit.available+1,'English cleanup headings overflow at the minimum window size');
-  check('English cleanup table fits the minimum window size',englishFit);
-  assert(!c.calls.some(call=>/^(container_action|destructive_execute|image_pull|image_build_start|runtime_install|runtime_start|runtime_stop|volume_delete|network_delete|compose_up)$/.test(call.command)),'A mutating command was called');
-  assert(c.exceptions.length===0,'Native UI exceptions: '+c.exceptions.join('; '));
-  check('No destructive commands or JavaScript exceptions',{commands:[...new Set(c.calls.map(call=>call.command))]});
-  const screenshot=await c.send('Page.captureScreenshot',{format:'png'});
-  fs.writeFileSync('.analysis/cleanup-table-layout.png',Buffer.from(screenshot.data,'base64'));
-  report.completed=true;
-} catch(error){report.failure=String(error.stack??error);process.exitCode=1;console.error(error.stack);}
-finally{fs.writeFileSync('docs/results/table-layout-e2e.json',JSON.stringify(report,null,2)+'\n');c.close();}
+  await c.nav('Builds'); await click('[data-page="Builds"] .page-tabs button', 'In progress');
+  const activeText=await c.evaluate(`document.querySelector('[data-page="Builds"]').innerText`);
+  assert.ok(!activeText.includes('No app builds in progress'));
+  assert.ok(!activeText.includes('BuildKit in progress')); check('Active-build empty state has no duplicate summaries');
+  const after = await c.invoke('containers_list');
+  assert.deepEqual(after.map(row=>[row.id,row.state]),original.map(row=>[row.id,row.state]));
+  assert.equal(c.exceptions.length,0,JSON.stringify(c.exceptions));
+  check('No container changes or renderer exceptions');
+  report.passed=true;
+} finally {
+  await c.send('Emulation.clearDeviceMetricsOverride').catch(()=>{});
+  fs.writeFileSync('docs/results/table-layout.json',JSON.stringify(report,null,2)+'\n');
+  await c.close();
+}

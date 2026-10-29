@@ -17,9 +17,10 @@
       "target/installer-resources/guide.html": "guide.html",
       "../docs/REQUEST_STATUS.md": "docs/REQUEST_STATUS.md",
       "../docs/results/refinement-verification.md": "docs/results/refinement-verification.md",
-      "../docs/results/release-0.1.2.md": "docs/results/release-0.1.2.md",
-      "../docs/results/ui-cleanup-0.1.2.json": "docs/results/ui-cleanup-0.1.2.json",
+      "../docs/results/release-0.1.3.md": "docs/results/release-0.1.3.md",
+      "../docs/results/table-layout.json": "docs/results/table-layout.json",
       "../USER_GUIDE.md": "USER_GUIDE.md",
+      "../examples/": "examples/",
       "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
       "../licenses/": "licenses/"
     },
