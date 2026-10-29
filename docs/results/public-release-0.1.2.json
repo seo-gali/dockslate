@@ -1,0 +1,70 @@
+{
+  "observedAt": "2026-10-29T11:33:14.509Z",
+  "version": "0.1.2",
+  "publishedSourceCommit": "aaed039da2e7261a60911b48ad2bf4a06aec651c",
+  "installerBuildCommit": "13a0d39e03f950eb61f28401b23edc3abe1b0236",
+  "installerBuildRun": "https://github.com/seo-gali/dockslate/actions/runs/40864610856",
+  "completed": true,
+  "homepage": {
+    "url": "https://seo-gali.github.io/dockslate/",
+    "sourceFile": "index.html",
+    "status": 200,
+    "matchesPublishedHtml": true,
+    "installerAndZipDisplayedHashesMatch": true
+  },
+  "downloads": [
+    {
+      "observedAt": "2026-10-29T11:32:11.0916044+00:00",
+      "file": "DockSlate_0.1.2_x64-setup.exe",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.2_x64-setup.exe",
+      "status": 200,
+      "bytes": 49255585,
+      "sha256": "FD69754DD4EA2C64C41BF361AD23C831093B880F22173F1370A398DC078DE305",
+      "matchesRelease": true,
+      "executed": false
+    },
+    {
+      "observedAt": "2026-10-29T11:32:10.9468598+00:00",
+      "file": "DockSlate-0.1.2-windows-x64.zip",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.2-windows-x64.zip",
+      "status": 200,
+      "bytes": 63254224,
+      "sha256": "30280D9B18FDA8F54C1490177A975BBFEC8CA97638C42EE673C70C941C037D95",
+      "matchesRelease": true,
+      "executed": false
+    },
+    {
+      "observedAt": "2026-10-29T11:32:05.0240783+00:00",
+      "file": "DockSlate-0.1.2-third-party-licenses.zip",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.2-third-party-licenses.zip",
+      "status": 200,
+      "bytes": 5161432,
+      "sha256": "5FA5AE635BFDA50E10072D7E7799D0311A4A16487ED93F352B4FBE4ABD5A056B",
+      "matchesRelease": true,
+      "executed": false
+    }
+  ],
+  "removedDownloads": [
+    {
+      "file": "DockSlate_0.1.1_x64-setup.exe",
+      "status": 404,
+      "removed": true
+    },
+    {
+      "file": "DockSlate-0.1.1-windows-x64.zip",
+      "status": 404,
+      "removed": true
+    },
+    {
+      "file": "DockSlate-0.1.1-third-party-licenses.zip",
+      "status": 404,
+      "removed": true
+    }
+  ],
+  "localMirroredDownloadsVerified": 6,
+  "temporaryWorkflowRemoved": true,
+  "installerSignatureStatus": "NotSigned",
+  "installerExecuted": false,
+  "setupOrUninstallExecuted": false,
+  "securityAlertResolved": false
+}

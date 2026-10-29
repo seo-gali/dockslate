@@ -12,6 +12,8 @@
 
 승인된 [GitHub Windows 빌드](https://github.com/seo-gali/dockslate/actions/runs/40864610856)가 성공했다. 설치 EXE는 49,255,585바이트, SHA-256 `FD69754DD4EA2C64C41BF361AD23C831093B880F22173F1370A398DC078DE305`이다. 내부 앱·CLI·PATH 도우미·고지 375개·인덱스·공식 구성 요소 8개·동봉 문서 6개를 대조했다. ZIP 내부 바이너리·고지 387개도 대조했다. 동봉 문서는 입력 커밋 기준이며, 최종 배포 기록은 별도로 갱신한다. 구버전 0.1.1 산출물 6개·이전 포터블 폴더·임시 workflow를 제거했다.
 
+[공개 다운로드 검사](public-release-0.1.2.json)에서도 EXE·ZIP·고지 ZIP의 HTTP 200·실제 크기·SHA-256과 공개 HTML이 일치했다. 구버전 URL 3개는 HTTP 404였다.
+
 문서의 헤더 안 필터·페이지별 새로고침·Hub 접기·별도 이미지 받기·중복 빌드 이동 설명을 현재 흐름으로 고쳤다. 0.1.1의 40개 검사는 당시 해시의 기록이며 이번 버전에서 전부 재실행하지 않았다.
 
 예제 파일은 이 컴퓨터의 `.analysis/file-import-fixture-manual-20261029`에 있다. 가져온 Compose의 실제 이름은 앱이 격리된 `dockslate-import-…` 프로젝트명으로 생성한다. 서비스 ID·프로젝트·볼륨은 네이티브 결과에 기록했다. 배포 파일과 공개 다운로드 검증은 [배포 기록](installer-engine-integration.json)에서 별도로 관리한다. 실제 새 설치·제거, 전체 DB·CLI 회귀, 서명과 과거 보안 경고 해소는 이번 검증 범위 밖이다.
