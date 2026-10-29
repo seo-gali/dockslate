@@ -7,6 +7,8 @@ export interface TableControls {
   revision: string;
   direction: (index: number) => 'ascending' | 'descending' | 'none';
   heading: (index: number, label: ReactNode) => ReactNode;
+  filter: (index: number, label: string) => ReactNode;
+  clearFilters: () => void;
 }
 
 export function useTableRows<T>(input: readonly T[], columns: readonly Column<T>[]) {
@@ -27,15 +29,24 @@ export function useTableRows<T>(input: readonly T[], columns: readonly Column<T>
   }
   const direction = (index: number) => sort?.index === index ? sort.descending ? 'descending' as const : 'ascending' as const : 'none' as const;
   const controls: TableControls = {
-    revision: JSON.stringify([sort, filters]), direction,
+    revision: JSON.stringify([sort, filters]), direction, clearFilters: () => setFilters({}),
     heading: (index, label) => {
       const column = columns[index];
       if (!column) return label;
-      const choices = column.enum ? [...new Set(input.map(row => String(column.value(row) ?? '')))].filter(Boolean).sort(collator.compare) : [];
-      if (filters[index] && !choices.includes(filters[index])) choices.push(filters[index]);
       const state = direction(index);
-      return <div className="table-heading"><button type="button" className="table-sort" onClick={() => setSort(previous => previous?.index === index ? previous.descending ? null : { index, descending: true } : { index, descending: false })}>{label}<span aria-hidden="true">{state === 'ascending' ? '↑' : state === 'descending' ? '↓' : '↕'}</span><span className="sr-only">{t('정렬')}</span></button>{column.enum && <select className="table-filter" aria-label={t('{column} 필터', { column: typeof label === 'string' ? label : t('열') })} value={filters[index] ?? ''} onChange={event => setFilters(previous => ({ ...previous, [index]: event.target.value }))}><option value="">{t('전체')}</option>{choices.map(value => <option key={value} value={value}>{column.label?.(value) ?? t(value)}</option>)}</select>}</div>;
+      return <button type="button" className="table-sort" onClick={() => setSort(previous => previous?.index === index ? previous.descending ? null : { index, descending: true } : { index, descending: false })}>{label}<span aria-hidden="true">{state === 'ascending' ? '↑' : state === 'descending' ? '↓' : '↕'}</span><span className="sr-only">{t('정렬')}</span></button>;
+    },
+    filter: (index, label) => {
+      const column = columns[index];
+      if (!column?.enum) return null;
+      const choices = [...new Set(input.map(row => String(column.value(row) ?? '')))].filter(Boolean).sort(collator.compare);
+      if (filters[index] && !choices.includes(filters[index])) choices.push(filters[index]);
+      return <label className="table-filter-field" key={index}><span>{label}</span><select className="table-filter" aria-label={t('{column} 필터', { column: label })} value={filters[index] ?? ''} onChange={event => setFilters(previous => ({ ...previous, [index]: event.target.value }))}><option value="">{t('전체')}</option>{choices.map(value => <option key={value} value={value}>{column.label?.(value) ?? t(value)}</option>)}</select></label>;
     },
   };
   return { rows, ...controls };
+}
+
+export function TableFilters({ controls, labels }: { controls: TableControls; labels: Record<number, string> }) {
+  return <div className="table-filters" aria-label={t('표 필터')}>{Object.entries(labels).map(([index, label]) => controls.filter(Number(index), label))}</div>;
 }

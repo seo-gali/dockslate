@@ -1,0 +1,179 @@
+{
+  "observedAt": "2026-10-29T11:09:24.346Z",
+  "version": "0.1.2",
+  "artifactSha256": "6C36C075767E7644A2AD7F218723D9C9B9FD4DD500711A5F30CCCEDEFAF0F8A0",
+  "native": true,
+  "backendInjected": false,
+  "checks": [
+    {
+      "name": "One global refresh updates the shared snapshot; Overview has no connection shortcut",
+      "passed": true
+    },
+    {
+      "name": "Containers compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 6,
+        "filters": 1,
+        "filtersOutsideTable": true,
+        "headerHeight": 40,
+        "filterWidths": [
+          148
+        ]
+      }
+    },
+    {
+      "name": "Images compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 4,
+        "filters": 1,
+        "filtersOutsideTable": true,
+        "headerHeight": 41.79999923706055,
+        "filterWidths": [
+          148
+        ]
+      }
+    },
+    {
+      "name": "Image sorting and filtering still use actual values outside the header",
+      "passed": true
+    },
+    {
+      "name": "Resources compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 4,
+        "filters": 2,
+        "filtersOutsideTable": true,
+        "headerHeight": 40,
+        "filterWidths": [
+          148,
+          148
+        ]
+      }
+    },
+    {
+      "name": "Resources compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 4,
+        "filters": 2,
+        "filtersOutsideTable": true,
+        "headerHeight": 40,
+        "filterWidths": [
+          148,
+          148
+        ]
+      }
+    },
+    {
+      "name": "Builds compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 4,
+        "filters": 1,
+        "filtersOutsideTable": true,
+        "headerHeight": 40,
+        "filterWidths": [
+          148
+        ]
+      }
+    },
+    {
+      "name": "Builds compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 3,
+        "filters": 1,
+        "filtersOutsideTable": true,
+        "headerHeight": 40,
+        "filterWidths": [
+          148
+        ]
+      }
+    },
+    {
+      "name": "Disk Manager compact headers and external filters",
+      "passed": true,
+      "evidence": {
+        "headerSelects": 0,
+        "sorters": 5,
+        "filters": 2,
+        "filtersOutsideTable": true,
+        "headerHeight": 40,
+        "filterWidths": [
+          148,
+          148
+        ]
+      }
+    },
+    {
+      "name": "Page refresh and build navigation duplicates are removed",
+      "passed": true
+    },
+    {
+      "name": "Hub selection retains tag editing and download confirmation without a separate entry or collapse button",
+      "passed": true
+    },
+    {
+      "name": "The real Windows Dockerfile picker builds the supplied temporary example",
+      "passed": true,
+      "evidence": {
+        "state": "completed",
+        "tag": "dockslate-import-mvtfy8br:latest",
+        "context": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-manual-20261029"
+      }
+    },
+    {
+      "name": "The real Windows Compose picker builds the supplied service and waits for approval",
+      "passed": true,
+      "evidence": {
+        "state": "completed",
+        "project": "dockslate-import-92951f75073229e8b0022b8162663a1f"
+      }
+    },
+    {
+      "name": "The example actually serves its built HTML through the published port and preserves its seeded file in the named volume",
+      "passed": true,
+      "evidence": {
+        "containerId": "0297004bc1277caa9b3a0499a0f64836448d9c3ffd2e92c892ba5302a8f22ce2",
+        "containerName": "dockslate-import-92951f75073229e8b0022b8162663a1f-web-1",
+        "volume": "dockslate-import-92951f75073229e8b0022b8162663a1f_check-data",
+        "url": "http://127.0.0.1:18080/",
+        "retained": true
+      }
+    },
+    {
+      "name": "Existing containers and volumes remain unchanged; the new example is retained for manual inspection",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "originalContainerIds": [
+    "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+  ],
+  "dockerfile": {
+    "state": "completed",
+    "tag": "dockslate-import-mvtfy8br:latest",
+    "context": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\file-import-fixture-manual-20261029"
+  },
+  "compose": {
+    "state": "completed",
+    "project": "dockslate-import-92951f75073229e8b0022b8162663a1f"
+  },
+  "example": {
+    "containerId": "0297004bc1277caa9b3a0499a0f64836448d9c3ffd2e92c892ba5302a8f22ce2",
+    "containerName": "dockslate-import-92951f75073229e8b0022b8162663a1f-web-1",
+    "volume": "dockslate-import-92951f75073229e8b0022b8162663a1f_check-data",
+    "url": "http://127.0.0.1:18080/",
+    "retained": true
+  }
+}

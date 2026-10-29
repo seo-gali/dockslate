@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { engineLabel, type EngineProps } from '../App';
-import { ErrorNotice, PageHeader, RefreshButton, StatusBadge } from '../components';
+import { ErrorNotice, PageHeader, StatusBadge } from '../components';
 import { RuntimePanel, useDockSlateRuntime } from '../runtime';
 import { defaultAppearance, useAppearance } from '../appearance';
 import { t, setLanguage, useLanguage } from '../i18n';
@@ -8,14 +8,13 @@ import { t, setLanguage, useLanguage } from '../i18n';
 export default function Settings(props: EngineProps & { runtime: ReturnType<typeof useDockSlateRuntime>; runtimeRequest?: number }) {
   const engine = props.engine;
   const runtime = props.runtime;
-  const refresh = props.reloadEngine;
   const { appearance, setAppearance } = useAppearance();
   const language = useLanguage();
   const [languageError, setLanguageError] = useState<string | null>(null);
   const [tab, setTab] = useState<'appearance' | 'runtime' | 'connection'>('appearance');
   useEffect(() => { if (props.runtimeRequest) setTab('runtime'); }, [props.runtimeRequest]);
   return <>
-    <PageHeader title={t("Settings")}><RefreshButton busy={props.engineLoading || runtime.query.loading || runtime.preparing} onClick={() => void refresh()} /></PageHeader>
+    <PageHeader title={t("Settings")}></PageHeader>
     <div className="page-tabs" role="tablist" aria-label={t('설정 보기')}>{(['appearance', 'runtime', 'connection'] as const).map(value => <button key={value} role="tab" aria-selected={tab === value} className={tab === value ? 'active' : ''} onClick={() => setTab(value)}>{t({ appearance: '화면', runtime: '런타임', connection: '엔진 연결 정보' }[value])}</button>)}</div>
     <div hidden={tab !== 'appearance'}><section className="settings-panel appearance-panel" aria-label={t("화면 설정")}>
       <h2>{t("화면")}</h2>

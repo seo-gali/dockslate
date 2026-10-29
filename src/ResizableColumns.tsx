@@ -78,8 +78,6 @@ function createController({ storageKey, columns }: Options) {
       context.font = style.font;
       const heading = header.querySelector('.table-sort');
       let minimum = context.measureText((heading ?? header).textContent?.trim() ?? '').width + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) + 12;
-      const filter = header.querySelector<HTMLSelectElement>('.table-filter');
-      if (filter) minimum = Math.max(minimum, ...[...filter.options].map(option => context.measureText(option.text).width + 36 + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)));
       for (const row of table!.tBodies[0]?.rows ?? []) {
         const cell = row.cells[index];
         if (!cell || cell.colSpan !== 1) continue;

@@ -12,7 +12,7 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 
 ![DockSlate Windows 앱의 이미지와 참조 컨테이너](docs/assets/dockslate-images.png)
 
-0.1.1 Windows 앱 검증 중 캡처한 화면입니다. [검증 기록](docs/results/release-0.1.1.md)
+0.1.2 Windows 앱 검증 중 캡처한 화면입니다. [검증 기록](docs/results/release-0.1.2.md)
 
 ## 기능
 
@@ -27,7 +27,7 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 필수 환경: **Windows 11 x64 · WSL 2.4.10+ · WebView2**. 최초 엔진 설치에는 인터넷이 필요합니다.
 
 1. 설치 EXE를 실행하고 엔진 준비 대상과 영향을 확인해 승인합니다. 포터블은 ZIP 전체를 풀고 `DockSlate.exe`를 실행합니다.
-2. **이미지 → 이미지 받기 → 실행**에서 컨테이너를 생성합니다.
+2. **이미지 → Docker Hub**에서 검색·선택해 받은 뒤, **로컬 이미지 → 실행**에서 컨테이너를 생성합니다.
 3. 컨테이너 목록에서 상태와 포트를 확인합니다. 이름을 누르면 로그·터미널·파일이 열립니다.
 
 설치 후 새 CMD·PowerShell에서 사용할 수 있습니다.

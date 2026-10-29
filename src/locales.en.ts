@@ -817,6 +817,8 @@ export const english: Readonly<Record<string, string>> = {
   "설정 변경에는 명시적인 승인이 필요합니다.": "Explicit approval is required to change settings.",
   "승인 정보가 없거나 이미 사용되었습니다.": "Approval is missing or has already been used.",
   "정렬": "Sort",
+  "표 필터": "Table filters",
+  "Docker Hub에서 이미지를 검색하고 선택해 받으세요.": "Search Docker Hub and select an image to download.",
   "볼륨 작업 진행 중": "Volume operation in progress",
   "개 처리": "items processed",
   "기록 전송 중": "Transferring records",

@@ -1,5 +1,5 @@
 import { ResizableTable } from './ResizableColumns';
-import { useTableRows } from './TableRows';
+import { TableFilters, useTableRows } from './TableRows';
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import { type Container } from './api';
 import { errorMessage, formatBytes, Icon } from './components';
@@ -176,7 +176,7 @@ export function ContainerFiles({ container, revision, active = true }: { contain
         <button className="button small" disabled={!active}>{t("이동")}</button><button type="button" className="button small" disabled={loading || !active} onClick={() => void load(path, true)} aria-label={t("컨테이너 폴더 새로고침")} data-tooltip={t("새로고침")}><Icon name="refresh" size={15} /></button>
       </form>
       {failure && <div className="notice error" role="alert">{failure}</div>}
-      <div className="container-files-list table-wrap" aria-busy={loading}>
+      <TableFilters controls={fileRows} labels={{1:t("종류")}} /><div className="container-files-list table-wrap" aria-busy={loading}>
         <ResizableTable storageKey="container-files" controls={fileRows} widths={[420,110,120]} className="data-table" aria-label={t("컨테이너 파일 목록")}><thead><tr><th>{t("이름")}</th><th>{t("종류")}</th><th>{t("크기")}</th></tr></thead><tbody>{fileRows.rows.map(entry => <tr key={entry.path} className={filePath === entry.path ? 'container-files-selected' : undefined}><td><button type="button" className="container-files-entry" disabled={!active || !['directory', 'file'].includes(entry.kind)} onClick={() => void openFile(entry)} data-tooltip={entry.path}><span aria-hidden="true" className="container-files-kind">{entry.kind === 'directory' ? '▸' : entry.kind === 'symlink' ? '↗' : '·'}</span><span className="container-files-entry-name">{entry.name}</span></button></td><td>{t(({ directory: '폴더', file: '파일', symlink: '링크', other: '기타' })[entry.kind])}</td><td>{entry.kind === 'file' ? formatBytes(entry.size) : '—'}</td></tr>)}</tbody></ResizableTable>
         {loading && <p className="container-files-empty muted" role="status">{t("폴더를 읽는 중…")}</p>}{!loading && directory?.entries.length === 0 && <p className="container-files-empty muted">{t("빈 폴더")}</p>}
       </div>
