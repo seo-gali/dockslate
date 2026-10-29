@@ -2,8 +2,8 @@
   "version": "0.1.2",
   "installer": {
     "file": "DockSlate_0.1.2_x64-setup.exe",
-    "bytes": 0,
-    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    "bytes": 49255585,
+    "sha256": "FD69754DD4EA2C64C41BF361AD23C831093B880F22173F1370A398DC078DE305"
   },
   "zip": {
     "file": "DockSlate-0.1.2-windows-x64.zip",

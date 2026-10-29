@@ -8,7 +8,9 @@
 - Dockerfile 빌드와 Compose 빌드·실행 승인에 성공했다. `http://127.0.0.1:18080/`에서 만든 HTML이 응답하고, 새 볼륨의 `check.txt`에서 `DockSlate volume check OK`를 확인했다. 예제 서비스·볼륨은 수동 확인용으로 유지했다.
 - 기존 컨테이너 ID·이름·실행 상태와 기존 볼륨을 보존했다. 검증 전 끊긴 keepalive를 복구하기 위해 앞서 승인받은 DockSlate 배포판만 재시작했다. 기존 MongoDB는 재시작 전후 모두 중지 상태였다. 다른 배포판·DB 내용·기존 볼륨은 변경하지 않았다.
 
-검증 명령은 `node scripts/verify-ui-cleanup.mjs .analysis/ui-cleanup-session.json`이다. 프런트엔드·Windows release·CLI 빌드와 locked/offline Rust 검사도 종료 0이었다. CLI 버전 4개 검사는 종료 0, 라이선스 555개 구성 요소·362개 원문·11개 소스 아카이브의 누락은 0이다. 앱 버전 메타데이터만 변경했으며 의존성 버전은 바꾸지 않았다.
+검증 명령은 `node scripts/verify-ui-cleanup.mjs .analysis/ui-cleanup-session.json`이다. 프런트엔드·Windows release·CLI 빌드와 locked/offline Rust 검사도 종료 0이었다. CLI 버전 4개 검사는 종료 0, 라이선스 555개 구성 요소·362개 원문·11개 소스 아카이브의 누락은 0이다. 의존성·lock 파일에서는 앱 자체의 버전 메타데이터만 변경했고 의존성 버전은 그대로다.
+
+승인된 [GitHub Windows 빌드](https://github.com/seo-gali/dockslate/actions/runs/40864610856)가 성공했다. 설치 EXE는 49,255,585바이트, SHA-256 `FD69754DD4EA2C64C41BF361AD23C831093B880F22173F1370A398DC078DE305`이다. 내부 앱·CLI·PATH 도우미·고지 375개·인덱스·공식 구성 요소 8개·동봉 문서 6개를 대조했다. ZIP 내부 바이너리·고지 387개도 대조했다. 동봉 문서는 입력 커밋 기준이며, 최종 배포 기록은 별도로 갱신한다. 구버전 0.1.1 산출물 6개·이전 포터블 폴더·임시 workflow를 제거했다.
 
 문서의 헤더 안 필터·페이지별 새로고침·Hub 접기·별도 이미지 받기·중복 빌드 이동 설명을 현재 흐름으로 고쳤다. 0.1.1의 40개 검사는 당시 해시의 기록이며 이번 버전에서 전부 재실행하지 않았다.
 
