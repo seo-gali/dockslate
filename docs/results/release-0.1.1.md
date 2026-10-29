@@ -15,6 +15,7 @@
 | 라이선스 | 555개 구성 요소, 362개 고지문, 11개 소스 아카이브, 누락 0 |
 | 설치 EXE | 승인된 GitHub Windows 빌드 [40854652031](https://github.com/seo-gali/dockslate/actions/runs/40854652031) 성공. 49,255,610바이트, SHA-256 `503E15CE5329AC37CE41C55974302E4DD2EE3FD113262BBE2FDCF883FA514892` |
 | 설치판 내부·ZIP | 설치판 앱·CLI가 실제 검사한 해시와 일치. PATH 도우미·고지/소스 375개·인덱스·공식 구성 요소 8개·동봉 문서 9개 대조. ZIP 바이너리·고지 387개 대조 |
+| [공개 다운로드](public-release-0.1.1.json) | EXE·ZIP·고지 ZIP 모두 HTTP 200, 실제 다운로드 크기·SHA-256 일치. 공개 HTML·표시 해시 일치. 구버전 다운로드 3개는 HTTP 404 |
 
 검증 명령은 해당 `scripts/verify-*.mjs`에 전용 세션 파일 `.analysis/ui-release-session.json`을 전달했다. `verify-ui-release.mjs`에는 `--isolated-container-edit`도 사용했다. 검증 세션은 개인 브라우저와 분리된 프로필이다.
 

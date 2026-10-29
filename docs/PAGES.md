@@ -42,6 +42,7 @@ npm run build:site -- --publish
 
 | 범위 | 실제 결과·기록 |
 | --- | --- |
+| 0.1.1 공개 다운로드 | [실제 공개 파일 검증](results/public-release-0.1.1.json). EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 HTML 일치, 구버전 3개 HTTP 404 |
 | 최신 로컬 사이트 | [Chrome 28개](results/pages-e2e.json) 통과. 파일/HTTP·JS 비활성·canonical·Sitemap XML·robots·404·다운로드 해시·앱 분리 확인 |
 | 최신 공개 SEO | [HTTP 9개](results/pages-seo.json) 통과. 소스 `e1f8c4d`의 생성 HTML·Sitemap·robots·404·링크·Google 원문 일치 |
 | 색인 차단 방지 | `noindex`·HTML 자동 이동을 주입한 빌드는 예상대로 종료 1, 원문 복원. 위 SEO 기록에 포함 |

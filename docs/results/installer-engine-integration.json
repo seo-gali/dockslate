@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-29T10:11:50.339Z",
+  "observedAt": "2026-10-29T10:18:10.930Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -206,7 +206,8 @@
     "temporaryWorkflowRemoved": true,
     "installerExecuted": false,
     "installedOrUninstalled": false,
-    "publicDownloadVerification": "pending publication"
+    "publicDownloadVerification": "passed",
+    "publicDownloadReport": "docs/results/public-release-0.1.1.json"
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -376,7 +377,8 @@
       "command": "npm run build:site -- --publish",
       "exit": 0,
       "verifiedDownloads": 3
-    }
+    },
+    "publicDownloadReport": "docs/results/public-release-0.1.1.json"
   },
   "portableDelivery": {
     "observedAt": "2026-10-29T09:44:19.763Z",
@@ -394,7 +396,8 @@
     "sameFilesVerifiedInsideZip": 387,
     "appRecompiled": true,
     "nativeChecks": 40,
-    "installerExecuted": false
+    "installerExecuted": false,
+    "publicDownloadVerified": true
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-27T14:44:55.162Z",
