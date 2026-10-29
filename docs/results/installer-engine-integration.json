@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-29T09:41:00.121Z",
+  "observedAt": "2026-10-29T10:11:50.339Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -36,7 +36,7 @@
     "guideDeliveryChecks": 11,
     "portableInternalFilesVerified": 10,
     "engineRestoredStopped": true,
-    "remoteInstallerBuildExit": null,
+    "remoteInstallerBuildExit": 0,
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 8,
     "correctedInstallerGuideChecks": 11,
@@ -63,8 +63,8 @@
       "executionMode": "Four offline version checks; identical tested CLI hash; no engine connection required."
     }
   ],
-  "installerFilePresent": false,
-  "blocker": "0.1.1 native application verification passed. Installer packaging is pending; local NSIS previously could not open installer/user-path.ps1. Actual setup/uninstall, signing, the original security alert and historical CLI host-file failures remain unverified.",
+  "installerFilePresent": true,
+  "blocker": "0.1.1 installer packaging and embedded file verification passed. Local NSIS still cannot open installer/user-path.ps1; its cause is unresolved. Actual setup/uninstall, signing, the original security alert and historical CLI host-file failures remain unverified.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -176,10 +176,37 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
+    "observedAt": "2026-10-29T10:11:50.409Z",
     "version": "0.1.1",
-    "state": "pending",
+    "file": "DockSlate_0.1.1_x64-setup.exe",
+    "bytes": 49255610,
+    "sha256": "503E15CE5329AC37CE41C55974302E4DD2EE3FD113262BBE2FDCF883FA514892",
+    "signatureStatus": "NotSigned",
+    "appSha256": "F7F5ED582AF19840F6B6181F1BEDDF47C39D705F569E9B379FDE7CAEBD9A4CC3",
+    "launcherSha256": "F4C0D30BA5683223F77EC8CADA214C23DD30547237BD2815A5E7C63BD3B46D6B",
+    "runId": 40854652031,
+    "sourceCommit": "75caa1e41de37ea5b30c50fc38aadacad3ae0a72",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/40854652031",
+    "buildConclusion": "success",
+    "artifactId": 12889021170,
+    "artifactDigest": "sha256:c85022ae646672507f6f51b025f37191e83fbb7ad4e9ef9774d75e6a50105fdc",
+    "archiveBytes": 49250298,
+    "githubDigestVerified": true,
+    "embeddedApplicationAndLauncherMatch": true,
+    "embeddedPathHelperMatches": true,
+    "verifiedLicenseFiles": 375,
+    "licenseIndexesMatch": true,
+    "nativeComponentFilesVerified": 8,
+    "packagedDocumentsVerified": 9,
+    "documentationSourceCommit": "75caa1e41de37ea5b30c50fc38aadacad3ae0a72",
+    "zipFile": "DockSlate-0.1.1-windows-x64.zip",
+    "zipSha256": "3BA5C2C1FA1B63BC15C4A72D048D462721F033B689FB50D0FD631EAF550C7362",
+    "portableVerifiedBinaryFiles": 10,
+    "portableVerifiedLicenseFiles": 377,
+    "temporaryWorkflowRemoved": true,
     "installerExecuted": false,
-    "temporaryWorkflowAdded": false
+    "installedOrUninstalled": false,
+    "publicDownloadVerification": "pending publication"
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -251,7 +278,7 @@
   "currentBuild": {
     "version": "0.1.1",
     "sourceBaseCommit": "617d21b",
-    "sourceState": "Uncommitted release changes at build time; exact tested binaries are identified by artifacts SHA-256.",
+    "sourceState": "Application source is committed; release documentation and metadata are finalized after packaging. Artifacts SHA-256 identify the exact tested binaries.",
     "checkedAt": "2026-10-29T09:41:00.122Z",
     "commands": [
       {
@@ -343,6 +370,12 @@
       "exit": 1,
       "appSha256": "F7F5ED582AF19840F6B6181F1BEDDF47C39D705F569E9B379FDE7CAEBD9A4CC3",
       "error": "NSIS could not open src-tauri/installer/user-path.ps1. No installer was executed."
+    },
+    "sourceCommit": "6e33a3eff1c3e54ef491c2913ecd1e36cc559bd2",
+    "siteBuild": {
+      "command": "npm run build:site -- --publish",
+      "exit": 0,
+      "verifiedDownloads": 3
     }
   },
   "portableDelivery": {
@@ -495,5 +528,14 @@
     },
     "scope": "Repackaged the existing verified app and launcher into a local directory and ZIP. No application source change, recompilation, installer rebuild, installation or engine connection. The canonical public ZIP was downloaded and its size and SHA-256 matched; the homepage receipt also matched."
   },
-  "version": "0.1.1"
+  "version": "0.1.1",
+  "deletedOutputs": [
+    "downloads\\DockSlate_0.1.0_x64-setup.exe",
+    "downloads\\DockSlate-0.1.0-windows-x64.zip",
+    "downloads\\DockSlate-0.1.0-third-party-licenses.zip",
+    "docs\\downloads\\DockSlate_0.1.0_x64-setup.exe",
+    "docs\\downloads\\DockSlate-0.1.0-windows-x64.zip",
+    "docs\\downloads\\DockSlate-0.1.0-third-party-licenses.zip",
+    "downloads\\DockSlate-0.1.0-windows-x64\\"
+  ]
 }

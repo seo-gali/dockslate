@@ -48,4 +48,4 @@
 | `npm run build` | 종료 0, TypeScript·Vite·dist 안내서 생성 통과 |
 | `node scripts/verify-guide.mjs .analysis/guide-browser-download-session.json` | 종료 0, 실제 격리 Chrome의 11개 검사 통과. root/dist 안내·EXE/ZIP 실제 다운로드와 원본 해시 일치·추출 ZIP 안내·공유 HTML·390px·JS 오류 없음. [기록](guide-delivery-e2e.json) |
 
-설치판은 검증한 SHA-256 `8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094` 파일을 그대로 제공한다. 새 설치판 빌드·서명·설치·제거·엔진 조작은 수행하지 않았다. 보안 설정과 기존 데이터는 변경하지 않았다.
+위 다운로드 복구 검사는 2026-10-22의 설치판 SHA-256 `8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094` 범위다. 당시 새 설치판 빌드·서명·설치·제거·엔진 조작은 수행하지 않았다. 이후 버전의 실제 산출물·해시·서명 상태는 [최신 배포 기록](installer-engine-integration.json)에서 확인한다. 보안 설정 변경이나 경고 해소를 의미하지 않는다.
