@@ -1,0 +1,107 @@
+{
+  "observedAt": "2026-10-30T14:48:07.959Z",
+  "appVersion": "0.1.4",
+  "sha256": "7AD08317387307F4F50B15655DF02E3AC39FDBB272B181D632BB2691C41E01E2",
+  "checks": [
+    {
+      "name": "Dockerfile auto-build, explicit Rebuild, and active-build log navigation",
+      "passed": true,
+      "evidence": {
+        "text": "Close file selection",
+        "right": 0.0000152587890625,
+        "topClose": 0
+      }
+    },
+    {
+      "name": "Closing Dockerfile clears selection and previous job",
+      "passed": true
+    },
+    {
+      "name": "Compose short display name and retained full identity",
+      "passed": true,
+      "evidence": {
+        "text": "Close file selection",
+        "right": 0.0000152587890625,
+        "topClose": 0
+      }
+    },
+    {
+      "name": "Compose and Dockerfile use the same bottom-right close action",
+      "passed": true
+    },
+    {
+      "name": "Compose groups collapse and expand by pointer and keyboard; ordinary names unchanged",
+      "passed": true,
+      "evidence": [
+        "Standalone containers\n1",
+        "Compose · Imported project 819dad99\n1",
+        "Compose · ui014-normal-cb3bc3c7\n1"
+      ]
+    },
+    {
+      "name": "Cleanup selects only eligible filtered results, shows mixed state, retains hidden selections, disables blocked-only selection",
+      "passed": true,
+      "evidence": {
+        "selectedCount": 2
+      }
+    },
+    {
+      "name": "Responsive confirmation at 1668x900",
+      "passed": true,
+      "evidence": {
+        "width": 1040,
+        "height": 680,
+        "top": 110,
+        "bottom": 790,
+        "footer": 789.2000274658203,
+        "ack": 722.4000244140625,
+        "columns": 3,
+        "contentHeight": 504,
+        "contentScroll": 583
+      }
+    },
+    {
+      "name": "Responsive confirmation at 1000x640",
+      "passed": true,
+      "evidence": {
+        "width": 952,
+        "height": 592,
+        "top": 24,
+        "bottom": 616,
+        "footer": 615.2000274658203,
+        "ack": 548.3999938964844,
+        "columns": 3,
+        "contentHeight": 416,
+        "contentScroll": 583
+      }
+    },
+    {
+      "name": "Image confirmation retains acknowledgement and cancellation; original images never executed",
+      "passed": true
+    },
+    {
+      "name": "Builder management explains its purpose without unrelated completed-build badge",
+      "passed": true
+    }
+  ],
+  "fixtureMarker": "cb3bc3c79e41480a84bf8d67af6245e2",
+  "mutations": "Only owned scratch images and never-started containers; no volumes, new networks, database operations, or prune",
+  "resumedAfter": "Corrected CDP Enter text; source-panel checks already passed on the same binary and fixture",
+  "passed": true,
+  "cleanup": {
+    "passed": true,
+    "removedOwnedContainers": [
+      "0696f31ebbb7206772bee051a75b7fb26f31c813c52c526f160852d4666b1a8e",
+      "caee336d50f30cae5ded93c89363906a29a8579f24676be07e28a1b78841e2be"
+    ],
+    "removedOwnedImages": [
+      "sha256:24f86e52d92b6509205b992a53033d471f3e58477ff31ee36289b852e3f870fe",
+      "sha256:3a1e729d189805b9d6a1e87f360744af903b0bb9350b39475084038fde320329",
+      "sha256:ce85658680e347a92d1499ff02bdab274c47e7463cd27ca4ca677724f4a51821"
+    ],
+    "originalContainerIdsAndStatesPreserved": true,
+    "originalVolumeAndNetworkIdsPreserved": true,
+    "prune": false,
+    "volumesDeleted": false
+  }
+}

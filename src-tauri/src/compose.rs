@@ -909,7 +909,7 @@ fn finish(id: &str, result: Result<(), String>) {
             job["logs"] = json!(if job["operation"] == "build" {
                 "Compose 빌드 작업이 종료되었습니다. 서비스별 이미지와 전체 새로고침 결과를 확인하세요."
             } else {
-                "Compose 실행 작업이 종료되었습니다. Containers에서 서비스 상태를 확인하세요."
+                "Compose 실행 작업이 종료되었습니다. 컨테이너에서 서비스 상태를 확인하세요."
             });
         }
     }

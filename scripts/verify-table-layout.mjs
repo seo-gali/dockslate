@@ -85,7 +85,7 @@ try {
     await c.nav('Builds');
     await click('[data-page="Builds"] .page-tabs button', 'Build history'); const history=await fit('Build history ' + size.width);
     if(size.width===1000) assert.ok(history.scrollHeight > history.height);
-    await click('[data-page="Builds"] .page-tabs button', 'Builders'); await fit('Builders ' + size.width);
+    await click('[data-page="Builds"] .page-tabs button', 'Builder management'); await fit('Builders ' + size.width);
     assert.ok(await c.evaluate(`(()=>{const row=document.querySelector('.builder-name'),button=row.querySelector('button').getBoundingClientRect(),badge=row.querySelector('.status-badge').getBoundingClientRect();return Math.abs(button.y+button.height/2-badge.y-badge.height/2)<2})()`));
     await c.nav('Disk Manager'); const cleanup=await fit('Cleanup ' + size.width);
     assert.ok(cleanup.scrollHeight > cleanup.height);
@@ -93,7 +93,7 @@ try {
     assert.ok(Math.abs(sticky.cell-sticky.wrap-1)<2, JSON.stringify(sticky));
     check('Cleanup header stays visible when rows scroll ' + size.width, sticky);
   }
-  await c.nav('Builds'); await click('[data-page="Builds"] .page-tabs button', 'In progress');
+  await c.nav('Builds'); await click('[data-page="Builds"] .page-tabs button', 'Active builds');
   const activeText=await c.evaluate(`document.querySelector('[data-page="Builds"]').innerText`);
   assert.ok(!activeText.includes('No app builds in progress'));
   assert.ok(!activeText.includes('BuildKit in progress')); check('Active-build empty state has no duplicate summaries');

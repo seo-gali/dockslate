@@ -77,5 +77,10 @@ export function useImageBuild(onBusy?: (busy: boolean) => void) {
     } catch (failure) { setError(`빌드 폴더를 선택하지 못했습니다: ${errorMessage(failure)}`); }
     finally { setPicking(false); }
   };
-  return { contextPath, setContextPath, dockerfile, setDockerfile, tag, setTag, noCache, setNoCache, job, busy, starting, refreshing, picking, error, statusError, start, pick, poll, target, targetLoading: targets.loading, targetError: targets.data?.selectionError ?? targets.error };
+  const discard = () => {
+    if (busy || picking || request.current) return;
+    setContextPath(''); setDockerfile('Dockerfile'); setTag(''); setNoCache(false);
+    setJob(null); setError(null); setStatusError(null);
+  };
+  return { contextPath, setContextPath, dockerfile, setDockerfile, tag, setTag, noCache, setNoCache, job, busy, starting, refreshing, picking, error, statusError, start, pick, poll, discard, target, targetLoading: targets.loading, targetError: targets.data?.selectionError ?? targets.error };
 }

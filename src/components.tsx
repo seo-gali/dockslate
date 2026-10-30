@@ -88,7 +88,7 @@ export function ConfirmDialog({ title, children, label, busy, progress, ready = 
     const listener = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && !busy) onCancel();
       if (event.key === 'Tab') {
-        const elements = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), [tabindex="0"]') ?? []);
+        const elements = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, a[href], [tabindex="0"]') ?? []);
         const first = elements[0];
         const last = elements[elements.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
@@ -99,6 +99,11 @@ export function ConfirmDialog({ title, children, label, busy, progress, ready = 
     return () => window.removeEventListener('keydown', listener);
   }, [busy, onCancel]);
   return <div className="modal-backdrop"><div className="confirm-dialog" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div className="dialog-heading"><span className="danger"><Icon name="warning" size={22} /></span><h2 id="confirm-title">{title}</h2></div><div className="dialog-content">{children}</div>{busy && <TaskProgress {...progress ?? { label: t('{action} 처리 중…', { action: t(label) }) }} />}<label className="acknowledgement"><input type="checkbox" checked={acknowledged} disabled={busy || !ready} onChange={event => onAcknowledge(event.target.checked)} /><span>{t("대상과 영향을 확인했으며 이 작업을 승인합니다.")}</span></label>{error && <div className="dialog-error" role="alert">{error}</div>}<footer><button ref={cancelRef} className="button" disabled={busy} onClick={onCancel}>{t("취소")}</button><button className="button danger-button" disabled={busy || !ready || !acknowledged} onClick={onConfirm}>{busy ? t("처리 중…") : !ready ? t("검사 대기") : t(label)}</button></footer></div></div>;
+}
+
+export function formatComposeProject(project: string): string {
+  const id = /^dockslate-import-([a-f0-9]{32})$/.exec(project)?.[1];
+  return id ? t('가져온 프로젝트 {id}', { id: id.slice(0, 8) }) : project;
 }
 
 export function formatBytes(bytes?: number | null): string {

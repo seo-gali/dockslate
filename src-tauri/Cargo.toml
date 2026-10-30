@@ -1,6 +1,6 @@
 [package]
 name = "dockslate"
-version = "0.1.3"
+version = "0.1.4"
 description = "An independent Docker Engine desktop for Windows"
 default-run = "dockslate"
 edition = "2021"

@@ -346,10 +346,19 @@ select option { color: var(--text); background: var(--surface); }
 .pull-status { padding: 12px 14px; background: var(--subtle-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font-size: 0.923077rem; line-height: 1.7; margin-bottom: 16px; }
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 50; background: var(--overlay); display: flex; align-items: center; justify-content: center; padding: 24px; }
-.confirm-dialog { display: flex; flex-direction: column; border-radius: 10px; border: 1px solid var(--strong-border); background: var(--surface); width: 520px; max-width: 100%; max-height: calc(100vh - 48px); overflow: hidden; box-shadow: 0 12px 48px var(--shadow); }
+.confirm-dialog { display: flex; flex-direction: column; border-radius: 10px; border: 1px solid var(--strong-border); background: var(--surface); width: min(1040px, 100%); max-height: min(680px, calc(100dvh - 48px)); overflow: hidden; box-shadow: 0 12px 48px var(--shadow); }
+.image-removal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 12px; margin: 16px 0; }
+.image-removal-item { min-width: 0; padding: 12px; border: 1px solid var(--border); border-radius: 6px; }
+.build-panel-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.project-identity { margin-top: 4px; font-size: .846154rem; color: var(--muted); }
+.project-identity summary { cursor: pointer; }
+.project-identity code { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+.group-toggle { display: flex; align-items: center; gap: 8px; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; }
+.group-chevron { display: inline-flex; }
+.group-chevron.is-open { transform: rotate(90deg); }
 .dialog-heading { display: flex; flex-shrink: 0; align-items: center; gap: 12px; padding: 20px 22px; border-bottom: 1px solid var(--border); }
 .dialog-heading h2 { font-size: 1.307692rem; font-weight: 600; }
-.dialog-content { min-height: 0; overflow: auto; padding: 20px 22px 12px; color: var(--muted); line-height: 1.8; font-size: 0.923077rem; }
+.dialog-content { min-height: 0; overflow: auto; padding: 16px 22px 12px; color: var(--muted); line-height: 1.8; font-size: 0.923077rem; }
 .dialog-content p + p { margin-top: 10px; }
 .dialog-content strong { font-weight: 500; color: var(--text); }
 .dialog-target { display: block; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; color: var(--text); font-family: Consolas, monospace; font-size: 0.923077rem; margin-bottom: 14px; overflow-wrap: anywhere; }
@@ -358,7 +367,7 @@ select option { color: var(--text); background: var(--surface); }
 .dialog-target-list li { padding: 9px 12px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; color: var(--text); }
 .dialog-target-list li:last-child { border-bottom: none; }
 .dialog-target-list small { color: var(--muted); display: block; font-size: 0.846154rem; }
-.acknowledgement { display: flex; flex-shrink: 0; align-items: flex-start; gap: 10px; padding: 18px 22px; color: var(--text); font-size: 0.923077rem; line-height: 1.6; }
+.acknowledgement { display: flex; flex-shrink: 0; align-items: flex-start; gap: 10px; padding: 12px 22px; color: var(--text); font-size: 0.923077rem; line-height: 1.6; }
 .acknowledgement input { margin-top: 3px; }
 .confirm-dialog footer { flex-shrink: 0; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; padding: 16px 22px; background: var(--subtle-bg); }
 .dialog-error { flex-shrink: 0; max-height: 100px; overflow: auto; margin: 0 22px 18px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 6px; color: var(--danger); background: var(--danger-bg); font-size: 0.923077rem; line-height: 1.7; overflow-wrap: anywhere; }
@@ -387,7 +396,7 @@ select option { color: var(--text); background: var(--surface); }
 .font-size-controls { display: flex; gap: 8px; align-items: center; }
 .font-size-controls output { min-width: 36px; text-align: center; font-variant-numeric: tabular-nums; }
 .engine-details > summary { padding: 14px 16px; cursor: pointer; font-weight: 600; }
-.build-active-summary { padding: 10px 0 16px; }
+.build-active-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 10px 0 16px; }
 .page-tabs { flex-wrap: wrap; margin-top: 12px; }
 
 .container-table { min-width: 850px; }
