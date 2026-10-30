@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-10-30T12:47:47.330Z",
+  "scope": "An active portable executable blocked directory replacement after archive verification; all package files were restored from the verified ZIP without stopping the application.",
+  "initialPackagingExit": 1,
+  "initialFailure": "Running portable DockSlate.exe could not be removed.",
+  "archiveContentVerified": true,
+  "verifiedBinaryFiles": 10,
+  "verifiedExampleFiles": 5,
+  "restoredFileCount": 564,
+  "unchangedFileCount": 6,
+  "restoredFilesVerifiedAgainstArchive": true,
+  "portableCliExit": 0,
+  "originalContainersUnchanged": true,
+  "applicationStopped": false,
+  "lockGuard": {
+    "command": "powershell -NoProfile -File scripts/package-local.ps1",
+    "exit": 1,
+    "expectedFailure": true,
+    "runningAppProtected": true,
+    "zipUnchanged": true,
+    "zipSha256": "DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5"
+  },
+  "artifacts": [
+    {
+      "file": "DockSlate-0.1.3-windows-x64.zip",
+      "bytes": 63265263,
+      "sha256": "DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5"
+    },
+    {
+      "file": "DockSlate-0.1.3-third-party-licenses.zip",
+      "bytes": 5161432,
+      "sha256": "FA89B812DC50C71240D07286EB0793E63642727952ED95991D4D1D006BF7C77C"
+    }
+  ]
+}

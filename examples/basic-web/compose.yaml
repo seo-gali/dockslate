@@ -1,14 +1,20 @@
-name: dockslate-basic-web
+name: dockslate-node-example
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dockslate-basic-web:latest
+    image: dockslate-node-example:local
+    init: true
+    environment:
+      NODE_ENV: production
+      PORT: "8080"
+      APP_NAME: DockSlate Node.js example
     ports:
       - "127.0.0.1:18080:8080"
-    volumes:
-      - check-data:/data
-    restart: "no"
-volumes:
-  check-data: {}
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

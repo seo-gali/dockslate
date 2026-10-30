@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-10-30T12:40:45.752Z",
+  "scope": "Actual builds from the user-specified workspace downloads directory plus local Node HTTP checks; container execution is left to the user.",
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "sources": [
+    {
+      "file": "downloads/Dockerfile",
+      "sha256": "6f8da96dd78e743ff75735c1605e2d77de4e98b41897fda51f8edbb6d97efa71",
+      "bytes": 357
+    },
+    {
+      "file": "downloads/compose.yaml",
+      "sha256": "6f213d7a8661a3ca21cc8c87ae5ee7b998875a5e5369d4396a23817c3930eaf2",
+      "bytes": 431
+    },
+    {
+      "file": "downloads/server.mjs",
+      "sha256": "94ec8520bcc6cb3ff3a55ebe17504d13201d586e826d38d17ee454ca20249767",
+      "bytes": 711
+    },
+    {
+      "file": "downloads/.dockerignore",
+      "sha256": "9acf2fcef2a8990a678c1e4e1c6b94ea49c3410914ba09dcc9e98860a3a02597",
+      "bytes": 55
+    }
+  ],
+  "baseImage": "node:24-alpine",
+  "resolvedBaseDigest": "sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85",
+  "dockerfileBuildExit": 0,
+  "composeBuildExit": 0,
+  "composeConfigExit": 0,
+  "localHttpChecks": {
+    "command": "node scripts/verify-node-example.mjs",
+    "exit": 0,
+    "routes": [
+      "/",
+      "/health",
+      "/missing"
+    ]
+  },
+  "image": {
+    "existingContainersUnchanged": true,
+    "imageUser": "node",
+    "exposedPorts": [
+      "8080/tcp"
+    ],
+    "healthcheck": [
+      "CMD-SHELL",
+      "node -e \"fetch('http://127.0.0.1:'+process.env.PORT+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""
+    ],
+    "imageTag": "dockslate-node-example:local"
+  },
+  "containersStarted": false,
+  "existingContainersUnchanged": true
+}

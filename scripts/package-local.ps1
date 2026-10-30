@@ -8,6 +8,15 @@ $packageName = "DockSlate-$version-windows-x64"
 $portableRoot = Join-Path $downloadRoot $packageName
 $exeSource = Join-Path $projectRoot 'src-tauri\target\release\dockslate.exe'
 $launcherSource = Join-Path $projectRoot 'src-tauri\target\release\docker.exe'
+$existingExe = Join-Path $portableRoot 'DockSlate.exe'
+if (Test-Path -LiteralPath $existingExe -PathType Leaf) {
+    try {
+        $handle = [IO.File]::Open($existingExe, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+        $handle.Dispose()
+    } catch {
+        throw 'Close the portable DockSlate application before packaging. Existing output folders were not changed.'
+    }
+}
 & (Join-Path $PSScriptRoot 'prepare-windows-docker.ps1') | Out-Null
 & node.exe (Join-Path $PSScriptRoot 'verify-license-inventory.mjs')
 if ($LASTEXITCODE -ne 0) { throw 'License inventory verification failed.' }
@@ -54,7 +63,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\REQUEST_STATUS.md') -Destination (Join-Path $docsRoot 'REQUEST_STATUS.md')
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\results') -Destination (Join-Path $docsRoot 'results') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\research') -Destination (Join-Path $docsRoot 'research') -Recurse
-    $exampleFiles = @('Dockerfile', 'compose.yaml', 'index.html', 'README.md') | ForEach-Object {
+    $exampleFiles = @('Dockerfile', 'compose.yaml', 'server.mjs', '.dockerignore', 'README.md') | ForEach-Object {
         $relative = 'examples/basic-web/' + $_
         $filePath = Join-Path $packageRoot $relative
         [ordered]@{file = $relative; bytes = (Get-Item -LiteralPath $filePath).Length; sha256 = (Get-FileHash -LiteralPath $filePath).Hash}

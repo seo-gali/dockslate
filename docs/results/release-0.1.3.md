@@ -7,7 +7,7 @@
 - 긴 목록은 표 안에서 스크롤하고 머리글을 고정한다. 페이지 이동은 표 밖에 둔다. 빌더 선택 배지는 이름 옆에 표시한다.
 - 선택 박스는 내용에 맞는 너비와 테마를 사용하며 펼친 목록에도 같은 스타일을 적용한다.
 - 빌드 진행 탭의 중복 요약, 디스크 사용량 카드의 반복 설명·중복 안내를 줄였다. 공유 레이어·VHDX·볼륨 보존 안내는 유지한다.
-- 사용자가 직접 선택할 [Dockerfile·Compose 예제](../../examples/basic-web/README.md)를 추가했다. ZIP·설치 파일에 포함하는 설정도 추가했다. 이번 검증에서는 컨테이너를 만들거나 실행하지 않았다.
+- 사용자가 직접 선택할 [Node.js Dockerfile·Compose 예제](../../examples/basic-web/README.md)를 추가했다. 필요한 소스·`.dockerignore`를 같은 폴더에 포함하며 ZIP·설치 파일에도 포함한다. 컨테이너를 자동 실행하지 않는다.
 
 ## 실제 검증
 
@@ -30,3 +30,11 @@
 CLI SHA-256: `D8E2AD91190B180E4EEEDD37C103A78BCE34EA89731243A6FC33C5C7C83B0594`
 
 설치·제거 실행, 전체 회귀, DB 동작, 서명과 기존 보안 경고 해소는 검사하지 않았다. 실제 설치 파일 내부 검사·공개 다운로드 결과는 완료 후 별도로 기록한다.
+
+## 2026-10-30 예제 수정
+
+사용자가 `downloads`에서 시도한 이전 BusyBox 예제는 `index.html`이 없어 `COPY`에서 실패했다. `downloads/Dockerfile`·`compose.yaml`을 Node.js 웹 앱 구성으로 바꾸고 `server.mjs`·`.dockerignore`·안내 파일을 함께 제공했다. 공식 Node.js 24 Alpine 이미지, 일반 사용자 실행, 환경 변수, 상태 검사, 제한된 로그 보관을 사용한다.
+
+실제 DockSlate 엔진에서 `docker build --tag dockslate-node-example:local --file downloads/Dockerfile downloads`와 `docker compose --file downloads/compose.yaml build`가 모두 종료 0이다. `.dockerignore` 적용 후 빌드 소스 전송량은 약 750B였다. `node scripts/verify-node-example.mjs`도 종료 0이며 실제 로컬 HTTP의 `/`, `/health`, 404 응답을 확인했다. 기존 컨테이너 ID·상태가 같았고 새 컨테이너는 실행하지 않았다. [예제 검증 기록](node-example.json).
+
+포터블 ZIP 생성·내부 파일 검사는 끝났지만 실행 중인 EXE 잠금 때문에 출력 폴더 교체는 종료 1로 중단됐다. ZIP에서 필수 파일을 해시 대조해 복원했고, 실행 중인 앱을 종료하지 않은 상태에서 복원한 CLI·기존 컨테이너 조회가 정상임을 확인했다. 이후 잠금 검사를 폴더 변경 전에 배치했다. 실행 중인 파일은 차단하고 사용하지 않는 빌드 파일은 허용하는 것을 확인했으며, 실제 패키징 명령도 변경 전 종료 1로 차단해 기존 ZIP을 보존했다. [복원·보호 검사](portable-in-use.json).
