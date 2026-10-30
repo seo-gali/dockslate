@@ -1,0 +1,58 @@
+{
+  "observedAt": "2026-10-30T13:11:25.657Z",
+  "version": "0.1.3",
+  "base": "https://seo-gali.github.io/dockslate/",
+  "downloads": [
+    {
+      "file": "DockSlate_0.1.3_x64-setup.exe",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.3_x64-setup.exe",
+      "status": 200,
+      "bytes": 49258299,
+      "sha256": "086CB921BBB7C926B8E6AE199194699832A9622C0EE4817300C63492AFE8E0CE"
+    },
+    {
+      "file": "DockSlate-0.1.3-windows-x64.zip",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.3-windows-x64.zip",
+      "status": 200,
+      "bytes": 63265263,
+      "sha256": "DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5"
+    },
+    {
+      "file": "DockSlate-0.1.3-third-party-licenses.zip",
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+      "status": 200,
+      "bytes": 5161432,
+      "sha256": "FA89B812DC50C71240D07286EB0793E63642727952ED95991D4D1D006BF7C77C"
+    }
+  ],
+  "removedDownloads": [
+    {
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.2_x64-setup.exe",
+      "status": 404
+    },
+    {
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.2-windows-x64.zip",
+      "status": 404
+    },
+    {
+      "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.2-third-party-licenses.zip",
+      "status": 404
+    },
+    {
+      "url": "https://seo-gali.github.io/dockslate/docs/downloads/DockSlate_0.1.2_x64-setup.exe",
+      "status": 404
+    },
+    {
+      "url": "https://seo-gali.github.io/dockslate/docs/downloads/DockSlate-0.1.2-windows-x64.zip",
+      "status": 404
+    },
+    {
+      "url": "https://seo-gali.github.io/dockslate/docs/downloads/DockSlate-0.1.2-third-party-licenses.zip",
+      "status": 404
+    }
+  ],
+  "temporaryWorkflowAbsent": true,
+  "installerExecuted": false,
+  "rootHtmlMatches": true,
+  "passed": true
+}

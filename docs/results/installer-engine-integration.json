@@ -207,8 +207,10 @@
       "sha256": "DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5"
     },
     "installerExecuted": false,
-    "publicDownloadVerified": false,
-    "temporaryWorkflowRemoved": true
+    "publicDownloadVerified": true,
+    "temporaryWorkflowRemoved": true,
+    "publicDownloadReport": "docs/results/public-release-0.1.3.json",
+    "temporaryExtractionRemoved": true
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -365,7 +367,15 @@
       "command": "npm run build:site -- --publish",
       "exit": 0,
       "verifiedDownloads": 3,
-      "publicCopyHashMatches": true
+      "publicCopyHashMatches": true,
+      "publicCopiesVerified": true,
+      "publicPageMatches": true
+    },
+    "publicDownloadReport": "docs/results/public-release-0.1.3.json",
+    "pagesDeployment": {
+      "runId": 41060872615,
+      "conclusion": "success",
+      "commit": "e3e620f"
     }
   },
   "portableDelivery": {
@@ -383,7 +393,7 @@
     "legalFilesVerified": 377,
     "installerExecuted": false,
     "sameFilesVerifiedInsideZip": true,
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "archiveContentVerified": true,
     "portableDirectoryRestored": true,
     "portableRestoreReport": "docs/results/portable-in-use.json"

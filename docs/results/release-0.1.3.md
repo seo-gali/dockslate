@@ -51,4 +51,6 @@ CLI SHA-256: `D8E2AD91190B180E4EEEDD37C103A78BCE34EA89731243A6FC33C5C7C83B0594`
 | `DockSlate-0.1.3-windows-x64.zip` | 63,265,263B | `DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5` |
 | `DockSlate-0.1.3-third-party-licenses.zip` | 5,161,432B | `FA89B812DC50C71240D07286EB0793E63642727952ED95991D4D1D006BF7C77C` |
 
-`npm run build:site -- --publish`는 종료 0이며 세 파일의 실제 크기·해시를 확인하고 루트와 `/docs` 정적 게시본을 생성했다. 이전 0.1.2 공개 파일과 임시 설치파일 빌드 workflow를 제거한다. 미서명·기존 보안 경고는 미해결이며 엔진·WSL·DB 데이터는 변경하지 않았다.
+`npm run build:site -- --publish`는 종료 0이며 세 파일의 실제 크기·해시를 확인하고 루트와 `/docs` 정적 게시본을 생성했다. 이전 0.1.2 공개 파일과 임시 설치파일 빌드 workflow를 제거했다. 미서명·기존 보안 경고는 미해결이며 엔진·WSL·DB 데이터는 변경하지 않았다.
+
+[공개 다운로드 검증](public-release-0.1.3.json)은 종료 0이다. 설치 EXE·포터블·고지 ZIP 3개를 실제 GET으로 받아 HTTP 200, 크기·SHA-256 일치를 확인했다. 공개 루트 HTML이 생성본과 같았고, 루트와 `/docs`의 이전 0.1.2 다운로드 URL 6개는 모두 HTTP 404였다. 임시 workflow는 작업 트리와 커밋에서 삭제했다. 설치 파일 추출본·다운로드 임시 사본 약 248.5MB와 화면 캡처용 임시 프로필 약 13.8MB도 정리했다.
