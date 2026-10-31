@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-30T15:04:52.104Z",
+  "observedAt": "2026-10-31T05:27:09.564Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -40,32 +40,32 @@
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 8,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 10,
+    "currentNativeChecks": 4,
     "dependencyVersionsChanged": false,
     "lockChangeScope": "Application root version metadata only; dependency graph unchanged.",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "0.1.4 actual source-panel builds, active log navigation, group folding, eligible filtered selection and responsive confirmation preview; no actual image deletion or full installation regression."
+    "currentNativeScope": "0.1.5 read-only smoke, plus unchanged functional-source evidence separately identified."
   },
   "artifacts": [
     {
       "name": "dockslate.exe",
       "path": "src-tauri/target/release/dockslate.exe",
-      "bytes": 5004288,
-      "sha256": "7AD08317387307F4F50B15655DF02E3AC39FDBB272B181D632BB2691C41E01E2",
+      "bytes": 5005824,
+      "sha256": "37C6C2E7398A2CAF33EABB722131D5F95EEF998F1596EBCF79D3CFB9174CE32D",
       "executed": true,
-      "executionMode": "0.1.4 actual Windows UI, isolated scratch builds, group and selection checks, non-destructive confirmation preview."
+      "executionMode": "0.1.5 isolated read-only native smoke; no prune or setup."
     },
     {
       "name": "docker.exe",
       "path": "src-tauri/target/release/docker.exe",
       "bytes": 315904,
-      "sha256": "0D8D95C523EDEE39D565E66995185A26C44177B5470405CE73BE600DF6A7E949",
+      "sha256": "04FF022DAFF629CE020657A22172368761DB4D0D685E8C14432056140BF83EBF",
       "executed": true,
-      "executionMode": "Four current version commands and owned-fixture CLI setup/cleanup."
+      "executionMode": "Four offline version commands."
     }
   ],
-  "installerFilePresent": true,
-  "blocker": "0.1.4 installer packaging and embedded-file checks passed. Actual setup/uninstall, full regression, signing and security-alert resolution remain unverified. Packaged legal cover retains 0.1.3; its legal archive permalink is preserved.",
+  "installerFilePresent": false,
+  "blocker": "0.1.5 installer packaging pending. Historical 0.1.4 delivery does not certify this candidate. No kernel patch or setup/uninstall performed.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -310,6 +310,423 @@
     }
   },
   "currentBuild": {
+    "version": "0.1.5",
+    "sourceBaseCommit": "3c40c49f880ef8e03dfbfa91c3327adbafe9534d",
+    "sourceState": "Verified functionality commit followed by app-root version metadata only; public download remains 0.1.4 until installer verification.",
+    "checkedAt": "2026-10-31T05:27:09.564Z",
+    "commands": [
+      {
+        "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
+        "exit": 0
+      },
+      {
+        "command": "powershell -NoProfile -File scripts/build-cli.ps1",
+        "exit": 0
+      },
+      {
+        "command": "cargo check --manifest-path src-tauri/Cargo.toml --locked --offline",
+        "exit": 0
+      },
+      {
+        "command": "node .analysis/verify-release015-native.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node .analysis/prepare015.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node scripts/verify-license-inventory.mjs",
+        "exit": 0
+      }
+    ],
+    "nativeSmoke": {
+      "observedAt": "2026-10-31T05:26:07.021Z",
+      "sha256": "37C6C2E7398A2CAF33EABB722131D5F95EEF998F1596EBCF79D3CFB9174CE32D",
+      "checks": [
+        {
+          "name": "WSL bottom padding 1000x640",
+          "passed": true,
+          "evidence": {
+            "mainHeight": 582,
+            "scrollHeight": 649,
+            "bottomGap": 35.51245880126953,
+            "paddingBottom": "20px"
+          }
+        },
+        {
+          "name": "WSL bottom padding 1668x900",
+          "passed": true,
+          "evidence": {
+            "mainHeight": 842,
+            "scrollHeight": 842,
+            "bottomGap": 249.375,
+            "paddingBottom": "18px"
+          }
+        },
+        {
+          "name": "One build source panel before file selection",
+          "passed": true
+        },
+        {
+          "name": "Actual shared Node image cache is blocked",
+          "passed": true
+        }
+      ],
+      "pruneExecuted": false,
+      "engine": {
+        "apiVersion": "1.55",
+        "appVersion": "0.1.5",
+        "architecture": "x86_64",
+        "context": "dockslate",
+        "cpuCount": 16,
+        "dockerRootDir": "/var/lib/docker",
+        "endpoint": "wsl://DockSlate/var/run/docker.sock",
+        "engine": "moby",
+        "id": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+        "kernel": "6.6.87.2-microsoft-standard-WSL2",
+        "memoryTotalBytes": 10427244544,
+        "message": "Verified independent DockSlate Moby Engine",
+        "os": "Ubuntu 24.04.5 LTS",
+        "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+        "provider": "DockSlate",
+        "serverVersion": "29.8.2",
+        "state": "connected",
+        "storageDriver": "overlayfs"
+      },
+      "cacheState": [
+        {
+          "id": "dwq8zorqymanwuzfwo2o3sep4",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "uur9jfm5jxjj4qvzq3scbh9rb",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "m3cmv7zr2ommu43tj6luvbeiz",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "wp71f92wku9g1euxyo6vtdv3v",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "v2bcymlez2x5ksryarr0hq73i",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "9gng0p6fgbm74vxgqpv8ddn9e",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "gph8mkf19wtti73ryeqy7b6sc",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "enw59vt2nb1o5m9ifv3t70c9y",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "pellthb9in71t7173l1fdobmn",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "n6wdzc73mnigyi9tgjcevxflj",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "7bw4r0plh9mvtuucm7ocau0s0",
+          "eligible": false,
+          "reason": "Build cache is referenced by other cache records; clean dependent caches first"
+        },
+        {
+          "id": "e826hwgsv9im3vsir2u3zf2t5",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "q299qml6xidebebzvbmqsru99",
+          "eligible": false,
+          "reason": "Build cache is referenced by other cache records; clean dependent caches first"
+        },
+        {
+          "id": "n19uygmxwngy0rrwbkjy2xt22",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "a40vcgqj32xn21268tpj078vn",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "zfpj8ldm0adx7u2o7g9lbzqm0",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "gk0kiezhjjka89luvt9vr2utp",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "99b6riead9fx45ffo8uyofzfl",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "g6peazf25lpvsv084d1ezkym2",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "stx21zq7nnte721f1litflf7h",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "ysfk0whey8d8hg8y6hk2m5pi3",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "m57fz2sl5dj6f04r602yj0tmc",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "sbb31q4lydqqckam94wll41vh",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "ilebzu8xgesnk93xwu7dsmvkr",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "u5wbtaz4ekrk48usikc0z1ozr",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "0q02ru8webdmnb6jmorzez964",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "si5veu55pnj9zr4nt0z5cpvbc",
+          "eligible": true,
+          "reason": null
+        },
+        {
+          "id": "7w9vlcoxs722q4b0hr8wbah9e",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "rpklvpuoznionrpcnl6rc3gvq",
+          "eligible": false,
+          "reason": "Build cache is shared with an image or its sharing state is unknown"
+        },
+        {
+          "id": "tl185j1j3vpqqfrmg9jnpydey",
+          "eligible": true,
+          "reason": null
+        }
+      ],
+      "passed": true,
+      "fileVersion": "0.1.5",
+      "productVersion": "0.1.5"
+    },
+    "functionalValidation": {
+      "file": "docs/results/cleanup-feedback-verification.json",
+      "sourceCommit": "3c40c49f880ef8e03dfbfa91c3327adbafe9534d",
+      "artifactSha256": "5D18F9EAB116A69F8EE7D983973D8A81582D2C2764E3D36F01C14BA1DF1310F1",
+      "nativeChecks": 12,
+      "renderChecks": 2,
+      "scope": "Functional source unchanged since these checks. Version-only rebuilt binary has four additional read-only checks; no second cache prune."
+    },
+    "nativeChecks": 4,
+    "offlineCli": {
+      "appVersion": "0.1.5",
+      "sha256": "04FF022DAFF629CE020657A22172368761DB4D0D685E8C14432056140BF83EBF",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.6.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+        }
+      ],
+      "passed": true
+    },
+    "licenseComponents": 555,
+    "licenseTexts": 362,
+    "licenseSourceArchives": 11,
+    "dependencyVersionsChanged": false,
+    "lockFileVersionMetadataOnly": true,
+    "installerExecuted": false,
+    "rendererExceptions": 0,
+    "originalResourcesPreserved": true,
+    "localInstallerAttempt": {
+      "executed": false,
+      "reason": "Known local NSIS helper-read failure from 0.1.4 was not retried; one authorized GitHub packaging run is used."
+    },
+    "packages": {
+      "passed": true,
+      "version": "0.1.5",
+      "archives": [
+        {
+          "file": "DockSlate-0.1.5-windows-x64.zip",
+          "files": 579,
+          "passed": true,
+          "bytes": 63289315,
+          "sha256": "5BF378F6AC284F686553B8F556BA7E6D401B0DA00555EEFFEE1EE164383FA52F"
+        },
+        {
+          "file": "DockSlate-0.1.5-third-party-licenses.zip",
+          "files": 378,
+          "passed": true,
+          "bytes": 5161525,
+          "sha256": "D427BA1E60254372E5C4F7F7A4862A86139C838943426C98CD160929268807D4"
+        }
+      ],
+      "installerPresent": false,
+      "installerExecuted": false
+    }
+  },
+  "portableDelivery": {
+    "version": "0.1.5",
+    "observedAt": "2026-10-31T05:28:47.853Z",
+    "command": "powershell -NoProfile -File scripts/package-local.ps1",
+    "packagingExit": 0,
+    "file": "DockSlate-0.1.5-windows-x64.zip",
+    "files": 579,
+    "passed": true,
+    "bytes": 63289315,
+    "sha256": "5BF378F6AC284F686553B8F556BA7E6D401B0DA00555EEFFEE1EE164383FA52F",
+    "appSha256": "37C6C2E7398A2CAF33EABB722131D5F95EEF998F1596EBCF79D3CFB9174CE32D",
+    "launcherSha256": "04FF022DAFF629CE020657A22172368761DB4D0D685E8C14432056140BF83EBF",
+    "sameFilesVerifiedInsideZip": true,
+    "publicDownloadVerified": false,
+    "installerExecuted": false,
+    "legalArchive": {
+      "file": "DockSlate-0.1.5-third-party-licenses.zip",
+      "files": 378,
+      "passed": true,
+      "bytes": 5161525,
+      "sha256": "D427BA1E60254372E5C4F7F7A4862A86139C838943426C98CD160929268807D4"
+    },
+    "packagedDocumentsScope": "Snapshot at ZIP creation; final archive hashes and subsequent delivery status are maintained separately in the repository."
+  },
+  "previousInstallerDelivery": {
+    "observedAt": "2026-10-30T13:04:49.116Z",
+    "version": "0.1.3",
+    "file": "DockSlate_0.1.3_x64-setup.exe",
+    "bytes": 49258299,
+    "sha256": "086CB921BBB7C926B8E6AE199194699832A9622C0EE4817300C63492AFE8E0CE",
+    "signatureStatus": "NotSigned",
+    "appSha256": "28D11804D3CEB6292A95AB6506096F401AA77316C30A45AF4E8ED5845EDA89C4",
+    "launcherSha256": "D8E2AD91190B180E4EEEDD37C103A78BCE34EA89731243A6FC33C5C7C83B0594",
+    "runId": 41058828307,
+    "sourceCommit": "f549bd52938ec28058f77eb30cecaa6ba44a49a3",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/41058828307",
+    "buildConclusion": "success",
+    "artifactId": 12978371775,
+    "artifactDigest": "sha256:2d4a96c1b2203725b458b2bc8a43d8f94e62578e20fb7af325118e469dd253c0",
+    "archiveBytes": 49252997,
+    "githubDigestVerified": true,
+    "embeddedApplicationAndLauncherMatch": true,
+    "embeddedPathHelperMatches": true,
+    "verifiedLicenseFiles": 375,
+    "licenseIndexesMatch": true,
+    "nativeComponentFilesVerified": 8,
+    "exampleFilesVerified": 5,
+    "packagedDocumentFilesVerified": 7,
+    "packagedDocumentsScope": "Source snapshot from the packaging input commit; final public-delivery evidence is maintained separately in the repository.",
+    "inputZip": {
+      "file": "DockSlate-0.1.3-windows-x64.zip",
+      "bytes": 63265263,
+      "sha256": "DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5"
+    },
+    "installerExecuted": false,
+    "publicDownloadVerified": true,
+    "temporaryWorkflowRemoved": true,
+    "publicDownloadReport": "docs/results/public-release-0.1.3.json",
+    "temporaryExtractionRemoved": true
+  },
+  "previousPortableDelivery": {
+    "version": "0.1.4",
+    "observedAt": "2026-10-30T14:55:34.081Z",
+    "command": "powershell -NoProfile -File scripts/package-local.ps1",
+    "packagingExit": 0,
+    "file": "DockSlate-0.1.4-windows-x64.zip",
+    "files": 574,
+    "passed": true,
+    "bytes": 63274826,
+    "sha256": "B2F15BCB3EED05CFDE51090DE41F331FF3F3D0C3D6AA7B67A63EE939921CDFF5",
+    "appSha256": "7AD08317387307F4F50B15655DF02E3AC39FDBB272B181D632BB2691C41E01E2",
+    "launcherSha256": "0D8D95C523EDEE39D565E66995185A26C44177B5470405CE73BE600DF6A7E949",
+    "sameFilesVerifiedInsideZip": true,
+    "publicDownloadVerified": true,
+    "installerExecuted": false,
+    "legalArchive": {
+      "file": "DockSlate-0.1.4-third-party-licenses.zip",
+      "files": 378,
+      "passed": true,
+      "bytes": 5161430,
+      "sha256": "297E60F066AB10467010E296FD47DD4B7C7CFC81C9067D3335BC2F189F98AAF1"
+    },
+    "packagedDocumentsScope": "Snapshot at ZIP creation; final archive hashes and subsequent delivery status are maintained separately in the source repository.",
+    "publicDownloadReport": "docs/results/public-release-0.1.4.json"
+  },
+  "version": "0.1.5",
+  "deletedOutputs": [
+    "downloads/DockSlate_0.1.2_x64-setup.exe",
+    "downloads/DockSlate-0.1.2-windows-x64.zip",
+    "downloads/DockSlate-0.1.2-third-party-licenses.zip",
+    "docs/downloads/DockSlate_0.1.2_x64-setup.exe",
+    "docs/downloads/DockSlate-0.1.2-windows-x64.zip",
+    "docs/downloads/DockSlate-0.1.2-third-party-licenses.zip"
+  ],
+  "previousBuild": {
     "version": "0.1.4",
     "sourceBaseCommit": "f408de7e315144b28aaaf5993b61d7eba755e82b",
     "sourceState": "Committed 0.1.4 source; installer restores reviewed binaries from the frozen ZIP.",
@@ -454,181 +871,5 @@
       "conclusion": "success",
       "commit": "de7463162a2b384e0be21ecc752088d3892a2216"
     }
-  },
-  "portableDelivery": {
-    "version": "0.1.4",
-    "observedAt": "2026-10-30T14:55:34.081Z",
-    "command": "powershell -NoProfile -File scripts/package-local.ps1",
-    "packagingExit": 0,
-    "file": "DockSlate-0.1.4-windows-x64.zip",
-    "files": 574,
-    "passed": true,
-    "bytes": 63274826,
-    "sha256": "B2F15BCB3EED05CFDE51090DE41F331FF3F3D0C3D6AA7B67A63EE939921CDFF5",
-    "appSha256": "7AD08317387307F4F50B15655DF02E3AC39FDBB272B181D632BB2691C41E01E2",
-    "launcherSha256": "0D8D95C523EDEE39D565E66995185A26C44177B5470405CE73BE600DF6A7E949",
-    "sameFilesVerifiedInsideZip": true,
-    "publicDownloadVerified": true,
-    "installerExecuted": false,
-    "legalArchive": {
-      "file": "DockSlate-0.1.4-third-party-licenses.zip",
-      "files": 378,
-      "passed": true,
-      "bytes": 5161430,
-      "sha256": "297E60F066AB10467010E296FD47DD4B7C7CFC81C9067D3335BC2F189F98AAF1"
-    },
-    "packagedDocumentsScope": "Snapshot at ZIP creation; final archive hashes and subsequent delivery status are maintained separately in the source repository.",
-    "publicDownloadReport": "docs/results/public-release-0.1.4.json"
-  },
-  "previousInstallerDelivery": {
-    "observedAt": "2026-10-30T13:04:49.116Z",
-    "version": "0.1.3",
-    "file": "DockSlate_0.1.3_x64-setup.exe",
-    "bytes": 49258299,
-    "sha256": "086CB921BBB7C926B8E6AE199194699832A9622C0EE4817300C63492AFE8E0CE",
-    "signatureStatus": "NotSigned",
-    "appSha256": "28D11804D3CEB6292A95AB6506096F401AA77316C30A45AF4E8ED5845EDA89C4",
-    "launcherSha256": "D8E2AD91190B180E4EEEDD37C103A78BCE34EA89731243A6FC33C5C7C83B0594",
-    "runId": 41058828307,
-    "sourceCommit": "f549bd52938ec28058f77eb30cecaa6ba44a49a3",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/41058828307",
-    "buildConclusion": "success",
-    "artifactId": 12978371775,
-    "artifactDigest": "sha256:2d4a96c1b2203725b458b2bc8a43d8f94e62578e20fb7af325118e469dd253c0",
-    "archiveBytes": 49252997,
-    "githubDigestVerified": true,
-    "embeddedApplicationAndLauncherMatch": true,
-    "embeddedPathHelperMatches": true,
-    "verifiedLicenseFiles": 375,
-    "licenseIndexesMatch": true,
-    "nativeComponentFilesVerified": 8,
-    "exampleFilesVerified": 5,
-    "packagedDocumentFilesVerified": 7,
-    "packagedDocumentsScope": "Source snapshot from the packaging input commit; final public-delivery evidence is maintained separately in the repository.",
-    "inputZip": {
-      "file": "DockSlate-0.1.3-windows-x64.zip",
-      "bytes": 63265263,
-      "sha256": "DCFAF185BA2B12D0A69918F19578F3A796B0D0A7BFDA026B027B203B5DAAFAF5"
-    },
-    "installerExecuted": false,
-    "publicDownloadVerified": true,
-    "temporaryWorkflowRemoved": true,
-    "publicDownloadReport": "docs/results/public-release-0.1.3.json",
-    "temporaryExtractionRemoved": true
-  },
-  "previousPortableDelivery": {
-    "version": "0.1.2",
-    "observedAt": "2026-10-29T11:17:05.062Z",
-    "command": "npm run package:local",
-    "packagingExit": 0,
-    "file": "DockSlate-0.1.2-windows-x64.zip",
-    "bytes": 63254224,
-    "sha256": "30280D9B18FDA8F54C1490177A975BBFEC8CA97638C42EE673C70C941C037D95",
-    "appSha256": "6C36C075767E7644A2AD7F218723D9C9B9FD4DD500711A5F30CCCEDEFAF0F8A0",
-    "launcherSha256": "862F8AFEE70B87359166E1E15727201D913AEAF76CA272092B04FE6FD0346AB7",
-    "binaryFilesVerified": 10,
-    "legalFilesVerified": 377,
-    "installerExecuted": false,
-    "sameFilesVerifiedInsideZip": 387,
-    "publicDownloadVerified": true
-  },
-  "version": "0.1.3",
-  "deletedOutputs": [
-    "downloads/DockSlate_0.1.2_x64-setup.exe",
-    "downloads/DockSlate-0.1.2-windows-x64.zip",
-    "downloads/DockSlate-0.1.2-third-party-licenses.zip",
-    "docs/downloads/DockSlate_0.1.2_x64-setup.exe",
-    "docs/downloads/DockSlate-0.1.2-windows-x64.zip",
-    "docs/downloads/DockSlate-0.1.2-third-party-licenses.zip"
-  ],
-  "previousBuild": {
-    "version": "0.1.2",
-    "sourceBaseCommit": "f06771d7f7212ae341c6ec1a9264c030b2523b62",
-    "sourceState": "Application source committed; final release metadata and documentation updated after packaging.",
-    "checkedAt": "2026-10-29T11:14:41.743Z",
-    "commands": [
-      {
-        "command": "npm run build",
-        "exit": 0
-      },
-      {
-        "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
-        "exit": 0
-      },
-      {
-        "command": "powershell -NoProfile -File scripts/build-cli.ps1",
-        "exit": 0
-      },
-      {
-        "command": "cargo check --manifest-path src-tauri/Cargo.toml --locked --offline",
-        "exit": 0
-      }
-    ],
-    "nativeReports": [
-      {
-        "file": "docs/results/ui-cleanup-0.1.2.json",
-        "checks": 15,
-        "completed": true,
-        "artifactSha256": "6C36C075767E7644A2AD7F218723D9C9B9FD4DD500711A5F30CCCEDEFAF0F8A0"
-      }
-    ],
-    "nativeChecks": 15,
-    "offlineCli": {
-      "observedAt": "2026-10-29T11:11:51.0328417+00:00",
-      "sha256": "862F8AFEE70B87359166E1E15727201D913AEAF76CA272092B04FE6FD0346AB7",
-      "checks": [
-        {
-          "args": [
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "--debug",
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "compose",
-            "version",
-            "--short"
-          ],
-          "exit": 0,
-          "output": "5.6.0"
-        },
-        {
-          "args": [
-            "buildx",
-            "version"
-          ],
-          "exit": 0,
-          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
-        }
-      ],
-      "engineConnectionRequired": false
-    },
-    "licenseComponents": 555,
-    "licenseTexts": 362,
-    "licenseSourceArchives": 11,
-    "dependencyVersionsChanged": false,
-    "installerExecuted": false,
-    "localInstallerAttempt": {
-      "command": "powershell -NoProfile -File scripts/build-installer.ps1 -SkipBuild",
-      "exit": 1,
-      "error": "NSIS cannot read installer/user-path.ps1; no installer executed."
-    },
-    "lockFileVersionMetadataOnly": true,
-    "sourceCommit": "13a0d39e03f950eb61f28401b23edc3abe1b0236",
-    "siteBuild": {
-      "command": "npm run build:site -- --publish",
-      "exit": 0,
-      "verifiedDownloads": 3
-    },
-    "publicDownloadReport": "docs/results/public-release-0.1.2.json"
   }
 }
