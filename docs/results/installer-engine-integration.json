@@ -207,7 +207,7 @@
       "sha256": "20E330D17DDC42F3A0BD1BB3E090EC44F9FD1D946F89B2F0F5F9E527A4F25928"
     },
     "installerExecuted": false,
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "packagedNoticeVersion": "0.1.6",
     "retainedLegalDownloads": [
       {
@@ -242,9 +242,12 @@
       "historicalLegalArchivesPreserved": true,
       "currentDownloadsPreserved": true,
       "wslOrVolumesChanged": false,
-      "accountingNote": "An empty-directory byte-tally error interrupted the first cleanup after partial removal. Cleanup resumed with null-safe accounting and all final target absences were verified. Exact total bytes for this transient cleanup were not retained; the separate initial duplicate-removal byte counts are complete."
+      "accountingNote": "An empty-directory byte-tally error interrupted the first cleanup after partial removal. Cleanup resumed with null-safe accounting and all final target absences were verified. Exact total bytes for this transient cleanup were not retained; the separate initial duplicate-removal byte counts are complete.",
+      "generatedAppOutputRemoved": true,
+      "generatedAppOutputBytes": 612182
     },
-    "temporaryExtractionRemoved": true
+    "temporaryExtractionRemoved": true,
+    "publicDownloadReport": "docs/results/public-release-0.1.6.json"
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -434,9 +437,12 @@
       "guideExit": 0,
       "guideChecks": 7,
       "guideReport": "docs/results/guide-delivery-e2e.json",
-      "previewRemovedAfterVerification": true
+      "previewRemovedAfterVerification": true,
+      "appOutputRemovedAfterVerification": true
     },
-    "verificationHarnessNotes": "The website verifier now uses explicit page focus for hidden Chrome and checks the current unsigned/security-record/hash-purpose wording. Earlier focus and obsolete-text assertion failures were corrected before the completed 27-check run."
+    "verificationHarnessNotes": "The website verifier now uses explicit page focus for hidden Chrome and checks the current unsigned/security-record/hash-purpose wording. Earlier focus and obsolete-text assertion failures were corrected before the completed 27-check run.",
+    "publicDownloadReport": "docs/results/public-release-0.1.6.json",
+    "publicVerifiedAgainstCommit": "2244c7c11590c1518f53383e0e62017a38d7bcc4"
   },
   "portableDelivery": {
     "version": "0.1.6",
@@ -451,7 +457,7 @@
     "appSha256": "3DACD6FDC1DFECA7917EA6FB0C1E2812DE758160F9ADDDB142709CAFB004DA67",
     "launcherSha256": "A74D47DBEC9B39D6E7914921278325B4DDE4FC24FB4386A0D7637A8D2346E421",
     "sameFilesVerifiedInsideZip": true,
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "installerExecuted": false,
     "legalArchive": {
       "file": "DockSlate-0.1.6-third-party-licenses.zip",
@@ -460,7 +466,8 @@
       "bytes": 5161524,
       "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
     },
-    "packagedDocumentsScope": "Snapshot at ZIP creation; subsequent final installer and public-delivery evidence is maintained separately in the repository."
+    "packagedDocumentsScope": "Snapshot at ZIP creation; subsequent final installer and public-delivery evidence is maintained separately in the repository.",
+    "publicDownloadReport": "docs/results/public-release-0.1.6.json"
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

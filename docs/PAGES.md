@@ -42,6 +42,7 @@ npm run build:site -- --publish
 
 | 범위 | 실제 결과·기록 |
 | --- | --- |
+| 0.1.6 공개 다운로드 · 2026-10-31 | [실제 공개 파일 검증](results/public-release-0.1.6.json). 설치 EXE·포터블·고지 ZIP 3개 HTTP 200·크기·SHA-256 일치, 루트 HTML 일치. 구버전·구형 사이트 URL 6개 HTTP 404, 고지 링크 6개 유지·임시 workflow 삭제 확인 |
 | 0.1.3 공개 다운로드 · 2026-10-30 | [실제 공개 파일 검증](results/public-release-0.1.3.json). 설치 EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 루트 HTML 일치, 0.1.2 다운로드 6개 HTTP 404, 임시 workflow 삭제 확인 |
 | 0.1.2 공개 다운로드 | [실제 공개 파일 검증](results/public-release-0.1.2.json). EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 HTML 일치, 0.1.1 다운로드 3개 HTTP 404 |
 | 0.1.1 공개 다운로드 | [실제 공개 파일 검증](results/public-release-0.1.1.json). EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 HTML 일치, 구버전 3개 HTTP 404 |

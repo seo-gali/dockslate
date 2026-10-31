@@ -155,6 +155,8 @@
     "historicalLegalArchivesPreserved": true,
     "currentDownloadsPreserved": true,
     "wslOrVolumesChanged": false,
-    "accountingNote": "An empty-directory byte-tally error interrupted the first cleanup after partial removal. Cleanup resumed with null-safe accounting and all final target absences were verified. Exact total bytes for this transient cleanup were not retained; the separate initial duplicate-removal byte counts are complete."
+    "accountingNote": "An empty-directory byte-tally error interrupted the first cleanup after partial removal. Cleanup resumed with null-safe accounting and all final target absences were verified. Exact total bytes for this transient cleanup were not retained; the separate initial duplicate-removal byte counts are complete.",
+    "generatedAppOutputRemoved": true,
+    "generatedAppOutputBytes": 612182
   }
 }

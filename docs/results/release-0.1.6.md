@@ -16,4 +16,6 @@ WSL 커널 패치는 앱 설치 파일에 포함하지 않는다. 별도 승인�
 | `DockSlate-0.1.6-windows-x64.zip` | 63318278B | `20E330D17DDC42F3A0BD1BB3E090EC44F9FD1D946F89B2F0F5F9E527A4F25928` |
 | `DockSlate-0.1.6-third-party-licenses.zip` | 5161524B | `E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B` |
 
-사이트 [실제 Chrome 검사 27개](pages-e2e.json)와 [독립 안내서 검사 7개](guide-delivery-e2e.json)는 종료 0이다. 루트·미리보기 HTTP, 실제 다운로드 3개, 키보드, 1440·1024·390px, JavaScript 비활성, canonical·Sitemap·404와 앱 진입점 분리를 검사했다. 검증 후 `site-dist/`·전용 브라우저 프로필·설치 추출물과 복제 다운로드를 제거했다. 원본 ZIP과 파일별 일치한 구버전 포터블과 앱 다운로드 2개를 정리했고, 과거 고지 ZIP URL은 보존한다. [정리 범위](repository-cleanup.json). 공개 URL 검증은 게시 후 별도 기록한다.
+사이트 [실제 Chrome 검사 27개](pages-e2e.json)와 [독립 안내서 검사 7개](guide-delivery-e2e.json)는 종료 0이다. 루트·미리보기 HTTP, 실제 다운로드 3개, 키보드, 1440·1024·390px, JavaScript 비활성, canonical·Sitemap·404와 앱 진입점 분리를 검사했다. 검증 후 `site-dist/`·전용 브라우저 프로필·설치 추출물과 복제 다운로드를 제거했다. 원본 ZIP과 파일별 일치한 구버전 포터블과 앱 다운로드 2개를 정리했고, 과거 고지 ZIP URL은 보존한다. [정리 범위](repository-cleanup.json). [실제 공개 URL 검사](public-release-0.1.6.json)에서 설치 EXE·포터블·고지 ZIP 3개의 HTTP 200·크기·SHA-256과 루트 HTML 일치, 구버전·구형 사이트 URL 6개의 HTTP 404, 기존 고지 URL 6개의 유지와 원격 임시 workflow 부재를 확인했다.
+
+현재 `dist/`와 `site-dist/` 생성물은 검증 후 제거했다. 원본 `src/`·`src-tauri/`·`site/`는 보존했으며 각각 앱 빌드·사이트 미리보기 명령으로 다시 생성한다.
