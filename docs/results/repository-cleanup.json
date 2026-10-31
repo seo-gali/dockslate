@@ -139,5 +139,22 @@
     "src",
     "src-tauri"
   ],
-  "previewFolder": "site-dist is generated for validation and removed afterwards"
+  "previewFolder": "site-dist is generated for validation and removed afterwards",
+  "releaseCleanup": {
+    "observedAt": "2026-10-31T12:10:59.249Z",
+    "oldPortableRemoved": true,
+    "oldPortableFilesMatchedOriginalZipBeforeRemoval": true,
+    "oldApplicationFilesRemoved": [
+      "downloads/DockSlate_0.1.5_x64-setup.exe",
+      "downloads/DockSlate-0.1.5-windows-x64.zip"
+    ],
+    "siteDistRemoved": true,
+    "ownBrowserProfilesRemoved": true,
+    "temporaryExtractionRemoved": true,
+    "artifactCopiesRemoved": true,
+    "historicalLegalArchivesPreserved": true,
+    "currentDownloadsPreserved": true,
+    "wslOrVolumesChanged": false,
+    "accountingNote": "An empty-directory byte-tally error interrupted the first cleanup after partial removal. Cleanup resumed with null-safe accounting and all final target absences were verified. Exact total bytes for this transient cleanup were not retained; the separate initial duplicate-removal byte counts are complete."
+  }
 }

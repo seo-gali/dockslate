@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-22T22:01:33.495Z",
+  "observedAt": "2026-10-31T11:58:19.875Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
@@ -16,17 +16,6 @@
     },
     {
       "name": "dist/guide.html opens as a compact standalone usage page without download/print/export controls",
-      "passed": true,
-      "evidence": {
-        "steps": 3,
-        "details": 4,
-        "open": 0,
-        "buttons": 0,
-        "external": 0
-      }
-    },
-    {
-      "name": "docs/guide.html opens as a compact standalone usage page without download/print/export controls",
       "passed": true,
       "evidence": {
         "steps": 3,

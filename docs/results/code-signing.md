@@ -61,3 +61,7 @@ SHA-256은 다운로드 파일이 게시한 배포본과 같은지 확인한다.
 | `node scripts/verify-guide.mjs .analysis/guide-browser-download-session.json` | 종료 0, 실제 격리 Chrome의 11개 검사 통과. root/dist 안내·EXE/ZIP 실제 다운로드와 원본 해시 일치·추출 ZIP 안내·공유 HTML·390px·JS 오류 없음. [기록](guide-delivery-e2e.json) |
 
 위 다운로드 복구 검사는 2026-10-22의 설치판 SHA-256 `8C3606C8FB14E9B81DEA0B217006EACD9B39DA284F30DA5E08A6919D30BE1094` 범위다. 당시 새 설치판 빌드·서명·설치·제거·엔진 조작은 수행하지 않았다. 이후 버전의 실제 산출물·해시·서명 상태는 [최신 배포 기록](installer-engine-integration.json)에서 확인한다. 보안 설정 변경이나 경고 해소를 의미하지 않는다.
+
+## 0.1.6 배포물 확인
+
+2026-10-31. 새 앱·자체 CLI·설치 EXE의 Authenticode는 모두 `NotSigned`다. [0.1.6 빌드·읽기 전용 검사와 설치 파일 내부 대조](release-0.1.6.md)는 파일 구성과 관측한 동작의 근거이며 코드 서명·백신 검사·원래 IObit 알림의 원인 확정을 대신하지 않는다. 공급업체 문의는 초안만 작성했으며 전송하지 않았다.

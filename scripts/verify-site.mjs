@@ -76,8 +76,10 @@ const navigate = async url => {
 };
 const downloadDir = path.join(root, '.analysis', 'site-download-test-' + randomUUID());
 fs.mkdirSync(downloadDir);
+report.downloadDirectory = path.relative(root, downloadDir).replaceAll('\\', '/');
 try {
   await send('Runtime.enable'); await send('Page.enable');
+  await send('Emulation.setFocusEmulationEnabled', { enabled: true });
   await navigate(pathToFileURL(path.join(output, 'index.html')).href);
   assert(await evaluate(`document.title.includes('DockSlate')&&!document.querySelector('[role="tablist"]').hidden&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1`), 'Local file preview is blank or its script failed.');
   check('Local HTML opens with working guide tabs');
@@ -187,8 +189,8 @@ try {
     check(key + ' downloads the exact verified binary without executing it', { bytes: asset.bytes, sha256: asset.sha256 });
   }
   await evaluate(`document.querySelectorAll('.checksum').forEach(item=>item.open=true)`);
-  assert(await evaluate(`document.querySelector('.security-note').textContent.includes('미서명')&&document.querySelector('.security-note').textContent.includes('미확인')&&document.querySelector('#installer-hash').textContent===${JSON.stringify(release.installer.sha256)}`), 'Unsigned notice or displayed checksum missing.');
-  check('Unsigned status, unresolved alert and exact SHA-256 remain visible');
+  assert(await evaluate(`document.querySelector('.security-note').textContent.includes('미서명')&&document.querySelector('.security-note a[href="https://github.com/seo-gali/dockslate/blob/main/docs/results/code-signing.md"]')&&document.querySelector('.security-note').textContent.includes('SHA-256은 받은 파일이 공개한 배포본과 동일한지 확인하는 값입니다.')&&document.querySelector('#installer-hash').textContent===${JSON.stringify(release.installer.sha256)}`), 'Unsigned notice, security record, hash purpose or displayed checksum missing.');
+  check('Unsigned status, security record link, hash purpose and exact SHA-256 remain visible');
   for (const width of [1440, 1024, 390]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height: 1000, deviceScaleFactor: 1, mobile: false });
     assert(await evaluate(`document.documentElement.scrollWidth<=innerWidth`), 'Horizontal page overflow at ' + width);

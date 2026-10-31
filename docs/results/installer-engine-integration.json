@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-31T11:51:23.676Z",
+  "observedAt": "2026-10-31T12:01:47.136Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -13,7 +13,7 @@
     "installerBuildExit": 1,
     "hookCompilationExit": 0,
     "installerExecuted": false,
-    "browserChecks": 10,
+    "browserChecks": 27,
     "lockedDependencyFetchExit": 0,
     "lockFilesChanged": true,
     "latestNativeFlowExecuted": true,
@@ -21,7 +21,7 @@
     "powerShellParserErrors": 0,
     "offlineComponentGuardExit": 1,
     "offlineComponentGuardExpectedFailure": true,
-    "browserScope": "Earlier general frontend checks; not the native CLI or engine broker.",
+    "browserScope": "0.1.6 local Chrome file/HTTP site and root publishing output; no native backend. Public verification is separate.",
     "componentPreparationExit": 0,
     "portablePackagingExit": 0,
     "offlineNativeCliChecks": 4,
@@ -32,8 +32,8 @@
     "nativeCliCommandsFailed": 2,
     "logFollowCancellationPassed": true,
     "originalResourcesPreserved": true,
-    "guideDeliveryExit": null,
-    "guideDeliveryChecks": 11,
+    "guideDeliveryExit": 0,
+    "guideDeliveryChecks": 7,
     "portableInternalFilesVerified": 591,
     "engineRestoredStopped": true,
     "remoteInstallerBuildExit": 0,
@@ -64,8 +64,8 @@
       "executionMode": "Four offline version commands."
     }
   ],
-  "installerFilePresent": false,
-  "blocker": "0.1.6 installer packaging pending. Historical installer delivery does not certify this candidate.",
+  "installerFilePresent": true,
+  "blocker": "0.1.6 packaging and embedded-file checks passed. Actual setup/uninstall, full regression, signing and original IObit-alert root cause remain unverified. WSL kernel repair was applied separately to the approved host and is not shipped inside the application.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -177,21 +177,21 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "observedAt": "2026-10-31T05:33:10.237Z",
-    "version": "0.1.5",
-    "file": "DockSlate_0.1.5_x64-setup.exe",
-    "bytes": 49260305,
-    "sha256": "A9B1FF5ED188F7311BD7A764563AFEB8671C27CE1B3BFFCC6E2505DBB5284D46",
+    "observedAt": "2026-10-31T12:01:47.136Z",
+    "version": "0.1.6",
+    "file": "DockSlate_0.1.6_x64-setup.exe",
+    "bytes": 49268432,
+    "sha256": "E8699FEDC93C31081E73D792BB55A596AA326EA988ABD3C8BD5575144D6B8525",
     "signatureStatus": "NotSigned",
-    "appSha256": "37C6C2E7398A2CAF33EABB722131D5F95EEF998F1596EBCF79D3CFB9174CE32D",
-    "launcherSha256": "04FF022DAFF629CE020657A22172368761DB4D0D685E8C14432056140BF83EBF",
-    "runId": 41172785348,
-    "sourceCommit": "81e7711d85dea961f5f3ee20dec1f5d14853d97a",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/41172785348",
+    "appSha256": "3DACD6FDC1DFECA7917EA6FB0C1E2812DE758160F9ADDDB142709CAFB004DA67",
+    "launcherSha256": "A74D47DBEC9B39D6E7914921278325B4DDE4FC24FB4386A0D7637A8D2346E421",
+    "runId": 41198902798,
+    "sourceCommit": "2d229466e5176d3118c25df3a271b6e8d7c33fbc",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/41198902798",
     "buildConclusion": "success",
-    "artifactId": 13031389508,
-    "artifactDigest": "sha256:4751bb57a398d1d52cda13822b2749e5de4126231fa5f71f0e7de1bfbf6df65d",
-    "archiveBytes": 49255011,
+    "artifactId": 13041612875,
+    "artifactDigest": "sha256:0a9e7eca8cd654c9aa1eee9d918e9c39b7ee781220469a12cf100f9f1313db38",
+    "archiveBytes": 49263126,
     "githubDigestVerified": true,
     "embeddedApplicationAndLauncherMatch": true,
     "embeddedPathHelperMatches": true,
@@ -199,16 +199,16 @@
     "licenseIndexesMatch": true,
     "nativeComponentFilesVerified": 8,
     "exampleFilesVerified": 5,
-    "packagedDocumentFilesVerified": 11,
+    "packagedDocumentFilesVerified": 13,
     "packagedDocumentsScope": "Source snapshot at installer input commit; portable documents were frozen at ZIP creation. Subsequent delivery evidence is maintained in the repository.",
     "inputZip": {
-      "file": "DockSlate-0.1.5-windows-x64.zip",
-      "bytes": 63289315,
-      "sha256": "5BF378F6AC284F686553B8F556BA7E6D401B0DA00555EEFFEE1EE164383FA52F"
+      "file": "DockSlate-0.1.6-windows-x64.zip",
+      "bytes": 63318278,
+      "sha256": "20E330D17DDC42F3A0BD1BB3E090EC44F9FD1D946F89B2F0F5F9E527A4F25928"
     },
     "installerExecuted": false,
-    "publicDownloadVerified": true,
-    "packagedNoticeVersion": "0.1.5",
+    "publicDownloadVerified": false,
+    "packagedNoticeVersion": "0.1.6",
     "retainedLegalDownloads": [
       {
         "file": "DockSlate-0.1.3-third-party-licenses.zip",
@@ -219,39 +219,32 @@
         "file": "DockSlate-0.1.4-third-party-licenses.zip",
         "bytes": 5161430,
         "sha256": "297E60F066AB10467010E296FD47DD4B7C7CFC81C9067D3335BC2F189F98AAF1"
+      },
+      {
+        "file": "DockSlate-0.1.5-third-party-licenses.zip",
+        "bytes": 5161525,
+        "sha256": "D427BA1E60254372E5C4F7F7A4862A86139C838943426C98CD160929268807D4"
       }
     ],
     "temporaryWorkflowRemoved": true,
     "localCleanup": {
-      "removed": [
-        "downloads/DockSlate_0.1.4_x64-setup.exe",
-        "downloads/DockSlate-0.1.4-windows-x64.zip",
-        "docs/downloads/DockSlate_0.1.4_x64-setup.exe",
-        "docs/downloads/DockSlate-0.1.4-windows-x64.zip"
-      ],
+      "observedAt": "2026-10-31T12:10:59.249Z",
       "oldPortableRemoved": true,
-      "oldPortableFilesRemoved": true,
-      "oldPortableMatchesOriginalZip": true,
-      "emptyOldPortableRetained": false,
-      "retainedLegalArchives": [
-        "DockSlate-0.1.3-third-party-licenses.zip",
-        "DockSlate-0.1.4-third-party-licenses.zip"
+      "oldPortableFilesMatchedOriginalZipBeforeRemoval": true,
+      "oldApplicationFilesRemoved": [
+        "downloads/DockSlate_0.1.5_x64-setup.exe",
+        "downloads/DockSlate-0.1.5-windows-x64.zip"
       ],
-      "wslOrVolumesChanged": false
+      "siteDistRemoved": true,
+      "ownBrowserProfilesRemoved": true,
+      "temporaryExtractionRemoved": true,
+      "artifactCopiesRemoved": true,
+      "historicalLegalArchivesPreserved": true,
+      "currentDownloadsPreserved": true,
+      "wslOrVolumesChanged": false,
+      "accountingNote": "An empty-directory byte-tally error interrupted the first cleanup after partial removal. Cleanup resumed with null-safe accounting and all final target absences were verified. Exact total bytes for this transient cleanup were not retained; the separate initial duplicate-removal byte counts are complete."
     },
-    "temporaryExtractionRemoved": true,
-    "publicDownloadReport": "docs/results/public-release-0.1.5.json",
-    "temporaryCleanup": {
-      "removedBytes": 260600508,
-      "targets": [
-        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\artifact.zip",
-        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\incoming",
-        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\extracted-A9B1FF5E-48a75c7d083a47158870886fea54ac8d"
-      ],
-      "verifiedInstallerPreserved": true,
-      "reportsPreserved": true,
-      "wslOrVolumesChanged": false
-    }
+    "temporaryExtractionRemoved": true
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -323,7 +316,7 @@
   "currentBuild": {
     "version": "0.1.6",
     "sourceBaseCommit": "3fa8f3a3b1b0d4c641c7cd882aff3b0209ee9345",
-    "sourceState": "Local cleanup and app-version metadata update; public links remain 0.1.5 until installer verification.",
+    "sourceState": "Committed 0.1.6 input; installer restores reviewed binaries from the frozen ZIP.",
     "checkedAt": "2026-10-31T11:51:23.676Z",
     "commands": [
       {
@@ -426,7 +419,24 @@
         "bytes": 5161524,
         "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
       }
-    ]
+    ],
+    "sourceCommit": "2d229466e5176d3118c25df3a271b6e8d7c33fbc",
+    "siteBuild": {
+      "publishCommand": "npm run build:site -- --publish",
+      "publishExit": 0,
+      "previewCommand": "npm run build:site",
+      "previewExit": 0,
+      "chromeCommand": "node scripts/verify-site.mjs .analysis/release016-browser-session.json",
+      "chromeExit": 0,
+      "chromeChecks": 27,
+      "chromeReport": "docs/results/pages-e2e.json",
+      "guideCommand": "node scripts/verify-guide.mjs .analysis/release016-guide-browser-session.json",
+      "guideExit": 0,
+      "guideChecks": 7,
+      "guideReport": "docs/results/guide-delivery-e2e.json",
+      "previewRemovedAfterVerification": true
+    },
+    "verificationHarnessNotes": "The website verifier now uses explicit page focus for hidden Chrome and checks the current unsigned/security-record/hash-purpose wording. Earlier focus and obsolete-text assertion failures were corrected before the completed 27-check run."
   },
   "portableDelivery": {
     "version": "0.1.6",
@@ -453,21 +463,21 @@
     "packagedDocumentsScope": "Snapshot at ZIP creation; subsequent final installer and public-delivery evidence is maintained separately in the repository."
   },
   "previousInstallerDelivery": {
-    "observedAt": "2026-10-30T15:04:52.104Z",
-    "version": "0.1.4",
-    "file": "DockSlate_0.1.4_x64-setup.exe",
-    "bytes": 49255844,
-    "sha256": "F26131F78385266DEA0D154E2C8FD6D174F7F2F4CCB6AE9920A949BF9A52D902",
+    "observedAt": "2026-10-31T05:33:10.237Z",
+    "version": "0.1.5",
+    "file": "DockSlate_0.1.5_x64-setup.exe",
+    "bytes": 49260305,
+    "sha256": "A9B1FF5ED188F7311BD7A764563AFEB8671C27CE1B3BFFCC6E2505DBB5284D46",
     "signatureStatus": "NotSigned",
-    "appSha256": "7AD08317387307F4F50B15655DF02E3AC39FDBB272B181D632BB2691C41E01E2",
-    "launcherSha256": "0D8D95C523EDEE39D565E66995185A26C44177B5470405CE73BE600DF6A7E949",
-    "runId": 41076346431,
-    "sourceCommit": "0f3bfd2df81e8f4b225abbdb7fa9930a130f79bb",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/41076346431",
+    "appSha256": "37C6C2E7398A2CAF33EABB722131D5F95EEF998F1596EBCF79D3CFB9174CE32D",
+    "launcherSha256": "04FF022DAFF629CE020657A22172368761DB4D0D685E8C14432056140BF83EBF",
+    "runId": 41172785348,
+    "sourceCommit": "81e7711d85dea961f5f3ee20dec1f5d14853d97a",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/41172785348",
     "buildConclusion": "success",
-    "artifactId": 12987591102,
-    "artifactDigest": "sha256:95ed1ca5ff79d009d36172313924cdf81624dca601939189f35a234757d28f28",
-    "archiveBytes": 49250541,
+    "artifactId": 13031389508,
+    "artifactDigest": "sha256:4751bb57a398d1d52cda13822b2749e5de4126231fa5f71f0e7de1bfbf6df65d",
+    "archiveBytes": 49255011,
     "githubDigestVerified": true,
     "embeddedApplicationAndLauncherMatch": true,
     "embeddedPathHelperMatches": true,
@@ -475,48 +485,59 @@
     "licenseIndexesMatch": true,
     "nativeComponentFilesVerified": 8,
     "exampleFilesVerified": 5,
-    "packagedDocumentFilesVerified": 8,
-    "packagedDocumentsScope": "Source snapshot at input commit; final public-delivery evidence is maintained separately in the repository.",
+    "packagedDocumentFilesVerified": 11,
+    "packagedDocumentsScope": "Source snapshot at installer input commit; portable documents were frozen at ZIP creation. Subsequent delivery evidence is maintained in the repository.",
     "inputZip": {
-      "file": "DockSlate-0.1.4-windows-x64.zip",
-      "bytes": 63274826,
-      "sha256": "B2F15BCB3EED05CFDE51090DE41F331FF3F3D0C3D6AA7B67A63EE939921CDFF5"
+      "file": "DockSlate-0.1.5-windows-x64.zip",
+      "bytes": 63289315,
+      "sha256": "5BF378F6AC284F686553B8F556BA7E6D401B0DA00555EEFFEE1EE164383FA52F"
     },
     "installerExecuted": false,
     "publicDownloadVerified": true,
-    "packagedNoticeVersion": "0.1.3",
-    "retainedLegalDownload": {
-      "file": "DockSlate-0.1.3-third-party-licenses.zip",
-      "bytes": 5161432,
-      "sha256": "FA89B812DC50C71240D07286EB0793E63642727952ED95991D4D1D006BF7C77C",
-      "reason": "Unchanged dependency license/source snapshot. Its 0.1.3 archive URL is retained as a historical legal permalink."
-    },
+    "packagedNoticeVersion": "0.1.5",
+    "retainedLegalDownloads": [
+      {
+        "file": "DockSlate-0.1.3-third-party-licenses.zip",
+        "bytes": 5161432,
+        "sha256": "FA89B812DC50C71240D07286EB0793E63642727952ED95991D4D1D006BF7C77C"
+      },
+      {
+        "file": "DockSlate-0.1.4-third-party-licenses.zip",
+        "bytes": 5161430,
+        "sha256": "297E60F066AB10467010E296FD47DD4B7C7CFC81C9067D3335BC2F189F98AAF1"
+      }
+    ],
     "temporaryWorkflowRemoved": true,
-    "temporaryExtractionRemoved": true,
-    "temporaryCleanup": {
-      "temporaryInstallerBytesRemoved": 260579810,
-      "installerProofRetained": true,
-      "newInstallerPreserved": true
-    },
-    "obsoleteDownloadCleanup": {
+    "localCleanup": {
       "removed": [
-        "downloads/DockSlate_0.1.3_x64-setup.exe",
-        "downloads/DockSlate-0.1.3-windows-x64.zip",
-        "docs/downloads/DockSlate_0.1.3_x64-setup.exe",
-        "docs/downloads/DockSlate-0.1.3-windows-x64.zip"
+        "downloads/DockSlate_0.1.4_x64-setup.exe",
+        "downloads/DockSlate-0.1.4-windows-x64.zip",
+        "docs/downloads/DockSlate_0.1.4_x64-setup.exe",
+        "docs/downloads/DockSlate-0.1.4-windows-x64.zip"
       ],
-      "oldPortableRemoved": false,
+      "oldPortableRemoved": true,
       "oldPortableFilesRemoved": true,
       "oldPortableMatchesOriginalZip": true,
-      "emptyOldPortableRetained": true,
-      "firstAttemptExit": 1,
-      "firstAttemptReason": "All original files were verified against the original ZIP and removed. Removing the empty root directory failed because another process holds the directory; no process was stopped.",
-      "retainedLegalArchive": "DockSlate-0.1.3-third-party-licenses.zip",
-      "reason": "The immutable 0.1.4 installer/portable legal notice links to this identical-dependency snapshot.",
+      "emptyOldPortableRetained": false,
+      "retainedLegalArchives": [
+        "DockSlate-0.1.3-third-party-licenses.zip",
+        "DockSlate-0.1.4-third-party-licenses.zip"
+      ],
       "wslOrVolumesChanged": false
     },
-    "publicDownloadReport": "docs/results/public-release-0.1.4.json",
-    "publicCheckedAt": "2026-10-30T15:10:57.250Z"
+    "temporaryExtractionRemoved": true,
+    "publicDownloadReport": "docs/results/public-release-0.1.5.json",
+    "temporaryCleanup": {
+      "removedBytes": 260600508,
+      "targets": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\artifact.zip",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\incoming",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\extracted-A9B1FF5E-48a75c7d083a47158870886fea54ac8d"
+      ],
+      "verifiedInstallerPreserved": true,
+      "reportsPreserved": true,
+      "wslOrVolumesChanged": false
+    }
   },
   "previousPortableDelivery": {
     "version": "0.1.5",

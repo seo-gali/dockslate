@@ -45,7 +45,7 @@ npm run build:site -- --publish
 | 0.1.3 공개 다운로드 · 2026-10-30 | [실제 공개 파일 검증](results/public-release-0.1.3.json). 설치 EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 루트 HTML 일치, 0.1.2 다운로드 6개 HTTP 404, 임시 workflow 삭제 확인 |
 | 0.1.2 공개 다운로드 | [실제 공개 파일 검증](results/public-release-0.1.2.json). EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 HTML 일치, 0.1.1 다운로드 3개 HTTP 404 |
 | 0.1.1 공개 다운로드 | [실제 공개 파일 검증](results/public-release-0.1.1.json). EXE·포터블·고지 ZIP 3개 HTTP 200과 크기·SHA-256 일치. 공개 HTML 일치, 구버전 3개 HTTP 404 |
-| 최신 로컬 사이트 | [Chrome 28개](results/pages-e2e.json) 통과. 파일/HTTP·JS 비활성·canonical·Sitemap XML·robots·404·다운로드 해시·앱 분리 확인 |
+| 최신 로컬 사이트 | [0.1.6 Chrome 27개](results/pages-e2e.json) 통과. 루트·미리보기 파일/HTTP·JS 비활성·canonical·Sitemap XML·robots·404·다운로드 해시·앱 분리 확인 |
 | 최신 공개 SEO | [HTTP 9개](results/pages-seo.json) 통과. 소스 `e1f8c4d`의 생성 HTML·Sitemap·robots·404·링크·Google 원문 일치 |
 | 색인 차단 방지 | `noindex`·HTML 자동 이동을 주입한 빌드는 예상대로 종료 1, 원문 복원. 위 SEO 기록에 포함 |
 | 이전 공개 다운로드 배포 | [Chrome 10개](results/public-pages-e2e.json) 통과. EXE·포터블·고지 ZIP 실제 다운로드와 크기·SHA-256 대조. 현재 SEO 검사와 구분 |
