@@ -1,0 +1,143 @@
+{
+  "observedAt": "2026-10-31T11:40:17.4017011Z",
+  "approvedByUser": true,
+  "duplicateFilesRemoved": 10,
+  "duplicateBytesRemoved": 516953800,
+  "duplicateFiles": [
+    {
+      "path": ".analysis/table-cli-offline-b8b830439a6d425eabc18a18f49f4721/DockSlate/cli/cli-plugins/docker-buildx.exe",
+      "bytes": 70038568,
+      "sha256": "B39784AED5B3F9B24D1971BBCBAD8C8206033FA63ED4FEA82C9141728FE0EA26"
+    },
+    {
+      "path": ".analysis/table-cli-offline-b8b830439a6d425eabc18a18f49f4721/DockSlate/cli/cli-plugins/docker-compose.exe",
+      "bytes": 33352192,
+      "sha256": "8AEAA0055E660E12CF07CD70680DC8333957FE6718528B91EC3DA084EAB62483"
+    },
+    {
+      "path": ".analysis/portable-cli-5d08290ae30b424f940989f27befc0b7/DockSlate/cli/cli-plugins/docker-buildx.exe",
+      "bytes": 70038568,
+      "sha256": "B39784AED5B3F9B24D1971BBCBAD8C8206033FA63ED4FEA82C9141728FE0EA26"
+    },
+    {
+      "path": ".analysis/portable-cli-5d08290ae30b424f940989f27befc0b7/DockSlate/cli/cli-plugins/docker-compose.exe",
+      "bytes": 33352192,
+      "sha256": "8AEAA0055E660E12CF07CD70680DC8333957FE6718528B91EC3DA084EAB62483"
+    },
+    {
+      "path": ".analysis/current-cli-gsi8c6/DockSlate/cli/cli-plugins/docker-buildx.exe",
+      "bytes": 70038568,
+      "sha256": "B39784AED5B3F9B24D1971BBCBAD8C8206033FA63ED4FEA82C9141728FE0EA26"
+    },
+    {
+      "path": ".analysis/current-cli-gsi8c6/DockSlate/cli/cli-plugins/docker-compose.exe",
+      "bytes": 33352192,
+      "sha256": "8AEAA0055E660E12CF07CD70680DC8333957FE6718528B91EC3DA084EAB62483"
+    },
+    {
+      "path": ".analysis/native-cli-offline-20261021183140/DockSlate/cli/cli-plugins/docker-buildx.exe",
+      "bytes": 70038568,
+      "sha256": "B39784AED5B3F9B24D1971BBCBAD8C8206033FA63ED4FEA82C9141728FE0EA26"
+    },
+    {
+      "path": ".analysis/native-cli-offline-20261021183140/DockSlate/cli/cli-plugins/docker-compose.exe",
+      "bytes": 33352192,
+      "sha256": "8AEAA0055E660E12CF07CD70680DC8333957FE6718528B91EC3DA084EAB62483"
+    },
+    {
+      "path": ".analysis/native-cli-offline-1792578980244/DockSlate/cli/cli-plugins/docker-buildx.exe",
+      "bytes": 70038568,
+      "sha256": "B39784AED5B3F9B24D1971BBCBAD8C8206033FA63ED4FEA82C9141728FE0EA26"
+    },
+    {
+      "path": ".analysis/native-cli-offline-1792578980244/DockSlate/cli/cli-plugins/docker-compose.exe",
+      "bytes": 33352192,
+      "sha256": "8AEAA0055E660E12CF07CD70680DC8333957FE6718528B91EC3DA084EAB62483"
+    }
+  ],
+  "retainedDuplicateFolder": ".analysis/cli-release-0.1.1-2eb42ebd0eab461d9fa1aa4e49ec2a89",
+  "generatedMirrorFilesRemoved": 12,
+  "generatedMirrorBytesRemoved": 112577578,
+  "generatedMirrors": [
+    {
+      "file": "docs/.nojekyll",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "retained": ".nojekyll"
+    },
+    {
+      "file": "docs/404.html",
+      "bytes": 1568,
+      "sha256": "769EA5A18A8CC8CCFD314180D825FC3866D2E9EFA49BD3C1D12B9EAAB883AEE5",
+      "retained": "404.html"
+    },
+    {
+      "file": "docs/google474f5421d7424578.html",
+      "bytes": 53,
+      "sha256": "5D6563C7F956EE1A1E72A91B2B5C7D30A2F666C887E8A6F72DB2E238006CAE1F",
+      "retained": "google474f5421d7424578.html"
+    },
+    {
+      "file": "docs/guide.html",
+      "bytes": 4963,
+      "sha256": "8A4113C818A62FB4E608BCF4CA24D934E8181BC3FAA562D96FFAD1C8F3C374E2",
+      "retained": "guide.html"
+    },
+    {
+      "file": "docs/icon.svg",
+      "bytes": 292,
+      "sha256": "960345288B602DDAB0F27D75391E14BF4ECE0A2260795F684BBF7856A5AAD251",
+      "retained": "site/icon.svg"
+    },
+    {
+      "file": "docs/index.html",
+      "bytes": 10719,
+      "sha256": "3E3D989271F8E0B506D1DB64C52A96271393B2C69E6FDB8CAEA60D468CF737B5",
+      "retained": "index.html"
+    },
+    {
+      "file": "docs/main.js",
+      "bytes": 1707,
+      "sha256": "5B201F7AF4AE19DDD92C5033F418D3D2158CD395FD8245675ACCA73BA035B047",
+      "retained": "site/main.js"
+    },
+    {
+      "file": "docs/robots.txt",
+      "bytes": 82,
+      "sha256": "94C9FEB6F7982C51144A35E2CEF312A2418A3B79FAA8312E1D26051FB69119F3",
+      "retained": "robots.txt"
+    },
+    {
+      "file": "docs/sitemap.xml",
+      "bytes": 244,
+      "sha256": "E768018E815CD6255A677598657AEB5350D00816A3BC2A56000FDC42C03BE161",
+      "retained": "sitemap.xml"
+    },
+    {
+      "file": "docs/styles.css",
+      "bytes": 8330,
+      "sha256": "9EDF8D03A0C5028C1975067D9D58C82909770D73C90C33D67E4B8DCD482130F1",
+      "retained": "site/styles.css"
+    },
+    {
+      "file": "docs/downloads/DockSlate_0.1.5_x64-setup.exe",
+      "bytes": 49260305,
+      "sha256": "A9B1FF5ED188F7311BD7A764563AFEB8671C27CE1B3BFFCC6E2505DBB5284D46",
+      "retained": "downloads/DockSlate_0.1.5_x64-setup.exe"
+    },
+    {
+      "file": "docs/downloads/DockSlate-0.1.5-windows-x64.zip",
+      "bytes": 63289315,
+      "sha256": "5BF378F6AC284F686553B8F556BA7E6D401B0DA00555EEFFEE1EE164383FA52F",
+      "retained": "downloads/DockSlate-0.1.5-windows-x64.zip"
+    }
+  ],
+  "historicalLegalArchivesPreserved": true,
+  "wslOrVolumesChanged": false,
+  "sourceFoldersRetained": [
+    "site",
+    "src",
+    "src-tauri"
+  ],
+  "previewFolder": "site-dist is generated for validation and removed afterwards"
+}

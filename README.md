@@ -8,7 +8,7 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 
 0.1.5에 정리 실패 상세·공유 캐시 차단·단일 파일 빌드 패널·WSL 하단 여백을 반영했습니다. [검증·설치 파일 내부 검사](docs/results/release-0.1.5.md). WSL 커널 보안 패치는 포함하지 않습니다.
 
-> **미서명 개발 버전.** 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. [서명·보안 상태](docs/results/code-signing.md)
+> **미서명 개발 버전.** 과거 IObit 접근 알림의 조사 범위와 남은 확인 사항은 [보안 검사 기록](docs/results/code-signing.md)에서 확인할 수 있습니다.
 
 ## 프로그램 화면
 
@@ -60,26 +60,10 @@ Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/mast
 
 ## 개발
 
-Node.js/npm, Rust MSVC, Microsoft C++ Build Tools·Windows SDK가 필요합니다.
+Node.js/npm·Rust MSVC·Microsoft C++ Build Tools·Windows SDK가 필요합니다. `npm ci` 후 `.\scripts\desktop.ps1 -Mode dev`로 시작합니다.
 
-```powershell
-npm ci
-.\scripts\desktop.ps1 -Mode dev
-```
-
-| 작업 | 명령 |
-| --- | --- |
-| 앱 빌드 | `.\scripts\desktop.ps1 -Mode build` |
-| CLI 빌드 | `.\scripts\build-cli.ps1` |
-| 포터블 폴더·ZIP 생성 | `npm run package:local` |
-| 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
-
-포터블 생성 시 현재 앱 버전의 `downloads/DockSlate-<version>-windows-x64/`와 ZIP을 함께 갱신하고, 이전 단독 EXE와 중복 설치 파일 체크섬을 제거합니다.
-
-작업은 `main`에서 진행합니다. 웹사이트 메인은 루트 `index.html`, 앱 진입점은 `src/index.html`입니다. 사이트 템플릿은 `site/index.html`에서 관리합니다. [빌드·Pages 안내](docs/PAGES.md)
-
-Pages는 **Deploy from a branch → main → /(root)**로 설정합니다. 검증한 설치 EXE·ZIP을 사이트의 `downloads/`에서 직접 제공합니다.
+[개발·빌드와 저장소 구성](docs/DEVELOPMENT.md) · [Pages 안내](docs/PAGES.md)
 
 [웹사이트 화면](docs/assets/site-desktop.png) · [모바일 화면](docs/assets/site-mobile.png) · [로컬 안내서](guide.html)
 
-[작업 지침](AGENTS.md) · [코딩 표준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) · [배포 전 점검](docs/results/production-readiness.md) · [외부 구성 요소 고지](THIRD_PARTY_NOTICES.md)
+[작업 지침](AGENTS.md) · [코딩 표준](docs/CODING_STANDARDS.md) · [UI 기준](docs/DESIGN.md) · [배포 전 점검](docs/results/production-readiness.md) · [외부 구성 요소 고지](THIRD_PARTY_NOTICES.md)

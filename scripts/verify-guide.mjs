@@ -40,7 +40,7 @@ const open = async relative => {
 };
 try {
   await send('Runtime.enable'); await send('Page.enable');
-  for (const guide of ['guide.html', 'dist/guide.html', 'docs/guide.html']) {
+  for (const guide of ['guide.html', 'dist/guide.html']) {
     await open(guide);
     const state = await evaluate(`({steps:document.querySelectorAll('#quickstart li').length,details:document.querySelectorAll('details').length,open:document.querySelectorAll('details[open]').length,buttons:document.querySelectorAll('button,#site-download,[data-artifact]').length,external:document.querySelectorAll('script[src],link[rel="stylesheet"]').length})`);
     assert(state.steps===3 && state.details===4 && state.open===0 && state.buttons===0 && state.external===0, 'Guide still contains controls or lacks standalone usage: '+guide);

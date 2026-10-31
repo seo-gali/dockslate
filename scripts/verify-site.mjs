@@ -49,11 +49,10 @@ const server = http.createServer((request, response) => {
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch { response.writeHead(400).end(); return; }
   if (!pathname.startsWith('/dockslate/')) { response.writeHead(404).end(); return; }
-  const published = pathname.startsWith('/dockslate/published/');
   const rootSite = pathname.startsWith('/dockslate/root/');
   const application = pathname.startsWith('/dockslate/app/');
-  const directory = application ? path.join(root, 'dist') : rootSite ? root : published ? path.join(root, 'docs') : output;
-  const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : published ? '/dockslate/published/' : '/dockslate/';
+  const directory = application ? path.join(root, 'dist') : rootSite ? root : output;
+  const prefix = application ? '/dockslate/app/' : rootSite ? '/dockslate/root/' : '/dockslate/';
   const relative = pathname.slice(prefix.length) || 'index.html';
   const notFound = () => {
     const fallback = path.join(directory, '404.html');
@@ -84,7 +83,7 @@ try {
   check('Local HTML opens with working guide tabs');
   await navigate(pageUrl);
   const publicBase = 'https://seo-gali.github.io/dockslate/';
-  for (const folder of ['', 'root/', 'published/']) {
+  for (const folder of ['', 'root/']) {
     for (const page of ['', 'guide.html']) {
       const response = await fetch(pageUrl + folder + page, { redirect: 'manual', headers: { 'User-Agent': 'Googlebot' } });
       const body = await response.text();
@@ -101,7 +100,7 @@ try {
     const missing = await fetch(pageUrl + folder + 'missing/deep/page', { redirect: 'manual' });
     assert(missing.status === 404 && (await missing.text()).includes('<p class="code">404</p>') && !missing.headers.has('location'), 'Unknown URL must return a real branded 404 without redirecting');
   }
-  check('Preview/root/docs serve complete crawler HTML, canonical URLs, generated sitemap, permissive robots and true custom 404');
+  check('Preview/root serve complete crawler HTML, canonical URLs, generated sitemap, permissive robots and true custom 404');
   const localLinks = await evaluate(`[...new Set([...document.querySelectorAll('a[href],link[href],script[src]')].map(e=>e.href||e.src).filter(value=>value&&new URL(value).origin===location.origin).map(value=>value.split('#')[0]))]`);
   for (const url of localLinks) {
     const response = await fetch(url, { method: 'HEAD', redirect: 'manual' });
@@ -111,11 +110,11 @@ try {
   assert(await evaluate(`['features','start','download','faq'].every(id=>document.getElementById(id))&&document.querySelectorAll('.feature').length===3&&document.querySelectorAll('[data-download]').length===2`), 'Project introduction, usage or downloads missing.');
   check('GitHub Pages project path renders introduction, features, guide, downloads and FAQ');
   assert(await evaluate(`document.querySelector('#engine-license').textContent.includes('엔진 사용료가 없습니다')&&document.querySelector('.footer a[data-license-download][download]')!==null`), 'Engine license explanation or sources link missing.');
-  for (const folder of ['', 'root/', 'published/']) {
+  for (const folder of ['', 'root/']) {
     const response = await fetch(pageUrl + folder + 'downloads/THIRD_PARTY_NOTICES.md');
     assert(response.status === 200 && await response.text() === fs.readFileSync('THIRD_PARTY_NOTICES.md', 'utf8'), 'License notices missing or outdated: ' + folder);
   }
-  check('Engine usage fee explanation links to exact current notices in preview and both publishing folders');
+  check('Engine usage fee explanation links to exact current notices in preview and publishing root');
   const verification = await fetch(origin + '/dockslate/google474f5421d7424578.html');
   assert(verification.status === 200 && await verification.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Google ownership file is not served unchanged');
   check('Google ownership file is served unchanged under the project URL');
@@ -123,12 +122,12 @@ try {
   await waitFor('Usage guide opens directly', () => evaluate(`!!document.querySelector('#quickstart')`), 10000);
   assert(await evaluate(`document.querySelectorAll('#quickstart li').length===3&&!document.querySelector('button,#site-download,[data-artifact]')&&[...document.querySelectorAll('footer a')].every(a=>a.href.startsWith('https://github.com/seo-gali/dockslate/blob/main/'))`), 'Guide still has export/print/download relay controls');
   check('Usage page opens directly without export, print or download relay controls');
-  await navigate(pageUrl + 'published/');
+  await navigate(pageUrl + 'root/');
   assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('script[src*="main.tsx"]')&&document.querySelectorAll('[role="tabpanel"]:not([hidden])').length===1&&[...document.querySelectorAll('[data-download]')].every(a=>a.matches('a[download][href]')&&new URL(a.href).origin===location.origin)`), 'Published page does not include direct downloads');
-  const publicFile = await fetch(pageUrl + 'published/google474f5421d7424578.html');
+  const publicFile = await fetch(pageUrl + 'root/google474f5421d7424578.html');
   assert(publicFile.status === 200 && await publicFile.text() === fs.readFileSync('google474f5421d7424578.html', 'utf8'), 'Published Google ownership file changed');
-  check('main/docs static page includes direct downloads and exact Google verification');
-  for (const folder of ['root','published']) {
+  check('Root static page includes direct downloads and exact Google verification');
+  for (const folder of ['root']) {
     for (const key of ['installer','zip','licenses']) {
       const asset=release[key];
       const response=await fetch(pageUrl+folder+'/downloads/'+encodeURIComponent(asset.file));

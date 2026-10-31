@@ -1,6 +1,6 @@
 # AGENTS.md
 
-현재 사용자 지시를 우선합니다. 범위·실행은 [README.md](README.md), UI는 [DESIGN.md](DESIGN.md)가 기준입니다. 필요한 절만 읽습니다.
+현재 사용자 지시를 우선합니다. 범위·실행은 [README.md](README.md), UI는 [DESIGN.md](docs/DESIGN.md)가 기준입니다. 필요한 절만 읽습니다.
 
 - 기본 작업 브랜치는 `main`입니다. 사용자가 요청하지 않으면 새 작업 브랜치를 만들거나 전환하지 않습니다.
 - 기존 기능을 수정하기 전에 관련 모듈의 호출 관계와 의존성을 확인하고, 영향을 받을 수 있는 파일을 나열합니다. 최소 범위의 수정을 우선하며, 한 문제를 고치려고 무관한 코드를 재구성하지 않습니다.
@@ -13,14 +13,14 @@
 - 엔진 설치·삭제·Prune·압축·WSL 전체 종료는 대상·영향·복구 가능성을 제시해 승인받습니다. 소유권·필수 조건이 불명확하면 차단합니다.
 - 기존 데이터·다른 배포판·조사 원본을 보존합니다. 자동 볼륨 삭제·VHDX 직접 삭제·무조건적인 WSL 전체 종료를 금지합니다.
 - 실제 명령·종료 상태·결과와 변경·삭제·미검증 범위를 짧은 한국어로 보고합니다. 실행하지 않은 검증은 통과로 기록하지 않습니다.
-- 프로덕션 배포 전 [배포 전 점검](CODING_STANDARDS.md#배포-전-점검)의 10개 항목을 확인하고 실제 근거·미완료·해당 없음을 구분합니다. 점검 문서가 배포 승인을 대신하지 않습니다.
+- 프로덕션 배포 전 [배포 전 점검](docs/CODING_STANDARDS.md#배포-전-점검)의 10개 항목을 확인하고 실제 근거·미완료·해당 없음을 구분합니다. 점검 문서가 배포 승인을 대신하지 않습니다.
 
 | 작업 | 추가로 읽을 절 |
 | --- | --- |
-| 코드·검증 | [구현](CODING_STANDARDS.md#구현), [검증](CODING_STANDARDS.md#검증) |
-| 엔진·저장소 | [엔진과 데이터](CODING_STANDARDS.md#엔진과-데이터) |
-| Dockerfile·Compose | [파일 가져오기](CODING_STANDARDS.md#파일-가져오기) |
-| 조회·캐시·렌더링 | [조회 수명](CODING_STANDARDS.md#조회-수명) |
+| 코드·검증 | [구현](docs/CODING_STANDARDS.md#구현), [검증](docs/CODING_STANDARDS.md#검증) |
+| 엔진·저장소 | [엔진과 데이터](docs/CODING_STANDARDS.md#엔진과-데이터) |
+| Dockerfile·Compose | [파일 가져오기](docs/CODING_STANDARDS.md#파일-가져오기) |
+| 조회·캐시·렌더링 | [조회 수명](docs/CODING_STANDARDS.md#조회-수명) |
 | 웹사이트·검색 | [Pages와 검색 색인](docs/PAGES.md#검색-색인) |
-| 배포 준비 | [배포 전 점검](CODING_STANDARDS.md#배포-전-점검) |
-| 외부 앱 조사 | [외부 앱 조사](CODING_STANDARDS.md#외부-앱-조사) |
+| 배포 준비 | [배포 전 점검](docs/CODING_STANDARDS.md#배포-전-점검) |
+| 외부 앱 조사 | [외부 앱 조사](docs/CODING_STANDARDS.md#외부-앱-조사) |

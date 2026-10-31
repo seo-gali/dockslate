@@ -1,0 +1,83 @@
+{
+  "observedAt": "2026-10-31T11:49:22.929Z",
+  "version": "0.1.6",
+  "artifactSha256": "3DACD6FDC1DFECA7917EA6FB0C1E2812DE758160F9ADDDB142709CAFB004DA67",
+  "checks": [
+    {
+      "name": "Native engine response reports app version 0.1.6",
+      "passed": true,
+      "evidence": {
+        "state": "connected"
+      }
+    },
+    {
+      "name": "Lazy screen loads: Overview",
+      "passed": true
+    },
+    {
+      "name": "Lazy screen loads: Containers",
+      "passed": true
+    },
+    {
+      "name": "Lazy screen loads: Images",
+      "passed": true
+    },
+    {
+      "name": "Lazy screen loads: Builds",
+      "passed": true
+    },
+    {
+      "name": "Build source panel opens without starting a build",
+      "passed": true
+    },
+    {
+      "name": "WSL bottom spacing 1000x640",
+      "passed": true,
+      "evidence": {
+        "bottomGap": 35.51245880126953,
+        "paddingBottom": "20px"
+      }
+    },
+    {
+      "name": "WSL bottom spacing 1668x900",
+      "passed": true,
+      "evidence": {
+        "bottomGap": 249.375,
+        "paddingBottom": "18px"
+      }
+    },
+    {
+      "name": "Existing container IDs, names and states preserved",
+      "passed": true,
+      "evidence": {
+        "containers": 3
+      }
+    },
+    {
+      "name": "No renderer exceptions",
+      "passed": true
+    }
+  ],
+  "mutationsExecuted": false,
+  "engine": {
+    "apiVersion": "1.55",
+    "appVersion": "0.1.6",
+    "architecture": "x86_64",
+    "context": "dockslate",
+    "cpuCount": 16,
+    "dockerRootDir": "/var/lib/docker",
+    "endpoint": "wsl://DockSlate/var/run/docker.sock",
+    "engine": "moby",
+    "id": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+    "kernel": "6.18.58.1-microsoft-standard-WSL2",
+    "memoryTotalBytes": 10429005824,
+    "message": "Verified independent DockSlate Moby Engine",
+    "os": "Ubuntu 24.04.5 LTS",
+    "ownerPath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "provider": "DockSlate",
+    "serverVersion": "29.8.2",
+    "state": "connected",
+    "storageDriver": "overlayfs"
+  },
+  "passed": true
+}

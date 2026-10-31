@@ -1,0 +1,211 @@
+{
+  "observedAt": "2026-10-31T08:38:56.221Z",
+  "scope": "This Windows PC only; approved WSL upgrade and kernel override. The published DockSlate 0.1.5 installer was not rebuilt or changed.",
+  "applied": true,
+  "commands": [
+    {
+      "command": "powershell -NoProfile -File .analysis/kernel-fix/apply.ps1 -ApplyApproved",
+      "exit": 0
+    },
+    {
+      "command": "node .analysis/kernel-fix/verify.mjs",
+      "exit": 0,
+      "checks": 13
+    },
+    {
+      "command": "powershell -NoProfile -File .analysis/kernel-fix/finish.ps1",
+      "exit": 0
+    }
+  ],
+  "previous": {
+    "wslVersion": "2.6.3.0",
+    "kernel": "6.6.87.2-microsoft-standard-WSL2"
+  },
+  "current": {
+    "wslVersion": "3.0.3.0",
+    "runningKernel": "6.18.58.1-microsoft-standard-WSL2",
+    "bundledKernelReportedByWslVersion": "6.18.54.1-1",
+    "engine": {
+      "id": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+      "kernel": "6.18.58.1-microsoft-standard-WSL2",
+      "serverVersion": "29.8.2",
+      "storageDriver": "overlayfs"
+    }
+  },
+  "kernelPackage": {
+    "version": "6.18.58.1-1",
+    "url": "https://pkgs.dev.azure.com/shine-oss/13eb32df-d33f-470f-b930-499535a958b4/_packaging/7925a3a1-b93c-4977-8a97-5b877bf2068b/nuget/v3/flat2/microsoft.wsl.kernel/6.18.58.1-1/microsoft.wsl.kernel.6.18.58.1-1.nupkg",
+    "bytes": 103226145,
+    "sha256": "42BCCCEBDDE523AC272C97595A8E8D494DB6B3C815BBFB8F86A1B87E9A397AC4",
+    "sourceFixes": [
+      {
+        "url": "https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/linux-msft-wsl-6.18.58.1/net/ipv4/af_inet.c",
+        "sha256": "87CA97AA70F485BB5BB5CD0A0A1684BCDAD7DFC7D07437F4886E2B0F170723A6",
+        "expectedFixFound": true
+      },
+      {
+        "url": "https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/linux-msft-wsl-6.18.58.1/net/ipv4/tcp_ipv4.c",
+        "sha256": "250187F34AB485312FB12350B6D9B05AC5F6E76DAF96EF5C04F45E457B5176BA",
+        "expectedFixFound": true
+      }
+    ],
+    "packageSignaturePresent": false,
+    "independentNugetSignatureCheck": "Not performed: upstream package has no signature and installed dotnet has no SDK. Source-linked Microsoft HTTPS feed, exact version and embedded build metadata were checked.",
+    "installedFiles": [
+      {
+        "file": "artifacts.vhd",
+        "bytes": 102121984,
+        "sha256": "39E839076ACE12FB0AD07687DE9AE116AB3075854DA7CEADE64A7AAC8B44C7B3"
+      },
+      {
+        "file": "kernel",
+        "bytes": 15795200,
+        "sha256": "4845AC8718804C91F3B5CBB9C09C856732612AF4E1729FAF402F727B0F3285B6"
+      },
+      {
+        "file": "kernel_build_metadata.json",
+        "bytes": 177,
+        "sha256": "CE530B38A97FA9064B548F1993FEA889B5036F219809992DF0378813456F63F8"
+      },
+      {
+        "file": "kernel_config",
+        "bytes": 195611,
+        "sha256": "350BB895C0AF6C4DBB90A596385BAAA4CFB58DCC0C36C9BE166EDC9517BAC760"
+      },
+      {
+        "file": "LICENSE",
+        "bytes": 496,
+        "sha256": "FB5A425BD3B3CD6071A3A9AFF9909A859E7C1158D54D32E07658398CD67EB6A0"
+      },
+      {
+        "file": "Microsoft.WSL.Kernel.nuspec",
+        "bytes": 698,
+        "sha256": "27D249C85305113B74334D38B049D3E8DB51CBB32805798C57D6D5272BEC6B10"
+      },
+      {
+        "file": "NOTICE.txt",
+        "bytes": 256100,
+        "sha256": "C6FB0A7C3358DF4D0C2E18BF73F4D9C7B81213185028937F97BA26E94124A303"
+      }
+    ]
+  },
+  "wslInstaller": {
+    "file": ".analysis/kernel-fix/wsl.3.0.3.0.x64.msi",
+    "version": "3.0.3.0",
+    "prerelease": false,
+    "bytes": 367575040,
+    "githubDigestVerified": true,
+    "sha256": "AE977286974255BD26BF925F00F40F5692C6B2084155CBC0563C09AEA091F211",
+    "url": "https://github.com/microsoft/WSL/releases/download/3.0.3/wsl.3.0.3.0.x64.msi",
+    "authenticodeStatus": "Valid",
+    "signer": "Microsoft Corporation"
+  },
+  "configuration": {
+    "path": "C:\\Users\\user\\.wslconfig",
+    "originalSha256": "AE4EE2A2C0D0D8EDCA15E889F448AD7CC4E0DDD4823AF5B76870E4221293E181",
+    "appliedSha256": "B82683FB163CC6A9D9238F9B4A92366F08E702592ABEE98D3D7B8F7E765B4B8F",
+    "addedKeys": [
+      "wsl2.kernel",
+      "wsl2.kernelModules"
+    ],
+    "otherSettingsPreserved": true,
+    "kernelDirectory": "D:\\Program Files\\DockSlate\\runtime\\kernels\\6.18.58.1",
+    "originalConfigurationRetainedAt": "D:\\Program Files\\DockSlate\\runtime\\kernels\\6.18.58.1\\original.wslconfig",
+    "manualFutureKernelUpdatesRequired": true,
+    "allWsl2DistributionsAffected": true
+  },
+  "checks": [
+    {
+      "name": "Running fixed Microsoft kernel",
+      "passed": true
+    },
+    {
+      "name": "Stable WSL 3.0.3 installed",
+      "passed": true
+    },
+    {
+      "name": "Approved WSL configuration matches",
+      "passed": true
+    },
+    {
+      "name": "Permanent kernel and module files match official package",
+      "passed": true
+    },
+    {
+      "name": "Owned runtime keeper is verified",
+      "passed": true
+    },
+    {
+      "name": "Docker engine identity and running kernel match",
+      "passed": true
+    },
+    {
+      "name": "Docker and containerd services are active",
+      "passed": true
+    },
+    {
+      "name": "Matching kernel module directory is available",
+      "passed": true
+    },
+    {
+      "name": "Original containers and states preserved",
+      "passed": true
+    },
+    {
+      "name": "Original images preserved",
+      "passed": true
+    },
+    {
+      "name": "Original volumes preserved",
+      "passed": true
+    },
+    {
+      "name": "User and non-bridge network identities preserved",
+      "passed": true
+    },
+    {
+      "name": "All existing cache records retained",
+      "passed": true
+    }
+  ],
+  "resources": {
+    "containers": 3,
+    "images": 3,
+    "volumes": 8,
+    "cacheRecords": 30,
+    "allOriginalIdsAndContainerStatesPreserved": true,
+    "userNetworkIdsPreserved": true,
+    "defaultBridgeIdRecreated": true
+  },
+  "windowsRebooted": false,
+  "containersStarted": true,
+  "cachePruned": false,
+  "cleanup": {
+    "removedBytes": 589171451,
+    "removed": [
+      "candidate",
+      "microsoft.wsl.kernel.6.18.58.1-1.nupkg",
+      "wsl.3.0.3.0.x64.msi"
+    ],
+    "permanentKernelPreserved": true,
+    "rollbackConfigurationPreserved": true,
+    "diagnosticReportsPreserved": true
+  },
+  "limitations": [
+    "No exploit or attack reproduction.",
+    "Future security updates for the pinned kernel need manual management.",
+    "MongoDB ping and Node.js HTTP/health paths passed; authenticated database CRUD and full business regression were not tested."
+  ],
+  "containerExecutionVerification": {
+    "file": "docs/results/wsl-user-containers.json",
+    "observedAt": "2026-10-31T08:56:28.088Z",
+    "containers": 3,
+    "passedChecks": 20,
+    "passed": true,
+    "originalStoppedStateRestored": true,
+    "databaseWriteCommandsExecuted": false,
+    "databaseResetPerformed": false,
+    "firstHarnessAttemptExit": 1,
+    "firstHarnessFailure": "Node comm was MainThread; healthcheck and HTTP already passed. Corrected to inspect /proc/1/exe and retried only the two Node containers."
+  }
+}

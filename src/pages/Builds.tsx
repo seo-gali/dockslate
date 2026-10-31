@@ -8,7 +8,7 @@ import { ImageBuildPanel } from '../ImageBuildPanel';
 import type { useComposeImport } from '../ComposeImport';
 import { ComposeImportPanel } from '../ComposeImportPanel';
 import { OperationNotice, type Operation } from '../actions';
-import { ConfirmDialog, DetailPanel, ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, TaskProgress, errorMessage } from '../components';
+import { ConfirmDialog, DetailPanel, ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, errorMessage } from '../components';
 import { getLocale, t } from "../i18n";
 
 

@@ -108,7 +108,7 @@ function createController({ storageKey, columns }: Options) {
     const next = [...widths];
     let excess = Math.max(0, next.reduce((sum, width) => sum + width, 0) - available);
     while (excess > 0) {
-      const shrinkable = specs.map((column, index) => index).filter(index => next[index] > specs[index].minWidth);
+      const shrinkable = specs.map((_, index) => index).filter(index => next[index] > specs[index].minWidth);
       if (!shrinkable.length) break;
       const share = Math.max(1, Math.floor(excess / shrinkable.length));
       for (const index of shrinkable) {
@@ -119,7 +119,7 @@ function createController({ storageKey, columns }: Options) {
     }
     let remaining = restored ? 0 : Math.max(0, available - next.reduce((sum, width) => sum + width, 0));
     while (remaining > 0) {
-      const growable = specs.map((column, index) => index).filter(index => next[index] < specs[index].maxWidth);
+      const growable = specs.map((_, index) => index).filter(index => next[index] < specs[index].maxWidth);
       if (!growable.length) break;
       const share = Math.max(1, Math.floor(remaining / growable.length));
       for (const index of growable) {

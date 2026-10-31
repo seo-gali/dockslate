@@ -6,7 +6,7 @@
 
 **Settings → Pages → Source: Deploy from a branch → Branch: main → Folder: /(root) → Save**
 
-`main`에서 작업한다. 루트와 기존 `/docs` 게시본을 함께 생성하며 Markdown·이미지는 보존한다.
+`main`에서 작업한다. 게시 위치는 루트 한 곳이다. `docs/`에는 문서·검증 이미지·이전 패키지가 참조하는 고지 ZIP을 보존하며 사이트 사본은 만들지 않는다.
 
 | 원본 | 출력·역할 |
 | --- | --- |
@@ -25,7 +25,7 @@ npm run build:site
 npm run build:site -- --publish
 ```
 
-첫 명령은 릴리스 명세의 EXE·포터블·고지 소스 ZIP을 검증해 `site-dist`를 만든다. 두 번째는 같은 검증 후 루트와 `/docs` 게시본을 갱신한다. 변경은 위 표의 원본에 반영한 뒤 다시 빌드한다. 빌드 자체는 외부로 전송하지 않으며, 커밋·푸시는 승인 범위에서 수행한다.
+첫 명령은 릴리스 명세의 EXE·포터블·고지 소스 ZIP을 검증해 `site-dist`를 만든다. 두 번째는 같은 검증 후 루트 게시본을 갱신한다. `site-dist/`는 임시 미리보기이며 확인 후 삭제해도 된다. 변경은 위 표의 원본에 반영한 뒤 다시 빌드한다. 빌드 자체는 외부로 전송하지 않으며, 커밋·푸시는 승인 범위에서 수행한다.
 
 설치 EXE는 `scripts/build-installer.ps1`, 포터블은 `npm run package:local`로 생성한다. 상시 자동 제작 workflow는 두지 않는다. 실행 파일은 미서명 개발 버전이며 보안 경고의 원인은 미확인이다. [다운로드](https://seo-gali.github.io/dockslate/#download) · [서명 상태](results/code-signing.md) · [패키지 고지 검증](results/license-delivery.json)
 

@@ -1,0 +1,108 @@
+{
+  "observedAt": "2026-10-31T10:47:48.521Z",
+  "measuredAt": "2026-10-31T10:29:45.2806523Z",
+  "totalBytes": 7712688514,
+  "candidateBytes": 2036544353,
+  "candidates": [
+    {
+      "name": "installer-0.1.1",
+      "bytes": 378280745,
+      "files": 427
+    },
+    {
+      "name": "installer-0.1.2",
+      "bytes": 378276890,
+      "files": 423
+    },
+    {
+      "name": "ui-release-native",
+      "bytes": 309905151,
+      "files": 1334
+    },
+    {
+      "name": "compose-mongodb-shell",
+      "bytes": 207874650,
+      "files": 8
+    },
+    {
+      "name": "table-cli-offline-b8b830439a6d425eabc18a18f49f4721",
+      "bytes": 103390760,
+      "files": 2,
+      "removedBytes": 103390760
+    },
+    {
+      "name": "cli-release-0.1.1-2eb42ebd0eab461d9fa1aa4e49ec2a89",
+      "bytes": 103390760,
+      "files": 2
+    },
+    {
+      "name": "portable-cli-5d08290ae30b424f940989f27befc0b7",
+      "bytes": 103390760,
+      "files": 2,
+      "removedBytes": 103390760
+    },
+    {
+      "name": "current-cli-gsi8c6",
+      "bytes": 103390760,
+      "files": 2,
+      "removedBytes": 103390760
+    },
+    {
+      "name": "native-cli-offline-20261021183140",
+      "bytes": 103390760,
+      "files": 2,
+      "removedBytes": 103390760
+    },
+    {
+      "name": "native-cli-offline-1792578980244",
+      "bytes": 103390760,
+      "files": 2,
+      "removedBytes": 103390760
+    },
+    {
+      "name": "ui-cleanup-native",
+      "bytes": 78426505,
+      "files": 287
+    },
+    {
+      "name": "mongosh-2.14.0-win32-x64.zip",
+      "bytes": 63435852,
+      "files": 1
+    }
+  ],
+  "preserve": [
+    "docker-desktop",
+    "rancher-desktop",
+    "licenses",
+    "privacy-procmon",
+    "privacy-procmon-final",
+    "kernel-fix",
+    "agents-ab measurement reports, answers and patches"
+  ],
+  "activeAnalysisBrowserProfiles": [],
+  "deleted": true,
+  "scope": "Initial directory totals are an upper bound. On later user approval, ten exact duplicate plugin files were removed; other candidates and original evidence remain. See repository-cleanup.json.",
+  "duplicatePluginFiles": [
+    {
+      "sha256": "B39784AED5B3F9B24D1971BBCBAD8C8206033FA63ED4FEA82C9141728FE0EA26",
+      "file": "docker-buildx.exe",
+      "bytesEach": 70038568,
+      "copies": 6,
+      "redundantCopies": 5
+    },
+    {
+      "sha256": "8AEAA0055E660E12CF07CD70680DC8333957FE6718528B91EC3DA084EAB62483",
+      "file": "docker-compose.exe",
+      "bytesEach": 33352192,
+      "copies": 6,
+      "redundantCopies": 5
+    }
+  ],
+  "redundantPluginBytes": 516953800,
+  "newBenchmarkTemporaryCopiesRemoved": 654372436,
+  "confirmedDeletion": {
+    "report": "repository-cleanup.json",
+    "bytes": 516953800,
+    "files": 10
+  }
+}

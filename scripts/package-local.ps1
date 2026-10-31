@@ -82,7 +82,7 @@ DockSlate $version - Windows x64
 4. Extract the complete ZIP and keep DockSlate.exe, bin and libexec together.
 5. bin\docker.exe is the launcher; libexec contains the official Windows CLI and plugins.
 
-Unsigned development build. The reported security alert remains unresolved.
+Unsigned development build. See docs/results/code-signing.md for security review scope and remaining checks.
 Do not disable protection or add an exception on this package's advice.
 Deleting this folder does not unregister the WSL distribution or delete volumes.
 "@

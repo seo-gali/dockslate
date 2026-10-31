@@ -1,0 +1,430 @@
+{
+  "startedAt": "2026-10-31T08:56:10.890Z",
+  "scope": "User-approved start, service response, logs and graceful stop of the three existing containers on the fixed kernel. No DB write queries or data reset.",
+  "engineId": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+  "kernel": "6.18.58.1-microsoft-standard-WSL2",
+  "containers": [
+    {
+      "id": "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e",
+      "name": "trusting_feistel",
+      "kind": "MongoDB",
+      "commands": [
+        {
+          "args": [
+            "start",
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "exec",
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e",
+            "uname",
+            "-r"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "exec",
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e",
+            "mongosh",
+            "--norc",
+            "--quiet",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "27017",
+            "--eval",
+            "JSON.stringify(db.runCommand({ping:1}))"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "top",
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e",
+            "-eo",
+            "pid,comm"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "stop",
+            "--time",
+            "60",
+            "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+          ],
+          "exit": 0
+        }
+      ],
+      "checks": [
+        {
+          "name": "Fixed kernel visible inside container",
+          "passed": true
+        },
+        {
+          "name": "MongoDB ping returns ok=1",
+          "passed": true
+        },
+        {
+          "name": "Windows reaches published MongoDB TCP port",
+          "passed": true
+        },
+        {
+          "name": "Expected service process is running",
+          "passed": true
+        },
+        {
+          "name": "Current-run logs contain no error/fatal startup markers",
+          "passed": true
+        },
+        {
+          "name": "Graceful stop exit=0, original image/mounts/port configuration retained",
+          "passed": true
+        }
+      ],
+      "started": {
+        "status": "running",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:54:05.818403341Z",
+        "finishedAt": "2026-10-28T15:24:59.136295756Z",
+        "health": null
+      },
+      "publishedPort": "127.0.0.1:32768",
+      "mongoPingOk": 1,
+      "running": {
+        "status": "running",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:54:05.818403341Z",
+        "finishedAt": "2026-10-28T15:24:59.136295756Z",
+        "health": null
+      },
+      "logs": {
+        "exit": 0,
+        "reviewedLines": 132,
+        "mongoErrorOrFatalIds": [],
+        "mongoWarningIds": [
+          22120,
+          22184,
+          9068900,
+          8640302,
+          8386700
+        ],
+        "nodeListeningSeen": false,
+        "fatalTextSeen": false,
+        "rawLogsSaved": false,
+        "mongoWarnings": [
+          {
+            "id": 22120,
+            "message": "Access control is not enabled for the database. Read and write access to data and configuration is unrestricted"
+          },
+          {
+            "id": 22184,
+            "message": "Soft rlimits for open file descriptors too low"
+          },
+          {
+            "id": 9068900,
+            "message": "For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile"
+          },
+          {
+            "id": 9068900,
+            "message": "For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile"
+          },
+          {
+            "id": 8640302,
+            "message": "We suggest setting the contents of sysfsFile to 0."
+          },
+          {
+            "id": 8386700,
+            "message": "We suggest setting swappiness to 0 or 1, as swapping can cause performance problems."
+          }
+        ]
+      },
+      "servicePassed": true,
+      "after": {
+        "status": "exited",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:54:05.818403341Z",
+        "finishedAt": "2026-10-31T08:54:08.381993686Z",
+        "health": null
+      },
+      "originalStoppedStateRestored": true
+    },
+    {
+      "id": "a2a9765c37ed49fdc0b2c53305e9dae81891a14b7bbf4cbbb06050f3aad16a4f",
+      "name": "23432234234234",
+      "kind": "Node.js",
+      "commands": [
+        {
+          "args": [
+            "start",
+            "a2a9765c37ed49fdc0b2c53305e9dae81891a14b7bbf4cbbb06050f3aad16a4f"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "exec",
+            "a2a9765c37ed49fdc0b2c53305e9dae81891a14b7bbf4cbbb06050f3aad16a4f",
+            "uname",
+            "-r"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "exec",
+            "a2a9765c37ed49fdc0b2c53305e9dae81891a14b7bbf4cbbb06050f3aad16a4f",
+            "readlink",
+            "/proc/1/exe"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "stop",
+            "--time",
+            "60",
+            "a2a9765c37ed49fdc0b2c53305e9dae81891a14b7bbf4cbbb06050f3aad16a4f"
+          ],
+          "exit": 0
+        }
+      ],
+      "checks": [
+        {
+          "name": "Fixed kernel visible inside container",
+          "passed": true
+        },
+        {
+          "name": "Docker healthcheck is healthy",
+          "passed": true
+        },
+        {
+          "name": "Windows HTTP /health returns expected JSON",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "name": "Windows HTTP / returns expected JSON",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "name": "Expected service process is running",
+          "passed": true
+        },
+        {
+          "name": "Current-run logs contain no error/fatal startup markers",
+          "passed": true
+        },
+        {
+          "name": "Graceful stop exit=0, original image/mounts/port configuration retained",
+          "passed": true
+        }
+      ],
+      "started": {
+        "status": "running",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:56:11.545864135Z",
+        "finishedAt": "2026-10-31T08:54:15.330651798Z",
+        "health": "starting"
+      },
+      "publishedPort": "127.0.0.1:32771",
+      "nodeVersion": "v24.22.2",
+      "processExecutable": "/usr/local/bin/node",
+      "running": {
+        "status": "running",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:56:11.545864135Z",
+        "finishedAt": "2026-10-31T08:54:15.330651798Z",
+        "health": "healthy"
+      },
+      "logs": {
+        "exit": 0,
+        "reviewedLines": 1,
+        "mongoErrorOrFatalIds": [],
+        "mongoWarningIds": [],
+        "mongoWarnings": [],
+        "nodeListeningSeen": true,
+        "fatalTextSeen": false,
+        "rawLogsSaved": false
+      },
+      "servicePassed": true,
+      "after": {
+        "status": "exited",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:56:11.545864135Z",
+        "finishedAt": "2026-10-31T08:56:20.198614163Z",
+        "health": "unhealthy"
+      },
+      "originalStoppedStateRestored": true
+    },
+    {
+      "id": "e800cff64e1d119046fe2a55a56ce26dc01855fe66d081806843cd7451ee6b9a",
+      "name": "123123",
+      "kind": "Node.js",
+      "commands": [
+        {
+          "args": [
+            "start",
+            "e800cff64e1d119046fe2a55a56ce26dc01855fe66d081806843cd7451ee6b9a"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "exec",
+            "e800cff64e1d119046fe2a55a56ce26dc01855fe66d081806843cd7451ee6b9a",
+            "uname",
+            "-r"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "exec",
+            "e800cff64e1d119046fe2a55a56ce26dc01855fe66d081806843cd7451ee6b9a",
+            "readlink",
+            "/proc/1/exe"
+          ],
+          "exit": 0
+        },
+        {
+          "args": [
+            "stop",
+            "--time",
+            "60",
+            "e800cff64e1d119046fe2a55a56ce26dc01855fe66d081806843cd7451ee6b9a"
+          ],
+          "exit": 0
+        }
+      ],
+      "checks": [
+        {
+          "name": "Fixed kernel visible inside container",
+          "passed": true
+        },
+        {
+          "name": "Docker healthcheck is healthy",
+          "passed": true
+        },
+        {
+          "name": "Windows HTTP /health returns expected JSON",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "name": "Windows HTTP / returns expected JSON",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "name": "Expected service process is running",
+          "passed": true
+        },
+        {
+          "name": "Current-run logs contain no error/fatal startup markers",
+          "passed": true
+        },
+        {
+          "name": "Graceful stop exit=0, original image/mounts/port configuration retained",
+          "passed": true
+        }
+      ],
+      "started": {
+        "status": "running",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:56:21.508571694Z",
+        "finishedAt": "2026-10-31T08:54:23.311870781Z",
+        "health": "starting"
+      },
+      "publishedPort": "127.0.0.1:32772",
+      "nodeVersion": "v24.22.2",
+      "processExecutable": "/usr/local/bin/node",
+      "running": {
+        "status": "running",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:56:21.508571694Z",
+        "finishedAt": "2026-10-31T08:54:23.311870781Z",
+        "health": "healthy"
+      },
+      "logs": {
+        "exit": 0,
+        "reviewedLines": 1,
+        "mongoErrorOrFatalIds": [],
+        "mongoWarningIds": [],
+        "mongoWarnings": [],
+        "nodeListeningSeen": true,
+        "fatalTextSeen": false,
+        "rawLogsSaved": false
+      },
+      "servicePassed": true,
+      "after": {
+        "status": "exited",
+        "exitCode": 0,
+        "oomKilled": false,
+        "startedAt": "2026-10-31T08:56:21.508571694Z",
+        "finishedAt": "2026-10-31T08:56:27.538031514Z",
+        "health": "unhealthy"
+      },
+      "originalStoppedStateRestored": true
+    }
+  ],
+  "newContainersCreated": false,
+  "imagesPulled": false,
+  "resourcesDeleted": false,
+  "environmentOrSecretFilesRead": false,
+  "priorAttempt": {
+    "startedAt": "2026-10-31T08:54:03.330Z",
+    "finishedAt": "2026-10-31T08:54:25.444Z",
+    "exit": 1,
+    "originalResourcesPreserved": true,
+    "failures": [
+      {
+        "name": "23432234234234",
+        "error": "The input did not match the regular expression /\\bnode\\b/. Input:\n\n'PID                 COMMAND\\n2260                MainThread'\n",
+        "passedChecks": [
+          "Fixed kernel visible inside container",
+          "Docker healthcheck is healthy",
+          "Windows HTTP /health returns expected JSON",
+          "Windows HTTP / returns expected JSON",
+          "Graceful stop exit=0, original image/mounts/port configuration retained"
+        ]
+      },
+      {
+        "name": "123123",
+        "error": "The input did not match the regular expression /\\bnode\\b/. Input:\n\n'PID                 COMMAND\\n2681                MainThread'\n",
+        "passedChecks": [
+          "Fixed kernel visible inside container",
+          "Docker healthcheck is healthy",
+          "Windows HTTP /health returns expected JSON",
+          "Windows HTTP / returns expected JSON",
+          "Graceful stop exit=0, original image/mounts/port configuration retained"
+        ]
+      }
+    ],
+    "reason": "Test harness assumed Linux comm was node. The two Node services actually reported MainThread while healthcheck and both HTTP endpoints passed. Retry uses /proc/1/exe; no application code or configuration changed."
+  },
+  "inheritedSuccessfulContainerIds": [
+    "3c8b6e44565e6203bd479510fab28fd14d3c57c97313aed5d44501536bc0d13e"
+  ],
+  "originalResourceIdsAndStoppedStatesPreserved": true,
+  "passed": true,
+  "finishedAt": "2026-10-31T08:56:28.088Z",
+  "databaseWriteCommandsExecuted": false,
+  "databaseResetPerformed": false,
+  "mongoNormalStartupAndShutdownMayUpdateJournal": true,
+  "businessScope": "MongoDB server ping, Windows loopback TCP, Node.js root and health HTTP responses, Docker health and service process/log checks. No authenticated CRUD or full business regression.",
+  "passedChecks": 20
+}

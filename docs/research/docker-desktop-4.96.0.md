@@ -12,7 +12,7 @@
 
 ## 원본에서 파생한 리소스
 
-`resource-inventory.ps1`의 PE resource tree 결과를 사용했다. 아래 offset은 원본 파일 시작 기준이며 length는 복사한 바이트 수다. 리소스를 새 `derived-resources/*.resource`로 복사했고 원본·Evidence·범위·파생 SHA-256을 [로컬 manifest](../../.analysis/docker-desktop/4.96.0/derived-resources/manifest.json)에 보존했다. 이 추출·해시는 일반 PowerShell 관찰이며 REA Evidence로 표현하지 않는다.
+`resource-inventory.ps1`의 PE resource tree 결과를 사용했다. 아래 offset은 원본 파일 시작 기준이며 length는 복사한 바이트 수다. 리소스를 새 `derived-resources/*.resource`로 복사했고 원본·Evidence·범위·파생 SHA-256을 로컬 조사 파일 `.analysis/docker-desktop/4.96.0/derived-resources/manifest.json`에 보존했다. 해당 파일은 공개 저장소에 포함하지 않는다. 이 추출·해시는 일반 PowerShell 관찰이며 REA Evidence로 표현하지 않는다.
 
 | 원본 resource | Offset | Length | 형식 | 파생 SHA-256 |
 | --- | ---: | ---: | --- | --- |

@@ -3,7 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('../', import.meta.url));
+const root = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
 const production = process.argv.includes('--publish');
 if (process.argv.slice(2).some(arg => arg !== '--publish')) throw Error('Use build:site with no arguments or --publish.');
 const release = JSON.parse(fs.readFileSync(path.join(root, 'site/release.json'), 'utf8'));
@@ -51,26 +51,26 @@ const metadata = new Map([
   ['sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map(url => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`],
   ['robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}sitemap.xml\n`],
 ]);
-const output = path.join(root, production ? 'docs' : 'site-dist');
+const output = production ? root : path.join(root, 'site-dist');
 if (!output.startsWith(root) || (fs.existsSync(output) && fs.realpathSync(output).toLowerCase() !== output.toLowerCase())) throw Error('Refusing to replace a website output outside the workspace.');
 if (!production) fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 for (const [file, content] of [...pages, ...metadata]) fs.writeFileSync(path.join(output, file), content);
-for (const file of ['styles.css', 'main.js', 'icon.svg']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
-fs.copyFileSync(path.join(root, 'google474f5421d7424578.html'), path.join(output, 'google474f5421d7424578.html'));
+if (!production) {
+  for (const file of ['styles.css', 'main.js', 'icon.svg']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
+  fs.copyFileSync(path.join(root, 'google474f5421d7424578.html'), path.join(output, 'google474f5421d7424578.html'));
+}
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 if (production) {
   let homepage = html;
   for (const file of ['styles.css', 'main.js', 'icon.svg']) homepage = homepage.replaceAll(`./${file}`, `./site/${file}`);
   fs.writeFileSync(path.join(root, 'index.html'), homepage);
-  for (const [file, content] of [...metadata, ['404.html', pages.get('404.html')]]) fs.writeFileSync(path.join(root, file), content);
   fs.writeFileSync(path.join(root, '.nojekyll'), '');
 }
 fs.mkdirSync(path.join(output, 'downloads'), { recursive: true });
 const notices = 'THIRD_PARTY_NOTICES.md';
 fs.copyFileSync(path.join(root, notices), path.join(output, 'downloads', notices));
-if (production) fs.copyFileSync(path.join(root, notices), path.join(root, 'downloads', notices));
-for (const key of ['installer', 'zip', 'licenses']) {
+for (const key of production ? [] : ['installer', 'zip', 'licenses']) {
   const file = release[key].file;
   fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
 }
