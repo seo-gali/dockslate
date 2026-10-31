@@ -207,7 +207,7 @@
       "sha256": "5BF378F6AC284F686553B8F556BA7E6D401B0DA00555EEFFEE1EE164383FA52F"
     },
     "installerExecuted": false,
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "packagedNoticeVersion": "0.1.5",
     "retainedLegalDownloads": [
       {
@@ -239,7 +239,19 @@
       ],
       "wslOrVolumesChanged": false
     },
-    "temporaryExtractionRemoved": false
+    "temporaryExtractionRemoved": true,
+    "publicDownloadReport": "docs/results/public-release-0.1.5.json",
+    "temporaryCleanup": {
+      "removedBytes": 260600508,
+      "targets": [
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\artifact.zip",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\incoming",
+        "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\installer-0.1.5\\extracted-A9B1FF5E-48a75c7d083a47158870886fea54ac8d"
+      ],
+      "verifiedInstallerPreserved": true,
+      "reportsPreserved": true,
+      "wslOrVolumesChanged": false
+    }
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -634,7 +646,16 @@
     "siteBuild": {
       "command": "npm run build:site -- --publish",
       "exit": 0,
-      "verifiedDownloads": 3
+      "verifiedDownloads": 3,
+      "publicCopiesVerified": true,
+      "publicCopyHashMatches": true,
+      "publicPageMatches": true
+    },
+    "publicDownloadReport": "docs/results/public-release-0.1.5.json",
+    "pagesDeployment": {
+      "runId": 41173152173,
+      "conclusion": "success",
+      "commit": "1ad9e4bc58755070a23e489eb5db5a769a21dc69"
     }
   },
   "portableDelivery": {
@@ -650,7 +671,7 @@
     "appSha256": "37C6C2E7398A2CAF33EABB722131D5F95EEF998F1596EBCF79D3CFB9174CE32D",
     "launcherSha256": "04FF022DAFF629CE020657A22172368761DB4D0D685E8C14432056140BF83EBF",
     "sameFilesVerifiedInsideZip": true,
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "installerExecuted": false,
     "legalArchive": {
       "file": "DockSlate-0.1.5-third-party-licenses.zip",
@@ -659,7 +680,8 @@
       "bytes": 5161525,
       "sha256": "D427BA1E60254372E5C4F7F7A4862A86139C838943426C98CD160929268807D4"
     },
-    "packagedDocumentsScope": "Snapshot at ZIP creation; final archive hashes and subsequent delivery status are maintained separately in the repository."
+    "packagedDocumentsScope": "Snapshot at ZIP creation; final archive hashes and subsequent delivery status are maintained separately in the repository.",
+    "publicDownloadReport": "docs/results/public-release-0.1.5.json"
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-30T15:04:52.104Z",
