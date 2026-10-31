@@ -97,13 +97,16 @@ export function useComposeImport({ onBusy, onDone, onDockerfileSelected }: Optio
     try {
       const selected = await backend<ImportFileSelection>('compose_pick_file', { kind });
       if (!selected.token || !selected.path) return;
+      selectedToken = selected.token;
+      if (preview) await backend('compose_discard', { id: preview.token });
+      setPreview(null); setJob(null); setApproval(null);
       if (kind === 'dockerfile') {
         if (!callbacks.current.onDockerfileSelected) throw new Error('Dockerfile 빌드 연결이 없습니다. 이미지 빌드에서 파일을 선택하세요.');
         await callbacks.current.onDockerfileSelected(selected);
+        await backend('compose_discard', { id: selected.token });
+        selectedToken = null;
         return;
       }
-      selectedToken = selected.token;
-      setPreview(null); setJob(null); setApproval(null);
       const value = await backend<ComposePreview>('compose_preview', { id: selected.token });
       setPreview(value);
       previewReady = true;

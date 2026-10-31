@@ -1,4 +1,8 @@
 export const korean: Readonly<Record<string, string>> = {
+  "Selected cache was not deleted; it may have become referenced": "엔진이 이 캐시를 유지했습니다. 이미지 공유 또는 다른 캐시의 참조 상태를 확인하세요.",
+  "The engine retained this cache; refresh usage to check image sharing and cache references": "엔진이 이 캐시를 유지했습니다. 목록을 새로고쳐 이미지 공유와 다른 캐시의 참조 상태를 확인하세요.",
+  "Build cache is referenced by other cache records; clean dependent caches first": "다른 빌드 캐시가 참조 중입니다. 참조하는 캐시를 먼저 정리한 뒤 다시 확인하세요.",
+  "Engine returned an unexpected cache ID; stop cleanup and inspect the engine": "엔진이 선택하지 않은 캐시 ID를 반환해 후속 정리를 중단했습니다. 엔진 상태를 확인하세요.",
   "The owned distribution is running without a verified DockSlate keepalive process. Stop it and start it through DockSlate before connecting.": "WSL은 실행 중이지만 DockSlate 유지 프로세스를 확인하지 못했습니다. 설정에서 런타임을 중지한 뒤 다시 시작하세요.",
   "Verified independent DockSlate Moby Engine": "DockSlate 전용 Moby 엔진 연결을 확인했습니다.",
   "Docker reclamation is an estimate; shared layers can change actual freed bytes. VHDX file size and Windows reclaimed space are separate measurements.": "공유 레이어 때문에 Docker 정리 추정치와 실제 회수량이 다를 수 있습니다. VHDX 크기와 Windows 회수량은 별도로 측정합니다.",

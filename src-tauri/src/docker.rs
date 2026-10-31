@@ -1557,6 +1557,15 @@ fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Valu
     let volume_values = array(usage, "Volumes");
     let caches = array(usage, "BuildCache");
     let mut reclaimable = Some(0u64);
+    let mut referenced_caches = HashSet::new();
+    for cache in &caches {
+        if let Some(parents) = cache.get("Parents").or_else(|| cache.get(" Parents")).and_then(Value::as_array) {
+            referenced_caches.extend(parents.iter().filter_map(Value::as_str));
+        }
+        if let Some(parent) = cache.get("Parent").and_then(Value::as_str).filter(|id| !id.is_empty()) {
+            referenced_caches.insert(parent);
+        }
+    }
     let images: Vec<_> = image_values.iter().map(|image| {
         let id = text(image,"Id");
         let referenced = referenced_images.contains(id);
@@ -1574,6 +1583,7 @@ fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Valu
         let reason = if !client.cache_supported() { Some("Selective build cache cleanup requires supported Docker API 1.51") }
             else if in_use { Some("Build cache is in use or its usage is unknown") }
             else if shared { Some("Build cache is shared with an image or its sharing state is unknown") }
+            else if referenced_caches.contains(id) { Some("Build cache is referenced by other cache records; clean dependent caches first") }
             else if ["internal", "frontend"].contains(&record_type) { Some("Internal/frontend cache is excluded") }
             else if !cache_id(id) { Some("Invalid build cache identity") } else { None };
         if cache["InUse"].as_bool().is_none() || cache["Shared"].as_bool().is_none() { reclaimable = None; }
@@ -1866,7 +1876,7 @@ pub fn destructive_execute(token: String, approved: bool, progress: impl Fn(Valu
                 if removed.iter().any(|removed| removed.as_str() == Some(id)) {
                     deleted.push(id.clone());
                 } else {
-                    failed.push(json!({"id":id,"error":"Selected cache was not deleted; it may have become referenced"}));
+                    failed.push(json!({"id":id,"error":"The engine retained this cache; refresh usage to check image sharing and cache references"}));
                 }
             }
             Err(error) => failed.push(json!({"id":id,"error":error})),

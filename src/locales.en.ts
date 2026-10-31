@@ -1,4 +1,12 @@
 export const english: Readonly<Record<string, string>> = {
+  "Selected cache was not deleted; it may have become referenced": "Selected cache was not deleted; it may have become referenced",
+  "The engine retained this cache; refresh usage to check image sharing and cache references": "The engine retained this cache; refresh usage to check image sharing and cache references",
+  "Build cache is referenced by other cache records; clean dependent caches first": "Build cache is referenced by other cache records; clean dependent caches first",
+  "Engine returned an unexpected cache ID; stop cleanup and inspect the engine": "Engine returned an unexpected cache ID; stop cleanup and inspect the engine",
+  "완료된 항목은 처리되었습니다. 실패 항목의 사유를 확인하고 목록을 새로고친 뒤 다시 선택하세요.": "Completed items have been processed. Check each failed item, refresh the list, and select again.",
+  "실패 항목 {count}개 보기": "View {count} failed items",
+  "목록 새로고침": "Refresh list",
+  "상태 확인 필요": "Status needs verification",
   "포트 추가": "Add port",
   "볼륨 추가": "Add volume",
   "내 PC 포트": "Host port",

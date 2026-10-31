@@ -1,0 +1,198 @@
+{
+  "observedAt": "2026-10-31T05:15:25.496Z",
+  "status": "Unreleased local fix on top of 0.1.4; published installer unchanged",
+  "sha256": "5D18F9EAB116A69F8EE7D983973D8A81582D2C2764E3D36F01C14BA1DF1310F1",
+  "commands": [
+    {
+      "command": "npm run build",
+      "exit": 0
+    },
+    {
+      "command": "cargo check --manifest-path src-tauri/Cargo.toml --locked --offline",
+      "exit": 0
+    },
+    {
+      "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
+      "exit": 0
+    }
+  ],
+  "nativeChecks": 12,
+  "checks": [
+    {
+      "name": "WSL bottom padding 1000x640",
+      "passed": true,
+      "evidence": {
+        "mainHeight": 582,
+        "scrollHeight": 649,
+        "bottomGap": 35.51245880126953,
+        "paddingBottom": "20px"
+      }
+    },
+    {
+      "name": "WSL bottom padding 1668x900",
+      "passed": true,
+      "evidence": {
+        "mainHeight": 842,
+        "scrollHeight": 842,
+        "bottomGap": 249.375,
+        "paddingBottom": "18px"
+      }
+    },
+    {
+      "name": "One build source panel before file selection",
+      "passed": true
+    },
+    {
+      "name": "Actual shared Node image cache is blocked",
+      "passed": true
+    },
+    {
+      "name": "Only dockerfile panel and one footer",
+      "passed": true,
+      "evidence": {
+        "panels": 1,
+        "forms": 1,
+        "compose": 0,
+        "footers": 1
+      }
+    },
+    {
+      "name": "Only compose panel and one footer",
+      "passed": true,
+      "evidence": {
+        "panels": 1,
+        "forms": 0,
+        "compose": 1,
+        "footers": 1
+      }
+    },
+    {
+      "name": "Only dockerfile panel and one footer",
+      "passed": true,
+      "evidence": {
+        "panels": 1,
+        "forms": 1,
+        "compose": 0,
+        "footers": 1
+      }
+    },
+    {
+      "name": "Only dockerfile panel and one footer",
+      "passed": true,
+      "evidence": {
+        "panels": 1,
+        "forms": 1,
+        "compose": 0,
+        "footers": 1
+      }
+    },
+    {
+      "name": "Cancelling file picker keeps existing selection",
+      "passed": true
+    },
+    {
+      "name": "Closing selection leaves one shared picker",
+      "passed": true
+    },
+    {
+      "name": "Actual parent caches blocked; owned unshared leaf eligible",
+      "passed": true,
+      "blockedParents": 15
+    },
+    {
+      "name": "Real UI removes only the approved exact owned cache and reports completion",
+      "passed": true,
+      "notice": "Clean selected data: 1 completed, 0 failed",
+      "allUnselectedCacheIdsRetained": true
+    }
+  ],
+  "renderChecks": {
+    "checks": [
+      {
+        "summary": "선택한 데이터 정리: 28개 완료, 8개 실패",
+        "failedItems": 8,
+        "passed": true
+      },
+      {
+        "summary": "선택한 데이터 정리: 0개 완료, 1개 실패",
+        "failedItems": 1,
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "scope": "Actual OperationNotice component render using supplied failure data; no backend calls or deletion; not a live cleanup E2E."
+  },
+  "cacheCleanup": {
+    "observedAt": "2026-10-31T05:10:44.758Z",
+    "sha256": "5D18F9EAB116A69F8EE7D983973D8A81582D2C2764E3D36F01C14BA1DF1310F1",
+    "approvedByUser": true,
+    "removedOwnedImageIds": [
+      "sha256:017b852673cacb271d9ce6183f5e5a781a924d3492527604045550992c4543f1",
+      "sha256:534f9bcebda962356e81a56c5162ea71313ae63a2439f49f0ba65f1a2f35ca5a",
+      "sha256:6a7171679eca7e92e5e57814b5e6e6910b4d3528d0b0199c52e6a492cdfe33cd"
+    ],
+    "selectedCache": {
+      "id": "s7njhmh3zhcayth6ro79ctnet",
+      "description": "[1/1] COPY dockslate-e2e-feedback-b45a5efafbe74db19fb6306c16cff3f2.txt /marker"
+    },
+    "checks": [
+      {
+        "name": "Actual parent caches blocked; owned unshared leaf eligible",
+        "passed": true,
+        "blockedParents": 15
+      },
+      {
+        "name": "Real UI removes only the approved exact owned cache and reports completion",
+        "passed": true,
+        "notice": "Clean selected data: 1 completed, 0 failed",
+        "allUnselectedCacheIdsRetained": true
+      }
+    ],
+    "originalResourcesPreserved": true,
+    "passed": true
+  },
+  "restart": {
+    "observedAt": "2026-10-30T15:48:31.666Z",
+    "approvedByUser": true,
+    "baselineContainerCount": 3,
+    "steps": [
+      {
+        "action": "stop",
+        "result": {
+          "message": "The owned runtime operation has started. Refresh its status to see progress.",
+          "state": "stopping"
+        }
+      },
+      {
+        "action": "start",
+        "result": {
+          "message": "The owned runtime operation has started. Refresh its status to see progress.",
+          "state": "starting"
+        }
+      }
+    ],
+    "kernelUpdated": false,
+    "engine": {
+      "id": "12f63594-ea3a-45f9-adf2-c594dc91cbc5",
+      "state": "connected",
+      "kernel": "6.6.87.2-microsoft-standard-WSL2"
+    },
+    "initialVerificationExit": 1,
+    "initialVerificationFailure": "All network IDs equality check failed because Docker recreated its default bridge during normal startup.",
+    "reconciled": true,
+    "recreatedDefaultBridge": {
+      "before": "ef04bac8ae954af9b5eeed4899cb34136e34d55c11f53a5c735bae8986dbb97a",
+      "after": "a9bf4ced117596d996a6584c72f0a561b6b48b44dd1866f45edf5fffe847a25d",
+      "source": "https://github.com/moby/moby/blob/master/daemon/daemon_unix.go"
+    },
+    "originalContainersImagesVolumesPreserved": true,
+    "userNetworksPreserved": true,
+    "passed": true
+  },
+  "kernelUpdated": false,
+  "limitations": [
+    "Actual partial-failure cleanup was not forced; the partial-failure banner was checked by rendering the actual component with supplied failure data.",
+    "Exactly one owned leaf cache was pruned. Unselected test caches remain to demonstrate retention.",
+    "Published 0.1.4 installer and its existing receipts were not changed."
+  ]
+}

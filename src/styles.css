@@ -83,6 +83,8 @@ code, .mono { font-family: Consolas, 'Cascadia Mono', monospace; font-size: 0.92
 .sidebar-footer strong { display: block; font-weight: 500; color: var(--muted); }
 .main-content { overflow: auto; padding: 18px; min-width: 0; }
 .page { height: 100%; margin: 0 auto; display: flex; flex-direction: column; }
+.page:has(> [data-page="Disk Manager"]:not([hidden]) > [data-tab="wsl"]:not([hidden])),
+.page:has(> [data-page="Builds"]:not([hidden]) > [data-build-source]:not([hidden])) { height: auto; min-height: 100%; }
 .page > [data-page] { flex: 1; min-height: 0; }
 .list-page, .list-pane, .container-list { display: flex; flex-direction: column; min-height: 0; }
 .list-pane, .container-list { flex: 1; }
@@ -254,6 +256,14 @@ button.metric:hover { border-color: var(--strong-border); background: var(--rais
 .loading-line { color: var(--muted); font-size: 0.923077rem; padding: 12px; text-align: center; }
 .operation-banner { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 6px; border: 1px solid var(--accent-border); background: var(--accent-tint); color: var(--accent); margin-bottom: 14px; line-height: 1.6; font-size: 0.923077rem; }
 .operation-banner > span { min-width: 0; overflow-wrap: anywhere; }
+.operation-message { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.operation-message > p + p { margin-top: 6px; }
+.operation-failures { margin-top: 8px; }
+.operation-failures summary { cursor: pointer; }
+.operation-failures ul { max-height: 240px; overflow: auto; padding-left: 20px; margin-top: 8px; }
+.operation-failures li + li { margin-top: 12px; }
+.operation-failures code { display: block; color: var(--muted); user-select: text; }
+.operation-banner > .button, .operation-banner > .icon-button { flex-shrink: 0; align-self: flex-start; }
 .operation-banner .icon-button { margin-left: auto; }
 .operation-banner.success { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
 .operation-banner.danger { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }

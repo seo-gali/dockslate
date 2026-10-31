@@ -5,12 +5,17 @@ import { ConfirmDialog, Icon, TaskProgress, errorMessage, formatBytes } from './
 import { getLocale, t } from "./i18n";
 
 
-export type Operation = { tone: 'accent' | 'success' | 'warning' | 'danger'; message: string } | null;
+export type Operation = { tone: 'accent' | 'success' | 'warning' | 'danger'; message: string; failures?: { id: string; label: string; error: string }[] } | null;
 interface DeletionProgress { requestId: string; phase: 'validating' | 'deleting'; completed: number; total: number; target?: string }
 
-export function OperationNotice({ operation, onDismiss }: { operation: Operation; onDismiss?: () => void }) {
+export function OperationNotice({ operation, onDismiss, onRefresh, refreshing }: { operation: Operation; onDismiss?: () => void; onRefresh?: () => void; refreshing?: boolean }) {
   if (!operation) return null;
-  return <div className={`operation-banner ${operation.tone}`} role={operation.tone === 'danger' ? 'alert' : 'status'}><Icon name={operation.tone === 'danger' || operation.tone === 'warning' ? 'warning' : operation.tone === 'success' ? 'check' : 'refresh'} />{operation.tone === 'accent' ? <TaskProgress label={operation.message} /> : <span>{operation.message}</span>}{onDismiss && operation.tone !== 'accent' && <button className="icon-button" onClick={onDismiss} data-tooltip={t("알림 닫기")} aria-label={t("알림 닫기")}><Icon name="close" size={16} /></button>}</div>;
+  return <div className={`operation-banner ${operation.tone}`} role={operation.tone === 'danger' ? 'alert' : 'status'}><Icon name={operation.tone === 'danger' || operation.tone === 'warning' ? 'warning' : operation.tone === 'success' ? 'check' : 'refresh'} />{operation.tone === 'accent' ? <TaskProgress label={operation.message} /> : <div className="operation-message"><p>{operation.message}</p>{!!operation.failures?.length && <><p>{t('완료된 항목은 처리되었습니다. 실패 항목의 사유를 확인하고 목록을 새로고친 뒤 다시 선택하세요.')}</p><details className="operation-failures"><summary>{t('실패 항목 {count}개 보기', { count: operation.failures.length })}</summary><ul>{operation.failures.map(item => <li key={item.id}><strong>{item.label}</strong><p>{failureText(item.error)}</p><code>{item.id}</code></li>)}</ul></details></>}</div>}{!!operation.failures?.length && onRefresh && <button className="button small" disabled={refreshing} onClick={onRefresh}>{refreshing ? t('조회 중…') : t('목록 새로고침')}</button>}{onDismiss && operation.tone !== 'accent' && <button className="icon-button" onClick={onDismiss} data-tooltip={t("알림 닫기")} aria-label={t("알림 닫기")}><Icon name="close" size={16} /></button>}</div>;
+}
+
+function failureText(error: string): string {
+  if (error.startsWith('Cleanup blocked: ')) return t(error.slice('Cleanup blocked: '.length));
+  return t(error);
 }
 
 export function useDestructiveAction(onComplete: (result: DestructiveResult) => void | Promise<void>) {
@@ -72,9 +77,9 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
       open.current = false;
       setRequest(null); setPreview(null);
       setAcknowledged(false);
-      const failures = result.failed.map(item => `${item.id}: ${item.error}`).join(' / ');
+      const failures = result.failed.map(item => ({ ...item, label: targets.find(label => label.endsWith(` · ${item.id}`))?.slice(0, -(` · ${item.id}`).length) ?? item.id }));
       const action = result.deleted.length || result.failed.length ? t("{p1}: {p2}개 완료, {p3}개 실패", { p1: preview.kind === 'cleanup' ? t("선택한 데이터 정리") : preview.kind === 'image_delete' ? t("이미지 삭제") : t("컨테이너 삭제"), p2: result.deleted.length, p3: result.failed.length }) : result.message;
-      setOperation({ tone: result.failed.length ? 'danger' : 'success', message: `${action}${failures ? ` · ${failures}` : ''}` });
+      setOperation({ tone: failures.length ? result.deleted.length ? 'warning' : 'danger' : 'success', message: action, failures });
       await onComplete(result);
     } catch (failure) {
       setError(errorMessage(failure));

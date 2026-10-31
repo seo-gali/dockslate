@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { ResizableTable } from './ResizableColumns';
 import { useTableRows } from './TableRows';
 import { ConfirmDialog, Icon, formatComposeProject } from './components';
@@ -16,7 +17,7 @@ function ComposeSummary({ preview }: { preview: ComposePreview }) {
   </>;
 }
 
-export function ComposeImportPanel({ compose, connected, blocked = false }: { compose: ReturnType<typeof useComposeImport>; connected: boolean; blocked?: boolean }) {
+export function ComposeImportPanel({ compose, connected, blocked = false, children }: { compose: ReturnType<typeof useComposeImport>; connected: boolean; blocked?: boolean; children?: ReactNode }) {
   const disabled = !connected || blocked || compose.busy;
   const canRun = compose.job?.operation === 'build' && compose.job.state === 'completed';
   return <section className="panel image-build-panel" aria-label={t("파일에서 빌드")} aria-busy={compose.busy}>
@@ -28,5 +29,6 @@ export function ComposeImportPanel({ compose, connected, blocked = false }: { co
     {compose.pollError && <div className="notice error" role="alert"><p>{t("작업 상태 확인 실패:") + " "}{compose.pollError}</p><button className="button small" onClick={() => void compose.poll()}>{t("다시 확인")}</button></div>}
     {compose.preview && <div className="build-panel-footer"><button className="button" disabled={compose.busy} onClick={() => void compose.discard()}>{t("파일 선택 닫기")}</button></div>}
     {compose.approval && <ConfirmDialog title={t("Compose 서비스 실행")} label="서비스 생성 및 시작" busy={compose.working} error={null} acknowledged={compose.acknowledged} onAcknowledge={compose.setAcknowledged} onCancel={compose.cancelApproval} onConfirm={() => void compose.run()}><p>{compose.approval.impact}</p><ComposeSummary preview={compose.approval} /><p className="usage-note">{t("승인은") + " "}{compose.approval.expiresInSeconds}{t("초 동안 유효합니다. 소스·이미지·엔진이 변경되면 실행을 차단합니다.")}</p></ConfirmDialog>}
+    {children}
   </section>;
 }

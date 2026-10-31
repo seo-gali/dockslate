@@ -30,8 +30,7 @@ const statusText = (status: string) => /error|failed/i.test(status) ? t("실패"
 export default function Builds(props: EngineProps & { build: ReturnType<typeof useImageBuild>; compose: ReturnType<typeof useComposeImport>; importBlocked?: boolean; onBusy?: (value: boolean) => void }) {
   const query = useBackendQuery<Snapshot>('builds_snapshot');
   const [tab, setTab] = useState<'source' | 'active' | 'history' | 'builders' | 'imported'>('source');
-  const [showBuild, setShowBuild] = useState(false);
-  useEffect(() => { if (props.compose.preview) setTab('source'); }, [props.compose.preview?.token]);
+  useEffect(() => { if (props.compose.preview) { setTab('source'); props.build.discard(); } }, [props.compose.preview?.token]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const term = search.trim().toLowerCase();
@@ -74,7 +73,7 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
   const selectedHistory = history ?? query.data?.history;
   const visibleHistory = tab === 'active' ? query.data?.history : selectedHistory;
   const engineScope = JSON.stringify([props.engine?.state, props.engine?.context, props.engine?.endpoint, props.engine?.engine, props.engine?.ownerPath]);
-  useEffect(() => { if (props.build.job?.id) setShowBuild(true); }, [props.build.job?.id]);
+  useEffect(() => { if (props.build.job?.id) setTab('source'); }, [props.build.job?.id]);
   useEffect(() => {
     const cleanup = () => {
       generation.current += 1; builderGeneration.current += 1;
@@ -203,8 +202,8 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     <OperationNotice operation={operation} onDismiss={() => setOperation(null)} />
         <div className="page-tabs" role="tablist" aria-label={t("빌드 보기")}>{([['source', t('파일에서 빌드')], ['active', t("진행 중인 빌드")], ['history', t("빌드 기록")], ['builders', t("빌더 관리")], ['imported', t("가져온 기록")]] as const).map(([value, label]) => <button key={value} role="tab" aria-selected={tab === value} className={tab === value ? 'active' : ''} onClick={() => { setTab(value); setSelected(null); setDetail(null); generation.current += 1; }}>{label}</button>)}</div>
     {transferBusy && <div className="operation-banner accent" role="status"><Icon name="refresh" /><span>{transfer?.message} · {transfer?.path}</span></div>}
-    <div hidden={tab !== 'source'}><ComposeImportPanel compose={props.compose} connected={props.engine?.state === 'connected'} blocked={working || transferBusy || props.importBlocked} />
-    {(showBuild || props.build.busy) && <ImageBuildPanel build={props.build} connected={props.engine?.state === 'connected'} blocked={working || transferBusy || props.compose.busy} onClose={() => { props.build.discard(); setShowBuild(false); }} />}</div>
+    <div data-build-source hidden={tab !== 'source'}><ComposeImportPanel compose={props.compose} connected={props.engine?.state === 'connected'} blocked={working || transferBusy || props.importBlocked}>
+    {!props.compose.preview && (props.build.contextPath || props.build.busy) && <ImageBuildPanel build={props.build} connected={props.engine?.state === 'connected'} blocked={working || transferBusy || props.compose.busy} onClose={props.build.discard} />}</ComposeImportPanel></div>
     <div className="list-pane" hidden={tab === 'source'}>
       {query.error && <ErrorNotice message={query.error} onRetry={() => void props.reloadEngine()} />}
       {showImport && <section className="panel" aria-label={t("빌드 기록 가져오기")} style={{ marginBottom: 20 }}><h2>{t("빌드 기록 가져오기")}</h2><p className="usage-note">{t(".dockerbuild 파일의 실제 기록과 로그를 DockSlate에 보관합니다. 엔진에 이미지나 빌드 캐시를 복원하지 않습니다.")}</p><div className="toolbar"><input className="text-input mono" aria-label={t("가져올 빌드 기록 파일")} value={importPath} disabled={busy} onChange={event => setImportPath(event.target.value)} placeholder={t(".dockerbuild 파일 경로")} /><button className="button" disabled={busy} onClick={() => void pick(false).then(path => { if (path) setImportPath(path); })}>{t("파일 선택")}</button><button className="button primary" disabled={busy || !importPath.trim()} onClick={() => chooseApproval({ kind: 'transfer', title: t("빌드 기록 가져오기"), target: importPath.trim(), impact: t("선택한 파일의 설정과 로그를 앱 보관함으로 가져옵니다. 엔진과 기존 기록은 변경하지 않습니다. 압축 파일은 64MB, 보관 기록은 200개까지 지원합니다."), request: { kind: 'import', path: importPath.trim() } })}>{t("가져오기")}</button></div></section>}
