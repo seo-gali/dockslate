@@ -4,9 +4,9 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 
 **[웹사이트](https://seo-gali.github.io/dockslate/)** · [빠른 시작](USER_GUIDE.md) · [지원·검증 현황](docs/REQUEST_STATUS.md)
 
-**[설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.4_x64-setup.exe)** · **[포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.4-windows-x64.zip)**
+**[설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.5_x64-setup.exe)** · **[포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.5-windows-x64.zip)**
 
-0.1.4에 정리 표 전체 선택, Compose 그룹 접기와 반응형 확인창을 반영했습니다. [실제 Windows 검증·설치 파일 내부 검사](docs/results/release-0.1.4.md).
+0.1.5에 정리 실패 상세·공유 캐시 차단·단일 파일 빌드 패널·WSL 하단 여백을 반영했습니다. [검증·설치 파일 내부 검사](docs/results/release-0.1.5.md). WSL 커널 보안 패치는 포함하지 않습니다.
 
 > **미서명 개발 버전.** 이전 브라우징 데이터 접근 경고의 원인은 미확인입니다. [서명·보안 상태](docs/results/code-signing.md)
 

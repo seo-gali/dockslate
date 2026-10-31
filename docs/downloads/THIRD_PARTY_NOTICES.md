@@ -1,6 +1,6 @@
 # 타사 라이선스·저작권 고지
 
-DockSlate 0.1.4 · Windows x64
+DockSlate 0.1.5 · Windows x64
 
 Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/8af9fe3a36bab3e039862a2ab1cef1880c9b4d03/LICENSE) 오픈소스로 엔진 사용료가 없습니다. Docker Desktop 구독은 필요하지 않습니다. 각 의존성·Docker Hub·컨테이너 이미지·외부 서비스에는 별도 조건이 적용됩니다. 이 고지가 DockSlate 자체 코드나 모든 구성 요소에 Apache-2.0을 부여하는 것은 아닙니다.
 
@@ -15,11 +15,11 @@ Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/8af9
 | `sources/` | MPL 대상 Rust·Go 의존성과 NSIS의 버전별 원본 소스 |
 | `README.md` | 범위·원문 출처·소스 이용 안내 |
 
-**[고지·소스 전체 ZIP 다운로드](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.4-third-party-licenses.zip)**
+**[고지·소스 전체 ZIP 다운로드](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.5-third-party-licenses.zip)**
 
 저작권자와 개별 조건은 각 원문에 유지했습니다. 라이선스 표현의 OR·AND를 일괄 변환하거나 별도 권한을 부여하지 않습니다. MPL 구성 요소는 수정하지 않은 원본 소스를 함께 제공하며 각 원본의 고지와 조건을 유지합니다. NSIS LZMA의 CPL과 linking exception도 원문과 소스에 포함합니다.
 
-0.1.4 설치판·포터블에 포함한 고지 표지는 0.1.3 의존성 스냅샷입니다. 구성 요소 버전·조건은 동일하며, 해당 문서의 [0.1.3 고지 ZIP 링크](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.3-third-party-licenses.zip)를 계속 제공합니다.
+이전 0.1.4 설치판·포터블에 포함한 고지 표지는 0.1.3 의존성 스냅샷입니다. 구성 요소 버전·조건은 동일하며, 해당 문서의 [0.1.3 고지 ZIP 링크](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.3-third-party-licenses.zip)를 계속 제공합니다.
 
 ## 검토 범위
 
