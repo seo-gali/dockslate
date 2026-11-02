@@ -1,5 +1,9 @@
 # 설치·Windows Docker 통합 검증
 
+> **과거 기록.** PATH·설치 통합 수정 당시 기록이다. 현재 설치 성공 여부는 별도 0.1.6 재설치 기록으로 판단한다. [현재 안내·기록 구분](../README.md).
+
+아래는 PATH·설치 통합 수정 당시 기록이다. 이후 [0.1.6 실제 재설치](reinstall-recovery.md)에서 설치 EXE 종료 0과 앱·CLI 연결을 확인했다. 기존 데이터 보존 업그레이드·제거·새 PC 전체 경로의 검증은 별도다.
+
 Docker Desktop처럼 앱 설치 과정에서 내부 Linux 엔진과 Windows Docker 명령을 함께 준비한다. 기존 WSL·이미지·볼륨을 유지하며 별도 Linux 배포판을 사용자가 설치하는 과정을 요구하지 않는다. 사용자 설치에서 발견된 긴 PATH 오류를 수정한 EXE를 별도 Windows 빌드로 생성하고 공식 GitHub digest와 내부 EXE 해시를 대조했다. 수정판은 자동 실행하지 않았으며 전체 설치·제거 완료는 미검증이다.
 
 완료 기준은 설치 파일 하나로 앱·Windows CLI를 설치하고, 승인한 Docker Engine을 준비한 뒤 새 터미널의 `docker`·`docker compose` 사용을 실제 확인하는 것이다. ZIP 생성과 개별 CLI 검증은 이 결과를 대신하지 않는다.

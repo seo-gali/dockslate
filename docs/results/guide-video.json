@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-11-02T14:13:43.932Z",
+  "version": "0.1.6",
+  "videoUrl": "https://youtu.be/EbL7LkbNrPY",
+  "scope": "Actual 0.1.6 Windows guide capture; not a full regression or security audit.",
+  "actualNativeUi": true,
+  "scenes": 17,
+  "durationSeconds": 228.875,
+  "video": {
+    "codec": "h264",
+    "width": 1920,
+    "height": 1080,
+    "fps": "24/1"
+  },
+  "audio": {
+    "codec": "aac",
+    "sampleRate": "48000",
+    "channels": 2,
+    "language": "kor",
+    "meanVolumeDb": -19.8,
+    "voice": "Microsoft Heami Desktop - Korean"
+  },
+  "koreanSubtitles": true,
+  "chapterCount": 17,
+  "fullVideoAudioDecodeExit": 0,
+  "demoHttpHealthChecks": 2,
+  "resourceChecksAt": "2026-11-02T10:29:58.296Z",
+  "pruneOrWslCompressionExecuted": false,
+  "localMediaCommitted": false,
+  "localVideoSha256": "a51e7fe4636aab5a8c681190fe33d255f9cb6522353c01fb2cae645f36e2b12d",
+  "localVideoBytes": 8105151,
+  "publicVideoPlaybackVerified": false
+}

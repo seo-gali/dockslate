@@ -1,5 +1,7 @@
 # 독립 엔진 E2E 실행 조건
 
+이 문서는 `scripts/verify-independent-engine.mjs`의 실행 범위다. 과거 실행 기록이나 `--approved-isolated-fixtures` 인수만으로 새 작업이 승인되지 않는다. 대상 엔진·생성/삭제할 테스트 객체·런타임 중지/시작 영향을 먼저 승인받는다. 현재 앱의 검증 상태는 [요청 현황](../REQUEST_STATUS.md)에서 확인한다.
+
 실행 대상은 디버깅 포트를 연 실제 Windows DockSlate 실행 파일과 이미 설치·시작한 전용 `DockSlate` 배포판이다. 이 문서는 실행 성공을 의미하지 않는다. 실제 결과는 실행 시 `independent-engine-e2e.json`에 기록된다.
 
 ```powershell
@@ -16,4 +18,4 @@ node scripts/verify-independent-engine.mjs PATH_TO_DEVTOOLS_ACTIVE_PORT --approv
 
 빌드 캐시 삭제, VHDX 압축·삭제 및 Docker Desktop 데이터 이전은 이 스크립트의 검증 범위 밖이다. 기존 배포판의 종료·삭제, 전역 Prune, 강제 삭제 또는 WSL 전체 종료 명령은 실행하지 않는다.
 
-준비 검증: `node --check scripts/verify-independent-engine.mjs` 통과. 승인 인수가 없는 실행은 로컬 디버깅·WSL·Docker 접근 전에 종료한다. 실제 독립 엔진 E2E는 이 기록 작성 시 실행하지 않았다.
+스크립트는 승인 인수가 없으면 로컬 디버깅·WSL·Docker 접근 전에 종료한다. `node --check scripts/verify-independent-engine.mjs`는 구문 검사다. [과거 실제 독립 엔진 실행](independent-engine-e2e-final-build.json)과 [0.1.6의 제한된 확인](reinstall-recovery.md)을 구분하며, 이 절차 문서 자체를 새 실행의 통과 결과로 사용하지 않는다.

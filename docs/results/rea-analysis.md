@@ -1,5 +1,7 @@
 # MVP 구현 추가 근거
 
+> **과거 기록.** 초기 MVP 구현 근거다. Rancher 연결·압축 백업 조건·라이선스 미확정 내용은 당시 상태이며 현재 사용 절차가 아니다. [현재 안내·기록 구분](../README.md).
+
 원본 [Rancher Desktop v1.24.0 분석](../research/rancher-desktop-1.24.0.md)과 Evidence·아티팩트 기록은 변경하지 않았다. 전체 ASAR 재분석, Rancher Desktop 설치·실행, WSL 배포판 생성은 수행하지 않았다. 구현 요청 이후 REA MCP 호출은 0회이며 [실행 로그 감사](rea-mcp-call-audit.md)로 별도 확인했다.
 
 | 구분 | 확인·구현 내용 |

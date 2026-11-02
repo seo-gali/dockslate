@@ -1,0 +1,622 @@
+{
+  "observedAt": "2026-11-02T14:49:31.195Z",
+  "passed": true,
+  "applicationVersion": "0.1.6",
+  "scope": "Documentation, Git media exclusion and local analysis cache cleanup; no application source or dependency changes.",
+  "cleanup": {
+    "deletedBytes": 2261034177,
+    "removedDirectories": 30,
+    "duplicateFilesRemoved": 2,
+    "preserved": [
+      "External application original installers and REA evidence",
+      "License upstream source and notices",
+      "Security/privacy investigation originals",
+      "Runtime/kernel recovery receipts",
+      "Final media outputs"
+    ],
+    "targets": [
+      {
+        "path": "portable-extract",
+        "bytes": 155435455,
+        "files": 164,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "compose-mongodb-shell",
+        "bytes": 207874650,
+        "files": 8,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "installer-ui-20261019221229",
+        "bytes": 154696270,
+        "files": 496,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "licenses\\installer-8C3606C8",
+        "bytes": 154546054,
+        "files": 27,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "native-ipc-final-20261014\\EBWebView",
+        "bytes": 8080490,
+        "files": 164,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "table-columns-chrome-20261018-194926",
+        "bytes": 7400406,
+        "files": 172,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "installer-flow-browser-20261020183713",
+        "bytes": 82177737,
+        "files": 354,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "standalone-webview-20261014\\EBWebView",
+        "bytes": 9183833,
+        "files": 163,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "native-final-build-20261014\\EBWebView",
+        "bytes": 8098212,
+        "files": 163,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "native-webview-retry-20261013\\EBWebView",
+        "bytes": 30669625,
+        "files": 259,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "table-columns-chrome-final-20261018-195219",
+        "bytes": 16484739,
+        "files": 212,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "native-webview-relaunch-20261013\\EBWebView",
+        "bytes": 9915664,
+        "files": 183,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "independent-engine-webview-retry2\\EBWebView",
+        "bytes": 10571731,
+        "files": 179,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "standalone-final-webview-20261014c\\EBWebView",
+        "bytes": 9183971,
+        "files": 163,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "standalone-final-webview-20261014b\\EBWebView",
+        "bytes": 5245234,
+        "files": 140,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "independent-engine-webview-20261014\\EBWebView",
+        "bytes": 31765317,
+        "files": 258,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "table-columns-chrome-verified-20261018-195154",
+        "bytes": 16684366,
+        "files": 240,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "workflow-native-da62878e42a640f297d16c23b8bbb6a9\\EBWebView",
+        "bytes": 72481642,
+        "files": 269,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "current-installer-7008F093-1619d4e9d3ab42f58b7396fdc3a62f24",
+        "bytes": 161918492,
+        "files": 404,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "licenses\\installer-B0B322B1-e9b93188d7e64ad8b0d7a196e9168042",
+        "bytes": 161906597,
+        "files": 404,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "file-import-native-88c4ba89f4a640aeb8d5dc421ea3672c\\EBWebView",
+        "bytes": 72806101,
+        "files": 275,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "wsl-recovery-webview-a447b22f49b64cb1983e413e1c332220\\EBWebView",
+        "bytes": 72952216,
+        "files": 274,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "installer-0.1.2\\extracted-FD69754D-b26bdd66084c49148a8d3efbd9c47c6d",
+        "bytes": 162055559,
+        "files": 406,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "installer-0.1.1\\extracted-503E15CE-60c630a7cc5a416dbcf0a2ab7ffb78bc",
+        "bytes": 162063493,
+        "files": 409,
+        "kind": "reproducible extracted package"
+      },
+      {
+        "path": "ui-release-native\\profile-20367782db23424e8be05d81c4e4df87\\EBWebView",
+        "bytes": 73390712,
+        "files": 286,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "ui-cleanup-native\\profile-ff83c5b9553949c8b08bf1d8f15b6491\\EBWebView",
+        "bytes": 73423241,
+        "files": 286,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "ui-release-native\\profile-869a7183bb57415e80523531c8120433\\EBWebView",
+        "bytes": 73467006,
+        "files": 291,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "ui-release-native\\profile-f44cada9780147d2afd104cd5db6e5d6\\EBWebView",
+        "bytes": 12164250,
+        "files": 197,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "ui-release-native\\profile-b0032de7cbdf4619ae32ca1913cb4a69\\EBWebView",
+        "bytes": 72940011,
+        "files": 279,
+        "kind": "finished test browser profile"
+      },
+      {
+        "path": "ui-release-native\\profile-89792efd859d40efb3f94eb3fbe1c8ef\\EBWebView",
+        "bytes": 72939908,
+        "files": 280,
+        "kind": "finished test browser profile"
+      }
+    ],
+    "duplicates": [
+      {
+        "path": "installer-0.1.1\\incoming\\DockSlate_0.1.1_x64-setup.exe",
+        "sha256": "503E15CE5329AC37CE41C55974302E4DD2EE3FD113262BBE2FDCF883FA514892",
+        "bytes": 49255610,
+        "retainedSource": "installer-0.1.1\\public-DockSlate_0.1.1_x64-setup.exe"
+      },
+      {
+        "path": "installer-0.1.2\\incoming\\DockSlate_0.1.2_x64-setup.exe",
+        "sha256": "FD69754DD4EA2C64C41BF361AD23C831093B880F22173F1370A398DC078DE305",
+        "bytes": 49255585,
+        "retainedSource": "installer-0.1.2\\public-DockSlate_0.1.2_x64-setup.exe"
+      }
+    ]
+  },
+  "documentation": {
+    "markdownFiles": 51,
+    "relativeLinksChecked": 355,
+    "anchorsChecked": 13,
+    "missingLinks": [],
+    "missingAnchors": [],
+    "guideQuickstartSteps": 3,
+    "guideDetails": 4,
+    "siteSourceAndGeneratedContentMatch": true
+  },
+  "media": {
+    "gitIgnored": true,
+    "trackedFiles": 0,
+    "localVideoPreserved": true
+  },
+  "applicationRebuilt": false,
+  "engineOrKernelChanged": false,
+  "committed": false,
+  "pushed": false,
+  "published": false,
+  "externalVideoPlaybackVerified": false,
+  "commands": [
+    {
+      "command": "node .analysis/cleanup-audit/audit-docs.mjs",
+      "exit": 0
+    },
+    {
+      "command": "node scripts/build-site.mjs --publish",
+      "exit": 0,
+      "verifiedDownloads": 3,
+      "deployed": false
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "limitations": [
+    "Historical execution records retain their original dates and results.",
+    "Published installers and ZIP contents remain their release-time documentation snapshot.",
+    "YouTube thumbnail returned HTTP 404; README retains the supplied text link and public playback was not verified."
+  ],
+  "contentReview": {
+    "observedAt": "2026-11-02T16:03:09.118Z",
+    "passed": true,
+    "scope": "Repository document roles, active procedures versus current code, release targets, mutable aliases and offline package links. No new application or historical E2E execution.",
+    "documents": [
+      {
+        "file": "docs/README.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/reinstall-recovery.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": ".project/plan.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "AGENTS.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "README.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "THIRD_PARTY_NOTICES.md",
+        "role": "current-license-notice",
+        "scopeClarified": false
+      },
+      {
+        "file": "USER_GUIDE.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/CODING_STANDARDS.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/DESIGN.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/DEVELOPMENT.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/PAGES.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/REQUEST_STATUS.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/downloads/THIRD_PARTY_NOTICES.md",
+        "role": "legacy-license-notice",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/research/docker-desktop-4.96.0.md",
+        "role": "fixed-upstream-version-research",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/research/rancher-desktop-1.24.0.md",
+        "role": "fixed-upstream-version-research",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/agents-ab.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/agents-instructions-review.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/api-performance.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/browsing-data-alert.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/build-records-av-incident.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/cleanup-feedback.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/code-signing.md",
+        "role": "current-summary-with-dated-evidence",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/cve-2026-98432-wsl.md",
+        "role": "current-summary-with-dated-evidence",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/desktop-removal-preflight.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/docker-backend-evidence.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/independent-engine-e2e-procedure.md",
+        "role": "execution-contract",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/inspect-lifecycle.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/installation-correction.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/interaction-workflows.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/iobit-access-review-draft.md",
+        "role": "unsubmitted-draft",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/local-delivery.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/maintenance-review.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/mvp-verification.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/production-readiness.md",
+        "role": "current-summary-with-dated-evidence",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/rea-analysis.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/rea-mcp-call-audit.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/refinement-verification.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/release-0.1.1.md",
+        "role": "fixed-release-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/release-0.1.2.md",
+        "role": "fixed-release-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/release-0.1.3.md",
+        "role": "fixed-release-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/release-0.1.4.md",
+        "role": "fixed-release-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/release-0.1.5.md",
+        "role": "fixed-release-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/release-0.1.6.md",
+        "role": "fixed-release-record",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/standalone-runtime-evidence.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/standalone-runtime-verification.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/table-layout.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/windows-cli-contract.md",
+        "role": "execution-contract",
+        "scopeClarified": false
+      },
+      {
+        "file": "docs/results/workbench-verification.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "docs/results/wsl-compaction-recovery.md",
+        "role": "dated-execution-or-review-record",
+        "scopeClarified": true
+      },
+      {
+        "file": "downloads/THIRD_PARTY_NOTICES.md",
+        "role": "current-license-notice",
+        "scopeClarified": false
+      },
+      {
+        "file": "examples/basic-web/README.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      },
+      {
+        "file": "licenses/README.md",
+        "role": "current-guidance",
+        "scopeClarified": false
+      }
+    ],
+    "markdownFiles": 52,
+    "relativeLinksChecked": 435,
+    "anchorsChecked": 12,
+    "offlineUserGuideLinksChecked": 4,
+    "historicalScopesClarified": 16,
+    "sourceEvidence": [
+      "src/App.tsx",
+      "src/ComposeImport.tsx",
+      "src/ImageBuild.tsx",
+      "src-tauri/src/bin/docker.rs",
+      "src-tauri/src/cli_platform.rs",
+      "src-tauri/src/pipe.rs",
+      "src-tauri/scripts/runtime-control.ps1",
+      "scripts/windows-docker.manifest.json",
+      "scripts/prepare-windows-docker.ps1",
+      "scripts/package-local.ps1",
+      "scripts/verify-independent-engine.mjs",
+      "site/release.json"
+    ],
+    "corrections": [
+      "Current CLI pins and actual 0.1.6 installation versus old 32/34 integration results.",
+      "0.1.1/0.1.2 evidence now uses fixed-version public records instead of current packaging alias.",
+      "0.1.6 creation-time installation gap distinguished from subsequent actual reinstall.",
+      "IObit draft uses 0.1.6 artifact/URL, with original alert scope preserved.",
+      "Old D: kernel path and cleanup candidates marked with dates and linked follow-up.",
+      "Offline user guide no longer links to unbundled developer documents.",
+      "Old 0.1.5 notice marked as compatibility snapshot; license body preserved.",
+      "Past performance/UI/Rancher/backup claims scoped to their original candidate."
+    ],
+    "historicalRawResultsRewritten": false,
+    "licenseBodiesChanged": false,
+    "applicationSourceChanged": false,
+    "applicationTestsRerun": false,
+    "pushed": false,
+    "externalCurrentPricesOrSecurityRechecked": false
+  },
+  "documentationPushReadiness": {
+    "observedAt": "2026-11-02T16:04:24.028Z",
+    "scope": "Documentation/static-page text and media Git exclusion only. No application or installer release.",
+    "baseCommit": "3c402c79c37353c8cfe49bf0877e9f1ccd791f50",
+    "authorizedByUser": true,
+    "excludedPreexistingDeletions": [
+      "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+      "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+      "downloads/DockSlate-0.1.5-third-party-licenses.zip"
+    ],
+    "mediaAndAnalysisExcluded": true,
+    "checks": [
+      {
+        "item": 1,
+        "status": "checked-in-scope",
+        "evidence": "No environment/auth configuration changes; targeted private-key/token pattern scan of candidate documents found no matches. Not a full secret audit."
+      },
+      {
+        "item": 2,
+        "status": "checked-in-scope",
+        "evidence": "Local document links/anchors checked; no error-handler changes. Supplied YouTube public playback remains unverified."
+      },
+      {
+        "item": 3,
+        "status": "not-applicable",
+        "evidence": "No executable input parser or form behavior changes."
+      },
+      {
+        "item": 4,
+        "status": "not-applicable",
+        "evidence": "No app/engine authentication or permission changes."
+      },
+      {
+        "item": 5,
+        "status": "not-applicable",
+        "evidence": "No database, runtime metadata migration or data changes."
+      },
+      {
+        "item": 6,
+        "status": "checked-in-scope",
+        "evidence": "Only aggregate repair/guide/maintenance evidence included; no raw browsing traces or local profiles included."
+      },
+      {
+        "item": 7,
+        "status": "checked-in-scope",
+        "evidence": "52 Markdown documents, 435 relative links, 12 anchors, 4 offline user-guide links and git diff whitespace checks passed; app E2E not rerun."
+      },
+      {
+        "item": 8,
+        "status": "not-applicable",
+        "evidence": "Static documentation; no API rate-limit behavior changes."
+      },
+      {
+        "item": 9,
+        "status": "checked-in-scope",
+        "evidence": "No new binaries, dependencies or scripts served; current unsigned/security limitations retained; license inventory check passed."
+      },
+      {
+        "item": 10,
+        "status": "checked-in-scope",
+        "evidence": "Normal Git commit from recorded base; old license ZIP removals excluded to preserve existing public URLs. No runtime/data rollback needed."
+      }
+    ]
+  }
+}

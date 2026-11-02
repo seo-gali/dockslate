@@ -1,5 +1,7 @@
 # DockSlate 독립 엔진 구현·실행 검증
 
+> **과거 기록.** 2026-10-14 이후 후보별 전환 이력이다. 옛 경로·백업 조건·페이지별 새로고침·미완료 표시는 각 절의 당시 상태다. [현재 안내·기록 구분](../README.md).
+
 ## 2026-10-17 컨테이너 실행·고급 설정·네트워크·검색 접기 (최신)
 
 최신 Windows EXE는 3,801,600 B, SHA-256 `974A6202AA05F445E63E55603CB5EAE3D4EF70D2E00412E60EC16FB248481DCE`다. `.\scripts\desktop.ps1 -Mode build`는 exit 0, MSVC release 1분 54초로 완료됐다. 프런트엔드 빌드, 오프라인 Cargo check와 Rust format 검사도 통과했다. 의존성·lock 파일 변경과 새 REA MCP 호출은 없다. 이번 기능은 DockSlate 독자 설계이며 [Docker 실행 옵션](https://docs.docker.com/engine/containers/run/), [bridge 네트워크](https://docs.docker.com/engine/network/drivers/bridge/)와 공식 Moby API 명세를 참고했다.

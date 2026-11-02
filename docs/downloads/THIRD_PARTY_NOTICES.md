@@ -1,5 +1,7 @@
 # 타사 라이선스·저작권 고지
 
+> 구버전 고지 호환 경로입니다. 아래는 0.1.5 의존성 스냅샷이며 원문을 보존합니다. 현재 0.1.6 고지는 [루트 고지](../../THIRD_PARTY_NOTICES.md)를 확인하세요.
+
 DockSlate 0.1.5 · Windows x64
 
 Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/8af9fe3a36bab3e039862a2ab1cef1880c9b4d03/LICENSE) 오픈소스로 엔진 사용료가 없습니다. Docker Desktop 구독은 필요하지 않습니다. 각 의존성·Docker Hub·컨테이너 이미지·외부 서비스에는 별도 조건이 적용됩니다. 이 고지가 DockSlate 자체 코드나 모든 구성 요소에 Apache-2.0을 부여하는 것은 아닙니다.

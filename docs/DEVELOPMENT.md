@@ -29,6 +29,7 @@ npm ci
 | `downloads/` | 배포 파일. 이전 패키지가 참조하는 고지 ZIP은 앱 구버전 삭제와 구분 |
 | `licenses/` | 배포에 필요한 고지·소스와 구성 요소 목록 |
 | `.analysis/` | 로컬 조사·검증 자료. 원본·진행 중 자료를 확인한 뒤 임시 사본을 정리 |
+| `media/` | 로컬 영상·원고·자막. Git 제외 대상이며 README에는 공개 영상 링크만 사용 |
 | `dist/` · `site-dist/` | 각각 앱·사이트 빌드 결과. 원본이 아니며 다시 생성 가능 |
 
 `src/`는 앱 화면, `src-tauri/`는 Windows 백엔드, `site/`는 공개 웹사이트이므로 서로 중복이 아니다. `src-tauri/target/`에는 네이티브 빌드 결과와 검증한 도구 캐시가 있으며 소스와 구분한다.
@@ -39,4 +40,8 @@ npm ci
 
 GitHub Pages는 `Deploy from a branch` → `main` → `/(root)`로 설정합니다. 루트 `index.html`·`404.html`·`robots.txt`·`sitemap.xml`·`.nojekyll`·Google 확인 HTML은 이 게시 방식에서 사용하므로 임의로 옮기지 않습니다. 원본은 `site/`, 생성 명령은 `npm run build:site -- --publish`입니다. [상세](PAGES.md).
 
-코딩·디자인 기준을 `docs/`로 옮겨 루트 파일을 19개에서 17개로 줄였습니다. 사용자 안내와 타사 고지는 기존 패키징·배포 경로를 유지합니다. 지침의 의미 변경은 별도 제안이며 이번 이동에서는 링크 경로만 수정했습니다. [작업 지침](../AGENTS.md) · [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md).
+사용자 안내와 타사 고지는 패키징에서 참조하므로 현재 경로를 유지합니다. 개발·코딩·디자인 문서는 `docs/`, 실제 실행 결과와 과거 버전 기록은 `docs/results/`에 둡니다. 과거 실행 파일 경로나 미검증 표시는 당시 기록이며 현재 상태는 [요청 현황](REQUEST_STATUS.md)과 최신 결과를 확인합니다.
+
+`.analysis`를 정리할 때는 사용 중인 프로필·파일 잠금·Git 작업 사본·조사 원본을 먼저 확인합니다. 비활성 테스트 브라우저와 압축 해제 사본은 정리할 수 있지만 라이선스 소스·보안 조사 원본·실제 WSL VHDX·소유권 메타데이터는 임시 캐시로 취급하지 않습니다. `media/`의 완성 영상은 정리 대상과 구분합니다.
+
+[작업 지침](../AGENTS.md) · [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md)

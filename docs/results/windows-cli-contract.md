@@ -1,6 +1,6 @@
 # Windows Docker CLI
 
-새 구성은 공식 Windows Docker CLI 29.8.2·Compose 5.6.0·Buildx 0.38.0을 DockSlate 소유 Linux 엔진에 연결한다. 기존 WSL 명령별 인수 변환 런처를 교체했다. 다운로드·설치 및 실제 명령 검증이 끝나기 전까지 배포 완료로 간주하지 않는다. [설치 검증](installation-correction.md), [Docker Desktop 정적 조사](../research/docker-desktop-4.96.0.md).
+0.1.6 소스의 CLI 연결 계약이다. 공식 Windows Docker CLI 29.8.2·Compose 5.6.0·Buildx 0.38.0을 DockSlate 소유 Linux 엔진에 연결한다. 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
 
 ## 실행과 프로필
 
@@ -29,7 +29,7 @@ broker는 CLI 요청 시 준비되며 연결 없이 90초가 지나면 종료한
 
 ## 빌드와 검증
 
-`scripts/prepare-windows-docker.ps1`는 기본적으로 기존 캐시를 검증하고 배치한다. 새 다운로드는 사용자 승인 뒤 `-AllowDownload`로만 수행한다. Docker CLI ZIP의 독립 SHA-256 공개값은 확인하지 못했으므로 최초 다운로드의 계산값을 고정하기 전에는 제품 staging을 차단한다. 플러그인은 공식 공개 SHA-256과 비교한다. Docker Desktop에서 추출한 바이너리는 분석에만 사용한다.
+`scripts/prepare-windows-docker.ps1`는 기본적으로 기존 캐시를 검증하고 배치한다. 새 다운로드는 사용자 승인 뒤 `-AllowDownload`로만 수행한다. 현재 명세는 CLI ZIP과 플러그인의 크기·SHA-256을 고정한다. CLI ZIP의 공개 독립 SHA-256 확인과 로컬 계산값 고정은 구분하며, SHA-256이 없는 입력은 staging을 차단한다. Docker Desktop에서 추출한 바이너리는 분석에만 사용한다.
 
 `scripts/build-cli.ps1`은 기존 Rust MSVC 도구와 잠긴 의존성으로 Windows launcher를 빌드한다. 설치판·포터블에는 공식 Windows CLI·플러그인·라이선스를 함께 포함해야 하며 launcher만 복사해서는 동작하지 않는다.
 
@@ -37,4 +37,6 @@ broker는 CLI 요청 시 준비되며 연결 없이 90초가 지나면 종료한
 
 실제 검증에서 두 bind 양식과 `exec` 종료는 통과했지만 공식 Windows CLI의 `cp`가 검증용 로컬 파일을 읽을 때 `Access is denied`로 실패했다. 원인은 확정하지 않았다. 보안 설정·ACL을 바꾸거나 다른 프로그램으로 파일을 대신 읽지 않는다. 독립된 입출력·로그 취소·Compose 검사를 계속 수행하되, 실패한 항목은 전체 결과에 남기고 검증 명령은 실패로 종료한다. 새 검증 컨테이너·네트워크만 정리하고 기존 리소스 ID와 엔진의 원래 중지 상태를 확인한다.
 
-최신 후보의 실제 명령 34개 중 32개가 성공했다. bind·표준 입력/EOF·로그 취소 후 lease 해제·Compose config/up/exec/down은 통과했고, 파일 업로드와 기존 Windows 파일 덮어쓰기는 접근 거부로 실패했다. 명령 전체 종료는 1이다. 기존 리소스 ID 보존과 엔진 중지 복원을 확인했으며 새 설치·Dockerfile 빌드·설치 PATH 검증을 대신하지 않는다. [실제 출력](native-cli-connection.json), [복원·빌드 기록](installer-engine-integration.json).
+과거 `native-cli-connection.json`의 후보에서 실제 명령 34개 중 32개가 성공했다. bind·표준 입력/EOF·로그 취소 후 lease 해제·Compose config/up/exec/down은 통과했고 파일 업로드와 Windows 파일 덮어쓰기는 접근 거부로 실패했다. 명령 전체 종료는 1이었다. [실제 출력](native-cli-connection.json)의 대상 해시·시점에 한정하며 0.1.6에서 34개를 다시 실행한 결과가 아니다.
+
+0.1.6은 [별도 재설치 기록](reinstall-recovery.md)에서 실제 설치 EXE 종료 0, 새 터미널의 설치된 CLI 경로, 엔진 ID·실행 커널·Docker/Compose/Buildx 명령을 확인했다. 이 확인으로 과거 파일 복사 실패의 해결이나 전체 CLI 회귀를 통과 처리하지 않는다. `installer-engine-integration.json`은 [현재 빌드·패키징 명세](installer-engine-integration.json)이므로 과거 후보의 불변 원시 결과로 사용하지 않는다.

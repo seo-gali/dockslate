@@ -8,6 +8,8 @@
 
 `main`에서 작업한다. 게시 위치는 루트 한 곳이다. `docs/`에는 문서·검증 이미지·이전 패키지가 참조하는 고지 ZIP을 보존하며 사이트 사본은 만들지 않는다.
 
+로컬 `media/`는 Git 제외 대상이다. README의 사용 영상은 YouTube 링크로 제공하며 MP4·썸네일·원고를 Pages 배포 파일로 복사하지 않는다.
+
 | 원본 | 출력·역할 |
 | --- | --- |
 | `site/index.html` · `site/styles.css` · `site/main.js` | 공개 메인·자산 |

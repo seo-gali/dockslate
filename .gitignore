@@ -1,4 +1,5 @@
 .analysis/
+/media/
 .playwright-mcp/
 node_modules/
 dist/

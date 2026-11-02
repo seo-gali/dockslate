@@ -16,4 +16,4 @@
 
 문서의 헤더 안 필터·페이지별 새로고침·Hub 접기·별도 이미지 받기·중복 빌드 이동 설명을 현재 흐름으로 고쳤다. 0.1.1의 40개 검사는 당시 해시의 기록이며 이번 버전에서 전부 재실행하지 않았다.
 
-예제 파일은 이 컴퓨터의 `.analysis/file-import-fixture-manual-20261029`에 있다. 가져온 Compose의 실제 이름은 앱이 격리된 `dockslate-import-…` 프로젝트명으로 생성한다. 서비스 ID·프로젝트·볼륨은 네이티브 결과에 기록했다. 배포 파일과 공개 다운로드 검증은 [배포 기록](installer-engine-integration.json)에서 별도로 관리한다. 실제 새 설치·제거, 전체 DB·CLI 회귀, 서명과 과거 보안 경고 해소는 이번 검증 범위 밖이다.
+당시 예제는 `.analysis/file-import-fixture-manual-20261029`에 두었다. 현재 사용 예제는 [examples/basic-web](../../examples/basic-web/README.md)이다. 가져온 Compose는 격리된 `dockslate-import-…` 프로젝트명으로 생성하며 당시 서비스 ID·프로젝트·볼륨은 네이티브 결과에 기록했다. 배포 파일·공개 다운로드는 [0.1.2 고정 기록](public-release-0.1.2.json)을 사용한다. 실제 새 설치·제거, 전체 DB·CLI 회귀, 서명·보안 경고 해소는 당시 검증 범위 밖이다.

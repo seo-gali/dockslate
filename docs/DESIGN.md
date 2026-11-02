@@ -41,10 +41,10 @@ ASCII 데이터는 배치 설명용이며 UI에서 실제 값으로 표시해야
 | 화면 | 기본 구성 |
 | --- | --- |
 | Overview | 연결 상태와 실행 중/중지된 컨테이너, 이미지, 디스크 요약 + 바로가기 |
-| Containers | 검색·상태 필터·Compose 그룹, 통계를 합친 상세·로그·Inspect·Mounts·터미널·파일 |
+| Containers | 검색·상태 필터·Compose 그룹 접기, 통계를 합친 상세·로그·상세 JSON·마운트·터미널·파일 |
 | Images | 로컬 / Docker Hub 탭, 검색·Pull, 실행 설정·명령 미리보기, 컨테이너 생성·이미지 삭제 승인 |
 | Resources | `Volumes` / `Networks` 탭. 볼륨·파일·tar 전송, 네트워크·IPAM·참조·생성·안전한 삭제 |
-| Builds | 파일에서 빌드 / 진행 중 / 기록 / 빌더 / 가져온 기록 탭, Dockerfile·Compose 빌드와 실행 승인 |
+| Builds | 파일에서 빌드 / 진행 중인 빌드 / 빌드 기록 / 빌더 관리 / 가져온 기록 탭, Dockerfile·Compose 자동 빌드와 별도 실행 승인 |
 | Disk Manager | `Docker Usage` / `WSL Disks` 탭, 정리 후보와 VHDX별 압축 가능 상태 |
 | Settings | 화면 / 런타임 / 엔진 연결 정보 탭, 한국어/영어·테마·글자 크기·엔진 제어 |
 

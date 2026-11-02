@@ -2,11 +2,11 @@
 
 Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를 준비하고 컨테이너·이미지·Dockerfile·Compose를 관리합니다.
 
-**[웹사이트](https://seo-gali.github.io/dockslate/)** · [빠른 시작](USER_GUIDE.md) · [지원·검증 현황](docs/REQUEST_STATUS.md)
+**[웹사이트](https://seo-gali.github.io/dockslate/)** · [빠른 시작](USER_GUIDE.md) · [문서 목록](docs/README.md) · [지원·검증 현황](docs/REQUEST_STATUS.md)
 
 **[설치 EXE](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.6_x64-setup.exe)** · **[포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.6-windows-x64.zip)**
 
-0.1.6에서 미사용 코드와 중복 사이트 생성물을 제거하고 README·문서를 정리했습니다. [검증·설치 파일 내부 검사](docs/results/release-0.1.6.md). WSL 커널 수정은 별도 호스트 작업이며 설치 파일에 포함하지 않습니다.
+현재 배포는 **0.1.6**입니다. [빌드·설치 파일·공개 다운로드 검증](docs/results/release-0.1.6.md)과 기존 데이터가 없는 이 PC에서 수행한 [실제 재설치·CLI·앱 연결 확인](docs/results/reinstall-recovery.md)을 구분해 제공합니다. WSL 커널 수정은 별도 호스트 작업이며 설치 파일에 포함하지 않습니다.
 
 > **미서명 개발 버전.** 과거 IObit 접근 알림의 조사 범위와 남은 확인 사항은 [보안 검사 기록](docs/results/code-signing.md)에서 확인할 수 있습니다.
 
@@ -15,6 +15,10 @@ Windows 11용 Docker 관리 앱입니다. 전용 Docker Engine과 Windows CLI를
 ![DockSlate Windows 앱의 이미지와 참조 컨테이너](docs/assets/dockslate-images.png)
 
 0.1.3 Windows 앱 검증 중 캡처한 화면입니다. [검증 기록](docs/results/release-0.1.3.md)
+
+## 사용 가이드 영상
+
+[3분 49초 핵심 가이드 보기](https://youtu.be/EbL7LkbNrPY) · 0.1.6 기준으로 이미지 받기, 컨테이너 실행·로그·터미널, Dockerfile·Compose 빌드와 리소스 관리를 소개합니다.
 
 ## 기능
 

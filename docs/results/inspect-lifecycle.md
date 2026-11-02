@@ -1,5 +1,7 @@
 # Inspect 조회 수명
 
+> **과거 기록.** 2026-10-27 후보 해시의 Inspect 회귀 검사다. 현재 앱 전체 회귀를 통과한 결과가 아니다. [현재 안내·기록 구분](../README.md).
+
 `AGENTS.md` → `CODING_STANDARDS.md#조회-수명`과 실제 구현을 대조했다. 호출 경로는 `src/pages/Containers.tsx` → `src/ContainerInspect.tsx` → `src/metadataCache.ts` → Rust `container_inspect`다.
 
 수정 전에는 탭·메뉴를 숨겨도 진행 중 조회를 무효화하지 않았고, 조회 성공 전부터 해당 revision을 완료로 기록했다. 따라서 숨긴 화면에 늦은 결과가 반영되고, 실패 후 같은 탭을 다시 열어도 자동 재시도하지 않는다. 수정 범위는 Inspect의 응답 반영·성공 기록 시점이다. 공용 캐시와 백엔드·승인·데이터 처리 방식은 유지한다.

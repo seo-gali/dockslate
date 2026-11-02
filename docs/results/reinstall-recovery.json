@@ -1,0 +1,287 @@
+{
+  "observedAt": "2026-11-02T09:39:05.481Z",
+  "version": "0.1.6",
+  "completed": true,
+  "scope": "Approved repair of this host and actual reinstallation; no application code, dependency or release change.",
+  "initialProblem": {
+    "registeredRuntimeDirectoryMissing": true,
+    "vhdxMissingAtRegisteredPath": true,
+    "oldKernelDirectoryMissing": true,
+    "removalCauseEstablished": false
+  },
+  "approval": {
+    "oldDataRequired": false,
+    "staleRegistrationRemovalApproved": true,
+    "officialKernelRestorationApproved": true,
+    "newRuntimeInstallationAndStartupApproved": true
+  },
+  "oldRegistration": {
+    "id": "{e74d2195-f101-4ac1-b50a-0194fa724651}",
+    "name": "DockSlate",
+    "basePath": "D:\\Program Files\\DockSlate\\runtime\\wsl",
+    "version": 2
+  },
+  "permanentPaths": {
+    "runtimeDirectory": "C:\\Users\\user\\AppData\\Local\\DockSlateData\\runtime",
+    "kernelDirectory": "C:\\Users\\user\\AppData\\Local\\DockSlateData\\kernels\\6.18.58.1",
+    "outsideApplicationDirectory": true
+  },
+  "actualInstaller": {
+    "observedAt": "2026-11-02T09:34:46.6983498Z",
+    "actualInstallerExecuted": true,
+    "exitCodeObserved": true,
+    "exitCode": 0,
+    "target": "D:\\Program Files\\DockSlate",
+    "appPresent": true,
+    "appSha256": "3DACD6FDC1DFECA7917EA6FB0C1E2812DE758160F9ADDDB142709CAFB004DA67",
+    "productVersion": "0.1.6"
+  },
+  "checks": [
+    {
+      "name": "Actual installer completed with observed exit 0",
+      "passed": true
+    },
+    {
+      "name": "Installed application matches verified 0.1.6",
+      "passed": true
+    },
+    {
+      "name": "Installed Windows CLI matches verified 0.1.6",
+      "passed": true
+    },
+    {
+      "name": "Only reviewed WSL configuration was applied",
+      "passed": true
+    },
+    {
+      "name": "Seven permanent kernel files match approved receipts",
+      "passed": true,
+      "evidence": {
+        "files": 7
+      }
+    },
+    {
+      "name": "Actual running WSL kernel is the reviewed fixed version",
+      "passed": true,
+      "evidence": "6.18.58.1-microsoft-standard-WSL2"
+    },
+    {
+      "name": "Installed Windows CLI reaches Docker 29.8.2 on the fixed kernel",
+      "passed": true,
+      "evidence": {
+        "id": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+        "serverVersion": "29.8.2",
+        "kernelVersion": "6.18.58.1-microsoft-standard-WSL2"
+      }
+    },
+    {
+      "name": "Docker, Compose and Buildx commands succeed",
+      "passed": true,
+      "evidence": {
+        "commands": 3
+      }
+    },
+    {
+      "name": "A fresh terminal resolves the installed bin/docker.exe",
+      "passed": true,
+      "evidence": "D:\\Program Files\\DockSlate\\bin\\docker.exe"
+    },
+    {
+      "name": "Existing new-engine resources were only enumerated",
+      "passed": true,
+      "evidence": {
+        "containers": 0,
+        "images": 0,
+        "volumes": 0
+      }
+    },
+    {
+      "name": "App reinstall preserved the separate owned runtime identity",
+      "passed": true
+    },
+    {
+      "name": "Read-only TCP listeners, container ports and Windows port proxies recorded",
+      "passed": true
+    },
+    {
+      "name": "Microsoft source contains CVE fix: inet_sock_destruct",
+      "passed": true
+    },
+    {
+      "name": "Microsoft source contains CVE fix: tcp_v4_reqsk_destructor",
+      "passed": true
+    }
+  ],
+  "oldDataRestored": false,
+  "routerOrDgxInspected": false,
+  "exploitExecuted": false,
+  "runningKernel": "6.18.58.1-microsoft-standard-WSL2",
+  "engine": {
+    "id": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+    "serverVersion": "29.8.2",
+    "kernelVersion": "6.18.58.1-microsoft-standard-WSL2"
+  },
+  "cliCommands": [
+    {
+      "args": [
+        "--version"
+      ],
+      "exit": 0,
+      "output": "Docker version 29.8.2, build 7fc2dff"
+    },
+    {
+      "args": [
+        "compose",
+        "version"
+      ],
+      "exit": 0,
+      "output": "Docker Compose version v5.6.0"
+    },
+    {
+      "args": [
+        "buildx",
+        "version"
+      ],
+      "exit": 0,
+      "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+    }
+  ],
+  "resourceCounts": {
+    "containers": 0,
+    "images": 0,
+    "volumes": 0
+  },
+  "runtime": {
+    "state": "running",
+    "installPath": "C:\\Users\\user\\AppData\\Local\\DockSlateData\\runtime\\wsl",
+    "fingerprint": {
+      "installPath": "C:\\Users\\user\\AppData\\Local\\DockSlateData\\runtime\\wsl",
+      "registrationId": "{52c1cdcc-9e65-4bde-81a8-d82e2e37bcb8}",
+      "installId": "78926431-4dc7-40b2-a8c3-70110d24a8a4",
+      "engineVersion": "5:29.8.2-1~ubuntu.24.04~noble",
+      "rootfsSha256": "bb415d824822c4b878125729af451a5d18fb13d1cf5cbed9a7393ad64ac6039e"
+    }
+  },
+  "tcpListeners": "State  Recv-Q Send-Q  Local Address:Port Peer Address:PortProcess\nLISTEN 0      4096    127.0.0.53%lo:53        0.0.0.0:*          \nLISTEN 0      1000   10.255.255.254:53        0.0.0.0:*          \nLISTEN 0      4096       127.0.0.54:53        0.0.0.0:*",
+  "publishedContainerPorts": "",
+  "windowsPortProxy": "",
+  "sourceFixes": [
+    {
+      "url": "https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/linux-msft-wsl-6.18.58.1/net/ipv4/af_inet.c",
+      "sha256": "87CA97AA70F485BB5BB5CD0A0A1684BCDAD7DFC7D07437F4886E2B0F170723A6",
+      "expectedFixFound": true,
+      "function": "inet_sock_destruct",
+      "rcuFixPresent": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/linux-msft-wsl-6.18.58.1/net/ipv4/tcp_ipv4.c",
+      "sha256": "250187F34AB485312FB12350B6D9B05AC5F6E76DAF96EF5C04F45E457B5176BA",
+      "expectedFixFound": true,
+      "function": "tcp_v4_reqsk_destructor",
+      "rcuFixPresent": true
+    }
+  ],
+  "advisories": {
+    "cve": "CVE-2026-98432",
+    "cvss31": 9.8,
+    "ubuntu": "https://ubuntu.com/security/CVE-2026-98432",
+    "aws": "https://aws.amazon.com/security/security-bulletins/2026-160-aws/",
+    "microsoftSourceTag": "linux-msft-wsl-6.18.58.1",
+    "scope": "This host only. Ubuntu/NVIDIA package status differs by release; no DGX or router audit performed."
+  },
+  "passed": true,
+  "nativeUiChecks": [
+    {
+      "name": "Installed application opens the main UI instead of blocked setup",
+      "passed": true
+    },
+    {
+      "name": "Native UI reaches the same new engine as Windows CLI",
+      "passed": true,
+      "evidence": {
+        "engineId": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+        "version": "0.1.6"
+      }
+    },
+    {
+      "name": "Native UI recognizes the separate owned runtime directory",
+      "passed": true,
+      "evidence": {
+        "installPath": "C:\\Users\\user\\AppData\\Local\\DockSlateData\\runtime\\wsl"
+      }
+    },
+    {
+      "name": "Native container inventory matches read-only CLI count",
+      "passed": true,
+      "evidence": {
+        "containers": 0
+      }
+    },
+    {
+      "name": "Installed UI has no renderer exceptions",
+      "passed": true
+    }
+  ],
+  "finalState": {
+    "observedAt": "2026-11-02T09:47:12.9808188Z",
+    "ownDebugUiClosed": true,
+    "temporaryCopiesRemoved": [
+      {
+        "bytes": 118370266,
+        "path": ".analysis\\reinstall-recovery\\candidate"
+      },
+      {
+        "bytes": 71470303,
+        "path": ".analysis\\reinstall-recovery\\ui-profile-13971aa1d06d41cc88e4465bc0cf2435"
+      },
+      {
+        "bytes": 103226145,
+        "path": ".analysis\\reinstall-recovery\\microsoft.wsl.kernel.6.18.58.1-1.nupkg"
+      }
+    ],
+    "temporaryBytesRemoved": 293066714,
+    "permanentKernelPreserved": true,
+    "runtimeDataPreserved": true,
+    "normalAppPid": 20276,
+    "normalAppStartedTicks": "639292096327489255",
+    "normalAppWindowReady": true,
+    "debuggingArgumentsSupplied": false,
+    "customProfileSupplied": false,
+    "passed": true
+  },
+  "originalLongRunningOuterCommandExitObserved": false,
+  "originalInstallCompletionEvidence": "runtime-install.json completed; subsequent status, start, kernel checks, actual installer exit 0 and native UI checks establish current completion.",
+  "globalWslShutdownExecuted": false,
+  "windowsRebootRequested": false,
+  "commands": [
+    {
+      "command": "powershell -NoProfile -File .analysis/reinstall-recovery/resume-engine.ps1",
+      "exit": 0
+    },
+    {
+      "command": "DockSlate_0.1.6_x64-setup.exe interactive wizard",
+      "exit": 0
+    },
+    {
+      "command": "node .analysis/reinstall-recovery/verify-completion.mjs",
+      "exit": 0,
+      "checks": 14
+    },
+    {
+      "command": "node .analysis/reinstall-recovery/verify-ui.mjs",
+      "exit": 0,
+      "checks": 5
+    },
+    {
+      "command": "powershell -NoProfile -File .analysis/reinstall-recovery/finish.ps1",
+      "exit": 0
+    }
+  ],
+  "limitations": [
+    "The cause of the missing original runtime files is unknown.",
+    "Previous containers, images and volumes were not restored, as requested.",
+    "No exploit reproduction, compromise investigation, whole-host audit, router or DGX Spark audit.",
+    "The manually pinned WSL kernel needs separate maintenance for future security updates.",
+    "Code signing and the historical IObit alert root cause were not resolved by this repair."
+  ]
+}

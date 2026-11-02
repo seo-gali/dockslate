@@ -1,5 +1,7 @@
 # 로컬 실행 파일·안내서 전달 검증
 
+아래는 초기 0.1.0 전달 이력이다. 현재 EXE·ZIP은 [README](../../README.md), 현재 설치 결과는 [0.1.6 재설치](reinstall-recovery.md)를 참고한다. 아래 단독 EXE 경로·비공개 상태는 현재 배포 안내로 사용하지 않는다.
+
 2026-10-18. 초기 전달에서는 앱을 실행하지 않고 빌드·패키징·브라우저 검사를 수행했다. 이후 명시 승인된 EXE의 [실제 화면 검증](interaction-workflows.md)을 추가했다. 아래 초기 검사 기록과 구분한다.
 
 ## 제공 파일
@@ -11,7 +13,7 @@
 | `downloads/DockSlate-0.1.0-windows-x64.zip` | EXE·HTML 안내·체크리스트·검증 기록·라이선스 고지 |
 | `downloads/artifacts.json`, `SHA256SUMS.txt` | 크기·해시·검증 제약 |
 
-최종 EXE·ZIP의 크기와 SHA-256은 [배포 파일 기록](delivery-artifacts.json)에 남겼다. ZIP 내부 기록에는 포함된 EXE만 기록하고 ZIP 자체의 해시는 바깥의 `downloads/SHA256SUMS.txt`에 둔다. 디지털 서명은 없다. 보안 경고 원인은 아직 확인하지 못했으며 안전 판정을 주장하지 않는다.
+초기 전달 시 EXE·ZIP의 크기와 SHA-256을 배포 파일 기록에 남겼다. [현재 배포 파일 명세](delivery-artifacts.json)는 후속 패키징으로 갱신되는 파일이며 초기 0.1.0의 불변 원시 결과가 아니다. 당시 ZIP 내부에는 포함된 EXE만 기록하고 ZIP 자체의 해시는 바깥의 `downloads/SHA256SUMS.txt`에 두었다. 당시 파일은 미서명이며 이 기록으로 안전 판정을 주장하지 않는다.
 
 ZIP은 로컬 검토용이다. 저장소에 바이너리를 커밋하거나 공개 릴리스를 업로드하지 않았다. 외부 라이선스 고지의 미확인 범위는 `THIRD_PARTY_NOTICES.md`에 남아 있다.
 

@@ -1,5 +1,7 @@
 # DockSlate MVP 검증
 
+> **과거 기록.** 초기 Rancher 연결 클라이언트 검사다. 현재 전용 WSL 엔진과 백업 없는 압축 승인 조건의 사용 안내로 적용하지 않는다. [현재 안내·기록 구분](../README.md).
+
 이 문서는 기존 Rancher 연결 클라이언트의 검증 기록이다. Docker Desktop 제거 목표에 맞춘 최신 독립 엔진 구현·실행 결과는 [별도 검증 기록](standalone-runtime-verification.md)에 있다. 기존 클라이언트의 native JSON은 [보존 파일](client-native-verification.json)로 연결한다.
 
 검증 대상은 DockSlate 자체 Windows 실행 파일이다. 원본 Rancher Desktop, 기존 Docker 객체, 실제 WSL 디스크를 변경하지 않는다. 기존 REA 보고서는 보존하며 새 근거는 [Docker 백엔드 추가 근거](docker-backend-evidence.md)에 분리한다.

@@ -1,5 +1,7 @@
 # Docker backend 구현 추가 근거
 
+> **과거 기록.** 2026-10-13 Rancher 연결 방식의 설계 근거다. 현재 DockSlate는 전용 엔진과 사용자별 CLI pipe를 사용한다. [현재 안내·기록 구분](../README.md).
+
 2026-10-13. 기존 [v1.24.0 REA 기록](../research/rancher-desktop-1.24.0.md)과 Evidence는 보존한다. 전체 ASAR 재분석과 Rancher Desktop 실행은 수행하지 않았다.
 
 - **기존 배포 파일의 추가 읽기 전용 확인:** `.analysis/rancher-desktop/v1.24.0/msi-readonly/msi-inventory.json`의 File→Component→Directory 관계에서 `docker.exe`는 `resources/resources/win32/bin/docker.exe`, `wsl-helper.exe`는 `resources/resources/win32/internal/wsl-helper.exe`임을 확인했다. 파일 ID는 각각 `f_MRvzeVx9z6qIdJLyFR7fxCJNyYNOCjLPQYSDhu1dxxw`, `f_HbNoUTvIErGqbKDLBhvymVnhPK1f1Hcdc10kubPudSU`이다. 설치하지 않고 보존된 MSI 인벤토리만 조회했다.
