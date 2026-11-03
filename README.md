@@ -2,7 +2,7 @@
 
 Windows에서 Docker 컨테이너를 관리하는 데스크톱 앱입니다. 전용 WSL 2 엔진을 준비하고, 이미지 다운로드부터 Dockerfile·Compose 빌드와 컨테이너 실행까지 한 화면에서 작업합니다. Docker Desktop을 따로 설치할 필요가 없습니다.
 
-**[Windows 설치 파일 다운로드](https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.6_x64-setup.exe)** · [포터블 ZIP](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.6-windows-x64.zip)
+**[공식 웹사이트 · 다운로드](https://seo-gali.github.io/dockslate/)**
 
 ## 데모
 
