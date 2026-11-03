@@ -4,9 +4,11 @@ Windows에서 Docker 컨테이너를 관리하는 데스크톱 앱입니다. 전
 
 **[공식 웹사이트 · 다운로드](https://seo-gali.github.io/dockslate/)**
 
-## 데모
+## 사용 가이드 영상
 
 [![DockSlate 데모 — YouTube에서 재생](https://i.ytimg.com/vi/EbL7LkbNrPY/hqdefault.jpg)](https://youtu.be/EbL7LkbNrPY)
+
+[▶ YouTube에서 가이드 영상 보기](https://youtu.be/EbL7LkbNrPY)
 
 ## 주요 기능
 
