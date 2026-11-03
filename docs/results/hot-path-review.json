@@ -1,0 +1,265 @@
+{
+  "observedAt": "2026-11-03T15:54:50.367Z",
+  "version": "0.1.6 development source",
+  "releaseUpdated": false,
+  "scan": {
+    "frontendFiles": 45,
+    "rustFiles": 21,
+    "awaitFunctions": 78,
+    "frontendCandidates": 29,
+    "rustIoCandidates": 59,
+    "method": "TypeScript AST plus Rust lexical I/O inventory and manual dependency/validation review; not a full call graph or CPU profile"
+  },
+  "readOnlyComparison": {
+    "scope": "Actual owned running engine; alternating original and modified read-only executables; no approved mutations; empty engine; backend read-check binary built directly with Cargo, separate from embedded-frontend native UI binary",
+    "beforeMs": [
+      5285,
+      5384,
+      5529
+    ],
+    "afterMs": [
+      4535,
+      4734,
+      4749
+    ],
+    "beforeMedianMs": 5384,
+    "afterMedianMs": 4734,
+    "improvementPercent": 12.072808320950967,
+    "containerCount": 0,
+    "imageCount": 0,
+    "inventoryAndBuildCachePreserved": true
+  },
+  "native": {
+    "observedAt": "2026-11-03T15:54:09.181Z",
+    "sha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB",
+    "scope": "Actual native UI and Rust backend; engine resources read only; synthetic build-record files isolated under analysis",
+    "checks": [
+      {
+        "name": "initial page bitset",
+        "passed": true
+      },
+      {
+        "name": "actual owned engine inventory",
+        "passed": true,
+        "containers": 1,
+        "images": 1
+      },
+      {
+        "name": "summary parser excludes payloads",
+        "passed": true,
+        "records": 2
+      },
+      {
+        "name": "selected records actual Rust file read",
+        "passed": true
+      },
+      {
+        "name": "invalid and mismatched record identities rejected",
+        "passed": true,
+        "inputs": 7
+      },
+      {
+        "name": "metrics inline 256 slots order and request validation",
+        "passed": true,
+        "unavailableIds": 256,
+        "rejectedInputs": 3
+      },
+      {
+        "name": "seven menu visits preserve state without full refresh",
+        "passed": true
+      },
+      {
+        "name": "keyboard column resize survives row rerender",
+        "passed": true
+      },
+      {
+        "name": "same-size same-mtime catalog change is fresh",
+        "passed": true
+      },
+      {
+        "name": "selected detail does not parse unrelated catalog",
+        "passed": true
+      },
+      {
+        "name": "record reopening reads current file",
+        "passed": true
+      },
+      {
+        "name": "source-backed JSON viewport DOM fixtures",
+        "passed": true,
+        "comparisons": 20,
+        "cleanup": true
+      },
+      {
+        "name": "actual build and dashboard IPC overlap",
+        "passed": true,
+        "startGapMs": 0
+      },
+      {
+        "name": "renderer exceptions absent and engine inventory preserved",
+        "passed": true
+      }
+    ],
+    "exceptions": [],
+    "ipcCalls": [
+      {
+        "command": "builds_snapshot",
+        "durationMs": 682,
+        "failed": false
+      },
+      {
+        "command": "dashboard_snapshot",
+        "durationMs": 1296,
+        "failed": false
+      },
+      {
+        "command": "plugin:event|listen",
+        "durationMs": 4,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 1629,
+        "failed": false
+      },
+      {
+        "command": "engine_status",
+        "durationMs": 301,
+        "failed": false
+      },
+      {
+        "command": "containers_list",
+        "durationMs": 510,
+        "failed": false
+      },
+      {
+        "command": "images_list",
+        "durationMs": 512,
+        "failed": false
+      },
+      {
+        "command": "builds_snapshot",
+        "durationMs": 676,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 11,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 7,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 9,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 5,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 5,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 6,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 8,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 2,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 1,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 1,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 432,
+        "failed": false
+      },
+      {
+        "command": "containers_metrics",
+        "durationMs": 450,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 9,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 8,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 9,
+        "failed": false
+      },
+      {
+        "command": "builds_history_detail",
+        "durationMs": 8,
+        "failed": false
+      },
+      {
+        "command": "containers_list",
+        "durationMs": 473,
+        "failed": false
+      },
+      {
+        "command": "images_list",
+        "durationMs": 496,
+        "failed": false
+      }
+    ]
+  },
+  "logs": {
+    "scope": "Source-backed synthetic log-buffer compatibility check and microbenchmark; not a native engine E2E",
+    "comparisons": 4056,
+    "updatesPerRun": 6000,
+    "baselineMedianMs": 53.48479999999995,
+    "changedMedianMs": 43.872299999999996
+  },
+  "limitations": [
+    "Full real-container stats/logs/Inspect/files/terminal E2E is not covered by fixture checks",
+    "No approved mutations, installation, deletion, Prune, compaction or multi-container load test",
+    "Timing is a local empty-engine verification pipeline, not whole-app or loaded-engine latency"
+  ],
+  "engineLeftRunning": true
+}

@@ -84,9 +84,10 @@ fn container_eligible(container: &Value) -> bool {
         && container["restarting"].as_bool() == Some(false)
 }
 fn referencing_containers(client: &Client, image: &str) -> Result<BTreeMap<String, Value>, String> {
-    let mut references = BTreeMap::new();
+    let containers = client.containers()?;
+    let mut ids = Vec::new();
     let mut seen = HashSet::new();
-    for container in client.containers()? {
+    for container in &containers {
         let id = container["Id"]
             .as_str()
             .filter(|id| object_id(id))
@@ -101,11 +102,27 @@ fn referencing_containers(client: &Client, image: &str) -> Result<BTreeMap<Strin
         if reference != image {
             continue;
         }
-        if references.len() >= 100 {
+        if ids.len() >= 100 {
             return Err("A maximum of 100 referencing containers can be approved at once".into());
         }
-        let inspect = client.json("GET", &format!("/containers/{id}/json"))?;
-        references.insert(id.to_owned(), container_fingerprint(&inspect, id, image)?);
+        ids.push(id);
+    }
+    let mut results: [Option<Result<Value, String>>; 100] = std::array::from_fn(|_| None);
+    std::thread::scope(|scope| {
+        let mut workers = [None, None, None, None];
+        let chunk = ids.len().div_ceil(4).max(1);
+        for (index, (results, ids)) in results[..ids.len()].chunks_mut(chunk).zip(ids.chunks(chunk)).enumerate() {
+            workers[index] = Some(scope.spawn(move || {
+                for (result, id) in results.iter_mut().zip(ids) {
+                    *result = Some(client.json("GET", &format!("/containers/{id}/json")).and_then(|inspect| container_fingerprint(&inspect, id, image)));
+                }
+            }));
+        }
+        for worker in workers.into_iter().flatten() { let _ = worker.join(); }
+    });
+    let mut references = BTreeMap::new();
+    for (id, result) in ids.into_iter().zip(results) {
+        references.insert(id.to_owned(), result.ok_or("Container inspect worker failed; image deletion is blocked")??);
     }
     Ok(references)
 }
@@ -131,9 +148,14 @@ fn validate(
 }
 
 pub fn preview(id: String, delete_referencing_containers: bool) -> Result<Value, String> {
+    if !image_id(&id) { return Err("Invalid image ID".into()); }
     let client = docker::connected()?;
-    let image = inspect_image(&client, &id)?;
-    let containers = referencing_containers(&client, &id)?;
+    let (image, containers) = std::thread::scope(|scope| {
+        let image = scope.spawn(|| inspect_image(&client, &id));
+        let containers = referencing_containers(&client, &id);
+        (image.join().unwrap_or_else(|_| Err("Image preview worker failed.".into())), containers)
+    });
+    let (image, containers) = (image?, containers?);
     let mut blocked_reasons = Vec::new();
     if !containers.is_empty() && !delete_referencing_containers {
         blocked_reasons.push("This image is referenced by existing containers. Explicitly include all stopped referencing containers in a new deletion preview");

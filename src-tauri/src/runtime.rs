@@ -20,7 +20,6 @@ const APPROVAL_LIFETIME: Duration = Duration::from_secs(120);
 static STATE: OnceLock<Mutex<RuntimeState>> = OnceLock::new();
 static MUTATION: Mutex<()> = Mutex::new(());
 static ACTIVE: AtomicBool = AtomicBool::new(false);
-static READ_STATUS: OnceLock<Mutex<Option<(Instant, Value)>>> = OnceLock::new();
 
 struct Approval {
     expected: Value,
@@ -59,7 +58,7 @@ pub(crate) fn system_directory() -> Result<PathBuf, String> {
     unsafe extern "system" {
         fn GetSystemDirectoryW(buffer: *mut u16, size: u32) -> u32;
     }
-    let mut buffer = vec![0u16; 32768];
+    let mut buffer = [0u16; 32768];
     let count = unsafe { GetSystemDirectoryW(buffer.as_mut_ptr(), buffer.len() as u32) };
     if count == 0 || count as usize >= buffer.len() {
         return Err("The Windows system directory cannot be verified.".into());
@@ -280,13 +279,6 @@ pub fn inspect_status() -> Result<Value, String> {
                 object.insert("operation".into(), operation);
             }
         }
-    }
-    if let Ok(mut cached) = READ_STATUS.get_or_init(|| Mutex::new(None)).lock() {
-        *cached = if result["state"] == "running" && result["keeperVerified"] == true {
-            Some((Instant::now(), result.clone()))
-        } else {
-            None
-        };
     }
     Ok(result)
 }
@@ -692,7 +684,7 @@ mod native_guard {
                 .trim_end_matches('\0')
                 .to_owned();
             if kind == 2 {
-                let mut expanded = vec![0u16; 32768];
+                let mut expanded = [0u16; 32768];
                 let size = unsafe {
                     ExpandEnvironmentStringsW(
                         wide(&value).as_ptr(),
@@ -766,8 +758,38 @@ mod native_guard {
         Err("WSL registration inventory exceeds its validation limit.".into())
     }
 
+    fn valid_guid(value: &Value) -> bool {
+        let text = value.as_str().unwrap_or("");
+        let text = text.strip_prefix('{').and_then(|text| text.strip_suffix('}')).unwrap_or(text);
+        text.len() == 36
+            && text.bytes().enumerate().all(|(index, byte)| if [8, 13, 18, 23].contains(&index) { byte == b'-' } else { byte.is_ascii_hexdigit() })
+            && text.bytes().any(|byte| matches!(byte, b'1'..=b'9' | b'a'..=b'f' | b'A'..=b'F'))
+    }
+    pub fn discover() -> Result<(String, Value, Lease), String> {
+        let registry = Registry::open(-2147483647isize as Handle, "Software\\Microsoft\\Windows\\CurrentVersion\\Lxss")?;
+        for index in 0..1024 {
+            let mut name = [0u16; 256];
+            let mut size = name.len() as u32;
+            let code = unsafe { RegEnumKeyExW(registry.0, index, name.as_mut_ptr(), &mut size, std::ptr::null_mut(), std::ptr::null_mut(), std::ptr::null_mut(), std::ptr::null_mut()) };
+            if code == 259 { return Err(changed()); }
+            if code != 0 || size as usize > name.len() { return Err(changed()); }
+            let name = String::from_utf16(&name[..size as usize]).map_err(|_| changed())?;
+            let entry = Registry::open(registry.0, &name)?;
+            if !entry.string("DistributionName", None)?.eq_ignore_ascii_case("DockSlate") { continue; }
+            let owner = entry.string("BasePath", None)?;
+            let directory = Path::new(&owner);
+            if directory.file_name().and_then(|name| name.to_str()) != Some("wsl") { return Err(changed()); }
+            let root = directory.parent().ok_or_else(changed)?;
+            let mut marker_file = pin(&root.join("ownership.json"), false)?;
+            let marker = pinned_json(&mut marker_file)?;
+            let fingerprint = json!({"installPath":owner,"registrationId":marker["registrationId"],"installId":marker["installId"],"engineVersion":marker["engineVersion"],"rootfsSha256":marker["rootfsSha256"]});
+            let lease = Lease::acquire(&owner, &fingerprint)?;
+            return Ok((owner, fingerprint, lease));
+        }
+        Err("WSL registration inventory exceeds its validation limit.".into())
+    }
     pub struct Lease {
-        _pins: Vec<File>,
+        _pins: [File; 5],
         keeper: OwnedHandle,
     }
     impl Lease {
@@ -779,12 +801,17 @@ mod native_guard {
             let mut keeper_file = pin(&root.join("keeper.json"), false)?;
             let marker = pinned_json(&mut marker_file)?;
             let keeper = pinned_json(&mut keeper_file)?;
+            let expected_rootfs = SCRIPT.lines().find_map(|line| line.strip_prefix("$rootfsHash = '")?.strip_suffix('\''));
+            let expected_engine = SCRIPT.lines().find_map(|line| line.strip_prefix("$engineVersion = '")?.strip_suffix('\''));
             if marker["schema"] != 1
                 || marker["owner"] != "DockSlate"
                 || marker["distribution"] != "DockSlate"
                 || marker["state"] != "installed"
                 || keeper["distribution"] != "DockSlate"
                 || keeper["installId"] != marker["installId"]
+                || expected_rootfs.is_none() || marker["rootfsSha256"].as_str() != expected_rootfs
+                || expected_engine.is_none() || marker["engineVersion"].as_str() != expected_engine
+                || !valid_guid(&marker["installId"]) || !valid_guid(&marker["registrationId"])
             {
                 return Err(changed());
             }
@@ -824,7 +851,7 @@ mod native_guard {
             {
                 return Err(changed());
             }
-            let mut program = vec![0u16; 32768];
+            let mut program = [0u16; 32768];
             let mut size = program.len() as u32;
             if unsafe { QueryFullProcessImageNameW(handle, 0, program.as_mut_ptr(), &mut size) }
                 == 0
@@ -842,7 +869,7 @@ mod native_guard {
                 return Err(changed());
             }
             let lease = Self {
-                _pins: vec![
+                _pins: [
                     lock,
                     marker_file,
                     keeper_file,
@@ -989,22 +1016,11 @@ impl Transport {
     }
 
     pub fn discover() -> Result<Self, String> {
-        let cached = READ_STATUS
-            .get_or_init(|| Mutex::new(None))
-            .lock()
-            .ok()
-            .and_then(|cached| {
-                cached
-                    .as_ref()
-                    .filter(|(at, _)| at.elapsed() < Duration::from_secs(30))
-                    .map(|(_, value)| value.clone())
-            });
-        if let Some(current) = cached {
-            if let Ok(transport) = Self::from_status(&current) {
-                return Ok(transport);
-            }
-            if let Ok(mut cached) = READ_STATUS.get().unwrap().lock() {
-                *cached = None;
+        #[cfg(windows)]
+        if !is_mutating() && !crate::wsl::is_compacting() {
+            if let Ok((owner, fingerprint, lease)) = native_guard::discover() {
+                let _ = poll_operation()?;
+                return Ok(Self { owner, context: "dockslate".into(), fingerprint, guard: Arc::new(ReadGuard { lease }) });
             }
         }
         Self::from_status(&inspect_status()?)

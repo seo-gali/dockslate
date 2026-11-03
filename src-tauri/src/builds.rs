@@ -8,7 +8,7 @@ use std::{
     path::{Path, PathBuf},
     sync::{
         atomic::{AtomicBool, AtomicU64, Ordering},
-        Arc, Mutex, OnceLock,
+        Mutex, OnceLock,
     },
     thread,
     time::{Duration, SystemTime, UNIX_EPOCH},
@@ -19,7 +19,6 @@ const ARCHIVE_LIMIT: usize = 64 * 1024 * 1024;
 static ACTIVE: AtomicBool = AtomicBool::new(false);
 static NEXT: AtomicU64 = AtomicU64::new(1);
 static TRANSFER: OnceLock<Mutex<Option<Value>>> = OnceLock::new();
-static VERSION: OnceLock<Mutex<Option<(String, String)>>> = OnceLock::new();
 static MUTATION: Mutex<()> = Mutex::new(());
 #[derive(Clone)]
 struct BuilderSelection {
@@ -28,12 +27,27 @@ struct BuilderSelection {
     fingerprint: String,
 }
 static SELECTION: Mutex<Option<BuilderSelection>> = Mutex::new(None);
-#[derive(Default)]
-struct LibraryCache {
-    manifest: Vec<(PathBuf, u64, Option<SystemTime>)>,
-    records: Arc<Vec<Value>>,
+struct SummaryRecord(Value);
+impl<'de> Deserialize<'de> for SummaryRecord {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        struct Visitor;
+        impl<'de> serde::de::Visitor<'de> for Visitor {
+            type Value = SummaryRecord;
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result { formatter.write_str("a build record object") }
+            fn visit_map<M: serde::de::MapAccess<'de>>(self, mut map: M) -> Result<Self::Value, M::Error> {
+                let mut fields = serde_json::Map::new();
+                while let Some(key) = map.next_key::<String>()? {
+                    if matches!(key.as_str(), "details" | "logs") { map.next_value::<serde::de::IgnoredAny>()?; }
+                    else { fields.insert(key, map.next_value()?); }
+                }
+                Ok(SummaryRecord(Value::Object(fields)))
+            }
+        }
+        deserializer.deserialize_map(Visitor)
+    }
 }
-static LIBRARY_CACHE: OnceLock<Mutex<LibraryCache>> = OnceLock::new();
+#[derive(Deserialize)]
+struct SummaryCatalog { #[serde(default)] records: Vec<SummaryRecord> }
 
 fn now() -> u64 {
     SystemTime::now()
@@ -355,7 +369,7 @@ fn read_metadata(path: &Path) -> Result<Vec<u8>, String> {
     }
     Ok(bytes)
 }
-fn imported() -> Result<Arc<Vec<Value>>, String> {
+fn imported() -> Result<(Vec<Value>, u64), String> {
     let directory = library()?;
     let mut manifest = Vec::new();
     let mut total_bytes = 0u64;
@@ -381,54 +395,52 @@ fn imported() -> Result<Arc<Vec<Value>>, String> {
         {
             return Err("보관 기록이 크기 제한을 초과했습니다.".into());
         }
-        manifest.push((path, metadata.len(), metadata.modified().ok()));
+        manifest.push(path);
     }
-    manifest.sort_by(|left, right| left.0.cmp(&right.0));
-    let mut cache = LIBRARY_CACHE
-        .get_or_init(|| Mutex::new(LibraryCache::default()))
-        .lock()
-        .map_err(|_| "보관 기록 캐시에 접근할 수 없습니다.")?;
-    if cache.manifest == manifest {
-        return Ok(cache.records.clone());
-    }
+    manifest.sort();
     let mut records = Vec::new();
-    for (path, _, _) in &manifest {
+    for path in &manifest {
         let bytes = read_metadata(path)?;
-        let value: Value =
-            serde_json::from_slice(&bytes).map_err(|_| "보관 기록 형식을 확인할 수 없습니다.")?;
-        if let Some(values) = value["records"].as_array() {
-            records.extend(values.iter().cloned());
-        }
-        if records.len() > 200 {
-            return Err("보관 기록이 200개 제한을 초과했습니다.".into());
-        }
+        let catalog: SummaryCatalog = serde_json::from_slice(&bytes).map_err(|_| "보관 기록 형식을 확인할 수 없습니다.")?;
+        records.extend(catalog.records.into_iter().map(|record| record.0));
+        if records.len() > 200 { return Err("보관 기록이 200개 제한을 초과했습니다.".into()); }
     }
-    cache.manifest = manifest;
-    cache.records = Arc::new(records);
-    Ok(cache.records.clone())
+    Ok((records, total_bytes))
 }
-fn brief(record: &Value) -> Value {
-    Value::Object(
-        record
-            .as_object()
-            .map(|object| {
-                object
-                    .iter()
-                    .filter(|(key, _)| !["details", "logs"].contains(&key.as_str()))
-                    .map(|(key, value)| (key.clone(), value.clone()))
-                    .collect()
-            })
-            .unwrap_or_default(),
-    )
+
+fn imported_record(id: &str, summary: bool) -> Result<Value, String> {
+    let (digest, position) = id.split_once(':').ok_or("보관 기록 식별 정보가 올바르지 않습니다.")?;
+    if digest.len() != 64 || !digest.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("보관 기록 식별 정보가 올바르지 않습니다.".into());
+    }
+    let position = position.parse::<usize>().ok().filter(|position| *position < 200).ok_or("보관 기록 위치가 올바르지 않습니다.")?;
+    let bytes = read_metadata(&library()?.join(format!("{digest}.json")))?;
+    let record = if summary {
+        let mut catalog: SummaryCatalog = serde_json::from_slice(&bytes).map_err(|_| "보관 기록 형식을 확인할 수 없습니다.")?;
+        if catalog.records.len() > 200 { return Err("보관 기록이 200개 제한을 초과했습니다.".into()); }
+        catalog.records.get_mut(position).map(|record| record.0.take())
+    } else {
+        let mut catalog: Value = serde_json::from_slice(&bytes).map_err(|_| "보관 기록 형식을 확인할 수 없습니다.")?;
+        let records = catalog["records"].as_array_mut().ok_or("보관 기록 목록이 없습니다.")?;
+        if records.len() > 200 { return Err("보관 기록이 200개 제한을 초과했습니다.".into()); }
+        records.get_mut(position).map(Value::take)
+    }.ok_or("보관한 빌드 기록을 찾을 수 없습니다.")?;
+    if record["id"] != id || record["archiveId"] != digest { return Err("보관 기록의 식별 정보가 파일과 다릅니다.".into()); }
+    Ok(record)
 }
 pub fn snapshot() -> Result<Value, String> {
-    let records: Vec<_> = imported()?.iter().map(brief).collect();
+    let (records, client) = std::thread::scope(|scope| {
+        let records = scope.spawn(|| imported());
+        let client = crate::docker::connected();
+        (records.join().unwrap_or_else(|_| Err("보관 기록 조회 작업을 완료하지 못했습니다.".into())), client)
+    });
+    let (records, _) = records?;
     let transfer = TRANSFER
         .get_or_init(|| Mutex::new(None))
         .lock()
         .map_err(|_| "기록 전송 상태를 확인할 수 없습니다.")?
         .clone();
-    let client = match crate::docker::connected() {
+    let client = match client {
         Ok(client) => client,
         Err(message) => {
             return Ok(
@@ -436,7 +448,14 @@ pub fn snapshot() -> Result<Value, String> {
             )
         }
     };
-    let mut values = builders(&client)?;
+    let (values, version) = std::thread::scope(|scope| {
+        let version = scope.spawn(|| output(&client, &args(&["version"]), false, 10, 65536));
+        let values = builders(&client);
+        (values, version.join().unwrap_or_else(|_| Err("Buildx 버전을 확인할 수 없습니다.".into())))
+    });
+    let mut values = values?;
+    let version_bytes = version?;
+    let version = String::from_utf8_lossy(&version_bytes).trim().to_owned();
     let selection = selected(&client, &values);
     let selection_error = selection.as_ref().err().cloned();
     let builder = selection.unwrap_or_default();
@@ -444,26 +463,7 @@ pub fn snapshot() -> Result<Value, String> {
         value["cliCurrent"] = value["current"].clone();
         value["current"] = json!(value["name"] == builder);
     }
-    let version = {
-        let mut cache = VERSION
-            .get_or_init(|| Mutex::new(None))
-            .lock()
-            .map_err(|_| "Buildx 버전 캐시에 접근할 수 없습니다.")?;
-        if cache
-            .as_ref()
-            .is_none_or(|(identity, _)| identity != &client.identity)
-        {
-            let version =
-                String::from_utf8_lossy(&output(&client, &args(&["version"]), false, 10, 65536)?)
-                    .trim()
-                    .to_owned();
-            *cache = Some((client.identity.clone(), version));
-        }
-        cache
-            .as_ref()
-            .map(|(_, version)| version.clone())
-            .unwrap_or_default()
-    };
+
     Ok(
         json!({"version":version,"selectedBuilder":builder,"selectionError":selection_error,"builders":values,"history":if builder.is_empty(){json!({"builder":"","state":"error","records":[],"message":selection_error})}else{history(&client,&builder)},"imported":records,"transfer":transfer}),
     )
@@ -491,11 +491,7 @@ pub fn history_detail(
     imported_id: Option<String>,
 ) -> Result<Value, String> {
     if let Some(id) = imported_id {
-        return imported()?
-            .iter()
-            .find(|record| record["id"] == id)
-            .cloned()
-            .ok_or("보관한 빌드 기록을 찾을 수 없습니다.".into());
+        return imported_record(&id, false);
     }
     let client = crate::docker::connected()?;
     let reference = cli_reference(&client, &builder, &reference)?;
@@ -739,7 +735,8 @@ fn transfer_run(request: &TransferRequest) -> Result<Value, String> {
         if index.exists() {
             return Err("이미 가져온 빌드 기록 파일입니다.".into());
         }
-        let existing = imported()?.len();
+        let (existing_records, previous_bytes) = imported()?;
+        let existing = existing_records.len();
         let records = catalog["records"]
             .as_array_mut()
             .ok_or("빌드 기록 목록이 없습니다.")?;
@@ -755,14 +752,6 @@ fn transfer_run(request: &TransferRequest) -> Result<Value, String> {
         let count = records.len();
         let catalog_bytes =
             serde_json::to_vec(&catalog).map_err(|_| "빌드 기록을 저장할 수 없습니다.")?;
-        let previous_bytes: u64 = LIBRARY_CACHE
-            .get_or_init(|| Mutex::new(LibraryCache::default()))
-            .lock()
-            .map_err(|_| "보관 기록 캐시에 접근할 수 없습니다.")?
-            .manifest
-            .iter()
-            .map(|(_, size, _)| *size)
-            .sum();
         if catalog_bytes.len() > 16 * 1024 * 1024
             || previous_bytes + catalog_bytes.len() as u64 > 32 * 1024 * 1024
         {
@@ -828,11 +817,7 @@ fn transfer_run(request: &TransferRequest) -> Result<Value, String> {
     }
     let path = local_path(&request.path, true)?;
     let bytes = if let Some(id) = &request.imported_id {
-        let record = imported()?
-            .iter()
-            .find(|record| record["id"] == *id)
-            .cloned()
-            .ok_or("보관 기록을 찾을 수 없습니다.")?;
+        let record = imported_record(id, true)?;
         let digest = text(&record, "archiveId");
         if digest.len() != 64 || !digest.bytes().all(|byte| byte.is_ascii_hexdigit()) {
             return Err("보관 파일 식별 정보가 올바르지 않습니다.".into());

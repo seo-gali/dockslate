@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement, useLayoutEffect, useMemo, useSyncExternalStore, type CSSProperties, type KeyboardEvent, type PointerEvent, type RefCallback, type ReactElement, type ReactNode, type TableHTMLAttributes } from 'react';
+import { Children, cloneElement, isValidElement, useLayoutEffect, useState, useSyncExternalStore, type CSSProperties, type KeyboardEvent, type PointerEvent, type RefCallback, type ReactElement, type ReactNode, type TableHTMLAttributes } from 'react';
 import { t } from './i18n';
 import type { TableControls } from './TableRows';
 import './resizable-columns.css';
@@ -246,7 +246,9 @@ function createController({ storageKey, columns }: Options) {
 
 export function useResizableColumns(options: Options): ResizableColumnsController {
   const signature = JSON.stringify(options.columns);
-  const controller = useMemo(() => createController(options), [options.storageKey, signature]);
+  const [instance, setInstance] = useState(() => ({ storageKey: options.storageKey, signature, controller: createController(options) }));
+  if (instance.storageKey !== options.storageKey || instance.signature !== signature) setInstance({ storageKey: options.storageKey, signature, controller: createController(options) });
+  const controller = instance.controller;
   useLayoutEffect(() => controller.dispose, [controller]);
   useLayoutEffect(() => controller.activate());
   return controller;

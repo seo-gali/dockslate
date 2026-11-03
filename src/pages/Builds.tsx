@@ -1,6 +1,6 @@
 import { ResizableTable } from '../ResizableColumns';
 import { TableFilters, useTableRows } from '../TableRows';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { EngineProps } from '../App';
 import { backend, refreshDashboardAfterMutation, useBackendQuery } from '../api';
 import type { useImageBuild } from '../ImageBuild';
@@ -41,13 +41,10 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
   const [detail, setDetail] = useState<RecordDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
-  const detailCache = useRef({ values: new Map<string, { data: RecordDetail; bytes: number }>(), bytes: 0 });
-  const detailRequests = useRef(new Map<string, Promise<RecordDetail>>());
+  const scopeGeneration = useRef(0);
   const generation = useRef(0);
   const [selectedBuilder, setSelectedBuilder] = useState<Builder | null>(null);
   const [builderDetails, setBuilderDetails] = useState<string | null>(null);
-  const builderCache = useRef(new Map<string, string>());
-  const builderRequests = useRef(new Map<string, Promise<{ output: string }>>());
   const builderGeneration = useRef(0);
   const [showBuilder, setShowBuilder] = useState(false);
   const [name, setName] = useState('');
@@ -77,7 +74,7 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
   useEffect(() => {
     const cleanup = () => {
       generation.current += 1; builderGeneration.current += 1;
-    detailCache.current = { values: new Map(), bytes: 0 }; detailRequests.current = new Map(); builderCache.current = new Map(); builderRequests.current = new Map();
+      scopeGeneration.current += 1;
     };
     cleanup();
     setSelected(null); setDetail(null); setDetailLoading(false); setDetailError(null); setSelectedBuilder(null); setBuilderDetails(null); setHistory(null); setReading(false);
@@ -121,60 +118,26 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
   };
   const readHistory = async () => {
     if (!builder || reading) return;
-    const cache = detailCache.current;
+    const current = ++scopeGeneration.current;
     setReading(true); setSelected(null); setDetail(null); setOperation(null);
-    try { const result = await backend<History>('builds_history_list', { builder }); if (detailCache.current === cache) setHistory(result); }
-    catch (failure) { if (detailCache.current === cache) setOperation({ tone: 'danger', message: errorMessage(failure) }); }
-    finally { if (detailCache.current === cache) setReading(false); }
+    try { const result = await backend<History>('builds_history_list', { builder }); if (scopeGeneration.current === current) setHistory(result); }
+    catch (failure) { if (scopeGeneration.current === current) setOperation({ tone: 'danger', message: errorMessage(failure) }); }
+    finally { if (scopeGeneration.current === current) setReading(false); }
   };
   const openRecord = async (record: BuildRecord) => {
-    const key = record.id ?? `${visibleHistory?.builder}/${record.ref}`; const current = ++generation.current;
-    const cache = detailCache.current, pending = detailRequests.current, cached = cache.values.get(key);
-    setSelected(record); setDetailError(null); setDetail(cached?.data ?? null);
-    if (cached) { cache.values.delete(key); cache.values.set(key, cached); setDetailLoading(false); return; }
-    setDetailLoading(true);
+    const current = ++generation.current;
+    setSelected(record); setDetailError(null); setDetail(null); setDetailLoading(true);
     try {
-      let request = pending.get(key);
-      if (!request) {
-        request = backend<RecordDetail>('builds_history_detail', { builder: visibleHistory?.builder ?? builder, reference: record.ref, importedId: record.id ?? null }).then(data => {
-          const bytes = JSON.stringify(data).length * 2;
-          if (detailCache.current === cache && bytes <= 2 * 1024 * 1024) {
-            cache.values.set(key, { data, bytes }); cache.bytes += bytes;
-            while (cache.bytes > 8 * 1024 * 1024 || cache.values.size > 24) {
-              const first = cache.values.keys().next().value!;
-              cache.bytes -= cache.values.get(first)!.bytes; cache.values.delete(first);
-            }
-          }
-          return data;
-        }).finally(() => pending.delete(key));
-        pending.set(key, request);
-      }
-      const result = await request;
+      const result = await backend<RecordDetail>('builds_history_detail', { builder: visibleHistory?.builder ?? builder, reference: record.ref, importedId: record.id ?? null });
       if (generation.current === current) setDetail(result);
     } catch (failure) { if (generation.current === current) setDetailError(errorMessage(failure)); }
     finally { if (generation.current === current) setDetailLoading(false); }
   };
   const inspectBuilder = async (value: Builder) => {
-    const current = ++builderGeneration.current, cache = builderCache.current, pending = builderRequests.current;
-    setSelectedBuilder(value); setNode(value.nodes[0]?.name ?? ''); setEditPlatforms(value.platforms.join(', '));
-    const cached = cache.get(value.name);
-    setBuilderDetails(cached ?? null);
-    if (cached !== undefined) { cache.delete(value.name); cache.set(value.name, cached); return; }
+    const current = ++builderGeneration.current;
+    setSelectedBuilder(value); setNode(value.nodes[0]?.name ?? ''); setEditPlatforms(value.platforms.join(', ')); setBuilderDetails(null);
     try {
-      let request = pending.get(value.name);
-      if (!request) {
-        request = backend<{ output: string }>('builds_builder_inspect', { name: value.name }).finally(() => pending.delete(value.name));
-        pending.set(value.name, request);
-      }
-      const result = await request;
-      if (builderCache.current === cache && result.output.length * 2 <= 512 * 1024) {
-        cache.delete(value.name); cache.set(value.name, result.output);
-        let bytes = [...cache.values()].reduce((sum, output) => sum + output.length * 2, 0);
-        while (bytes > 2 * 1024 * 1024 || cache.size > 24) {
-          const first = cache.keys().next().value!;
-          bytes -= cache.get(first)!.length * 2; cache.delete(first);
-        }
-      }
+      const result = await backend<{ output: string }>('builds_builder_inspect', { name: value.name });
       if (builderGeneration.current === current) setBuilderDetails(result.output);
     } catch (failure) { if (builderGeneration.current === current) setBuilderDetails(errorMessage(failure)); }
   };
@@ -189,12 +152,12 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     chooseApproval({ kind: 'transfer', title: t("빌드 기록 내보내기"), target: path, impact: record.id ? t("보관한 원본 파일을 새 파일로 복사합니다. 파일에 여러 기록이 있으면 함께 내보냅니다.") : t("선택한 빌드의 설정, 로그와 첨부 기록을 파일에 저장합니다. 이미지와 빌드 캐시는 변경하지 않습니다."), request: { kind: 'export', path, builder: selectedHistory?.builder ?? builder, reference: record.ref, importedId: record.id } });
   };
   const activeJob = props.build.job?.state === 'running' ? props.build.job : null;
-  const recordMatches = useMemo(() => (tab === 'imported' ? query.data?.imported ?? [] : visibleHistory?.records ?? []).filter(record => (tab !== 'active' || activeStatus(record.status)) && (!term || `${record.name} ${record.ref} ${record.status}`.toLowerCase().includes(term))), [tab, query.data?.imported, visibleHistory, term]);
+  const recordMatches = (tab === 'imported' ? query.data?.imported ?? [] : visibleHistory?.records ?? []).filter(record => (tab !== 'active' || activeStatus(record.status)) && (!term || `${record.name} ${record.ref} ${record.status}`.toLowerCase().includes(term)));
   const historyRows = useTableRows(recordMatches, [{ value: record => record.name || record.ref }, { value: record => record.status, enum: true, label: statusText }, { value: record => record.createdAt ? Date.parse(record.createdAt) : null }, { value: record => record.totalSteps }, null]);
   const records = historyRows.rows;
   const builderRows = useTableRows(query.data?.builders ?? [], [{ value: builder => builder.name }, { value: builder => builder.driver, enum: true }, { value: builder => builder.platforms.join(', ') }, null]);
   const currentPage = Math.min(page, Math.max(0, Math.ceil(records.length / 50) - 1));
-  const visibleRecords = useMemo(() => records.slice(currentPage * 50, (currentPage + 1) * 50), [records, currentPage]);
+  const visibleRecords = records.slice(currentPage * 50, (currentPage + 1) * 50);
   useEffect(() => { setPage(0); }, [search, tab, builder, historyRows.revision]);
   const createBuilder = () => chooseApproval({ kind: 'builder', title: t("빌더 만들기"), target: `${name.trim()} · ${driver}${driver === 'remote' ? ` · ${endpoint.trim()}` : t(" · DockSlate 엔진")}`, impact: driver === 'remote' ? t("지정한 원격 BuildKit에 연결하는 빌더를 등록합니다. 이 빌더를 선택해 빌드하면 소스가 해당 서버에 전송됩니다.") : t("DockSlate 엔진용 사용자 빌더를 등록합니다. 첫 빌드에서 BuildKit 이미지 다운로드와 컨테이너 생성이 필요할 수 있습니다. 지금은 빌드를 시작하지 않습니다."), request: { action: 'create', name: name.trim(), driver, endpoint: endpoint.trim(), platforms: platforms.split(',').map(value => value.trim()).filter(Boolean) } });
 

@@ -15,7 +15,6 @@ const BODY_LIMIT: usize = 16 * 1024 * 1024;
 const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
 static MUTATION: Mutex<()> = Mutex::new(());
 static PREVIEWS: OnceLock<Mutex<HashMap<String, Preview>>> = OnceLock::new();
-static LOG_FORMATS: OnceLock<Mutex<HashMap<String, bool>>> = OnceLock::new();
 static PULLING: AtomicBool = AtomicBool::new(false);
 
 #[derive(Clone)]
@@ -409,11 +408,11 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
         (Ok(usage), Ok(containers)) => Ok(summarize_usage(&client, usage, containers)),
         (Err(message), _) | (_, Err(message)) => Err(message.clone()),
     };
-    let overview = match (&usage, &containers, &images) {
-        (Ok(usage), Ok(containers), Ok(images)) => Ok(summarize_overview(
-            &engine, &client, containers, images, usage,
+    let overview = match (&usage, &containers, &images, &disk_usage) {
+        (Ok(usage), Ok(containers), Ok(images), Ok(summary)) => Ok(summarize_overview(
+            &engine, containers, images, usage, summary,
         )),
-        (Err(message), _, _) | (_, Err(message), _) | (_, _, Err(message)) => Err(message.clone()),
+        (Err(message), _, _, _) | (_, Err(message), _, _) | (_, _, Err(message), _) | (_, _, _, Err(message)) => Err(message.clone()),
     };
     let engine_status: Result<Value, String> = Ok(engine);
     json!({"engine_status":engine_status,"overview":overview,"containers_list":container_list,"images_list":image_list,"disk_usage":disk_usage,"volumes_list":volumes,"networks_list":networks})
@@ -425,25 +424,29 @@ pub fn overview() -> Result<Value, String> {
             json!({"engine":engine,"containersRunning":null,"containersStopped":null,"images":null,"dockerBytes":null,"reclaimableBytes":null}),
         );
     };
-    let containers = client.containers()?;
-    let images = client.images()?;
-    let usage_data = client.usage()?;
+    let (containers, images, usage_data) = std::thread::scope(|scope| {
+        let containers = scope.spawn(|| client.containers());
+        let images = scope.spawn(|| client.images());
+        let usage = client.usage();
+        (containers.join().unwrap_or_else(|_| Err("Container overview worker failed.".into())), images.join().unwrap_or_else(|_| Err("Image overview worker failed.".into())), usage)
+    });
+    let (containers, images, usage_data) = (containers?, images?, usage_data?);
+    let summary = summarize_usage(&client, &usage_data, &containers);
     Ok(summarize_overview(
         &engine,
-        &client,
         &containers,
         &images,
         &usage_data,
+        &summary,
     ))
 }
 fn summarize_overview(
     engine: &Value,
-    client: &Client,
     containers: &[Value],
     images: &[Value],
     usage_data: &Value,
+    usage: &Value,
 ) -> Value {
-    let usage = summarize_usage(client, usage_data, containers);
     let running = containers
         .iter()
         .filter(|c| ["running", "restarting", "paused"].contains(&text(c, "State")))
@@ -1113,60 +1116,51 @@ pub fn container_stats(id: String) -> Result<Value, String> {
 }
 
 pub fn containers_metrics(ids: Vec<String>) -> Result<Value, String> {
-    let mut unique = HashSet::new();
-    if ids.len() > 256 || ids.iter().any(|id| !container_id(id) || !unique.insert(id)) {
-        return Err(
-            "사용량을 조회할 컨테이너 ID는 중복 없이 최대 256개까지 지정할 수 있습니다.".into(),
-        );
+    if ids.len() > 256 || ids.iter().any(|id| !container_id(id)) {
+        return Err("사용량을 조회할 컨테이너 ID는 중복 없이 최대 256개까지 지정할 수 있습니다.".into());
+    }
+    let mut order: [u8; 256] = std::array::from_fn(|index| index as u8);
+    let order = &mut order[..ids.len()];
+    order.sort_unstable_by(|left, right| ids[*left as usize].cmp(&ids[*right as usize]));
+    if order.windows(2).any(|pair| ids[pair[0] as usize] == ids[pair[1] as usize]) {
+        return Err("사용량을 조회할 컨테이너 ID는 중복 없이 최대 256개까지 지정할 수 있습니다.".into());
     }
     let client = connected()?;
     let containers = client.containers();
     let samples = match containers {
-        Err(reason) => ids
-            .iter()
-            .map(|id| unavailable_stats(id, &reason))
-            .collect::<Vec<_>>(),
+        Err(reason) => ids.iter().map(|id| unavailable_stats(id, &reason)).collect::<Vec<_>>(),
         Ok(containers) => {
-            let states: HashMap<_, _> = containers
-                .iter()
-                .map(|container| (text(container, "Id"), text(container, "State")))
-                .collect();
+            // 하위 8비트는 요청 인덱스, 상위 8비트는 조회에 필요한 실행 상태
+            let mut work: [u16; 256] = std::array::from_fn(|index| index as u16);
+            for container in &containers {
+                let id = text(container, "Id");
+                if let Ok(position) = order.binary_search_by(|index| ids[*index as usize].as_str().cmp(id)) {
+                    let index = order[position] as usize;
+                    let state = match text(container, "State") { "running" => 2, "paused" => 3, _ => 1 };
+                    work[index] = index as u16 | state << 8;
+                }
+            }
+            let samples: [OnceLock<Value>; 256] = std::array::from_fn(|_| OnceLock::new());
             let next = std::sync::atomic::AtomicUsize::new(0);
-            let batches = std::thread::scope(|scope| {
-                let mut workers = Vec::new();
-                for _ in 0..ids.len().min(4) {
-                    workers.push(scope.spawn(|| {
-                        let mut values = Vec::new();
+            std::thread::scope(|scope| {
+                let mut workers = [None, None, None, None];
+                for worker in workers.iter_mut().take(ids.len().min(4)) {
+                    *worker = Some(scope.spawn(|| {
                         loop {
-                            let index = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-                            let Some(id) = ids.get(index) else { break };
-                            values.push((
-                                index,
-                                stats_with_client(&client, id, states.get(id.as_str()).copied()),
-                            ));
+                            let index = next.fetch_add(1, Ordering::Relaxed);
+                            let Some(entry) = work[..ids.len()].get(index) else { break };
+                            let id = &ids[(entry & 255) as usize];
+                            let state = match entry >> 8 { 0 => None, 2 => Some("running"), 3 => Some("paused"), _ => Some("stopped") };
+                            let _ = samples[index].set(stats_with_client(&client, id, state));
                         }
-                        values
                     }));
                 }
-                workers
-                    .into_iter()
-                    .flat_map(|worker| worker.join().unwrap_or_default())
-                    .collect::<Vec<_>>()
+                for worker in workers.into_iter().flatten() { let _ = worker.join(); }
             });
-            let mut samples: Vec<_> = ids
-                .iter()
-                .map(|id| unavailable_stats(id, "사용량 조회 작업을 완료하지 못했습니다."))
-                .collect();
-            for (index, sample) in batches {
-                samples[index] = sample;
-            }
-            samples
+            samples.into_iter().zip(&ids).map(|(sample, id)| sample.into_inner().unwrap_or_else(|| unavailable_stats(id, "사용량 조회 작업을 완료하지 못했습니다."))).collect()
         }
     };
-    Ok(json!({
-        "samples":samples,"engineCpuCount":client.engine_cpu_count,
-        "memoryTotalBytes":client.memory_total_bytes,"measuredAt":now_ms()
-    }))
+    Ok(json!({"samples":samples,"engineCpuCount":client.engine_cpu_count,"memoryTotalBytes":client.memory_total_bytes,"measuredAt":now_ms()}))
 }
 
 fn browser_endpoint(private_port: u16, public_port: u16) -> Result<String, String> {
@@ -1311,38 +1305,13 @@ pub fn container_logs(id: String) -> Result<Value, String> {
         return Err("Invalid container ID".into());
     }
     let client = connected()?;
-    let key = format!("{}:{id}", client.identity);
-    let tty = LOG_FORMATS
-        .get_or_init(|| Mutex::new(HashMap::new()))
-        .lock()
-        .map_err(|_| "Log format cache unavailable")?
-        .get(&key)
-        .copied();
-    let tty = match tty {
-        Some(value) => value,
-        None => {
-            let inspect = client.json("GET", &format!("/containers/{id}/json"))?;
-            let value = inspect["Config"]["Tty"]
-                .as_bool()
-                .ok_or("Container log format unavailable")?;
-            let mut formats = LOG_FORMATS
-                .get()
-                .unwrap()
-                .lock()
-                .map_err(|_| "Log format cache unavailable")?;
-            if formats.len() >= 64 {
-                formats.clear();
-            }
-            formats.insert(key, value);
-            value
-        }
-    };
-    let body = client.bytes(
-        "GET",
-        &format!("/containers/{id}/logs?stdout=1&stderr=1&timestamps=1&tail=300&follow=0"),
-        REQUEST_TIMEOUT,
-        4 * 1024 * 1024,
-    )?;
+    let (inspect, body) = std::thread::scope(|scope| {
+        let inspect = scope.spawn(|| client.json("GET", &format!("/containers/{id}/json")));
+        let body = client.bytes("GET", &format!("/containers/{id}/logs?stdout=1&stderr=1&timestamps=1&tail=300&follow=0"), REQUEST_TIMEOUT, 4 * 1024 * 1024);
+        (inspect.join().unwrap_or_else(|_| Err("Container log format worker failed.".into())), body)
+    });
+    let tty = inspect?["Config"]["Tty"].as_bool().ok_or("Container log format unavailable")?;
+    let body = body?;
     let mut content = Vec::new();
     if tty {
         content = body;
@@ -1378,8 +1347,12 @@ pub fn container_logs(id: String) -> Result<Value, String> {
 }
 pub fn images_list() -> Result<Value, String> {
     let client = connected()?;
-    let containers = client.containers()?;
-    Ok(normalize_images(&client.images()?, &containers))
+    let (images, containers) = std::thread::scope(|scope| {
+        let images = scope.spawn(|| client.images());
+        let containers = client.containers();
+        (images.join().unwrap_or_else(|_| Err("Image list worker failed.".into())), containers)
+    });
+    Ok(normalize_images(&images?, &containers?))
 }
 fn normalize_images(images: &[Value], containers: &[Value]) -> Value {
     let mut references = HashMap::<&str, Vec<Value>>::new();
@@ -1607,11 +1580,12 @@ fn summarize_usage(client: &Client, usage: &Value, containers: &[Value]) -> Valu
 }
 pub fn disk_usage() -> Result<Value, String> {
     let client = connected()?;
-    Ok(summarize_usage(
-        &client,
-        &client.usage()?,
-        &client.containers()?,
-    ))
+    let (usage, containers) = std::thread::scope(|scope| {
+        let usage = scope.spawn(|| client.usage());
+        let containers = client.containers();
+        (usage.join().unwrap_or_else(|_| Err("Disk usage worker failed.".into())), containers)
+    });
+    Ok(summarize_usage(&client, &usage?, &containers?))
 }
 
 fn request_ids(

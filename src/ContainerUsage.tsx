@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+
 import { type Container, type ContainerMetric, useContainerMetrics } from './api';
 import { formatBytes } from './components';
 import { t } from "./i18n";
@@ -14,7 +14,7 @@ export function metricText(sample: ContainerMetric | undefined, running: boolean
 export function ContainerUsage({ containers }: { containers: Container[] }) {
   const metrics = useContainerMetrics();
   const running = containers.filter(container => ['running', 'paused', 'restarting'].includes(container.state));
-  const byId = useMemo(() => new Map(metrics.data?.samples.map(sample => [sample.id, sample]) ?? []), [metrics.data]);
+  const byId = new Map(metrics.data?.samples.map(sample => [sample.id, sample]) ?? []);
   const samples = running.map(container => byId.get(container.id));
   const cpu = samples.every(sample => sample?.cpuPercent != null) ? samples.reduce((sum, sample) => sum + sample!.cpuPercent!, 0) : null;
   const memory = samples.every(sample => sample?.memoryUsageBytes != null) ? samples.reduce((sum, sample) => sum + sample!.memoryUsageBytes!, 0) : null;

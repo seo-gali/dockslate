@@ -1,7 +1,6 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useRef, useState } from 'react';
 import { listen } from '@tauri-apps/api/event';
-import { backend, type Container } from './api';
-import { cachedLogs, storeContainerLogs } from './containerReadCache';
+import { backend, type Container, type ContainerLogs as LogData } from './api';
 import { OperationNotice, type Operation } from './actions';
 import { Icon, SearchInput, errorMessage } from './components';
 import { getLocale, t } from './i18n';
@@ -9,7 +8,7 @@ import { getLocale, t } from './i18n';
 interface LogEvent { streamId: string; id: string; state: 'streaming' | 'closed' | 'error'; content: string; reset: boolean; truncated: boolean; message?: string; sequence: number }
 
 export default function ContainerLogs({ container, revision, active }: { container: Container; revision: number; active: boolean }) {
-  const [entry, setEntry] = useState(() => cachedLogs(container.id));
+  const [entry, setEntry] = useState<{ data: LogData; readAt: number }>();
   const [connection, setConnection] = useState<'connecting' | 'streaming' | 'closed' | 'error'>('connecting');
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState(''), [autoScroll, setAutoScroll] = useState(true), [restart, setRestart] = useState(0);
@@ -31,9 +30,13 @@ export default function ContainerLogs({ container, revision, active }: { contain
           if (next.reset) { content = ''; truncated = false; }
           if (next.content || next.reset) {
             content += next.content;
-            const lines = content.split('\n');
-            const lineLimit = content.endsWith('\n') ? 301 : 300;
-            if (lines.length > lineLimit) { content = lines.slice(-lineLimit).join('\n'); truncated = true; }
+            let cursor = content.length - (content.endsWith('\n') ? 2 : 1);
+            for (let remaining = 300; remaining > 0 && cursor >= 0; remaining--) {
+              cursor = content.lastIndexOf('\n', cursor);
+              if (cursor < 0) break;
+              if (remaining === 1) { content = content.slice(cursor + 1); truncated = true; }
+              cursor--;
+            }
             if (content.length > 512 * 1024) {
               content = content.slice(-512 * 1024);
               const firstLine = content.indexOf('\n');
@@ -42,7 +45,7 @@ export default function ContainerLogs({ container, revision, active }: { contain
               truncated = true;
             }
             truncated ||= next.truncated;
-            setEntry(storeContainerLogs(container.id, revision, {content, truncated}));
+            setEntry({ data: { content, truncated }, readAt: Date.now() });
           }
           setConnection(next.state);
           if (next.state === 'error') setError(next.message || t('로그 연결이 끊어졌습니다. 다시 연결하세요.'));
@@ -59,7 +62,7 @@ export default function ContainerLogs({ container, revision, active }: { contain
   }, [active, container.id, container.state, revision, restart]);
   const content = entry?.data.content ?? '';
   const deferredSearch = useDeferredValue(search.trim().toLowerCase());
-  const visible = useMemo(() => deferredSearch ? content.split('\n').filter(line => line.toLowerCase().includes(deferredSearch)).join('\n') : content, [content, deferredSearch]);
+  const visible = deferredSearch ? content.split('\n').filter(line => line.toLowerCase().includes(deferredSearch)).join('\n') : content;
   useEffect(() => { if (autoScroll && logsRef.current) logsRef.current.scrollTop = logsRef.current.scrollHeight; }, [visible, autoScroll]);
   const copy = async () => {
     try { await navigator.clipboard.writeText(visible); setCopyOperation({tone: 'success', message: t('표시된 로그를 복사했습니다.')}); }

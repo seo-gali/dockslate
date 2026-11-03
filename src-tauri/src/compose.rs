@@ -814,7 +814,14 @@ fn no_collisions(
         return Err("The selected Docker engine changed. Select the file again.".into());
     }
     verify(client)?;
-    if client.containers()?.iter().any(|value| {
+    let (containers, networks, volumes, images) = std::thread::scope(|scope| {
+        let containers = scope.spawn(|| client.containers());
+        let networks = scope.spawn(|| client.json("GET", "/networks"));
+        let images = check_images.then(|| scope.spawn(|| client.json("GET", "/images/json?all=1")));
+        let volumes = client.json("GET", "/volumes");
+        (containers.join().unwrap_or_else(|_| Err("Compose container check worker failed.".into())), networks.join().unwrap_or_else(|_| Err("Compose network check worker failed.".into())), volumes, images.map(|worker| worker.join().unwrap_or_else(|_| Err("Compose image check worker failed.".into()))))
+    });
+    if containers?.iter().any(|value| {
         text(&value["Labels"], "com.docker.compose.project") == project
             || value["Names"].as_array().is_some_and(|names| {
                 names
@@ -825,27 +832,29 @@ fn no_collisions(
     }) {
         return Err("동일한 프로젝트 이름의 컨테이너가 이미 있습니다. 기존 프로젝트를 변경하지 않도록 가져오기를 중단했습니다. 파일을 다시 선택하세요.".into());
     }
-    let networks = client.json("GET", "/networks")?;
-    let volumes = client.json("GET", "/volumes")?;
-    let names: HashSet<_> = prepared.summary["resources"]
+    let networks = networks?;
+    let volumes = volumes?;
+    let mut names: Vec<_> = prepared.summary["resources"]
         .as_array()
         .into_iter()
         .flatten()
         .filter_map(|value| value["name"].as_str())
         .collect();
+    names.sort_unstable();
+    names.dedup();
     for values in [networks.as_array(), volumes["Volumes"].as_array()]
         .into_iter()
         .flatten()
     {
         if values.iter().any(|value| {
             text(&value["Labels"], "com.docker.compose.project") == project
-                || names.contains(text(value, "Name"))
+                || names.binary_search(&text(value, "Name")).is_ok()
         }) {
             return Err("가져올 볼륨 또는 네트워크 이름이 이미 사용 중입니다. 기존 데이터를 보존하기 위해 중단했습니다.".into());
         }
     }
     if check_images {
-        let images = client.json("GET", "/images/json?all=1")?;
+        let images = images.ok_or("Compose image check was not scheduled.")??;
         for service in prepared.config["services"]
             .as_object()
             .ok_or("서비스 구성을 확인할 수 없습니다.")?

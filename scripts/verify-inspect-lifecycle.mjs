@@ -46,13 +46,13 @@ try {
     if (navigation === 'tab') await tab('상세'); else await nav('Overview', '개요');
     await pause(100);
     const before = await c.evaluate(`document.querySelector('.container-inspect').innerText`);
-    await c.evaluate(`window.__inspectLifecycle.release()`);
+    await c.evaluate(`window.__inspectLifecycle.mode='pass';window.__inspectLifecycle.release()`);
     await waitFor('response delivered', () => c.evaluate(`window.__inspectLifecycle.delivered===1`));
     await pause(150);
     check(`${navigation}: late response leaves hidden Inspect unchanged`, before === await c.evaluate(`document.querySelector('.container-inspect').innerText`));
     if (navigation === 'tab') await tab('상세 JSON'); else await nav('Containers', '컨테이너');
-    await waitFor('cached Inspect on return', visibleInspect);
-    check(`${navigation}: return reuses real cached Inspect without another IPC`, await c.evaluate(`window.__inspectLifecycle.requests===1`));
+    await waitFor('fresh Inspect on return', visibleInspect);
+    check(`${navigation}: discarded response is replaced by a fresh IPC on return`, await c.evaluate(`window.__inspectLifecycle.requests===2`));
   }
   await ready('reject');
   await waitFor('real invalid-ID rejection', () => c.evaluate(`!!document.querySelector('.container-inspect .notice.error')`));

@@ -5,7 +5,6 @@ import { ImageRunAdvanced, type RunOptions } from './ImageRunAdvanced';
 import RunCommandDialog from './RunCommandDialog';
 import { runCommand } from './runCommand';
 import { t } from "./i18n";
-import { readMetadata } from './metadataCache';
 
 
 interface Details { id: string; tags: string[]; exposedPorts: string[]; entrypoint: string[]; command: string[] }
@@ -29,7 +28,7 @@ export function ImageRun({ image, blocked, onClose, onCreated, onBusy }: { image
   const read = async () => {
     setLoading(true); setError(null);
     try {
-      const result = await readMetadata<Details>('image_details', image.id, 0);
+      const result = await backend<Details>('image_details', { id: image.id });
       setDetails(result);
       const first = result.exposedPorts[0]?.split('/');
       if (first) { setContainerPort(first[0]); setProtocol(first[1] ?? 'tcp'); }

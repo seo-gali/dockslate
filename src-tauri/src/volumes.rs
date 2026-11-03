@@ -215,16 +215,30 @@ pub(crate) fn list_from_snapshot(usage: &Value, containers: &[Value]) -> Result<
 }
 pub fn list() -> Result<Value, String> {
     let client = docker::connected()?;
-    list_from_snapshot(&client.usage()?, &client.containers()?)
+    let (usage, containers) = std::thread::scope(|scope| {
+        let usage = scope.spawn(|| client.usage());
+        let containers = client.containers();
+        (usage.join().unwrap_or_else(|_| Err("Volume usage worker failed.".into())), containers)
+    });
+    list_from_snapshot(&usage?, &containers?)
 }
 fn get(client: &Client, value: &str) -> Result<Value, String> {
     name(value)?;
     client.json("GET", &format!("/volumes/{value}"))
 }
+fn volume_and_references(client: &Client, value: &str) -> Result<(Value, Vec<Value>), String> {
+    name(value)?;
+    let (volume, containers) = std::thread::scope(|scope| {
+        let volume = scope.spawn(|| get(client, value));
+        let containers = client.containers();
+        (volume.join().unwrap_or_else(|_| Err("Volume inspect worker failed.".into())), containers)
+    });
+    Ok((volume?, refs(&containers?, value)))
+}
 pub fn inspect(value: String) -> Result<Value, String> {
     let client = docker::connected()?;
-    let volume = get(&client, &value)?;
-    Ok(row(&volume, refs(&client.containers()?, &value)))
+    let (volume, references) = volume_and_references(&client, &value)?;
+    Ok(row(&volume, references))
 }
 fn create_with(client: &Client, value: &str) -> Result<Value, String> {
     name(value)?;
@@ -446,8 +460,7 @@ pub fn clone_volume(value: String, destination: String) -> Result<Value, String>
         return Err("원본과 다른 새 볼륨 이름을 입력하세요.".into());
     }
     let client = docker::connected()?;
-    let volume = get(&client, &value)?;
-    let source_refs = refs(&client.containers()?, &value);
+    let (volume, source_refs) = volume_and_references(&client, &value)?;
     if source_refs
         .iter()
         .any(|item| !matches!(item["state"].as_str(), Some("exited" | "created" | "dead")))
@@ -659,8 +672,7 @@ fn preview(
         return Err("볼륨 작업을 마친 뒤 다시 검사하세요.".into());
     }
     let client = docker::connected()?;
-    let volume = get(&client, &value)?;
-    let references = refs(&client.containers()?, &value);
+    let (volume, references) = volume_and_references(&client, &value)?;
     let mut blocked = Vec::<String>::new();
     if !references.is_empty() {
         blocked.push(

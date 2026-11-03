@@ -260,9 +260,16 @@ try {
         if !path_output.status.success() || path_output.stdout != b"verified" {
             return Err(format!("Windows docker command registration could not be verified: {} Setup is not complete.", String::from_utf8_lossy(&path_output.stderr).trim()));
         }
-        for arguments in [vec!["info", "--format", "{{.ID}}"], vec!["compose", "version", "--short"], vec!["buildx", "version"]] {
-            let args: Vec<String> = arguments.iter().map(|argument| (*argument).into()).collect();
-            let output = process::execute(&cli, &args, None, std::time::Duration::from_secs(30), 64 * 1024)?;
+        let checks: [&[&str]; 3] = [&["info", "--format", "{{.ID}}"], &["compose", "version", "--short"], &["buildx", "version"]];
+        let outputs = std::thread::scope(|scope| {
+            let cli = &cli;
+            checks.map(|arguments| scope.spawn(move || {
+                let args: Vec<String> = arguments.iter().map(|argument| (*argument).into()).collect();
+                process::execute(cli, &args, None, std::time::Duration::from_secs(30), 64 * 1024)
+            })).map(|worker| worker.join().unwrap_or_else(|_| Err("Windows Docker CLI verification worker failed.".into())))
+        });
+        for (arguments, output) in checks.into_iter().zip(outputs) {
+            let output = output?;
             let value = std::str::from_utf8(&output.stdout).map_err(|_| "Windows Docker CLI returned invalid output.")?.trim();
             if !output.status.success() || value.is_empty() {
                 return Err(format!("Windows Docker CLI verification failed: {}. Setup is not complete.", arguments.join(" ")));

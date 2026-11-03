@@ -223,13 +223,6 @@ fn row(network: &Value, references: &Value) -> Value {
     })
 }
 
-pub(crate) fn networks_from_snapshot(
-    client: &Client,
-    containers: &[Value],
-) -> Result<Value, String> {
-    let networks = client.json("GET", "/networks")?;
-    networks_from_values(&networks, containers)
-}
 pub(crate) fn networks_from_values(
     networks: &Value,
     containers: &[Value],
@@ -256,13 +249,24 @@ pub(crate) fn networks_from_values(
 }
 pub fn networks_list() -> Result<Value, String> {
     let client = docker::connected()?;
-    networks_from_snapshot(&client, &client.containers()?)
+    let (networks, containers) = std::thread::scope(|scope| {
+        let networks = scope.spawn(|| client.json("GET", "/networks"));
+        let containers = client.containers();
+        (networks.join().unwrap_or_else(|_| Err("Network list worker failed.".into())), containers)
+    });
+    networks_from_values(&networks?, &containers?)
 }
 
 pub fn network_delete_preview(id: String) -> Result<Value, String> {
+    if !object_id(&id) { return Err("Invalid network ID".into()); }
     let client = docker::connected()?;
-    let network = inspect_network(&client, &id)?;
-    let references = references(&network, &client.containers()?, true)?;
+    let (network, containers) = std::thread::scope(|scope| {
+        let network = scope.spawn(|| inspect_network(&client, &id));
+        let containers = client.containers();
+        (network.join().unwrap_or_else(|_| Err("Network preview worker failed.".into())), containers)
+    });
+    let network = network?;
+    let references = references(&network, &containers?, true)?;
     if let Some(reason) = deletion_block(&network, &references) {
         return Err(reason.into());
     }

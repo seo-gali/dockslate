@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { backend, refreshDashboardAfterMutation, type DiskOperation, type WslDisk, type WslInventory, type WslPreview, useBackendQuery } from '../api';
 import { OperationNotice, type Operation } from '../actions';
 import { ConfirmDialog, ErrorNotice, Icon, StatePanel, TaskProgress, StatusBadge, errorMessage, formatBytes } from '../components';
@@ -61,7 +61,7 @@ export default function WslDisks({ revision, onLoading, onCompacting, runtime, o
   const compacting = submitting || uncertain || diskOperation?.status === 'in_progress';
   const previousDiskStatus = useRef<string | undefined>(undefined);
   const selected = query.data?.disks.find(disk => disk.id === selectedId) ?? null;
-  const checks = useMemo(() => previewChecks(preview?.checks), [preview]);
+  const checks = previewChecks(preview?.checks);
   const canCompact = !!(preview?.eligible && preview.token && preview.diskId === selectedId);
   const previousRuntimeState = useRef(runtime?.query.data?.state);
   const runtimeState = runtime?.query.data?.state;
@@ -172,8 +172,7 @@ export default function WslDisks({ revision, onLoading, onCompacting, runtime, o
     try {
       await backend('wsl_shutdown', { token: shutdownPreview.token, approved: true });
       setShutdownOpen(false); setShutdownApproved(false); setShutdownPreview(null);
-      await query.poll();
-      await inspect();
+      await Promise.all([query.poll(), inspect()]);
     } catch (failure) { setShutdownError(errorMessage(failure)); }
     finally { setShutdownBusy(false); }
   };
@@ -184,8 +183,8 @@ export default function WslDisks({ revision, onLoading, onCompacting, runtime, o
       const result = await backend<DiskOperation>('wsl_compact', { token: preview.token, approved: true });
       setDiskOperation(result);
       setDialogOpen(false); setAcknowledged(false); setPreview(null);
-      await query.poll();
-      if (result.status !== 'in_progress') await refreshDashboardAfterMutation();
+      if (result.status === 'in_progress') await query.poll();
+      else await refreshDashboardAfterMutation();
     } catch (failure) {
       setDialogError(errorMessage(failure));
       setUncertain(true);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EngineGate, type EngineProps } from '../App';
 import { type CleanupCandidate, type DiskUsage, useBackendQuery } from '../api';
 import { ResizableTable, type ResizableColumn } from '../ResizableColumns';
@@ -24,18 +24,18 @@ export default function DockerUsage(props: EngineProps) {
   const term = search.trim().toLowerCase();
   const stale = !!query.error;
   const destructive = useDestructiveAction(() => { setSelected(new Set()); });
-  const candidates = useMemo(() => [
+  const candidates = [
     ...(query.data?.images ?? []).map(candidate => ({ ...candidate, type: 'Image' as const, key: `image:${candidate.id}` })),
     ...(query.data?.buildCache ?? []).map(candidate => ({ ...candidate, type: 'Build cache' as const, key: `cache:${candidate.id}` })),
-  ], [query.data]);
-  const matches = useMemo(() => term ? candidates.filter(candidate => `${candidate.id} ${candidate.label} ${candidate.type}`.toLowerCase().includes(term)) : candidates, [candidates, term]);
+  ];
+  const matches = term ? candidates.filter(candidate => `${candidate.id} ${candidate.label} ${candidate.type}`.toLowerCase().includes(term)) : candidates;
   const candidateRows = useTableRows(matches, [null, { value: candidate => candidate.type, enum: true }, { value: candidate => candidate.label }, { value: candidate => typeof candidate.createdAt === 'string' ? Date.parse(candidate.createdAt) : candidate.createdAt }, { value: candidate => candidate.size }, { value: candidate => candidate.eligible ? '선택 가능' : '정리 차단', enum: true }]);
   const filtered = candidateRows.rows;
   const selectable = filtered.filter(candidate => candidate.eligible);
   const allSelected = selectable.length > 0 && selectable.every(candidate => selected.has(candidate.key));
   const someSelected = selectable.some(candidate => selected.has(candidate.key));
   const currentPage = Math.min(page, Math.max(0, Math.ceil(filtered.length / 50) - 1));
-  const visible = useMemo(() => filtered.slice(currentPage * 50, (currentPage + 1) * 50), [filtered, currentPage]);
+  const visible = filtered.slice(currentPage * 50, (currentPage + 1) * 50);
   useEffect(() => { setPage(0); }, [search, candidateRows.revision]);
   const selection = candidates.filter(candidate => selected.has(candidate.key) && candidate.eligible);
   const selectedBytes = selection.every(item => item.size != null) ? selection.reduce((sum, item) => sum + (item.size ?? 0), 0) : null;

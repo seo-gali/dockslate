@@ -3,12 +3,12 @@ import { TableFilters, useTableRows } from './TableRows';
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import { type Container } from './api';
 import { errorMessage, formatBytes, Icon } from './components';
-import { cachedContainerFiles, readContainerDirectory, readContainerFilePreview, rememberContainerDirectory, type ContainerDirectory, type ContainerFileEntry, type ContainerFilePreview } from './containerFilesCache';
+import { readContainerDirectory, readContainerFilePreview, type ContainerDirectory, type ContainerFileEntry, type ContainerFilePreview } from './containerFileReads';
 import './container-files.css';
 import { t } from "./i18n";
 
 
-type Node = { directory?: ContainerDirectory; loading?: boolean; error?: string };
+type Node = { directories?: string[]; truncated?: boolean; loading?: boolean; error?: string };
 const parentPath = (path: string) => path === '/' ? '/' : path.substring(0, path.lastIndexOf('/')) || '/';
 function ancestors(path: string): string[] {
   const values = ['/'];
@@ -20,7 +20,6 @@ function normalizedPath(path: string): string {
   if (!path.startsWith('/') || path.length > 4096 || path.includes('\0') || path.split('/').some(part => part === '.' || part === '..') || path.split('/').filter(Boolean).length > 32) throw new Error('/로 시작하는 경로를 입력하세요. . 또는 .. 경로는 사용할 수 없습니다.');
   return `/${path.split('/').filter(Boolean).join('/')}`;
 }
-function initialNodes(id: string, revision: number): Record<string, Node> { return Object.fromEntries([...cachedContainerFiles(id, revision).directories].map(([path, directory]) => [path, { directory }])); }
 function updateNode(nodes: Record<string, Node>, path: string, value: Node) {
   const next = { ...nodes };
   delete next[path]; next[path] = value;
@@ -34,21 +33,20 @@ function updateNode(nodes: Record<string, Node>, path: string, value: Node) {
 
 export function ContainerFiles({ container, revision, active = true }: { container: Container; revision: number; active?: boolean }) {
   const scope = `${container.id}:${revision}`;
-  const initial = useRef(cachedContainerFiles(container.id, revision));
-  const [path, setPath] = useState(initial.current.path);
-  const [input, setInput] = useState(initial.current.path);
-  const [nodes, setNodes] = useState<Record<string, Node>>(() => initialNodes(container.id, revision));
-  const [directory, setDirectory] = useState<ContainerDirectory | null>(() => initial.current.directories.get(initial.current.path) ?? null);
+  const [path, setPath] = useState('/');
+  const [input, setInput] = useState('/');
+  const [nodes, setNodes] = useState<Record<string, Node>>({});
+  const [directory, setDirectory] = useState<ContainerDirectory | null>(null);
   const fileRows = useTableRows(directory?.entries ?? [], [{ value: entry => entry.name }, { value: entry => entry.kind, enum: true, label: value => t(({ directory: '폴더', file: '파일', symlink: '링크', other: '기타' } as Record<string, string>)[value] ?? value) }, { value: entry => entry.kind === 'file' ? entry.size : null }]);
-  const [expanded, setExpanded] = useState(() => new Set(ancestors(initial.current.path)));
-  const [focusPath, setFocusPath] = useState(initial.current.path);
+  const [expanded, setExpanded] = useState(() => new Set(['/']));
+  const [focusPath, setFocusPath] = useState('/');
   const [preview, setPreview] = useState<ContainerFilePreview | null>(null);
   const [filePath, setFilePath] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [previewFailure, setPreviewFailure] = useState<string | null>(null);
-  const selected = useRef(initial.current.path);
+  const selected = useRef('/');
   const selectedRequest = useRef(0);
   const previewRequest = useRef(0);
   const nodeRequests = useRef(new Map<string, number>());
@@ -60,21 +58,21 @@ export function ContainerFiles({ container, revision, active = true }: { contain
   if (live.current.scope !== scope || live.current.active !== active) live.current = { ...live.current, scope, active, epoch: live.current.epoch + 1 };
   const current = (epoch: number) => live.current.mounted && live.current.active && live.current.scope === scope && live.current.epoch === epoch;
 
-  const readNode = useCallback(async (target: string, force = false) => {
+  const readNode = useCallback(async (target: string) => {
     const epoch = live.current.epoch;
     const token = ++sequence.current;
     nodeRequests.current.set(target, token);
     setNodes(previous => updateNode(previous, target, { ...previous[target], loading: true, error: undefined }));
     try {
-      const value = await readContainerDirectory(container.id, revision, target, force);
-      if (current(epoch) && nodeRequests.current.get(target) === token) setNodes(previous => updateNode(previous, target, { directory: value }));
+      const value = await readContainerDirectory(container.id, target);
+      if (current(epoch) && nodeRequests.current.get(target) === token) setNodes(previous => updateNode(previous, target, { directories: value.entries.filter(entry => entry.kind === 'directory').map(entry => entry.path), truncated: value.truncated }));
       return value;
     } catch (error) {
       if (current(epoch) && nodeRequests.current.get(target) === token) setNodes(previous => updateNode(previous, target, { ...previous[target], loading: false, error: errorMessage(error) }));
       throw error;
     } finally { if (nodeRequests.current.get(target) === token) nodeRequests.current.delete(target); }
   }, [container.id, revision, scope]);
-  const load = useCallback(async (target: string, force = false) => {
+  const load = useCallback(async (target: string) => {
     let normalized: string;
     try { normalized = normalizedPath(target); }
     catch (error) { setFailure(errorMessage(error)); return; }
@@ -84,13 +82,11 @@ export function ContainerFiles({ container, revision, active = true }: { contain
     selected.current = normalized;
     setPath(normalized); setInput(normalized); setPreview(null); setFilePath(null); setPreviewFailure(null); setPreviewLoading(false); setFailure(null);
     setExpanded(previous => new Set([...previous, ...ancestors(normalized).slice(0, -1), '/']));
-    const cached = !force ? cachedContainerFiles(container.id, revision).directories.get(normalized) : undefined;
-    setDirectory(cached ?? null); setLoading(!cached);
+    setDirectory(null); setLoading(true);
     try {
-      const value = await readNode(normalized, force);
+      const value = await readNode(normalized);
       if (!current(epoch) || selectedRequest.current !== token) return;
       setDirectory(value); setPath(value.path); setInput(value.path); selected.current = value.path;
-      rememberContainerDirectory(container.id, revision, value.path);
     } catch (error) { if (current(epoch) && selectedRequest.current === token) setFailure(errorMessage(error)); }
     finally { if (current(epoch) && selectedRequest.current === token) setLoading(false); }
   }, [container.id, revision, readNode, scope]);
@@ -100,10 +96,9 @@ export function ContainerFiles({ container, revision, active = true }: { contain
     const changed = previousScope.current !== scope;
     previousScope.current = scope;
     if (changed) {
-      const cached = cachedContainerFiles(container.id, revision);
-      selected.current = cached.path;
-      setPath(cached.path); setInput(cached.path); setExpanded(new Set(ancestors(cached.path))); setFocusPath(cached.path);
-      setNodes(initialNodes(container.id, revision)); setDirectory(cached.directories.get(cached.path) ?? null);
+      selected.current = '/';
+      setPath('/'); setInput('/'); setExpanded(new Set(['/'])); setFocusPath('/');
+      setNodes({}); setDirectory(null);
       setPreview(null); setFilePath(null); setFailure(null); setPreviewFailure(null);
     } else setNodes(previous => Object.fromEntries(Object.entries(previous).map(([target, node]) => [target, { ...node, loading: false }])));
     if (active) void load(selected.current);
@@ -119,7 +114,7 @@ export function ContainerFiles({ container, revision, active = true }: { contain
     const epoch = live.current.epoch;
     setFilePath(entry.path); setPreview(null); setPreviewFailure(null); setPreviewLoading(true);
     try {
-      const value = await readContainerFilePreview(container.id, revision, entry.path);
+      const value = await readContainerFilePreview(container.id, entry.path);
       if (current(epoch) && previewRequest.current === token) setPreview(value);
     } catch (error) { if (current(epoch) && previewRequest.current === token) setPreviewFailure(errorMessage(error)); }
     finally { if (current(epoch) && previewRequest.current === token) setPreviewLoading(false); }
@@ -127,11 +122,11 @@ export function ContainerFiles({ container, revision, active = true }: { contain
   const toggle = (target: string) => {
     if (expanded.has(target)) { setExpanded(previous => { const value = new Set(previous); value.delete(target); return value; }); return; }
     setExpanded(previous => new Set(previous).add(target));
-    if (!nodes[target]?.directory && !nodes[target]?.loading) void readNode(target).catch(() => undefined);
+    if (!nodes[target]?.loading) void readNode(target).catch(() => undefined);
   };
   const implicit = new Set([...ancestors(path), ...expanded]);
   const children = (target: string) => {
-    const paths = new Set(nodes[target]?.directory?.entries.filter(entry => entry.kind === 'directory').map(entry => entry.path) ?? []);
+    const paths = new Set(nodes[target]?.directories ?? []);
     for (const candidate of implicit) if (candidate !== '/' && parentPath(candidate) === target) paths.add(candidate);
     return [...paths].sort((left, right) => left.localeCompare(right));
   };
@@ -155,7 +150,7 @@ export function ContainerFiles({ container, revision, active = true }: { contain
   const renderNode = (target: string, depth: number) => {
     const node = nodes[target];
     const descendants = children(target);
-    const canExpand = !node?.directory || node.directory.truncated || descendants.length > 0;
+    const canExpand = !node?.directories || node.truncated || descendants.length > 0;
     const isExpanded = expanded.has(target) && canExpand;
     const group = `${treeId}-${encodeURIComponent(target)}`;
     return <li key={target} role="treeitem" aria-selected={path === target} aria-expanded={canExpand ? isExpanded : undefined} tabIndex={focusPath === target || (!visible.includes(focusPath) && target === '/') ? 0 : -1} className="container-files-tree-item" ref={element => { if (element) itemRefs.current.set(target, element); else itemRefs.current.delete(target); }} onFocus={event => { if (event.target === event.currentTarget) setFocusPath(target); }} onKeyDown={event => keyboard(event, target)}>
@@ -163,7 +158,7 @@ export function ContainerFiles({ container, revision, active = true }: { contain
         <button type="button" tabIndex={-1} className="container-files-disclosure" disabled={!canExpand} aria-label={`${isExpanded ? t('폴더 접기') : t('폴더 펼치기')}: ${target}`} aria-expanded={canExpand ? isExpanded : undefined} aria-controls={isExpanded ? group : undefined} onClick={() => { focus(target); toggle(target); }}>{node?.loading ? <Icon name="refresh" size={12} /> : canExpand ? isExpanded ? '▾' : '▸' : <span />}</button>
         <button type="button" tabIndex={-1} className="container-files-tree-name" onClick={() => { focus(target); void load(target); }} data-tooltip={target}>{target === '/' ? '/' : target.slice(target.lastIndexOf('/') + 1)}</button>
       </div>
-      {isExpanded && <ul role="group" id={group}>{node?.error && <li role="none" className="container-files-tree-error" style={{ paddingLeft: 20 + depth * 13 }}><span role="alert">{node.error}</span><button type="button" className="button subtle small" onClick={() => void readNode(target).catch(() => undefined)}>{t("다시 시도")}</button></li>}{!node?.loading && node?.directory && descendants.length === 0 && <li role="none" className="container-files-tree-empty">{t("하위 폴더 없음")}</li>}{descendants.map(child => renderNode(child, depth + 1))}{node?.directory?.truncated && <li role="none" className="container-files-tree-limit">{t("일부 폴더만 표시")}</li>}</ul>}
+      {isExpanded && <ul role="group" id={group}>{node?.error && <li role="none" className="container-files-tree-error" style={{ paddingLeft: 20 + depth * 13 }}><span role="alert">{node.error}</span><button type="button" className="button subtle small" onClick={() => void readNode(target).catch(() => undefined)}>{t("다시 시도")}</button></li>}{!node?.loading && node?.directories && descendants.length === 0 && <li role="none" className="container-files-tree-empty">{t("하위 폴더 없음")}</li>}{descendants.map(child => renderNode(child, depth + 1))}{node?.truncated && <li role="none" className="container-files-tree-limit">{t("일부 폴더만 표시")}</li>}</ul>}
     </li>;
   };
   const closePreview = () => { previewRequest.current++; setFilePath(null); setPreview(null); setPreviewLoading(false); setPreviewFailure(null); };
@@ -173,7 +168,7 @@ export function ContainerFiles({ container, revision, active = true }: { contain
       <form className="container-files-toolbar" onSubmit={event => { event.preventDefault(); void load(input); }}>
         <button type="button" className="button small" disabled={path === '/' || !active} onClick={() => void load(parentPath(path))} data-tooltip={t("상위 폴더")} aria-label={t("상위 폴더")}>↑</button>
         <input className="text-input mono" aria-label={t("컨테이너 파일 경로")} value={input} onChange={event => setInput(event.target.value)} placeholder="/" maxLength={4096} />
-        <button className="button small" disabled={!active}>{t("이동")}</button><button type="button" className="button small" disabled={loading || !active} onClick={() => void load(path, true)} aria-label={t("컨테이너 폴더 새로고침")} data-tooltip={t("새로고침")}><Icon name="refresh" size={15} /></button>
+        <button className="button small" disabled={!active}>{t("이동")}</button><button type="button" className="button small" disabled={loading || !active} onClick={() => void load(path)} aria-label={t("컨테이너 폴더 새로고침")} data-tooltip={t("새로고침")}><Icon name="refresh" size={15} /></button>
       </form>
       {failure && <div className="notice error" role="alert">{failure}</div>}
       <TableFilters controls={fileRows} labels={{1:t("종류")}} /><div className="container-files-list table-wrap" aria-busy={loading}>

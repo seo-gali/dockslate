@@ -1,6 +1,6 @@
 import { ResizableTable } from '../ResizableColumns';
 import { TableFilters, useTableRows } from '../TableRows';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { EngineGate, type EngineProps } from '../App';
 import { backend, refreshDashboardAfterMutation, useBackendQuery } from '../api';
 import { OperationNotice, type Operation } from '../actions';
@@ -108,10 +108,10 @@ export default function Volumes(props: EngineProps & { noPageHeader?: boolean; o
     return () => { disposed = true; if (timer) window.clearTimeout(timer); };
   }, [job?.id, job?.state]);
   const selected = query.data?.find(volume => volume.name === selectedName) ?? null;
-  const matches = useMemo(() => {
+  const matches = (() => {
     const term = search.trim().toLowerCase();
     return (query.data ?? []).filter(volume => `${volume.name} ${volume.driver} ${volume.containers.map(container => container.name).join(' ')}`.toLowerCase().includes(term));
-  }, [query.data, search]);
+  })();
   const volumeRows = useTableRows(matches, [{ value: volume => volume.name }, { value: volume => volume.driver, enum: true }, { value: volume => volume.activeReferences ? '사용 중' : volume.referenceCount ? '중지됨' : '미사용', enum: true }, { value: volume => volume.sizeBytes }, null]);
   const filtered = volumeRows.rows;
   useEffect(() => { setPage(0); }, [search, volumeRows.revision]);

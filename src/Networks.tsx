@@ -1,6 +1,6 @@
 import { ResizableTable } from './ResizableColumns';
 import { TableFilters, useTableRows } from './TableRows';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { EngineGate, type EngineProps } from './App';
 import { backend, refreshDashboardAfterMutation, type DestructiveResult, useBackendQuery } from './api';
 import { OperationNotice, type Operation } from './actions';
@@ -47,10 +47,10 @@ export default function Networks(props: EngineProps & { noPageHeader?: boolean; 
   useEffect(() => { busyCallback.current?.(working || target !== null); }, [working, target]);
   useEffect(() => () => { generation.current += 1; busyCallback.current?.(false); }, []);
   useEffect(() => { setPage(0); }, [search]);
-  const matches = useMemo(() => {
+  const matches = (() => {
     const term = search.trim().toLowerCase();
     return (query.data ?? []).filter(network => `${network.name} ${network.id} ${network.driver} ${network.containers.map(container => container.name).join(' ')}`.toLowerCase().includes(term));
-  }, [query.data, search]);
+  })();
   const networkRows = useTableRows(matches, [{ value: network => network.name }, { value: network => network.driver, enum: true }, { value: network => network.builtin ? '기본' : network.containers.length ? '참조 중' : network.deletable ? '미사용' : '확인 필요', enum: true }, { value: network => network.containers.length }, null]);
   const filtered = networkRows.rows;
   useEffect(() => { setPage(0); }, [networkRows.revision]);

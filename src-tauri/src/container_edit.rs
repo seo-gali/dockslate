@@ -185,6 +185,27 @@ fn valid_name(name: &str) -> bool {
             .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte))
 }
 
+fn configuration_resources(client: &Client, request: &Request) -> [Option<Result<Value, String>>; 24] {
+    let count = request.mounts.len() + request.networks.len();
+    debug_assert!(count <= 24);
+    let mut results = std::array::from_fn(|_| None);
+    std::thread::scope(|scope| {
+        let mut workers = [None, None, None, None];
+        let chunk = count.div_ceil(4).max(1);
+        for (worker, values) in results[..count].chunks_mut(chunk).enumerate() {
+            workers[worker] = Some(scope.spawn(move || {
+                for (offset, value) in values.iter_mut().enumerate() {
+                    let index = worker * chunk + offset;
+                    let path = if index < request.mounts.len() { format!("/volumes/{}", encode(&request.mounts[index].name)) }
+                        else { format!("/networks/{}", request.networks[index - request.mounts.len()]) };
+                    *value = Some(client.json("GET", &path));
+                }
+            }));
+        }
+        for worker in workers.into_iter().flatten() { let _ = worker.join(); }
+    });
+    results
+}
 fn configuration(
     client: &Client,
     source: &Value,
@@ -263,7 +284,6 @@ fn configuration(
         .filter(|mount| mount["Type"] != "volume")
         .map(|mount| text(mount, "Destination").to_owned())
         .collect();
-    let mut volumes = Vec::new();
     for mount in &request.mounts {
         if !valid_name(&mount.name)
             || mount.target.len() > 4096
@@ -278,7 +298,24 @@ fn configuration(
         {
             return Err("볼륨 이름과 중복되지 않는 내부 절대 경로를 확인하세요. 루트·상위 경로는 사용할 수 없습니다.".into());
         }
-        let volume = client.json("GET", &format!("/volumes/{}", encode(&mount.name)))?;
+        mounts.push(json!({"Type":"volume","Source":mount.name,"Target":mount.target,"ReadOnly":mount.read_only,"VolumeOptions":{"NoCopy":true}}));
+    }
+    if source["Config"]["Volumes"]
+        .as_object()
+        .into_iter()
+        .flatten()
+        .any(|(target, _)| !targets.contains(target.trim_end_matches('/')))
+    {
+        return Err("이미지가 선언한 기본 볼륨 경로는 연결을 유지해야 합니다. 연결할 볼륨 이름을 바꿀 수 있습니다.".into());
+    }
+    let mut seen = HashSet::new();
+    if request.networks.iter().any(|id| !object_id(id) || !seen.insert(id)) {
+        return Err("네트워크 ID가 올바르지 않거나 중복되었습니다.".into());
+    }
+    let mut resources = configuration_resources(client, request);
+    let mut volumes = Vec::with_capacity(request.mounts.len());
+    for (index, mount) in request.mounts.iter().enumerate() {
+        let volume = resources[index].take().ok_or("볼륨 조회 작업을 완료하지 못했습니다.")??;
         if volume["Name"] != mount.name
             || volume["Driver"] != "local"
             || volume["Scope"] != "local"
@@ -292,25 +329,12 @@ fn configuration(
             );
         }
         volumes.push(volume);
-        mounts.push(json!({"Type":"volume","Source":mount.name,"Target":mount.target,"ReadOnly":mount.read_only,"VolumeOptions":{"NoCopy":true}}));
-    }
-    if source["Config"]["Volumes"]
-        .as_object()
-        .into_iter()
-        .flatten()
-        .any(|(target, _)| !targets.contains(target.trim_end_matches('/')))
-    {
-        return Err("이미지가 선언한 기본 볼륨 경로는 연결을 유지해야 합니다. 연결할 볼륨 이름을 바꿀 수 있습니다.".into());
     }
     host["Mounts"] = json!(mounts);
     let mut networks = Vec::new();
     let mut endpoints = Map::new();
-    let mut seen = HashSet::new();
-    for id in &request.networks {
-        if !object_id(id) || !seen.insert(id) {
-            return Err("네트워크 ID가 올바르지 않거나 중복되었습니다.".into());
-        }
-        let mut network = client.json("GET", &format!("/networks/{id}"))?;
+    for (index, id) in request.networks.iter().enumerate() {
+        let mut network = resources[request.mounts.len() + index].take().ok_or("네트워크 조회 작업을 완료하지 못했습니다.")??;
         if network["Id"] != *id
             || network["Scope"] != "local"
             || network["Ingress"] == true
@@ -373,8 +397,14 @@ pub fn preview(mut request: Request) -> Result<Value, String> {
         .mounts
         .sort_by(|left, right| left.target.cmp(&right.target));
     request.networks.sort();
+    if !object_id(&request.id) { return Err("컨테이너 ID가 올바르지 않습니다.".into()); }
     let client = docker::connected()?;
-    let source = inspect(&client, &request.id)?;
+    let (source, containers) = std::thread::scope(|scope| {
+        let source = scope.spawn(|| inspect(&client, &request.id));
+        let containers = client.containers();
+        (source.join().unwrap_or_else(|_| Err("컨테이너 설정 조회 작업을 완료하지 못했습니다.".into())), containers)
+    });
+    let source = source?;
     let current = settings(&source)?;
     if current == request {
         return Err("변경한 설정이 없습니다.".into());
@@ -385,7 +415,7 @@ pub fn preview(mut request: Request) -> Result<Value, String> {
     ) {
         return Err("실행 중·생성됨·중지됨 상태에서만 수정할 수 있습니다.".into());
     }
-    if client.containers()?.iter().any(|container| {
+    if containers?.iter().any(|container| {
         text(container, "Id") != request.id
             && container["Names"]
                 .as_array()

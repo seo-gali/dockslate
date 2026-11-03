@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { backend, refreshDashboardAfterMutation, useBackendQuery } from './api';
 import { OperationNotice, type Operation } from './actions';
 import { ConfirmDialog, ErrorNotice, Icon, StatePanel, StatusBadge, errorMessage } from './components';
@@ -181,7 +181,7 @@ export function useDockSlateRuntime(externalBusy = false) {
     </>}
   </ConfirmDialog>;
 
-  return useMemo(() => ({ query, preparing, busy, controlsDisabled, preview, operation, setOperation, prepareInstall, requestAction, dialog }), [query, preparing, busy, controlsDisabled, preview, operation, prepareInstall, requestAction, dialog]);
+  return ({ query, preparing, busy, controlsDisabled, preview, operation, setOperation, prepareInstall, requestAction, dialog });
 }
 
 export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSlateRuntime> }) {

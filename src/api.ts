@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { errorMessage } from './components';
 
 export interface EngineStatus {
@@ -158,50 +158,53 @@ export async function backend<T>(command: string, args?: Record<string, unknown>
   return invoke<T>(command, args);
 }
 
-const dashboardCommands = new Set(['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list', 'networks_list', 'installer_setup_mode']);
-const deferredCommands = new Set(['builds_snapshot']);
+const dashboardCommands = ['engine_status', 'overview', 'containers_list', 'images_list', 'disk_usage', 'runtime_status', 'wsl_inventory', 'volumes_list', 'networks_list', 'installer_setup_mode'];
+const queryCommands = [...dashboardCommands, 'builds_snapshot'];
+const buildsIndex = dashboardCommands.length;
 type CommandResult = { Ok?: unknown; Err?: string };
-type DashboardState = { values: Record<string, unknown>; errors: Record<string, string>; loading: boolean; initialized: boolean; revision: number; metrics?: ContainerMetrics | null; metricsLoading?: boolean; metricsError?: string | null; deferredLoading?: Record<string, boolean> };
-let dashboard: DashboardState = { values: {}, errors: {}, loading: true, initialized: false, revision: 0 };
+type QueryState = { data: unknown; loading: boolean; error: string | null; revision: number };
+const emptyQuery: QueryState = { data: null, loading: false, error: null, revision: 0 };
+const queries: QueryState[] = queryCommands.map(() => ({ ...emptyQuery, loading: true }));
+const versions = new Uint32Array(queryCommands.length);
+const requests: (Promise<void> | undefined)[] = new Array(queryCommands.length);
+const listeners: (() => void)[][] = queryCommands.map(() => []);
+let initialized = false, revision = 0;
 let dashboardRequest: Promise<void> | null = null;
 let metricsGeneration = 0;
-const dashboardListeners = new Set<() => void>();
-const commandVersions = new Map<string, number>();
-const commandRequests = new Map<string, Promise<void>>();
-const subscribeDashboard = (listener: () => void) => { dashboardListeners.add(listener); return () => { dashboardListeners.delete(listener); }; };
-type QueryView = { data: unknown; loading: boolean; error: string | null; revision: number };
-const queryViews = new Map<string, QueryView>();
-const emptyQuery: QueryView = { data: null, loading: false, error: null, revision: 0 };
-const idleSubscribe = () => () => {};
-function queryView(command: string): QueryView {
-  const previous = queryViews.get(command);
-  const data = dashboard.values[command] ?? null;
-  const loading = dashboard.loading || !!dashboard.deferredLoading?.[command];
-  const error = dashboard.errors[command] ?? null;
-  if (previous && previous.data === data && previous.loading === loading && previous.error === error && previous.revision === dashboard.revision) return previous;
-  const value = { data, loading, error, revision: dashboard.revision };
-  queryViews.set(command, value);
-  return value;
+function subscribe(list: (() => void)[], listener: () => void) {
+  list.push(listener);
+  return () => { const index = list.indexOf(listener); if (index >= 0) list.splice(index, 1); };
 }
-function publishDashboard(value: DashboardState) { dashboard = value; dashboardListeners.forEach(listener => listener()); }
+function publish(index: number, value: QueryState) {
+  const previous = queries[index];
+  if (previous.data === value.data && previous.loading === value.loading && previous.error === value.error && previous.revision === value.revision) return;
+  queries[index] = value;
+  for (const listener of [...listeners[index]]) listener();
+}
+const idleSubscribe = () => () => {};
+const metricListeners: (() => void)[] = [];
+let metricState: { data: ContainerMetrics | null; loading: boolean; error: string | null } = { data: null, loading: false, error: null };
+const subscribeMetrics = (listener: () => void) => subscribe(metricListeners, listener);
+const getMetrics = () => metricState;
+function publishMetrics(value: typeof metricState) {
+  metricState = value;
+  for (const listener of [...metricListeners]) listener();
+}
+export function useContainerMetrics() { return useSyncExternalStore(subscribeMetrics, getMetrics, getMetrics); }
 
-let metricPending: { values: Record<string, unknown>; generation: number } | null = null;
+let metricPending: { containers: Container[]; generation: number } | null = null;
 let metricRunning = false;
-async function measureContainers(values: Record<string, unknown>, generation: number) {
-  if ((values.engine_status as EngineStatus | undefined)?.state !== 'connected') {
-    metricPending = null;
-    publishDashboard({ ...dashboard, metrics: null, metricsLoading: false, metricsError: null });
-    return;
-  }
-  metricPending = { values, generation };
-  publishDashboard({ ...dashboard, metricsLoading: true, metricsError: null });
+async function measureContainers(containers: Container[], connected: boolean, generation: number) {
+  if (!connected) { metricPending = null; publishMetrics({ data: null, loading: false, error: null }); return; }
+  metricPending = { containers, generation };
+  publishMetrics({ ...metricState, loading: true, error: null });
   if (metricRunning) return;
   metricRunning = true;
   try {
     while (metricPending) {
       const job = metricPending; metricPending = null;
-      const containers = (job.values.containers_list as Container[] | undefined) ?? [];
-      const ids = containers.filter(container => ['running', 'paused', 'restarting'].includes(container.state)).map(container => container.id);
+      const ids: string[] = [];
+      for (const container of job.containers) if (['running', 'paused', 'restarting'].includes(container.state)) ids.push(container.id);
       const samples: ContainerMetric[] = [];
       try {
         for (let offset = 0; offset < Math.max(ids.length, 1); offset += 16) {
@@ -209,10 +212,10 @@ async function measureContainers(values: Record<string, unknown>, generation: nu
           const part = await backend<ContainerMetrics>('containers_metrics', { ids: ids.slice(offset, offset + 16) });
           if (job.generation !== metricsGeneration) break;
           samples.push(...part.samples);
-          publishDashboard({ ...dashboard, metrics: { ...part, samples: [...samples] }, metricsLoading: offset + 16 < ids.length });
+          publishMetrics({ data: { ...part, samples: [...samples] }, loading: offset + 16 < ids.length, error: null });
         }
       } catch (failure) {
-        if (job.generation === metricsGeneration) publishDashboard({ ...dashboard, metricsLoading: false, metricsError: errorMessage(failure) });
+        if (job.generation === metricsGeneration) publishMetrics({ ...metricState, loading: false, error: errorMessage(failure) });
       }
     }
   } finally { metricRunning = false; }
@@ -221,61 +224,60 @@ let buildsPending: number | null = null;
 let buildsRunning = false;
 async function refreshBuilds(generation: number) {
   buildsPending = generation;
-  publishDashboard({ ...dashboard, deferredLoading: { ...dashboard.deferredLoading, builds_snapshot: true } });
+  publish(buildsIndex, { ...queries[buildsIndex], loading: true });
   if (buildsRunning) return;
   buildsRunning = true;
   try {
     while (buildsPending !== null) {
       const current = buildsPending; buildsPending = null;
       try {
-        const value = await backend('builds_snapshot');
-        if (current !== metricsGeneration) continue;
-        const errors = { ...dashboard.errors }; delete errors.builds_snapshot;
-        publishDashboard({ ...dashboard, values: { ...dashboard.values, builds_snapshot: value }, errors, deferredLoading: { ...dashboard.deferredLoading, builds_snapshot: false } });
+        const data = await backend('builds_snapshot');
+        if (current === metricsGeneration) publish(buildsIndex, { data, error: null, loading: false, revision });
       } catch (failure) {
-        if (current === metricsGeneration) publishDashboard({ ...dashboard, errors: { ...dashboard.errors, builds_snapshot: errorMessage(failure) }, deferredLoading: { ...dashboard.deferredLoading, builds_snapshot: false } });
+        if (current === metricsGeneration) publish(buildsIndex, { ...queries[buildsIndex], error: errorMessage(failure), loading: false, revision });
       }
     }
   } finally { buildsRunning = false; }
 }
 
-let metricView: { data: ContainerMetrics | null; loading: boolean; error: string | null } = { data: null, loading: false, error: null };
-function getMetricView() {
-  const data = dashboard.metrics ?? null, loading = dashboard.metricsLoading ?? false, error = dashboard.metricsError ?? null;
-  if (metricView.data !== data || metricView.loading !== loading || metricView.error !== error) metricView = { data, loading, error };
-  return metricView;
-}
-export function useContainerMetrics() { return useSyncExternalStore(subscribeDashboard, getMetricView, getMetricView); }
-
 export function updateContainerStatus(id: string, state: string) {
-  const rows = (dashboard.values.containers_list as Container[] | undefined)?.map(row => row.id === id ? { ...row, state, status: state } : row);
+  const rows = (queries[2].data as Container[] | null)?.map(row => row.id === id ? { ...row, state, status: state } : row);
   if (!rows) return;
-  const overview = dashboard.values.overview as OverviewData | undefined;
-  publishDashboard({ ...dashboard, values: { ...dashboard.values, containers_list: rows, ...(overview ? { overview: { ...overview, containersRunning: rows.filter(row => row.state === 'running').length, containersStopped: rows.filter(row => ['exited','created','dead'].includes(row.state)).length } } : {}) } });
+  publish(2, { ...queries[2], data: rows });
+  const overview = queries[1].data as OverviewData | null;
+  if (overview) {
+    let running = 0, stopped = 0;
+    for (const row of rows) { if (row.state === 'running') running++; else if (['exited','created','dead'].includes(row.state)) stopped++; }
+    publish(1, { ...queries[1], data: { ...overview, containersRunning: running, containersStopped: stopped } });
+  }
 }
 
 export function refreshDashboard(): Promise<void> {
   if (dashboardRequest) return dashboardRequest;
-  const measurement = ++metricsGeneration;
-  dashboardCommands.forEach(command => commandVersions.set(command, (commandVersions.get(command) ?? 0) + 1));
-  publishDashboard({ ...dashboard, loading: true, errors: {} });
+  const generation = ++metricsGeneration;
+  for (let index = 0; index < queryCommands.length; index++) {
+    versions[index]++;
+    publish(index, { ...queries[index], loading: true, error: null });
+  }
+  void refreshBuilds(generation);
   dashboardRequest = (async () => {
     try {
       const snapshot = await backend<Record<string, CommandResult>>('dashboard_snapshot');
-      const values = { ...dashboard.values };
-      const errors: Record<string, string> = {};
-      dashboardCommands.forEach(command => {
-        const result = snapshot[command];
-        if (!result || result.Err !== undefined || !Object.prototype.hasOwnProperty.call(result, 'Ok')) errors[command] = result?.Err ?? '전체 조회 결과에 이 항목이 없습니다.';
-        else values[command] = result.Ok;
-      });
-      publishDashboard({ ...dashboard, values, errors, loading: false, initialized: true, revision: dashboard.revision + 1 });
-      void refreshBuilds(measurement);
-      if (!errors.engine_status && !errors.containers_list) void measureContainers(values, measurement);
-      else publishDashboard({ ...dashboard, metricsLoading: false, metricsError: errors.engine_status ?? errors.containers_list });
+      revision++;
+      for (let index = 0; index < dashboardCommands.length; index++) {
+        const result = snapshot[dashboardCommands[index]];
+        const error = !result || result.Err !== undefined || !Object.prototype.hasOwnProperty.call(result, 'Ok') ? result?.Err ?? '전체 조회 결과에 이 항목이 없습니다.' : null;
+        publish(index, { data: error ? queries[index].data : result!.Ok, error, loading: false, revision });
+      }
+      initialized = true;
+      if (!queries[buildsIndex].loading) publish(buildsIndex, { ...queries[buildsIndex], revision });
+      if (!queries[0].error && !queries[2].error) void measureContainers((queries[2].data as Container[]) ?? [], (queries[0].data as EngineStatus | null)?.state === 'connected', generation);
+      else publishMetrics({ ...metricState, loading: false, error: queries[0].error ?? queries[2].error });
     } catch (failure) {
-      const message = errorMessage(failure);
-      publishDashboard({ ...dashboard, errors: Object.fromEntries([...dashboardCommands].map(command => [command, message])), loading: false, initialized: true, metricsLoading: false, metricsError: message });
+      const error = errorMessage(failure);
+      for (let index = 0; index < dashboardCommands.length; index++) publish(index, { ...queries[index], loading: false, error });
+      initialized = true;
+      publishMetrics({ ...metricState, loading: false, error });
     } finally { dashboardRequest = null; }
   })();
   return dashboardRequest;
@@ -285,25 +287,20 @@ export async function refreshDashboardAfterMutation(): Promise<void> {
   if (dashboardRequest) await dashboardRequest;
   await refreshDashboard();
 }
-
-async function pollDashboardCommand(command: string): Promise<void> {
+async function pollDashboardCommand(index: number): Promise<void> {
   if (dashboardRequest) return dashboardRequest;
-  const existing = commandRequests.get(command);
-  if (existing) return existing;
-  const version = (commandVersions.get(command) ?? 0) + 1;
-  commandVersions.set(command, version);
+  if (requests[index]) return requests[index];
+  versions[index] = (versions[index] + 1) >>> 0;
+  const version = versions[index];
   const request = (async () => {
     try {
-      const value = await backend(command);
-      if (commandVersions.get(command) !== version) return;
-      const errors = { ...dashboard.errors };
-      delete errors[command];
-      publishDashboard({ ...dashboard, values: { ...dashboard.values, [command]: value }, errors });
+      const data = await backend(queryCommands[index]);
+      if (versions[index] === version) publish(index, { ...queries[index], data, error: null });
     } catch (failure) {
-      if (commandVersions.get(command) === version) publishDashboard({ ...dashboard, errors: { ...dashboard.errors, [command]: errorMessage(failure) } });
-    } finally { commandRequests.delete(command); }
+      if (versions[index] === version) publish(index, { ...queries[index], error: errorMessage(failure) });
+    } finally { requests[index] = undefined; }
   })();
-  commandRequests.set(command, request);
+  requests[index] = request;
   return request;
 }
 
@@ -314,37 +311,34 @@ export function useBackendQuery<T>(command: string, args: Record<string, unknown
   const [polling, setPolling] = useState(false);
   const generation = useRef(0);
   const argsKey = JSON.stringify(args ?? {});
-  const shared = (dashboardCommands.has(command) || deferredCommands.has(command)) && argsKey === '{}';
-  const getSnapshot = useCallback(() => shared ? queryView(command) : emptyQuery, [shared, command]);
-  const snapshot = useSyncExternalStore(shared ? subscribeDashboard : idleSubscribe, getSnapshot, getSnapshot);
+  const index = argsKey === '{}' ? queryCommands.indexOf(command) : -1;
+  const getSnapshot = useCallback(() => index >= 0 ? queries[index] : emptyQuery, [index]);
+  const subscribeQuery = useCallback((listener: () => void) => index >= 0 ? subscribe(listeners[index], listener) : idleSubscribe(), [index]);
+  const snapshot = useSyncExternalStore(subscribeQuery, getSnapshot, getSnapshot);
   const reload = useCallback(async () => {
-    if (shared) return refreshDashboard();
+    if (index >= 0) return refreshDashboard();
     const current = ++generation.current;
     if (!enabled) { setData(null); setError(null); setLoading(false); return; }
-    setLoading(true);
-    setError(null);
+    setLoading(true); setError(null);
     try {
-      const queryArgs = JSON.parse(argsKey) as Record<string, unknown>;
-      const value = await backend<T>(command, queryArgs);
+      const value = await backend<T>(command, JSON.parse(argsKey) as Record<string, unknown>);
       if (current === generation.current) setData(value);
     } catch (failure) {
       if (current === generation.current) { setError(errorMessage(failure)); setData(null); }
-    } finally {
-      if (current === generation.current) setLoading(false);
-    }
-  }, [command, argsKey, enabled, shared]);
+    } finally { if (current === generation.current) setLoading(false); }
+  }, [command, argsKey, enabled, index]);
   const poll = useCallback(async () => {
-    if (!shared) return reload();
+    if (index < 0) return reload();
     setPolling(true);
-    try { await pollDashboardCommand(command); }
+    try { await pollDashboardCommand(index); }
     finally { setPolling(false); }
-  }, [command, shared, reload]);
+  }, [index, reload]);
   useEffect(() => {
-    if (shared) { if (!dashboard.initialized) void refreshDashboard(); }
+    if (index >= 0) { if (!initialized) void refreshDashboard(); }
     else void reload();
     return () => { generation.current += 1; };
-  }, [reload, shared]);
-  return useMemo(() => shared
+  }, [reload, index]);
+  return index >= 0
     ? { data: enabled ? snapshot.data as T | null : null, loading: snapshot.loading || polling, error: enabled ? snapshot.error : null, reload, poll, revision: snapshot.revision }
-    : { data, loading, error, reload, poll, revision: 0 }, [shared, enabled, snapshot, polling, data, loading, error, reload, poll]);
+    : { data, loading, error, reload, poll, revision: 0 };
 }

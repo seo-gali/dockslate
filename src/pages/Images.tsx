@@ -1,6 +1,6 @@
 import { ResizableTable } from '../ResizableColumns';
 import { TableFilters, useTableRows } from '../TableRows';
-import { Fragment, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { Fragment, useEffect, useRef, useState, type RefObject } from 'react';
 import { listen } from '@tauri-apps/api/event';
 import ImagePullDialog, { type PullProgress } from '../ImagePullDialog';
 import { EngineGate, type EngineProps } from '../App';
@@ -114,10 +114,10 @@ export default function Images(props: EngineProps & { building: boolean; onRunBu
   const busy = pulling || removalImages !== null || props.building || runningContainer || !!props.mutationBlocked;
   useEffect(() => { props.onRunBusy?.(runningContainer || removalBusy || pulling); }, [runningContainer, removalBusy, pulling, props.onRunBusy]);
   useEffect(() => { if (showPull) referenceInput.current?.focus(); }, [showPull]);
-  const matches = useMemo(() => {
+  const matches = (() => {
     const term = search.trim().toLowerCase();
     return (query.data ?? []).filter(image => `${image.id} ${image.tags.join(' ')}`.toLowerCase().includes(term));
-  }, [query.data, search]);
+  })();
   const imageRows = useTableRows(matches, [null, { value: image => image.tags.join(' ') || image.id }, { value: image => image.size }, { value: image => image.containers > 0 ? '사용 중' : image.containers === 0 ? '미사용' : '사용 상태 미확인', enum: true }, { value: image => image.created }, null]);
   const filtered = imageRows.rows;
   useEffect(() => { setPage(0); }, [search, imageRows.revision]);
