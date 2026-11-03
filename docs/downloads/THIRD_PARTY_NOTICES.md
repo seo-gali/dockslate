@@ -1,6 +1,6 @@
 # 타사 라이선스·저작권 고지
 
-> 구버전 고지 호환 경로입니다. 아래는 0.1.5 의존성 스냅샷이며 원문을 보존합니다. 현재 0.1.6 고지는 [루트 고지](../../THIRD_PARTY_NOTICES.md)를 확인하세요.
+> 구버전 고지 호환 경로입니다. 아래는 0.1.5 의존성 스냅샷이며 원문을 보존합니다. 현재 0.1.6 고지는 [현재 고지](https://github.com/seo-gali/dockslate/blob/main/licenses/THIRD_PARTY_NOTICES.md)를 확인하세요.
 
 DockSlate 0.1.5 · Windows x64
 

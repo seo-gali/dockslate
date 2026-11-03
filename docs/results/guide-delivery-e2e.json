@@ -1,10 +1,21 @@
 {
-  "observedAt": "2026-10-31T11:58:19.875Z",
+  "observedAt": "2026-11-03T09:31:07.944Z",
   "target": "Actual file:// pages in isolated signed Chrome; no native backend, no engine calls",
   "completed": true,
   "checks": [
     {
-      "name": "guide.html opens as a compact standalone usage page without download/print/export controls",
+      "name": "site/guide.html opens as a compact standalone usage page without download/print/export controls",
+      "passed": true,
+      "evidence": {
+        "steps": 3,
+        "details": 4,
+        "open": 0,
+        "buttons": 0,
+        "external": 0
+      }
+    },
+    {
+      "name": "site-dist/guide.html opens as a compact standalone usage page without download/print/export controls",
       "passed": true,
       "evidence": {
         "steps": 3,
@@ -26,7 +37,7 @@
       }
     },
     {
-      "name": "Root index is the complete website and opens usage without a download redirect",
+      "name": "Site output is the complete website and opens usage without a download redirect",
       "passed": true
     },
     {

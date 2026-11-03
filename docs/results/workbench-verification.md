@@ -38,8 +38,8 @@
 
 작성 중이던 PowerShell 빌드 기록 파서의 보안 탐지는 [별도 기록](build-records-av-incident.md)에 남겼다. 해당 PS1은 실행하지 않았으며 차단 파일 복원이나 보안 설정 변경은 하지 않았다. 오탐으로 판정하지 않는다. 후속 제품 경로는 내부 Rust 파서를 사용하며, 형식 검사 파일의 통과와 실제 Buildx 파일의 E2E는 구분한다.
 
-이번 화면·백엔드는 DockSlate 독자 구현이다. 기존 [Rancher Desktop 1.24.0 REA Evidence](../research/rancher-desktop-1.24.0.md)와 [REA 호출 감사](rea-mcp-call-audit.md)는 보존했고 새 분석 결과로 꾸미지 않았다. 외부 라이선스와 배포 고지의 미확정 사항은 [Third-party notices](../../THIRD_PARTY_NOTICES.md)에 따른다.
+이번 화면·백엔드는 DockSlate 독자 구현이다. 기존 [Rancher Desktop 1.24.0 REA Evidence](../research/rancher-desktop-1.24.0.md)와 [REA 호출 감사](rea-mcp-call-audit.md)는 보존했고 새 분석 결과로 꾸미지 않았다. 외부 라이선스와 배포 고지의 미확정 사항은 [Third-party notices](../../licenses/THIRD_PARTY_NOTICES.md)에 따른다.
 
 테스트에서 만든 컨테이너·볼륨·이미지·빌드 기록과 새 캐시는 정리했고 기존 캐시 11개를 보존했다. [정리 결과](workbench-cleanup.json). 가져온 테스트 기록 두 파일도 해시·기록 ID를 확인해 제거했다. [보관함 정리](imported-build-cleanup.json). 뒤이어 사용자가 만든 `adoring_black` 컨테이너는 팝업·읽기 전용 Inspect와 삭제 승인 취소만 확인했으며 실행·삭제하지 않았다. Compose 검사도 당시 존재한 사용자 컨테이너를 보존했다.
 
-최종 EXE의 읽기 전용 검사를 통과했고, 검증 창을 정상 종료한 뒤 디버깅 옵션 없는 일반 창으로 다시 실행했다. 같은 전용 엔진 ID와 실행 상태를 유지했다. [일반 실행 결과](final-normal-session.json). 글자 크기 기본값은 12px이며 Settings에서 11~16px·다크/라이트를 저장한다. 반복 설명과 개발용 문구를 줄이고 사용법·WSL 보존·Compose·Davit 참고 범위를 [사용 안내](../../USER_GUIDE.md)로 분리했다.
+최종 EXE의 읽기 전용 검사를 통과했고, 검증 창을 정상 종료한 뒤 디버깅 옵션 없는 일반 창으로 다시 실행했다. 같은 전용 엔진 ID와 실행 상태를 유지했다. [일반 실행 결과](final-normal-session.json). 글자 크기 기본값은 12px이며 Settings에서 11~16px·다크/라이트를 저장한다. 반복 설명과 개발용 문구를 줄이고 사용법·WSL 보존·Compose·Davit 참고 범위를 [사용 안내](../USER_GUIDE.md)로 분리했다.

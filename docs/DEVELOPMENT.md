@@ -34,13 +34,17 @@ npm ci
 
 `src/`는 앱 화면, `src-tauri/`는 Windows 백엔드, `site/`는 공개 웹사이트이므로 서로 중복이 아니다. `src-tauri/target/`에는 네이티브 빌드 결과와 검증한 도구 캐시가 있으며 소스와 구분한다.
 
-## 루트에 남겨야 하는 파일
+## 루트와 문서 배치
 
 `package.json`·`package-lock.json`·`tsconfig.json`·`vite.config.ts`는 현재 도구 설정의 진입점입니다. `AGENTS.md`는 작업 지침 탐색, `README.md`는 저장소 첫 화면에 사용합니다.
 
-GitHub Pages는 `Deploy from a branch` → `main` → `/(root)`로 설정합니다. 루트 `index.html`·`404.html`·`robots.txt`·`sitemap.xml`·`.nojekyll`·Google 확인 HTML은 이 게시 방식에서 사용하므로 임의로 옮기지 않습니다. 원본은 `site/`, 생성 명령은 `npm run build:site -- --publish`입니다. [상세](PAGES.md).
+루트에는 위 진입점과 `.gitattributes`·`.gitignore`만 둡니다. 사이트 원본은 `site/`, 사용 안내는 `docs/USER_GUIDE.md`, 타사 고지는 `licenses/THIRD_PARTY_NOTICES.md`에 둡니다. `npm run build:site`는 `site-dist/`만 갱신하고, GitHub Pages는 Actions에서 이 결과를 게시합니다. [게시 설정](PAGES.md).
 
-사용자 안내와 타사 고지는 패키징에서 참조하므로 현재 경로를 유지합니다. 개발·코딩·디자인 문서는 `docs/`, 실제 실행 결과와 과거 버전 기록은 `docs/results/`에 둡니다. 과거 실행 파일 경로나 미검증 표시는 당시 기록이며 현재 상태는 [요청 현황](REQUEST_STATUS.md)과 최신 결과를 확인합니다.
+앱·포터블 빌드는 `site/guide.html`을 패키지의 `guide.html`로 복사합니다. Markdown 안내는 `docs/USER_GUIDE.md`, 고지는 `licenses/`에 포함합니다. 소스를 옮길 때는 이 패키징 경로도 함께 수정합니다. 기존 0.1.6 배포 파일은 이번 소스 정리로 다시 만들지 않습니다.
+
+기존 0.1.6 ZIP의 HTML 안내서는 옛 GitHub 루트 `USER_GUIDE.md`를 링크합니다. 루트 정리를 게시한 뒤에는 해당 링크 대신 저장소 README의 문서 안내나 공개 사이트의 안내서를 이용하세요. 새 소스의 링크와 패키징 경로는 수정했으며, 기존 설치 파일 내부까지 바뀐 것으로 보지 않습니다.
+
+개발·코딩·디자인 문서는 `docs/`, 실제 실행 결과와 과거 버전 기록은 `docs/results/`에 둡니다. 과거 실행 파일 경로나 미검증 표시는 당시 기록이며 현재 상태는 [요청 현황](REQUEST_STATUS.md)과 최신 결과를 확인합니다.
 
 `.analysis`를 정리할 때는 사용 중인 프로필·파일 잠금·Git 작업 사본·조사 원본을 먼저 확인합니다. 비활성 테스트 브라우저와 압축 해제 사본은 정리할 수 있지만 라이선스 소스·보안 조사 원본·실제 WSL VHDX·소유권 메타데이터는 임시 캐시로 취급하지 않습니다. `media/`의 완성 영상은 정리 대상과 구분합니다.
 

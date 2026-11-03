@@ -15,6 +15,6 @@
 
 Docker 정리 가능 추정치는 실행 가능한 이미지·cache 후보를 기준으로 한다. 미확인 용량은 `null`이며 0으로 바꾸지 않는다. VHDX 파일 크기 감소와 Windows 파일 할당 공간 변화는 별도로 반환한다. 후자는 [FILE_STANDARD_INFO.AllocationSize](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_standard_info)를 [GetFileInformationByHandleEx](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyhandleex)로 읽은 전후 차이이다. 다른 프로그램이 변경한 볼륨 전체 여유 공간이나 물리 SSD 회수량으로 표현하지 않는다. 자체 아이콘에서 해당 API 조회만 검증했으며 VHDX 압축 결과는 확보하지 않았다.
 
-Rancher Desktop Apache-2.0과 Dockhand BSL 1.1을 구분한다. 원본 코드·브랜드·에셋을 제품에 복사하지 않았다. 직접 의존성 manifest에서 React/React DOM·Vite의 MIT, TypeScript의 Apache-2.0, Tauri/API·serde/serde_json의 MIT/Apache-2.0 선택 라이선스를 확인했다. Windows EXE 생성 후 [의존성 고지](../../THIRD_PARTY_NOTICES.md)에 로컬 런타임·빌드 의존성의 라이선스와 확보한 원문을 기록했다. 누락된 라이선스 원문과 Microsoft WebView2 loader 및 Rust 표준 라이브러리의 배포 고지는 해당 문서에 미확인으로 남겼으며 외부 배포 고지 확정은 미완료이다.
+Rancher Desktop Apache-2.0과 Dockhand BSL 1.1을 구분한다. 원본 코드·브랜드·에셋을 제품에 복사하지 않았다. 직접 의존성 manifest에서 React/React DOM·Vite의 MIT, TypeScript의 Apache-2.0, Tauri/API·serde/serde_json의 MIT/Apache-2.0 선택 라이선스를 확인했다. Windows EXE 생성 후 [의존성 고지](../../licenses/THIRD_PARTY_NOTICES.md)에 로컬 런타임·빌드 의존성의 라이선스와 확보한 원문을 기록했다. 누락된 라이선스 원문과 Microsoft WebView2 loader 및 Rust 표준 라이브러리의 배포 고지는 해당 문서에 미확인으로 남겼으며 외부 배포 고지 확정은 미완료이다.
 
 연결된 엔진의 동작, 유효 승인 token의 만료·재사용, 선택 prune, 실제 등록 VHDX·백업·압축의 E2E는 미확인이다. [실행한 검증과 차단 조건](mvp-verification.md)을 기능 완료와 구분하여 기록했다.

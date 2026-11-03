@@ -6,7 +6,7 @@
 
 | 문서 | 용도 |
 | --- | --- |
-| [프로젝트 소개](../README.md) · [사용 안내](../USER_GUIDE.md) | 다운로드·설치·현재 메뉴·작업 순서 |
+| [프로젝트 소개](../README.md) · [사용 안내](USER_GUIDE.md) | 다운로드·설치·현재 메뉴·작업 순서 |
 | [제품 범위](../.project/plan.md) | 지원 기능·미지원 범위 |
 | [개발·빌드](DEVELOPMENT.md) · [Pages](PAGES.md) | 소스 구성·빌드·정적 사이트 생성 |
 | [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) | 구현·조회·데이터·화면 규칙 |
@@ -46,4 +46,4 @@
 
 [IObit 제출 초안](results/iobit-access-review-draft.md)은 미전송 문서이며 제출 승인이나 원래 경고의 원인 확정이 아니다. [라이선스 자료](../licenses/README.md)는 원문·소스·고지 목록을 관리한다.
 
-[루트 고지](../THIRD_PARTY_NOTICES.md)와 [다운로드 고지](../downloads/THIRD_PARTY_NOTICES.md)는 현재 0.1.6이다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.
+[현재 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.6이며 사이트 빌드 시 다운로드 경로에 복사한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.

@@ -80,7 +80,7 @@ Compose 가져오기 제한: 1~16개 서비스, 프로젝트 내부 상대 컨�
 | Apple container·Davit 적용 검토 | macOS 엔진 교체 미적용. 화면 밀도·작업 중심 UI, WSL 파일 경계 검토 | I/O 성능 비교 측정 없음 |
 | 삭제·재설치 시 WSL 처리 | 신규 런타임은 LocalAppData, 기존 등록은 소유권·경로 확인 후 재사용 | [빈 엔진 실제 재설치 완료](results/reinstall-recovery.md). 기존 데이터 보존 업그레이드·제거 전체 E2E는 미검증. 고아 등록 정리는 승인한 이 PC에 한정 |
 | 디스크 정리·압축 | 정확한 대상 정리, WSL 식별·승인·잠금 복구 | [네이티브 복구 검사 8개·승인 후 실제 VM 종료·원본 압축 성공](results/wsl-compaction-recovery.md). 1 MiB 회수·엔진 재연결·기존 리소스 보존·중지 복원. [갱신한 설치판의 동일 앱·CLI·고지 파일 대조 완료](results/installer-engine-integration.json). 관리자 GUI 압축 버튼 전체 경로·제거는 미검증. [0.1.6 빈 엔진 재설치](results/reinstall-recovery.md)는 별도 확인 |
-| 파일로 HTML 열기 | 루트 index는 전체 웹사이트, src/index는 앱 진입점. guide는 독립 사용 안내 | 실제 루트 파일의 사이트·안내 이동·3개 안내서 출력·키보드·390px 검사 통과. HTML 저장·인쇄·다운로드 중계 제거 |
+| 파일로 HTML 열기 | site/index는 웹 원본, site-dist/index는 사이트 출력, src/index는 앱 진입점. site/guide는 독립 사용 안내 | 새 경로의 사이트·안내 이동, 원본·사이트·앱의 안내서 3개와 키보드·390px 검사 8개 통과. HTML 저장·인쇄·다운로드 중계 제거 |
 | EXE·ZIP 다운로드·코드 서명 | 사용자 요청으로 미서명 개발 빌드 다운로드 허용. 강제 서명 차단 제거, 해시 검증 유지 | 정식 서명 미완료, 접근 경고 원인 미확인. [상태](results/code-signing.md) |
 | 설치 파일 | 설치 중 엔진 대상 자동 확인 → 승인 후 설치·시작 → Windows CLI·Compose·Buildx 자동 검증. 긴 PATH 처리는 .NET 레지스트리 API 사용 | 수정 후 PATH 임시 키 검사 8개 통과. 사용자 설치 완료·엔진 연결·`docker ps` 성공 확인. 전체 설치·제거 E2E와 로컬 NSIS 읽기 오류 원인은 미검증 |
 | 보안 제품 경고 | 공개 설치판·설치 준비·제거 확인의 취소 경로 파일 접근 17,751건 확인. 개인 브라우저 프로필 접근 0건, 앱 전용 History·Cookies 생성/읽기/쓰기 확인. 신뢰·예외 등록 없음 | [실측 범위와 한계](results/browsing-data-alert.md). 원래 경고 대상, 당시 앱 별도 추적, 설치 완료·앱 데이터 삭제·전체 제거는 미확인 |
@@ -89,7 +89,7 @@ Compose 가져오기 제한: 1~16개 서비스, 프로젝트 내부 상대 컨�
 
 | 요청 | 반영·검증 |
 | --- | --- |
-| GitHub Pages 다운로드 페이지 | 루트 index에 전체 사이트 게시, src/index로 앱 분리. 로컬 Chrome 28개·공개 SEO 9개 통과. 이전 공개 다운로드 검사 10개와 구분. Sitemap·canonical·robots·실제 404 반영, 다운로드 3개 해시 일치. [구성·결과](PAGES.md) |
+| GitHub Pages 다운로드 페이지 | site-dist/ 전체 사이트를 Pages Actions로 게시하도록 구성, src/index로 앱 분리. 원격 전환·게시 승인 완료, 적용 전. 새 로컬 Chrome 검사 26개 통과. Sitemap·canonical·robots·404·다운로드 3개 해시와 과거 고지 URL 6개 확인. 이전 공개 SEO·다운로드 검사는 당시 원격 상태로 구분. [구성·결과](PAGES.md) |
 | 엔진 사용료·라이선스 고지 | Rust·npm·Go·표준 라이브러리·설치 구성 요소와 외부 Linux 패키지 555개 항목 기록. 원문 362개·소스 11개 제공. EXE·포터블·고지 ZIP의 375개 파일 해시·목록·바이너리 일치, 손상 고지 차단 검사 통과. 이 패키지 검사는 설치·실행을 포함하지 않으며 미서명 상태다. [범위·검증](results/license-delivery.json) |
 | README·안내서 정리·캡처 | 공개 주소·실제 앱 캡처·구성도 제공. 안내서의 저장·인쇄·중계 버튼과 코드를 제거. 앱 빌드·실제 개발 서버·안내서 8개 검사 통과 |
 | Google 소유권 파일·Sitemap | 소유권 파일 원문·공개 HTTP 200 일치 확인, 사이트 등록은 사용자 확인. Sitemap 제출은 사용자 직접 진행이며 실제 제출·색인 여부는 미확인 |

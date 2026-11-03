@@ -4,8 +4,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
-const production = process.argv.includes('--publish');
-if (process.argv.slice(2).some(arg => arg !== '--publish')) throw Error('Use build:site with no arguments or --publish.');
+if (process.argv.length > 2) throw Error('Use build:site with no arguments; output is always site-dist/.');
 const release = JSON.parse(fs.readFileSync(path.join(root, 'site/release.json'), 'utf8'));
 const app = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 if (release.version !== app.version || !/^\d+\.\d+\.\d+$/.test(release.version)) throw Error('Website version must match the application version.');
@@ -32,13 +31,13 @@ for (const key of ['installer', 'zip', 'licenses']) {
   if (bytes !== asset.bytes || hash.digest('hex').toUpperCase() !== asset.sha256) throw Error(`Download differs from its verified size or SHA-256: ${asset.file}`);
   verifiedDownloads++;
 }
-if (!fs.readFileSync(path.join(root, 'THIRD_PARTY_NOTICES.md'), 'utf8').includes(release.licenses.file)) throw Error('Notices must link to the current license/source archive.');
+if (!fs.readFileSync(path.join(root, 'licenses/THIRD_PARTY_NOTICES.md'), 'utf8').includes(release.licenses.file)) throw Error('Notices must link to the current license/source archive.');
 let html = fs.readFileSync(path.join(root, 'site/index.html'), 'utf8');
 for (const [key, value] of Object.entries(values)) html = html.replaceAll(`{{${key}}}`, value);
 if (/\{\{[A-Z0-9_]+\}\}/.test(html)) throw Error('An unresolved website placeholder remains.');
 const pages = new Map([
   ['index.html', html],
-  ['guide.html', fs.readFileSync(path.join(root, 'guide.html'), 'utf8')],
+  ['guide.html', fs.readFileSync(path.join(root, 'site/guide.html'), 'utf8')],
   ['404.html', fs.readFileSync(path.join(root, 'site/404.html'), 'utf8').replaceAll('{{SITE_URL}}', siteUrl)],
 ]);
 for (const [file, content] of pages) {
@@ -51,27 +50,26 @@ const metadata = new Map([
   ['sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map(url => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`],
   ['robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}sitemap.xml\n`],
 ]);
-const output = production ? root : path.join(root, 'site-dist');
+const output = path.join(root, 'site-dist');
 if (!output.startsWith(root) || (fs.existsSync(output) && fs.realpathSync(output).toLowerCase() !== output.toLowerCase())) throw Error('Refusing to replace a website output outside the workspace.');
-if (!production) fs.rmSync(output, { recursive: true, force: true });
+fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 for (const [file, content] of [...pages, ...metadata]) fs.writeFileSync(path.join(output, file), content);
-if (!production) {
-  for (const file of ['styles.css', 'main.js', 'icon.svg']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
-  fs.copyFileSync(path.join(root, 'google474f5421d7424578.html'), path.join(output, 'google474f5421d7424578.html'));
-}
+for (const file of ['styles.css', 'main.js', 'icon.svg', 'google474f5421d7424578.html']) fs.copyFileSync(path.join(root, 'site', file), path.join(output, file));
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
-if (production) {
-  let homepage = html;
-  for (const file of ['styles.css', 'main.js', 'icon.svg']) homepage = homepage.replaceAll(`./${file}`, `./site/${file}`);
-  fs.writeFileSync(path.join(root, 'index.html'), homepage);
-  fs.writeFileSync(path.join(root, '.nojekyll'), '');
-}
 fs.mkdirSync(path.join(output, 'downloads'), { recursive: true });
 const notices = 'THIRD_PARTY_NOTICES.md';
-fs.copyFileSync(path.join(root, notices), path.join(output, 'downloads', notices));
-for (const key of production ? [] : ['installer', 'zip', 'licenses']) {
+fs.copyFileSync(path.join(root, 'licenses', notices), path.join(output, 'downloads', notices));
+for (const key of ['installer', 'zip', 'licenses']) {
   const file = release[key].file;
   fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
 }
-console.log(JSON.stringify({ output, version: release.version, mode: production ? 'static-pages' : 'local-preview', verifiedDownloads, sitemapUrls, deployed: false }));
+// 이전 패키지의 고지 URL 유지
+const legacyDownloads = path.join(root, 'docs/downloads');
+fs.mkdirSync(path.join(output, 'docs/downloads'), { recursive: true });
+fs.copyFileSync(path.join(legacyDownloads, notices), path.join(output, 'docs/downloads', notices));
+const legacyLicenses = fs.readdirSync(legacyDownloads).filter(file => /^DockSlate-\d+\.\d+\.\d+-third-party-licenses\.zip$/.test(file));
+for (const file of legacyLicenses) {
+  for (const folder of ['downloads', 'docs/downloads']) fs.copyFileSync(path.join(legacyDownloads, file), path.join(output, folder, file));
+}
+console.log(JSON.stringify({ output, version: release.version, verifiedDownloads, legacyLicenseArchives: legacyLicenses.length, sitemapUrls, deployed: false }));

@@ -618,5 +618,81 @@
         "evidence": "Normal Git commit from recorded base; old license ZIP removals excluded to preserve existing public URLs. No runtime/data rollback needed."
       }
     ]
+  },
+  "rootReorganization": {
+    "observedAt": "2026-11-03T09:36:24.351Z",
+    "baseCommit": "e037dba4d69c9de41bd9ffdcea243d624d2a1f6d",
+    "rootFilesBefore": 17,
+    "rootFilesAfter": 8,
+    "sourceDirectories": {
+      "website": "site/",
+      "userGuide": "docs/USER_GUIDE.md",
+      "notices": "licenses/THIRD_PARTY_NOTICES.md"
+    },
+    "generatedWebsite": "site-dist/ (Git ignored)",
+    "readme": "Product introduction, linked YouTube thumbnail, direct downloads and self-contained quick start; development and verification details indexed in docs/",
+    "duplicates": [
+      {
+        "removed": "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "retained": "docs/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "bytes": 5161432,
+        "sha256": "fa89b812dc50c71240d07286eb0793e63642727952ed95991d4d1d006bf7c77c"
+      },
+      {
+        "removed": "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "retained": "docs/downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "bytes": 5161430,
+        "sha256": "297e60f066ab10467010e296fd47dd4b7c7cfc81c9067d3335bc2f189f98aaf1"
+      },
+      {
+        "removed": "downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "retained": "docs/downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "bytes": 5161525,
+        "sha256": "d427ba1e60254372e5c4f7f7a4862a86139c838943426c98cd160929268807d4"
+      }
+    ],
+    "checks": {
+      "frontendBuildExit": 0,
+      "websiteBuildExit": 0,
+      "licenseInventoryExit": 0,
+      "licenseComponents": 555,
+      "noticeTexts": 362,
+      "sourceArchives": 11,
+      "missingLicenseFiles": 0,
+      "markdownFiles": 51,
+      "relativeLinks": 410,
+      "anchors": 12,
+      "brokenLinks": 0,
+      "siteBrowserChecks": 26,
+      "guideBrowserChecks": 8,
+      "installerResourceFiles": 406,
+      "packagedUserGuideLinks": 3,
+      "guideCopiesIdentical": true,
+      "currentNoticeAndGoogleVerificationBytesPreserved": true,
+      "legacyLicenseUrlsPreservedInArtifact": 6,
+      "powershellParseErrors": 0,
+      "removedRootPublishOptionRejected": true
+    },
+    "remote": {
+      "pagesModeChangeApplied": false,
+      "pushed": false,
+      "published": false,
+      "workflowRunTested": false,
+      "workflowReview": "Pinned official action tags and declared inputs/outputs checked; remote execution pending approval.",
+      "publishingAuthorized": true,
+      "apiAuthenticationAvailable": false
+    },
+    "notRun": [
+      "Native application rebuild",
+      "Installer/portable repackaging",
+      "Full native regression",
+      "WSL, engine or user data changes"
+    ],
+    "dependencyAndVersionChanges": false,
+    "knownLimit": "Existing 0.1.6 packaged HTML guide retains the old GitHub root USER_GUIDE.md link; after the source move is published, use the new docs user guide or public website guide. Existing installers are unchanged.",
+    "temporaryTestCleanup": {
+      "removedDirectories": 7,
+      "scope": "Only this task browser profiles and verified browser-download copies; source downloads retained"
+    }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-31T12:04:08.648Z",
+  "observedAt": "2026-11-03T09:31:03.711Z",
   "target": "Actual isolated Chrome, local files and HTTP /dockslate/ project path; no native backend",
   "completed": true,
   "checks": [
@@ -8,7 +8,7 @@
       "passed": true
     },
     {
-      "name": "Preview/root serve complete crawler HTML, canonical URLs, generated sitemap, permissive robots and true custom 404",
+      "name": "Site artifact serves complete crawler HTML, canonical URLs, generated sitemap, permissive robots and true custom 404",
       "passed": true
     },
     {
@@ -23,7 +23,7 @@
       "passed": true
     },
     {
-      "name": "Engine usage fee explanation links to exact current notices in preview and publishing root",
+      "name": "Engine usage fee explanation links to exact current notices in the site artifact",
       "passed": true
     },
     {
@@ -35,15 +35,11 @@
       "passed": true
     },
     {
-      "name": "Root static page includes direct downloads and exact Google verification",
+      "name": "Site artifact serves installer, portable and license/source downloads with exact sizes and SHA-256",
       "passed": true
     },
     {
-      "name": "root serves installer, portable and license/source downloads with exact sizes and SHA-256",
-      "passed": true
-    },
-    {
-      "name": "Repository root serves the complete styled website and usage without a redirect loop",
+      "name": "All six historical license download URLs retain the exact original archives",
       "passed": true
     },
     {
@@ -129,5 +125,5 @@
   ],
   "failure": null,
   "publicDeploymentTested": false,
-  "downloadDirectory": ".analysis/site-download-test-e51561b6-6e8d-4e11-a706-df58b77ee4a4"
+  "downloadDirectory": ".analysis/site-download-test-4265afa0-6486-4864-8b2a-3b0d26dacb78"
 }

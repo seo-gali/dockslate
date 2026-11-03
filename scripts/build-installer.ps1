@@ -97,7 +97,7 @@ try {
     }
     $installerResources = Join-Path $targetRoot 'installer-resources'
     New-Item -ItemType Directory -Path $installerResources -Force | Out-Null
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'guide.html') -Destination (Join-Path $installerResources 'guide.html')
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'site\guide.html') -Destination (Join-Path $installerResources 'guide.html')
     & node.exe $cliEntry bundle --bundles nsis --config src-tauri/tauri.installer.conf.json --no-binary-patching --ci
     if ($LASTEXITCODE -ne 0) { throw "NSIS bundling failed (exit $LASTEXITCODE). No installer was executed." }
     $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'src-tauri\tauri.conf.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version

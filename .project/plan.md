@@ -1,6 +1,6 @@
 # DockSlate 제품 범위
 
-현재 구현 기준은 0.1.6이다. 초기 MVP 제외 목록이나 과거 호스트 설치 경로를 현재 기능·작업 승인으로 사용하지 않는다. 실행 방법은 [README](../README.md), 동작은 [사용 안내](../USER_GUIDE.md), 검증 범위는 [요청 현황](../docs/REQUEST_STATUS.md)이 기준이다.
+현재 구현 기준은 0.1.6이다. 초기 MVP 제외 목록이나 과거 호스트 설치 경로를 현재 기능·작업 승인으로 사용하지 않는다. 실행 방법은 [README](../README.md), 동작은 [사용 안내](../docs/USER_GUIDE.md), 검증 범위는 [요청 현황](../docs/REQUEST_STATUS.md)이 기준이다.
 
 ## 구성과 화면
 

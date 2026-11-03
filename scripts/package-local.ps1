@@ -52,14 +52,12 @@ try {
         Copy-Item -LiteralPath (Join-Path $nativeRoot $component.file) -Destination $componentDestination
     }
     Copy-Item -LiteralPath (Join-Path $nativeRoot 'manifest.json') -Destination (Join-Path $packageRoot 'libexec\manifest.json')
-    foreach ($name in @('USER_GUIDE.md', 'THIRD_PARTY_NOTICES.md')) {
-        Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination (Join-Path $packageRoot $name)
-    }
     Copy-Item -LiteralPath (Join-Path $projectRoot 'licenses') -Destination (Join-Path $packageRoot 'licenses') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'examples') -Destination (Join-Path $packageRoot 'examples') -Recurse
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'guide.html') -Destination (Join-Path $packageRoot 'guide.html')
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'site\guide.html') -Destination (Join-Path $packageRoot 'guide.html')
     $docsRoot = Join-Path $packageRoot 'docs'
     New-Item -ItemType Directory -Path $docsRoot -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\USER_GUIDE.md') -Destination (Join-Path $docsRoot 'USER_GUIDE.md')
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\REQUEST_STATUS.md') -Destination (Join-Path $docsRoot 'REQUEST_STATUS.md')
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\results') -Destination (Join-Path $docsRoot 'results') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\research') -Destination (Join-Path $docsRoot 'research') -Recurse

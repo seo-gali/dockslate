@@ -40,17 +40,17 @@ const open = async relative => {
 };
 try {
   await send('Runtime.enable'); await send('Page.enable');
-  for (const guide of ['guide.html', 'dist/guide.html']) {
+  for (const guide of ['site/guide.html', 'site-dist/guide.html', 'dist/guide.html']) {
     await open(guide);
     const state = await evaluate(`({steps:document.querySelectorAll('#quickstart li').length,details:document.querySelectorAll('details').length,open:document.querySelectorAll('details[open]').length,buttons:document.querySelectorAll('button,#site-download,[data-artifact]').length,external:document.querySelectorAll('script[src],link[rel="stylesheet"]').length})`);
     assert(state.steps===3 && state.details===4 && state.open===0 && state.buttons===0 && state.external===0, 'Guide still contains controls or lacks standalone usage: '+guide);
     check(guide+' opens as a compact standalone usage page without download/print/export controls', state);
   }
-  await open('index.html');
-  assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('.file-start')&&!!document.getElementById('features')`), 'Root index is still an application fallback');
+  await open('site-dist/index.html');
+  assert(await evaluate(`document.querySelectorAll('[data-download]').length===2&&!document.querySelector('.file-start')&&!!document.getElementById('features')`), 'Site output is still an application fallback');
   await evaluate(`document.querySelector('.footer a[href="./guide.html"]').click()`);
-  await waitFor('Root website opens usage directly',()=>evaluate(`!!document.querySelector('#quickstart')&&!document.querySelector('#site-download')`),10000);
-  check('Root index is the complete website and opens usage without a download redirect');
+  await waitFor('Site output opens usage directly',()=>evaluate(`!!document.querySelector('#quickstart')&&!document.querySelector('#site-download')`),10000);
+  check('Site output is the complete website and opens usage without a download redirect');
   const application=fs.readFileSync('src/index.html','utf8');
   const built=fs.readFileSync('dist/index.html','utf8');
   assert(application.includes('id="root"')&&application.includes('src="./main.tsx"')&&built.includes('src="./assets/')&&!built.includes('data-download='),'Desktop application bootstrap was mixed with website markup');

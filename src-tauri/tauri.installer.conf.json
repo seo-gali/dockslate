@@ -26,9 +26,8 @@
       "../docs/results/maintenance-review.md": "docs/results/maintenance-review.md",
       "../docs/results/code-signing.md": "docs/results/code-signing.md",
       "../docs/results/ui-workflow-0.1.4.json": "docs/results/ui-workflow-0.1.4.json",
-      "../USER_GUIDE.md": "USER_GUIDE.md",
+      "../docs/USER_GUIDE.md": "docs/USER_GUIDE.md",
       "../examples/": "examples/",
-      "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md",
       "../licenses/": "licenses/"
     },
     "windows": {

@@ -1,6 +1,6 @@
 # DockSlate 사용 안내
 
-[다운로드](https://seo-gali.github.io/dockslate/) · [사용 가이드 영상](https://youtu.be/EbL7LkbNrPY) · [로컬 HTML 안내서](guide.html) · [지원·검증 현황](docs/REQUEST_STATUS.md)
+[다운로드](https://seo-gali.github.io/dockslate/) · [사용 가이드 영상](https://youtu.be/EbL7LkbNrPY) · [지원·검증 현황](REQUEST_STATUS.md)
 
 ## 설치와 엔진
 
@@ -26,7 +26,7 @@ Compose 그룹과 단독 컨테이너 그룹은 제목을 눌러 접고 펼칩�
 
 **빌드 → 파일에서 빌드 → Dockerfile 선택 / Compose 파일 선택**에서 시작합니다. 파일 선택 직후 빌드가 시작되며 Dockerfile의 **다시 빌드**로 재실행합니다. 한 카드에 선택한 형식의 설정·결과만 표시하고 **파일 선택 닫기**는 오른쪽 아래에 있습니다. 빌드만으로 컨테이너가 실행되지는 않습니다.
 
-직접 선택할 예제는 [examples/basic-web](examples/basic-web/README.md)입니다. `Dockerfile`·`compose.yaml`·`server.mjs`·`.dockerignore`를 같은 폴더에 두세요. Dockerfile은 부모 폴더를 빌드 컨텍스트로 사용하므로 `COPY`할 소스도 그 안에 있어야 합니다. 완성 이미지는 로컬 이미지에서 실행합니다.
+직접 선택할 예제는 [examples/basic-web](../examples/basic-web/README.md)입니다. `Dockerfile`·`compose.yaml`·`server.mjs`·`.dockerignore`를 같은 폴더에 두세요. Dockerfile은 부모 폴더를 빌드 컨텍스트로 사용하므로 `COPY`할 소스도 그 안에 있어야 합니다. 완성 이미지는 로컬 이미지에서 실행합니다.
 
 Compose는 빌드 후 **실행 미리보기**에서 서비스·포트·새 볼륨·네트워크와 영향을 확인해 별도로 실행을 승인합니다. 예제 실행 후 `http://127.0.0.1:18080`에서 확인합니다. 충돌 방지용 `dockslate-import-…` 내부 이름은 상세에서 확인하고 목록에는 짧은 표시명을 사용합니다. 로컬 프로젝트 안의 상대 빌드 컨텍스트·새 이름 있는 볼륨·bridge 네트워크를 지원합니다. 환경 변수 치환·env_file·secrets·외부 리소스·bind·privileged·장치 연결은 가져올 수 없습니다.
 
@@ -54,4 +54,4 @@ docker compose version
 docker buildx version
 ```
 
-현재 실행 파일은 미서명 개발판입니다. 배포할 때는 설치 EXE 또는 전체 ZIP을 사용하고 [서명·보안 상태](docs/results/code-signing.md)를 확인하세요.
+현재 실행 파일은 미서명 개발판입니다. 배포할 때는 설치 EXE 또는 전체 ZIP을 사용하고 [서명·보안 상태](results/code-signing.md)를 확인하세요.
