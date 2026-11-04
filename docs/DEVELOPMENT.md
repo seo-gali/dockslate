@@ -40,9 +40,7 @@ npm ci
 
 루트에는 위 진입점과 `.gitattributes`·`.gitignore`만 둡니다. 사이트 원본은 `site/`, 사용 안내는 `docs/USER_GUIDE.md`, 타사 고지는 `licenses/THIRD_PARTY_NOTICES.md`에 둡니다. `npm run build:site`는 `site-dist/`만 갱신하고, GitHub Pages는 Actions에서 이 결과를 게시합니다. [게시 설정](PAGES.md).
 
-앱·포터블 빌드는 `site/guide.html`을 패키지의 `guide.html`로 복사합니다. Markdown 안내는 `docs/USER_GUIDE.md`, 고지는 `licenses/`에 포함합니다. 소스를 옮길 때는 이 패키징 경로도 함께 수정합니다. 기존 0.1.6 배포 파일은 이번 소스 정리로 다시 만들지 않습니다.
-
-기존 0.1.6 ZIP의 HTML 안내서는 옛 GitHub 루트 `USER_GUIDE.md`를 링크합니다. 루트 정리를 게시한 뒤에는 해당 링크 대신 저장소 README의 문서 안내나 공개 사이트의 안내서를 이용하세요. 새 소스의 링크와 패키징 경로는 수정했으며, 기존 설치 파일 내부까지 바뀐 것으로 보지 않습니다.
+앱·포터블 빌드는 `site/guide.html`을 패키지의 `guide.html`로 복사합니다. Markdown 안내는 `docs/USER_GUIDE.md`, 고지는 `licenses/`에 포함합니다. 소스를 옮길 때는 이 패키징 경로도 함께 수정합니다. 최신 재패키징은 정리된 경로와 최적화한 실행 파일을 설치 EXE·ZIP에 반영합니다. 배포 파일의 실제 검사 범위는 [배포 기록](results/installer-engine-integration.json)에서 확인합니다.
 
 개발·코딩·디자인 문서는 `docs/`, 실제 실행 결과와 과거 버전 기록은 `docs/results/`에 둡니다. 과거 실행 파일 경로나 미검증 표시는 당시 기록이며 현재 상태는 [요청 현황](REQUEST_STATUS.md)과 최신 결과를 확인합니다.
 

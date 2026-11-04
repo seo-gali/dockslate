@@ -1,0 +1,131 @@
+{
+  "observedAt": "2026-11-04T13:56:05.375Z",
+  "version": "0.1.6",
+  "scope": "Refresh existing 0.1.6 installer and ZIP from optimized source; dependency/lock metadata unchanged; download URLs retained",
+  "sourceCommit": "49da590b61275d38876e920a1977863f153f8c30",
+  "previousPublicRelease": {
+    "version": "0.1.6",
+    "installer": {
+      "file": "DockSlate_0.1.6_x64-setup.exe",
+      "bytes": 49268432,
+      "sha256": "E8699FEDC93C31081E73D792BB55A596AA326EA988ABD3C8BD5575144D6B8525"
+    },
+    "zip": {
+      "file": "DockSlate-0.1.6-windows-x64.zip",
+      "bytes": 63318278,
+      "sha256": "20E330D17DDC42F3A0BD1BB3E090EC44F9FD1D946F89B2F0F5F9E527A4F25928"
+    },
+    "licenses": {
+      "file": "DockSlate-0.1.6-third-party-licenses.zip",
+      "bytes": 5161524,
+      "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
+    }
+  },
+  "release": {
+    "version": "0.1.6",
+    "installer": {
+      "file": "DockSlate_0.1.6_x64-setup.exe",
+      "bytes": 49292194,
+      "sha256": "DC3950189016220A60207B04C589F6C2EB6646E4B79C7961867ADA4DC50B920E"
+    },
+    "zip": {
+      "file": "DockSlate-0.1.6-windows-x64.zip",
+      "bytes": 63364334,
+      "sha256": "B7F731C6BC17EB88802B9A7F0CF04A6DDD961FCDA7749804E555DEC4CCC543D7"
+    },
+    "licenses": {
+      "file": "DockSlate-0.1.6-third-party-licenses.zip",
+      "bytes": 5161524,
+      "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
+    }
+  },
+  "builds": {
+    "frontendAndNativeExit": 0,
+    "cliExit": 0,
+    "rustCheckExit": 0,
+    "nativeChecks": 14,
+    "nativeReport": "hot-path-review.json",
+    "offlineCli": {
+      "version": "0.1.6",
+      "observedAt": "2026-11-04T13:48:32.418Z",
+      "appSha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB",
+      "launcherSha256": "B0EAC4D24279E74CA13E58096D63973917E7A7EF313CBE2758E97C41D3497B59",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.6.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+        }
+      ],
+      "existingProfileUsed": false,
+      "engineConnectionRequired": false
+    },
+    "portable": {
+      "version": "0.1.6",
+      "file": "DockSlate-0.1.6-windows-x64.zip",
+      "bytes": 63364334,
+      "sha256": "B7F731C6BC17EB88802B9A7F0CF04A6DDD961FCDA7749804E555DEC4CCC543D7",
+      "files": 600,
+      "allEntriesMatchPortableFolder": true,
+      "duplicateEntries": false,
+      "installerExecuted": false
+    },
+    "installer": {
+      "observedAt": "2026-11-04T13:54:14.2073695Z",
+      "version": "0.1.6",
+      "file": "DockSlate_0.1.6_x64-setup.exe",
+      "bytes": 49292194,
+      "sha256": "DC3950189016220A60207B04C589F6C2EB6646E4B79C7961867ADA4DC50B920E",
+      "signatureStatus": "NotSigned",
+      "artifactId": 13329851635,
+      "artifactDigest": "sha256:d3b2bcb191a60639131d2a7b58c9e69c02a9faf4cc2963b7653f54ebc35431fc",
+      "archiveBytes": 49286896,
+      "githubDigestVerified": true,
+      "embeddedApplicationAndLauncherMatch": true,
+      "verifiedLicenseFiles": 375,
+      "nativeComponentFilesVerified": 3,
+      "exampleFilesVerified": 5,
+      "packagedDocumentFilesVerified": 8,
+      "embeddedPathHelperMatches": true,
+      "installerExecuted": false,
+      "runId": 41841670394,
+      "sourceCommit": "f0f67d25d6c634061e290d2a65e1d008b6e90c7c",
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/41841670394"
+    }
+  },
+  "publicDownloadsVerified": false,
+  "temporaryWorkflowRemoved": true,
+  "installerExecuted": false,
+  "engineResourcesMutated": false,
+  "limitations": [
+    "Local NSIS cannot read the PATH helper; remote packaging used",
+    "No actual installer run, uninstall, complete container workflow regression, signing or new security scan"
+  ],
+  "retainedLegalArchiveUnchanged": true
+}

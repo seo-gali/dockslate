@@ -9,6 +9,7 @@
 | [0.1.6 가이드 촬영](results/guide-video.json) | 실제 이미지 검색·Pull·컨테이너 생성·HTTP, 상세·로그·파일·터미널, Dockerfile·단일 서비스 Compose 빌드·승인 실행. 실제 정리·압축은 실행하지 않음 |
 | [WSL 커널](results/cve-2026-98432-wsl.md) | 이 PC의 별도 호스트 수정·실행 커널 확인. 앱 설치 파일에 포함하지 않으며 다른 장비·DGX 검증과 구분 |
 | [조회 구조·핫 패스 점검](results/hot-path-review.md) | 전역 결과 캐시 제거·고정 배열·비트셋·독립 I/O 병렬화. 빈 엔진의 읽기 전용 비교와 검증 한계 |
+| [0.1.6 재패키징](results/repackage-0.1.6.md) | 최적화한 앱을 설치 EXE·ZIP에 반영. 네이티브 14개·CLI 4개, ZIP 전체 파일과 설치 EXE 내부 대조. 실제 설치·제거는 미실행 |
 
 현재 예제는 [Node.js 웹 앱](../examples/basic-web/README.md)이다. 파일 선택 직후 이미지 빌드가 시작되고 컨테이너 실행은 별도 동작이다. 사용 가이드 영상은 [YouTube](https://youtu.be/EbL7LkbNrPY)에서 제공하며 로컬 media 폴더는 Git에 포함하지 않는다.
 
