@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-31T12:01:47.136Z",
+  "observedAt": "2026-11-04T13:45:49.857Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -40,28 +40,28 @@
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 8,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 10,
+    "currentNativeChecks": 14,
     "dependencyVersionsChanged": false,
     "lockChangeScope": "App root version metadata only.",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "0.1.6 read-only screen/version/layout/container-state checks; no actual build or destructive operation."
+    "currentNativeScope": "Read-only native UI, request validation, isolated metadata fixtures; no approved mutations."
   },
   "artifacts": [
     {
       "name": "dockslate.exe",
       "path": "src-tauri/target/release/dockslate.exe",
-      "bytes": 5005824,
-      "sha256": "3DACD6FDC1DFECA7917EA6FB0C1E2812DE758160F9ADDDB142709CAFB004DA67",
+      "bytes": 5038592,
+      "sha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB",
       "executed": true,
-      "executionMode": "0.1.6 isolated read-only native smoke; no mutation approval."
+      "executionMode": "Rebuilt application; 14 actual native read-only checks in hot-path-review.json."
     },
     {
       "name": "docker.exe",
       "path": "src-tauri/target/release/docker.exe",
       "bytes": 315904,
-      "sha256": "A74D47DBEC9B39D6E7914921278325B4DDE4FC24FB4386A0D7637A8D2346E421",
-      "executed": true,
-      "executionMode": "Four offline version commands."
+      "sha256": "B0EAC4D24279E74CA13E58096D63973917E7A7EF313CBE2758E97C41D3497B59",
+      "executed": false,
+      "executionMode": "Rebuilt launcher from unchanged CLI source; current package checks pending."
     }
   ],
   "installerFilePresent": true,
@@ -318,14 +318,10 @@
   },
   "currentBuild": {
     "version": "0.1.6",
-    "sourceBaseCommit": "3fa8f3a3b1b0d4c641c7cd882aff3b0209ee9345",
-    "sourceState": "Committed 0.1.6 input; installer restores reviewed binaries from the frozen ZIP.",
-    "checkedAt": "2026-10-31T11:51:23.676Z",
+    "sourceBaseCommit": "49da590b61275d38876e920a1977863f153f8c30",
+    "sourceState": "Repackage of committed hot-path changes using the existing 0.1.6 package version; dependency and lock files unchanged.",
+    "checkedAt": "2026-11-04T13:45:49.857Z",
     "commands": [
-      {
-        "command": "node node_modules/typescript/bin/tsc --noEmit --noUnusedLocals --noUnusedParameters",
-        "exit": 0
-      },
       {
         "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
         "exit": 0
@@ -339,110 +335,31 @@
         "exit": 0
       },
       {
-        "command": "node .analysis/verify-release016-native.mjs",
+        "command": "node .analysis/verify-layout-native.mjs",
         "exit": 0
       },
       {
         "command": "node scripts/verify-license-inventory.mjs",
         "exit": 0
-      },
-      {
-        "command": "node .analysis/check016metadata.mjs",
-        "exit": 0
       }
     ],
     "nativeSmoke": {
-      "report": "docs/results/release-0.1.6-native.json",
-      "checks": 10,
-      "FileVersion": "0.1.6",
-      "ProductVersion": "0.1.6"
+      "report": "docs/results/hot-path-review.json",
+      "checks": 14,
+      "sha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB"
     },
-    "nativeChecks": 10,
-    "offlineCli": {
-      "appVersion": "0.1.6",
-      "checks": [
-        {
-          "args": [
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "--debug",
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "compose",
-            "version"
-          ],
-          "exit": 0,
-          "output": "Docker Compose version v5.6.0"
-        },
-        {
-          "args": [
-            "buildx",
-            "version"
-          ],
-          "exit": 0,
-          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
-        }
-      ],
-      "passed": true,
-      "sha256": "A74D47DBEC9B39D6E7914921278325B4DDE4FC24FB4386A0D7637A8D2346E421"
-    },
+    "nativeChecks": 14,
     "dependencyVersionsChanged": false,
-    "lockFileVersionMetadataOnly": true,
+    "lockFilesChanged": false,
     "installerExecuted": false,
     "rendererExceptions": 0,
     "originalContainerStatesPreserved": true,
-    "testHarnessNotes": "Restricted-launch debugging connection failed before assertions; that exact test process was terminated after normal-close timeout. A fresh normal-user isolated launch passed all ten checks and closed normally. An earlier stderr capture wrapper failed; the recorded full rebuild completed with observed exit 0.",
     "localInstallerAttempt": {
       "command": "powershell -NoProfile -File scripts/build-installer.ps1 -SkipBuild",
       "exit": 1,
-      "error": "NSIS failed opening src-tauri/installer/user-path.ps1; no local installer generated or executed."
+      "error": "NSIS failed opening src-tauri/installer/user-path.ps1 in both sandboxed and user-context attempts."
     },
-    "packages": [
-      {
-        "file": "DockSlate-0.1.6-windows-x64.zip",
-        "files": 591,
-        "passed": true,
-        "bytes": 63318278,
-        "sha256": "20E330D17DDC42F3A0BD1BB3E090EC44F9FD1D946F89B2F0F5F9E527A4F25928"
-      },
-      {
-        "file": "DockSlate-0.1.6-third-party-licenses.zip",
-        "files": 378,
-        "passed": true,
-        "bytes": 5161524,
-        "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
-      }
-    ],
-    "sourceCommit": "2d229466e5176d3118c25df3a271b6e8d7c33fbc",
-    "siteBuild": {
-      "publishCommand": "npm run build:site -- --publish",
-      "publishExit": 0,
-      "previewCommand": "npm run build:site",
-      "previewExit": 0,
-      "chromeCommand": "node scripts/verify-site.mjs .analysis/release016-browser-session.json",
-      "chromeExit": 0,
-      "chromeChecks": 27,
-      "chromeReport": "docs/results/pages-e2e.json",
-      "guideCommand": "node scripts/verify-guide.mjs .analysis/release016-guide-browser-session.json",
-      "guideExit": 0,
-      "guideChecks": 7,
-      "guideReport": "docs/results/guide-delivery-e2e.json",
-      "previewRemovedAfterVerification": true,
-      "appOutputRemovedAfterVerification": true
-    },
-    "verificationHarnessNotes": "The website verifier now uses explicit page focus for hidden Chrome and checks the current unsigned/security-record/hash-purpose wording. Earlier focus and obsolete-text assertion failures were corrected before the completed 27-check run.",
-    "publicDownloadReport": "docs/results/public-release-0.1.6.json",
-    "publicVerifiedAgainstCommit": "2244c7c11590c1518f53383e0e62017a38d7bcc4"
+    "packagingStatus": "Prepared; remote installer and portable verification pending"
   },
   "portableDelivery": {
     "version": "0.1.6",
