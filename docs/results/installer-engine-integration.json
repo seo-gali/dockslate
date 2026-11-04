@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-04T13:56:05.375Z",
+  "observedAt": "2026-11-04T14:03:54.606Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -65,7 +65,7 @@
     }
   ],
   "installerFilePresent": true,
-  "blocker": "Refreshed installer and portable embedded-file checks passed. Local NSIS PATH-helper read failure remains; the reviewed binaries were packaged by GitHub. Actual setup/uninstall, full regression, signing and original security-alert root cause remain outside this delivery verification.",
+  "blocker": "Refreshed installer/portable packaging, embedded-file checks and public HTTP delivery passed. Local NSIS PATH-helper reading, actual setup/uninstall, complete regression, signing and original security-alert root cause remain unverified or unresolved.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -205,9 +205,10 @@
       "bytes": 2215251,
       "sha256": "052218C6CD15BF167F645ABBB94F150F4F9D39B0E745A4AA415E1096DFEE710F"
     },
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "temporaryWorkflowRemoved": true,
-    "packagedDocumentsScope": "Snapshot at installer input commit; final release evidence is maintained in repository."
+    "packagedDocumentsScope": "Snapshot at installer input commit; final release evidence is maintained in repository.",
+    "publicDownloadReport": "docs/results/repackage-0.1.6.json"
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -335,7 +336,7 @@
       "exit": 1,
       "error": "NSIS failed opening src-tauri/installer/user-path.ps1 in both sandboxed and user-context attempts."
     },
-    "packagingStatus": "Refreshed installer and portable content verified; public delivery pending",
+    "packagingStatus": "Refreshed installer and portable published; actual public HTTP downloads and static assets verified",
     "offlineCli": {
       "version": "0.1.6",
       "observedAt": "2026-11-04T13:48:32.418Z",
@@ -395,6 +396,21 @@
       "url": "https://github.com/seo-gali/dockslate/actions/runs/41841670394",
       "conclusion": "success",
       "artifactId": 13329851635
+    },
+    "siteDelivery": {
+      "buildCommand": "npm run build:site",
+      "buildExit": 0,
+      "pages": {
+        "sourceCommit": "b8abd23154c7eaf26244f3611d31a30d8a3b77af",
+        "runId": 41843366922,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/41843366922"
+      },
+      "verificationReport": "docs/results/repackage-0.1.6.json",
+      "publicDownloads": 3,
+      "publicStaticAssets": 3,
+      "browserExecuted": false
     }
   },
   "portableDelivery": {
@@ -410,13 +426,14 @@
     "appSha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB",
     "launcherSha256": "B0EAC4D24279E74CA13E58096D63973917E7A7EF313CBE2758E97C41D3497B59",
     "sameFilesVerifiedInsideZip": true,
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "legalArchive": {
       "file": "DockSlate-0.1.6-third-party-licenses.zip",
       "bytes": 5161524,
       "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
     },
-    "packagedDocumentsScope": "Snapshot at ZIP generation; subsequent installer/public receipts are maintained in repository."
+    "packagedDocumentsScope": "Snapshot at ZIP generation; subsequent installer/public receipts are maintained in repository.",
+    "publicDownloadReport": "docs/results/repackage-0.1.6.json"
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

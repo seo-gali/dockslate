@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-04T13:56:05.375Z",
+  "observedAt": "2026-11-04T14:03:54.606Z",
   "version": "0.1.6",
   "scope": "Refresh existing 0.1.6 installer and ZIP from optimized source; dependency/lock metadata unchanged; download URLs retained",
   "sourceCommit": "49da590b61275d38876e920a1977863f153f8c30",
@@ -119,7 +119,7 @@
       "url": "https://github.com/seo-gali/dockslate/actions/runs/41841670394"
     }
   },
-  "publicDownloadsVerified": false,
+  "publicDownloadsVerified": true,
   "temporaryWorkflowRemoved": true,
   "installerExecuted": false,
   "engineResourcesMutated": false,
@@ -127,5 +127,77 @@
     "Local NSIS cannot read the PATH helper; remote packaging used",
     "No actual installer run, uninstall, complete container workflow regression, signing or new security scan"
   ],
-  "retainedLegalArchiveUnchanged": true
+  "retainedLegalArchiveUnchanged": true,
+  "publicVerification": {
+    "observedAt": "2026-11-04T14:02:55.807Z",
+    "scope": "Actual public HTTP index, CSS, JavaScript, guide and three complete downloads; no installer execution",
+    "base": "https://seo-gali.github.io/dockslate/",
+    "publishedSourceCommit": "b8abd23154c7eaf26244f3611d31a30d8a3b77af",
+    "pagesRunId": 41843366922,
+    "assets": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "sourceMatches": true
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.6_x64-setup.exe",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.6_x64-setup.exe",
+        "status": 200,
+        "bytes": 49292194,
+        "sha256": "DC3950189016220A60207B04C589F6C2EB6646E4B79C7961867ADA4DC50B920E",
+        "matchesRelease": true
+      },
+      {
+        "file": "DockSlate-0.1.6-windows-x64.zip",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.6-windows-x64.zip",
+        "status": 200,
+        "bytes": 63364334,
+        "sha256": "B7F731C6BC17EB88802B9A7F0CF04A6DDD961FCDA7749804E555DEC4CCC543D7",
+        "matchesRelease": true
+      },
+      {
+        "file": "DockSlate-0.1.6-third-party-licenses.zip",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5161524,
+        "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B",
+        "matchesRelease": true
+      }
+    ],
+    "installerExecuted": false
+  },
+  "pages": {
+    "sourceCommit": "b8abd23154c7eaf26244f3611d31a30d8a3b77af",
+    "runId": 41843366922,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/41843366922"
+  },
+  "temporaryCleanup": {
+    "removedBytes": 369488125,
+    "targets": [
+      "repack016-input",
+      "repack016-installer-incoming",
+      "repack016-installer-extracted",
+      "repack016-installer-artifact.zip",
+      "repack016-cli-profile",
+      "repack-installer-template.yml"
+    ],
+    "verifiedDownloadsPreserved": true,
+    "reportsPreserved": true,
+    "userWslDataChanged": false
+  }
 }
