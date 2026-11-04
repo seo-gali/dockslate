@@ -1,0 +1,11 @@
+{
+  "version": "0.1.7",
+  "observedAt": "2026-11-04T15:45:22.048Z",
+  "nativeChecks": 24,
+  "appSha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
+  "dependencyVersionsChanged": false,
+  "lockChangeScope": "App root version metadata only",
+  "installerExecuted": false,
+  "publicDownloadsVerified": false,
+  "packagingStatus": "Pending"
+}

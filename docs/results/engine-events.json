@@ -1,0 +1,607 @@
+{
+  "observedAt": "2026-11-04T15:39:02.691Z",
+  "scope": "Actual 0.1.7 Windows app, approved scratch container/network/image/volume, actual owned WSL stop/start and original SQL state restoration.",
+  "sha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
+  "checks": [
+    {
+      "name": "actual owned Docker event subscription connected",
+      "passed": true
+    },
+    {
+      "name": "invalid subscription and wrong engine rejected",
+      "passed": true
+    },
+    {
+      "name": "external network create updates Resources",
+      "passed": true
+    },
+    {
+      "name": "external Compose up updates container group and running status",
+      "passed": true
+    },
+    {
+      "name": "external rename updates current row",
+      "passed": true
+    },
+    {
+      "name": "external Compose stop updates status",
+      "passed": true
+    },
+    {
+      "name": "external Compose start updates status",
+      "passed": true
+    },
+    {
+      "name": "external Compose down removes row",
+      "passed": true
+    },
+    {
+      "name": "external network removal updates Resources",
+      "passed": true
+    },
+    {
+      "name": "external image import updates Images",
+      "passed": true
+    },
+    {
+      "name": "external image removal updates Images",
+      "passed": true
+    },
+    {
+      "name": "external volume create updates Resources",
+      "passed": true
+    },
+    {
+      "name": "external volume removal updates Resources",
+      "passed": true
+    },
+    {
+      "name": "external events avoid WSL dashboard and build history refresh",
+      "passed": true
+    },
+    {
+      "name": "idle connection sends no periodic inventory queries",
+      "passed": true
+    },
+    {
+      "name": "interrupted own reader reconnects and resynchronizes",
+      "passed": true
+    },
+    {
+      "name": "original containers states images volumes networks preserved",
+      "passed": true,
+      "containers": 4,
+      "volumes": 2
+    },
+    {
+      "name": "no renderer exceptions",
+      "passed": true
+    },
+    {
+      "name": "original three SQL containers stopped gracefully",
+      "passed": true
+    },
+    {
+      "name": "actual UI stops only owned DockSlate WSL distribution",
+      "passed": true
+    },
+    {
+      "name": "actual UI restarts same owned engine without starting stopped containers",
+      "passed": true
+    },
+    {
+      "name": "event subscription resumes after actual WSL restart",
+      "passed": true
+    },
+    {
+      "name": "original IDs states images volumes networks and other distributions preserved",
+      "passed": true,
+      "containers": 4,
+      "running": 3,
+      "volumes": 2
+    },
+    {
+      "name": "no renderer exceptions during owned WSL restart",
+      "passed": true
+    }
+  ],
+  "exceptions": [],
+  "commands": [
+    [
+      "ps",
+      "-a",
+      "--no-trunc",
+      "--format",
+      "{{.ID}} {{.State}}"
+    ],
+    [
+      "image",
+      "ls",
+      "-q",
+      "--no-trunc"
+    ],
+    [
+      "volume",
+      "ls",
+      "-q"
+    ],
+    [
+      "network",
+      "ls",
+      "-q",
+      "--no-trunc"
+    ],
+    [
+      "ps",
+      "-aq",
+      "--filter",
+      "label=com.docker.compose.project=dockslate-events-check-7d2a"
+    ],
+    [
+      "ps",
+      "-a",
+      "--format",
+      "{{.Names}}"
+    ],
+    [
+      "network",
+      "ls",
+      "--format",
+      "{{.Name}}"
+    ],
+    [
+      "image",
+      "inspect",
+      "postgres:18.6-alpine",
+      "--format",
+      "{{.Id}}|{{json .Config.Volumes}}"
+    ],
+    [
+      "network",
+      "create",
+      "--label",
+      "io.dockslate.verification=dockslate-events-check-7d2a",
+      "dockslate-events-check-7d2a"
+    ],
+    [
+      "compose",
+      "--project-name",
+      "dockslate-events-check-7d2a",
+      "--file",
+      "<fixture>\\compose.yaml",
+      "up",
+      "--detach",
+      "--no-build",
+      "--pull",
+      "never"
+    ],
+    [
+      "inspect",
+      "dockslate-events-check-7d2a",
+      "--format",
+      "{{.Id}}"
+    ],
+    [
+      "rename",
+      "06797250b7292c7ccca3c118c4084b84943d58140190ac825a79d8b788912c00",
+      "dockslate-events-check-7d2a-renamed"
+    ],
+    [
+      "compose",
+      "--project-name",
+      "dockslate-events-check-7d2a",
+      "--file",
+      "<fixture>\\compose.yaml",
+      "stop",
+      "--timeout",
+      "1"
+    ],
+    [
+      "compose",
+      "--project-name",
+      "dockslate-events-check-7d2a",
+      "--file",
+      "<fixture>\\compose.yaml",
+      "start"
+    ],
+    [
+      "compose",
+      "--project-name",
+      "dockslate-events-check-7d2a",
+      "--file",
+      "<fixture>\\compose.yaml",
+      "down",
+      "--timeout",
+      "1"
+    ],
+    [
+      "network",
+      "inspect",
+      "9c2695c5f13500f93c80f8de5f5afecc1ea4549446e1383cb5b0a5abd8a93baf",
+      "--format",
+      "{{index .Labels \"io.dockslate.verification\"}}"
+    ],
+    [
+      "network",
+      "rm",
+      "9c2695c5f13500f93c80f8de5f5afecc1ea4549446e1383cb5b0a5abd8a93baf"
+    ],
+    [
+      "image",
+      "ls",
+      "-q",
+      "dockslate-events-check-7d2a:events"
+    ],
+    [
+      "image",
+      "import",
+      "--change",
+      "LABEL io.dockslate.verification=dockslate-events-check-7d2a",
+      "-",
+      "dockslate-events-check-7d2a:events"
+    ],
+    [
+      "image",
+      "inspect",
+      "sha256:ad0080dbdf7e981ae63eb376f7d5bf88eb2c15730866312b919b49e552b29877",
+      "--format",
+      "{{index .Config.Labels \"io.dockslate.verification\"}}"
+    ],
+    [
+      "image",
+      "rm",
+      "dockslate-events-check-7d2a:events"
+    ],
+    [
+      "volume",
+      "ls",
+      "-q"
+    ],
+    [
+      "volume",
+      "create",
+      "--label",
+      "io.dockslate.verification=dockslate-events-check-7d2a",
+      "dockslate-events-check-7d2a"
+    ],
+    [
+      "volume",
+      "inspect",
+      "dockslate-events-check-7d2a",
+      "--format",
+      "{{index .Labels \"io.dockslate.verification\"}}"
+    ],
+    [
+      "volume",
+      "rm",
+      "dockslate-events-check-7d2a"
+    ],
+    [
+      "ps",
+      "-a",
+      "--no-trunc",
+      "--format",
+      "{{.ID}} {{.State}}"
+    ],
+    [
+      "image",
+      "ls",
+      "-q",
+      "--no-trunc"
+    ],
+    [
+      "volume",
+      "ls",
+      "-q"
+    ],
+    [
+      "network",
+      "ls",
+      "-q",
+      "--no-trunc"
+    ],
+    [
+      "ps",
+      "-aq",
+      "--filter",
+      "label=com.docker.compose.project=dockslate-events-check-7d2a"
+    ]
+  ],
+  "ipcCalls": [
+    {
+      "command": "engine_events_stop",
+      "durationMs": 0,
+      "failed": true
+    },
+    {
+      "command": "builds_snapshot",
+      "durationMs": 852,
+      "failed": false
+    },
+    {
+      "command": "dashboard_snapshot",
+      "durationMs": 1702,
+      "failed": false
+    },
+    {
+      "command": "plugin:event|listen",
+      "durationMs": 6,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2741,
+      "failed": false
+    },
+    {
+      "command": "plugin:event|listen",
+      "durationMs": 3,
+      "failed": false
+    },
+    {
+      "command": "engine_events_start",
+      "durationMs": 1299,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 702,
+      "failed": false
+    },
+    {
+      "command": "engine_status",
+      "durationMs": 432,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 1991,
+      "failed": false
+    },
+    {
+      "command": "engine_events_start",
+      "durationMs": 2,
+      "failed": false
+    },
+    {
+      "command": "engine_events_start",
+      "durationMs": 390,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 705,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 747,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2736,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 773,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2013,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 726,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2695,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 664,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2698,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 751,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2028,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 662,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2723,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 699,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2683,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 721,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 683,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2032,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 680,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 700,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 663,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 703,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 700,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 663,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2702,
+      "failed": false
+    },
+    {
+      "command": "engine_events_start",
+      "durationMs": 1191,
+      "failed": false
+    },
+    {
+      "command": "docker_events_snapshot",
+      "durationMs": 701,
+      "failed": false
+    },
+    {
+      "command": "containers_metrics",
+      "durationMs": 2738,
+      "failed": false
+    }
+  ],
+  "approvedFixtureCleaned": true,
+  "version": "0.1.7",
+  "wslRestart": {
+    "observedAt": "2026-11-04T15:45:13.600Z",
+    "sha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
+    "checks": [
+      {
+        "name": "original three SQL containers stopped gracefully",
+        "passed": true
+      },
+      {
+        "name": "actual UI stops only owned DockSlate WSL distribution",
+        "passed": true
+      },
+      {
+        "name": "actual UI restarts same owned engine without starting stopped containers",
+        "passed": true
+      },
+      {
+        "name": "event subscription resumes after actual WSL restart",
+        "passed": true
+      },
+      {
+        "name": "original IDs states images volumes networks and other distributions preserved",
+        "passed": true,
+        "containers": 4,
+        "running": 3,
+        "volumes": 2
+      },
+      {
+        "name": "no renderer exceptions during owned WSL restart",
+        "passed": true
+      }
+    ],
+    "exceptions": [],
+    "engineId": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+    "originalRunningContainerIds": [
+      "5c4ca0578e386c25f313c06a41c592583e741ceb66c2667d6520cde9d758c1ac",
+      "ee5b28ca069da9b3c9062fdc77b6efc1057ec56dc2ccbe382e556cf9d9ca0159",
+      "fc2cf8a5e957eb388011659a1d3fc039f6fd8bd3ef7086f375ed5b1fa6d9c113"
+    ],
+    "scope": "Approved actual owned WSL stop/start and restoration; no global WSL shutdown, kernel update or DB writes."
+  },
+  "publicReleaseUpdated": false,
+  "buildCommands": [
+    {
+      "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
+      "exit": 0
+    },
+    {
+      "command": "powershell -NoProfile -File scripts/build-cli.ps1",
+      "exit": 0
+    },
+    {
+      "command": "cargo check --manifest-path src-tauri/Cargo.toml --locked --offline",
+      "exit": 0
+    }
+  ],
+  "sourceFiles": [
+    {
+      "file": "src-tauri/src/engine_events.rs",
+      "normalization": "LF",
+      "sha256": "2AACD5E7F0BAD500185210B3ECF96643C2C67712776B3C719876172D5EEBBD8D"
+    },
+    {
+      "file": "src-tauri/src/docker.rs",
+      "normalization": "LF",
+      "sha256": "DCD72A803D16A8FD6C3DA963E95E925F49B43EC6699C9F31A8E8169689FF1318"
+    },
+    {
+      "file": "src-tauri/src/main.rs",
+      "normalization": "LF",
+      "sha256": "C114A2E3AA5D574A5CC5795C438B617F45D976C291AFE839CD0B8272869C6EA5"
+    },
+    {
+      "file": "src/api.ts",
+      "normalization": "LF",
+      "sha256": "93F5DDEFA0D2F254BDF8BB7EAA599E9A1B5E4F7FCBA79C3C692836636BBD948C"
+    },
+    {
+      "file": "src/App.tsx",
+      "normalization": "LF",
+      "sha256": "DBFA05D168C0AD4B0A2DDE067AEB7577D25A72FAE78C585219DFDA229E222BAA"
+    },
+    {
+      "file": "src/ContainerUsage.tsx",
+      "normalization": "LF",
+      "sha256": "AF4E9085EA9388872912F1862F970843ADD0C26A2A658525A6D5521BDD101EDD"
+    },
+    {
+      "file": "src/locales.en.ts",
+      "normalization": "LF",
+      "sha256": "B3208AB0B659F3DA96B984A5B72B8579B3591221C0C388B5B6A442247A429C69"
+    }
+  ]
+}

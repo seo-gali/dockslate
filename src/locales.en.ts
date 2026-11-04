@@ -1,4 +1,6 @@
 export const english: Readonly<Record<string, string>> = {
+  "Docker 변경 알림 연결이 끊어졌습니다. 다시 연결하고 있습니다.": "Docker change notifications disconnected. Reconnecting.",
+  "목록 갱신 시 측정 · Linux 파일 캐시 제외": "Measured when lists refresh · Linux file cache excluded",
   "Selected cache was not deleted; it may have become referenced": "Selected cache was not deleted; it may have become referenced",
   "The engine retained this cache; refresh usage to check image sharing and cache references": "The engine retained this cache; refresh usage to check image sharing and cache references",
   "Build cache is referenced by other cache records; clean dependent caches first": "Build cache is referenced by other cache records; clean dependent caches first",

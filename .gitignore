@@ -9,6 +9,6 @@ src-tauri/gen/
 .tools/
 *.log
 /downloads/*
-!/downloads/DockSlate_0.1.6_x64-setup.exe
-!/downloads/DockSlate-0.1.6-windows-x64.zip
-!/downloads/DockSlate-0.1.6-third-party-licenses.zip
+!/downloads/DockSlate_0.1.7_x64-setup.exe
+!/downloads/DockSlate-0.1.7-windows-x64.zip
+!/downloads/DockSlate-0.1.7-third-party-licenses.zip

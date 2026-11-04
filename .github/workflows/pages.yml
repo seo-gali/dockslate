@@ -22,6 +22,8 @@ concurrency:
 
 jobs:
   build:
+    # 검증 중인 설치판 준비 커밋은 기존 사이트를 유지
+    if: ${{ !contains(github.event.head_commit.message, '[installer preparation]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

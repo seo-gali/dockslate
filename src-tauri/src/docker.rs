@@ -355,6 +355,10 @@ pub fn dashboard_snapshot() -> Result<Value, String> {
     })
 }
 
+pub fn events_snapshot() -> Result<Value, String> {
+    Ok(docker_snapshot(Transport::discover()))
+}
+
 fn docker_snapshot(transport: Result<Transport, String>) -> Value {
     let (engine, client) = match probe_transport(transport) {
         Ok(result) => result,

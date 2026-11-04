@@ -28,6 +28,7 @@
     </section>
     <section id="questions">
       <h2>도움말</h2>
+      <details><summary>터미널에서 바꾼 내용도 자동으로 보이나요?</summary><p>연결된 엔진에서 실행한 Docker·Compose 변경은 컨테이너·이미지·볼륨·네트워크 목록에 자동 반영됩니다. 외부에서 WSL 자체를 재시작했다면 앱으로 돌아오거나 전체 새로고침으로 연결을 확인하세요. BuildKit 이력·캐시는 전체 새로고침으로 조회합니다.</p></details>
       <details><summary>터미널에서 Docker 명령 쓰기</summary><p>설치 후 새 CMD·PowerShell을 여세요. 포터블은 ZIP 전체를 풀고 <code>bin\docker.exe</code>를 사용합니다.</p><pre>docker ps
 docker compose version</pre></details>
       <details><summary>Dockerfile · Compose로 빌드하기</summary><p><b>빌드 → 파일에서 빌드</b>에서 파일을 선택하면 이미지 빌드가 바로 시작됩니다. Dockerfile로 만든 이미지는 로컬 이미지에서 실행합니다. Compose는 빌드 후 실행 미리보기에서 서비스·포트·리소스를 확인해 별도로 승인합니다. 가져오기는 제한된 로컬 구성을 지원합니다.</p></details>

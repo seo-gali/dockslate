@@ -1,4 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { errorMessage } from './components';
 
@@ -171,6 +172,7 @@ const listeners: (() => void)[][] = queryCommands.map(() => []);
 let initialized = false, revision = 0;
 let dashboardRequest: Promise<void> | null = null;
 let metricsGeneration = 0;
+let dashboardGeneration = 0;
 function subscribe(list: (() => void)[], listener: () => void) {
   list.push(listener);
   return () => { const index = list.indexOf(listener); if (index >= 0) list.splice(index, 1); };
@@ -232,9 +234,9 @@ async function refreshBuilds(generation: number) {
       const current = buildsPending; buildsPending = null;
       try {
         const data = await backend('builds_snapshot');
-        if (current === metricsGeneration) publish(buildsIndex, { data, error: null, loading: false, revision });
+        if (current === dashboardGeneration) publish(buildsIndex, { data, error: null, loading: false, revision });
       } catch (failure) {
-        if (current === metricsGeneration) publish(buildsIndex, { ...queries[buildsIndex], error: errorMessage(failure), loading: false, revision });
+        if (current === dashboardGeneration) publish(buildsIndex, { ...queries[buildsIndex], error: errorMessage(failure), loading: false, revision });
       }
     }
   } finally { buildsRunning = false; }
@@ -259,7 +261,7 @@ export function refreshDashboard(): Promise<void> {
     versions[index]++;
     publish(index, { ...queries[index], loading: true, error: null });
   }
-  void refreshBuilds(generation);
+  void refreshBuilds(++dashboardGeneration);
   dashboardRequest = (async () => {
     try {
       const snapshot = await backend<Record<string, CommandResult>>('dashboard_snapshot');
@@ -286,6 +288,96 @@ export function refreshDashboard(): Promise<void> {
 export async function refreshDashboardAfterMutation(): Promise<void> {
   if (dashboardRequest) await dashboardRequest;
   await refreshDashboard();
+}
+
+const eventQueryMasks = [16, 1 | 2 | 4 | 16, 1 | 8 | 16, 1 | 2 | 16, 1 | 2 | 4 | 16, 0, 0, 1 | 4 | 16, 1 | 8 | 16];
+let pendingChanges = 0;
+let eventRequest: Promise<void> | null = null;
+export function refreshDockerChanges(mask: number): Promise<void> {
+  if (!(mask & 31)) return eventRequest ?? Promise.resolve();
+  pendingChanges |= mask & 31;
+  if (eventRequest) return eventRequest;
+  eventRequest = (async () => {
+    try {
+      while (pendingChanges) {
+        if (dashboardRequest) await dashboardRequest;
+        const changes = pendingChanges; pendingChanges = 0;
+        const targets = eventQueryMasks.flatMap((mask, index) => mask & changes ? [index] : []);
+        const expected = targets.map(index => versions[index] = (versions[index] + 1) >>> 0);
+        const generation = changes & 17 ? ++metricsGeneration : metricsGeneration;
+        try {
+          const snapshot = await backend<Record<string, CommandResult>>('docker_events_snapshot');
+          const currentRevision = ++revision;
+          targets.forEach((index, position) => {
+            if (versions[index] !== expected[position]) return;
+            const result = snapshot[dashboardCommands[index]];
+            const error = !result || result.Err !== undefined || !Object.prototype.hasOwnProperty.call(result, 'Ok') ? result?.Err ?? 'Docker 변경 조회 결과에 이 항목이 없습니다.' : null;
+            publish(index, { data: error ? queries[index].data : result!.Ok, error, loading: false, revision: currentRevision });
+          });
+          if (changes & 17 && generation === metricsGeneration) {
+            if (!queries[0].error && !queries[2].error) void measureContainers((queries[2].data as Container[]) ?? [], (queries[0].data as EngineStatus | null)?.state === 'connected', generation);
+            else publishMetrics({ ...metricState, loading: false, error: queries[0].error ?? queries[2].error });
+          }
+        } catch (failure) {
+          targets.forEach((index, position) => { if (versions[index] === expected[position]) publish(index, { ...queries[index], error: errorMessage(failure) }); });
+        }
+      }
+    } finally { eventRequest = null; }
+  })();
+  return eventRequest;
+}
+
+type DockerEvent = { streamId: string; state: 'ready' | 'changed' | 'reconnecting' | 'closed'; mask: number };
+export function useDockerEvents(engine: EngineStatus | null, allowed: boolean) {
+  const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const connected = engine?.state === 'connected';
+  const id = engine?.id, api = engine?.apiVersion, owner = engine?.ownerPath;
+  useEffect(() => {
+    if (!allowed || !connected || !id || !('__TAURI_INTERNALS__' in window)) { setError(false); return; }
+    let disposed = false, starting = false;
+    let unsubscribe: (() => void) | undefined;
+    let reconnectTimer: number | undefined, refreshTimer: number | undefined;
+    let changes = 0;
+    const streamId = crypto.randomUUID();
+    const stopStream = () => { void backend('engine_events_stop', { streamId }).catch(() => undefined); };
+    window.addEventListener('pagehide', stopStream);
+    const queue = (mask: number) => {
+      changes |= mask & 31;
+      if (refreshTimer !== undefined) return;
+      refreshTimer = window.setTimeout(() => { refreshTimer = undefined; const mask = changes; changes = 0; if (!disposed) void refreshDockerChanges(mask); }, 500);
+    };
+    const start = async () => {
+      if (disposed || starting) return;
+      starting = true;
+      try { await backend('engine_events_start', { streamId, engineId: id }); if (disposed) stopStream(); }
+      catch { if (!disposed) { setError(true); reconnectTimer = window.setTimeout(() => { reconnectTimer = undefined; void start(); }, 3000); } }
+      finally { starting = false; }
+    };
+    void listen<DockerEvent>('docker-engine-events', event => {
+      if (disposed || event.payload.streamId !== streamId) return;
+      const value = event.payload;
+      if (value.state === 'ready') { setError(false); queue(31); }
+      else if (value.state === 'changed') queue(value.mask);
+      else {
+        setError(true);
+        if (value.state === 'closed') {
+          queue(31);
+          if (reconnectTimer === undefined) reconnectTimer = window.setTimeout(() => { reconnectTimer = undefined; void start(); }, 3000);
+        }
+      }
+    }).then(stop => { if (disposed) stop(); else { unsubscribe = stop; void start(); } }).catch(() => { if (!disposed) setError(true); });
+    return () => {
+      disposed = true; unsubscribe?.(); window.clearTimeout(reconnectTimer); window.clearTimeout(refreshTimer);
+      window.removeEventListener('pagehide', stopStream); stopStream();
+    };
+  }, [allowed, connected, id, api, owner, retry]);
+  useEffect(() => {
+    const focus = () => { if (allowed && (queries[0].data as EngineStatus | null)?.ownerPath) void refreshDockerChanges(31); };
+    window.addEventListener('focus', focus);
+    return () => window.removeEventListener('focus', focus);
+  }, [allowed]);
+  return { error, reconnect: () => setRetry(value => value + 1) };
 }
 async function pollDashboardCommand(index: number): Promise<void> {
   if (dashboardRequest) return dashboardRequest;

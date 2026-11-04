@@ -7,6 +7,7 @@ mod container_tools;
 mod container_edit;
 mod desktop;
 mod docker;
+mod engine_events;
 mod image_build;
 mod image_pull;
 mod image_removal;
@@ -197,6 +198,18 @@ async fn builds_pick_file(save: bool) -> Result<Value, String> {
 #[tauri::command]
 async fn engine_status() -> Result<Value, String> {
     read(docker::engine_status).await
+}
+#[tauri::command]
+async fn docker_events_snapshot() -> Result<Value, String> {
+    read(docker::events_snapshot).await
+}
+#[tauri::command]
+async fn engine_events_start(app: tauri::AppHandle, stream_id: String, engine_id: String) -> Result<Value, String> {
+    read(move || engine_events::start(app, stream_id, engine_id)).await
+}
+#[tauri::command]
+async fn engine_events_stop(stream_id: String) -> Result<Value, String> {
+    read(move || engine_events::stop(stream_id)).await
 }
 #[tauri::command]
 async fn dashboard_snapshot() -> Result<Value, String> {
@@ -439,11 +452,11 @@ async fn wsl_shutdown_preview(disk_id: String) -> Result<Value, String> {
 }
 #[tauri::command]
 async fn wsl_shutdown(token: String, approved: bool) -> Result<Value, String> {
-    mutate(move || wsl::shutdown(token, approved)).await
+    mutate(move || { if approved { engine_events::close_all()?; } wsl::shutdown(token, approved) }).await
 }
 #[tauri::command]
 async fn wsl_compact(token: String, approved: bool) -> Result<Value, String> {
-    mutate(move || wsl::compact(token, approved)).await
+    mutate(move || { if approved { engine_events::close_all()?; } wsl::compact(token, approved) }).await
 }
 
 #[tauri::command]
@@ -470,6 +483,7 @@ async fn runtime_start(approved: bool) -> Result<Value, String> {
 async fn runtime_stop(approved: bool) -> Result<Value, String> {
     mutate(move || {
         if approved {
+            engine_events::close_all()?;
             container_tools::close_all();
             live_logs::close_all();
         }
@@ -622,6 +636,9 @@ fn main() {
             container_file_preview,
             terminal_open, terminal_read, terminal_input, terminal_resize, terminal_close,
             engine_status,
+            docker_events_snapshot,
+            engine_events_start,
+            engine_events_stop,
             dashboard_snapshot,
             installer_setup_mode,
             installer_setup_finish,
@@ -688,7 +705,7 @@ fn main() {
                 } else if installer_setup_mode() {
                     api.prevent_close();
                     window.app_handle().exit(2);
-                } else { container_tools::close_all(); live_logs::close_all(); }
+                } else { let _ = engine_events::close_all(); container_tools::close_all(); live_logs::close_all(); }
             }
         })
         .run(tauri::generate_context!())
