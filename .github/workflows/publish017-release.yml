@@ -1,0 +1,47 @@
+name: Publish verified 0.1.7 release once
+
+on:
+  push:
+    tags: [v0.1.7]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Verify tag, files and SHA-256 manifest
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const release=JSON.parse(fs.readFileSync('site/release.json','utf8'));
+          if(process.env.GITHUB_REF_NAME!=='v'+release.version)throw Error('Tag and release version differ');
+          const scans=JSON.parse(fs.readFileSync(`docs/results/virustotal-${release.version}.json`,'utf8'));
+          for(const key of ['installer','zip']){
+            const scan=scans.files.find(file=>file.file===release[key].file);
+            if(!scan?.completed||scan.sha256.toUpperCase()!==release[key].sha256||scan.detections!==0||scan.totalEngines<1)throw Error('Matching completed scan must be reviewed before publication');
+          }
+          NODE
+          node scripts/build-site.mjs
+      - name: Upload verified assets and publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            "downloads/DockSlate_${version}_x64-setup.exe" \
+            "downloads/DockSlate-${version}-windows-x64.zip" \
+            "downloads/DockSlate-${version}-third-party-licenses.zip" \
+            downloads/SHA256SUMS.txt \
+            --verify-tag --prerelease --title "DockSlate $version" \
+            --notes-file "docs/releases/${GITHUB_REF_NAME}.md"

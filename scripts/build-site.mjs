@@ -11,6 +11,7 @@ if (release.version !== app.version || !/^\d+\.\d+\.\d+$/.test(release.version))
 const siteUrl = 'https://seo-gali.github.io/dockslate/';
 const values = { VERSION: release.version, SITE_URL: siteUrl };
 let verifiedDownloads = 0;
+const checksumLines = [];
 for (const key of ['installer', 'zip', 'licenses']) {
   const asset = release[key];
   if (!asset || !/^[A-Za-z0-9_.-]+\.(exe|zip)$/.test(asset.file) || !/^[A-F0-9]{64}$/.test(asset.sha256) || !Number.isSafeInteger(asset.bytes) || asset.bytes <= 0) throw Error(`Invalid release metadata: ${key}`);
@@ -30,7 +31,11 @@ for (const key of ['installer', 'zip', 'licenses']) {
   }
   if (bytes !== asset.bytes || hash.digest('hex').toUpperCase() !== asset.sha256) throw Error(`Download differs from its verified size or SHA-256: ${asset.file}`);
   verifiedDownloads++;
+  checksumLines.push(asset.sha256 + '  ' + asset.file);
 }
+const checksumFile = path.join(root, 'downloads/SHA256SUMS.txt');
+if (fs.readFileSync(checksumFile, 'utf8').replaceAll('\r\n', '\n') !== checksumLines.join('\n') + '\n') throw Error('SHA256SUMS.txt differs from the verified release metadata.');
+values.CHECKSUMS_URL = './downloads/SHA256SUMS.txt';
 if (!fs.readFileSync(path.join(root, 'licenses/THIRD_PARTY_NOTICES.md'), 'utf8').includes(release.licenses.file)) throw Error('Notices must link to the current license/source archive.');
 let html = fs.readFileSync(path.join(root, 'site/index.html'), 'utf8');
 for (const [key, value] of Object.entries(values)) html = html.replaceAll(`{{${key}}}`, value);
@@ -64,6 +69,7 @@ for (const key of ['installer', 'zip', 'licenses']) {
   const file = release[key].file;
   fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
 }
+fs.copyFileSync(checksumFile, path.join(output, 'downloads/SHA256SUMS.txt'));
 // 이전 패키지의 고지 URL 유지
 const legacyDownloads = path.join(root, 'docs/downloads');
 fs.mkdirSync(path.join(output, 'docs/downloads'), { recursive: true });

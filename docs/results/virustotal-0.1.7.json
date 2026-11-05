@@ -1,0 +1,30 @@
+{
+  "version": "0.1.7",
+  "scope": "Public VirusTotal submission and completed SHA-256 matching reports; these are observations at the stated time, not a safety guarantee.",
+  "files": [
+    {
+      "file": "DockSlate_0.1.7_x64-setup.exe",
+      "sha256": "ad1f57e7a3dcfb16ad04898b090c6f313aeded825926708a0533e3cd9df75e4c",
+      "reportUrl": "https://www.virustotal.com/gui/file/ad1f57e7a3dcfb16ad04898b090c6f313aeded825926708a0533e3cd9df75e4c/detection",
+      "observedAt": "2026-11-05T11:29:32.790Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 66,
+      "undetected": 66,
+      "unsupported": 5,
+      "timeout": 4
+    },
+    {
+      "file": "DockSlate-0.1.7-windows-x64.zip",
+      "sha256": "38570792e66a43b8e54e1c893542e0bc2cedb5675bfcbbdcac877cca6874d61f",
+      "reportUrl": "https://www.virustotal.com/gui/file/38570792e66a43b8e54e1c893542e0bc2cedb5675bfcbbdcac877cca6874d61f/detection",
+      "observedAt": "2026-11-05T11:29:34.007Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 67,
+      "undetected": 67,
+      "unsupported": 7,
+      "timeout": 0
+    }
+  ]
+}
