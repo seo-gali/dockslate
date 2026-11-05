@@ -83,6 +83,7 @@ export interface DestructivePreview {
 }
 export interface ActionResult { message: string }
 export interface ContainerActionResult extends ActionResult { state: string; exitCode: number | null }
+export interface ContainerBatchResult { results: { id: string; name: string; outcome: 'completed' | 'skipped' | 'failed'; state?: string; exitCode?: number | null; error?: string }[] }
 export interface DestructiveResult extends ActionResult {
   deleted: string[];
   failed: { id: string; error: string }[];

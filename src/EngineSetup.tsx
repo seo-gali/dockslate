@@ -31,7 +31,7 @@ export default function EngineSetup({ runtime, engine, onContinue, onSettings, i
     }
   }, [installerMode, runtime.controlsDisabled, runtime.query.data, runtime.prepareInstall, runtime.requestAction]);
   useEffect(() => {
-    if (!installerMode || !connected || runtime.busy || runtime.preparing || finishing || finishError || requestedCompletion.current) return;
+    if (!connected || runtime.busy || runtime.preparing || finishing || finishError || requestedCompletion.current) return;
     requestedCompletion.current = true;
     onContinue();
   }, [installerMode, connected, runtime.busy, runtime.preparing, finishing, finishError, onContinue]);

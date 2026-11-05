@@ -78,6 +78,26 @@ try {
         $checks.Add('Windows length limit: rejected without changes')
     } finally { $installerKey.Dispose(); $environmentKey.Dispose() }
 
+    $runKey = $fixture.CreateSubKey('Startup')
+    try {
+        $executable = 'C:\Program Files\DockSlate 한글\dockslate.exe'
+        $prefix = '"' + $executable + '"'
+        foreach ($suffix in @('', ' --startup engine', ' --startup app', ' --startup both')) {
+            $runKey.SetValue('DockSlate', $prefix.ToUpperInvariant() + $suffix, [Microsoft.Win32.RegistryValueKind]::String)
+            Remove-DockSlateStartupRegistration $runKey $executable
+            Assert-Path ($runKey.GetValueNames() -notcontains 'DockSlate') 'Uninstall retained its owned startup command.'
+        }
+        foreach ($foreign in @('"C:\Other\dockslate.exe" --startup both', ($prefix + ' --unrecognized'), ('cmd /c ' + $prefix))) {
+            $runKey.SetValue('DockSlate', $foreign, [Microsoft.Win32.RegistryValueKind]::String)
+            Remove-DockSlateStartupRegistration $runKey $executable
+            Assert-Path ($runKey.GetValue('DockSlate') -ceq $foreign) 'Uninstall changed a foreign startup command.'
+        }
+        $runKey.SetValue('DockSlate', $prefix + ' --startup both', [Microsoft.Win32.RegistryValueKind]::ExpandString)
+        Remove-DockSlateStartupRegistration $runKey $executable
+        Assert-Path ($runKey.GetValueNames() -contains 'DockSlate') 'Uninstall removed an unsupported registry value.'
+        $checks.Add('startup uninstall: four owned modes removed; foreign path, flags, command and value type preserved')
+    } finally { $runKey.Dispose() }
+
     $saved = @{}
     foreach ($name in @('DOCKSLATE_PATH_SCRIPT','DOCKSLATE_PATH_MODE','DOCKSLATE_PATH_BIN')) { $saved[$name] = [Environment]::GetEnvironmentVariable($name) }
     try {

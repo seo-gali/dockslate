@@ -2,7 +2,9 @@
   "$schema": "https://schema.tauri.app/config/2",
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "publisher": "DockSlate",
     "category": "DeveloperTool",
     "shortDescription": "Docker Engine, Compose and container management for Windows",
@@ -17,8 +19,6 @@
       "target/installer-resources/guide.html": "guide.html",
       "../docs/REQUEST_STATUS.md": "docs/REQUEST_STATUS.md",
       "../docs/results/refinement-verification.md": "docs/results/refinement-verification.md",
-      "../docs/results/release-0.1.7.md": "docs/results/release-0.1.7.md",
-      "../docs/results/release-0.1.7.json": "docs/results/release-0.1.7.json",
       "../docs/results/hot-path-review.md": "docs/results/hot-path-review.md",
       "../docs/results/engine-events.md": "docs/results/engine-events.md",
       "../docs/results/engine-events.json": "docs/results/engine-events.json",
@@ -33,14 +33,24 @@
       "../docs/results/ui-workflow-0.1.4.json": "docs/results/ui-workflow-0.1.4.json",
       "../docs/USER_GUIDE.md": "docs/USER_GUIDE.md",
       "../examples/": "examples/",
-      "../licenses/": "licenses/"
+      "../licenses/": "licenses/",
+      "../docs/results/release-0.1.8.md": "docs/results/release-0.1.8.md",
+      "../docs/results/release-0.1.8.json": "docs/results/release-0.1.8.json",
+      "../docs/results/startup-bulk-feedback.md": "docs/results/startup-bulk-feedback.md",
+      "../docs/results/startup-bulk-feedback.json": "docs/results/startup-bulk-feedback.json"
     },
     "windows": {
       "allowDowngrades": false,
-      "webviewInstallMode": { "type": "downloadBootstrapper", "silent": true },
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
       "nsis": {
         "installMode": "currentUser",
-        "languages": ["Korean", "English"],
+        "languages": [
+          "Korean",
+          "English"
+        ],
         "displayLanguageSelector": true,
         "startMenuFolder": "DockSlate",
         "installerHooks": "installer/hooks.nsh",

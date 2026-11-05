@@ -185,7 +185,7 @@
     ],
     "errors": []
   },
-  "sitePublicVerified": false,
+  "sitePublicVerified": true,
   "temporaryPublisherRemoved": true,
   "binaryRebuilt": false,
   "dependencyOrLockChanged": false,
@@ -195,5 +195,57 @@
     "Actual installer/uninstaller and long-running load were not repeated",
     "VirusTotal EXE: four timeout and five unsupported; ZIP: seven unsupported",
     "Lint checks repository uses references and reachable local action metadata; remote runtime downloads and runner images are outside this rule"
-  ]
+  ],
+  "sitePublicVerification": {
+    "observedAt": "2026-11-05T12:11:11.647Z",
+    "ci": {
+      "sourceCommit": "c19a3f27d4c3c0674df0a492074001a6446fe831",
+      "workflows": [
+        {
+          "workflow": "pages.yml",
+          "runId": 42024561247,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/seo-gali/dockslate/actions/runs/42024561247"
+        },
+        {
+          "workflow": "workflow-pins.yml",
+          "runId": 42024561272,
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/seo-gali/dockslate/actions/runs/42024561272"
+        }
+      ]
+    },
+    "base": "https://seo-gali.github.io/dockslate/",
+    "assets": [
+      {
+        "file": "index.html",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "styles.css",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "downloads/SHA256SUMS.txt",
+        "status": 200,
+        "sourceMatches": true
+      }
+    ],
+    "newReleaseLinksVerified": true,
+    "checksumPublished": true
+  }
 }

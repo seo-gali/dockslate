@@ -25,12 +25,24 @@ jobs:
     name: Check workflow SHA pins
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      release_ready: ${{ steps.release.outputs.ready }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
       - run: node scripts/check-workflow-pins.mjs
+      - name: Keep the published site during release preparation
+        id: release
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const app = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const release = JSON.parse(fs.readFileSync('site/release.json', 'utf8'));
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `ready=${app.version === release.version}\n`);
+          NODE
   build:
+    if: needs.check-workflows.outputs.release_ready == 'true'
     needs: check-workflows
     runs-on: ubuntu-latest
     timeout-minutes: 10

@@ -511,21 +511,25 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
         .into_iter()
         .find(|c| text(c, "Id") == id)
         .ok_or("Container no longer exists")?;
-    if action == "start" && ["running", "paused", "restarting"].contains(&text(&container, "State"))
+    container_action_with_client(&client, &id, &action, text(&container, "State"))
+}
+
+fn container_action_with_client(client: &Client, id: &str, action: &str, current_state: &str) -> Result<Value, String> {
+    if action == "start" && ["running", "paused", "restarting"].contains(&current_state)
     {
         return Err("Container is already active".into());
     }
-    if action == "stop" && !["running", "paused", "restarting"].contains(&text(&container, "State"))
+    if action == "stop" && !["running", "paused", "restarting"].contains(&current_state)
     {
         return Err("Container is already stopped".into());
     }
-    if action == "pause" && text(&container, "State") != "running" {
+    if action == "pause" && current_state != "running" {
         return Err("실행 중인 컨테이너만 일시정지할 수 있습니다.".into());
     }
-    if action == "unpause" && text(&container, "State") != "paused" {
+    if action == "unpause" && current_state != "paused" {
         return Err("일시정지된 컨테이너만 다시 실행할 수 있습니다.".into());
     }
-    let query = if ["stop", "restart"].contains(&action.as_str()) {
+    let query = if ["stop", "restart"].contains(&action) {
         "?t=10".into()
     } else {
         String::new()
@@ -534,7 +538,7 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
     let inspected = client.json("GET", &format!("/containers/{id}/json"))?;
     let state = text(&inspected["State"], "Status");
     let exit_code = inspected["State"]["ExitCode"].as_i64();
-    let message = if action == "start" && matches!(state, "exited" | "dead") {
+    let message = if ["start", "restart"].contains(&action) && matches!(state, "exited" | "dead") {
         format!(
             "컨테이너가 종료되었습니다. 종료 코드: {}",
             exit_code.unwrap_or(-1)
@@ -542,7 +546,7 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
     } else {
         format!(
             "{} 완료",
-            match action.as_str() {
+            match action {
                 "start" => "시작",
                 "stop" => "중지",
                 "restart" => "재시작",
@@ -554,6 +558,56 @@ pub fn container_action(id: String, action: String) -> Result<Value, String> {
     Ok(
         json!({"message":message,"state":state,"exitCode":exit_code,"startedAt":inspected["State"]["StartedAt"],"finishedAt":inspected["State"]["FinishedAt"]}),
     )
+}
+
+pub fn containers_action(ids: Vec<String>, action: String) -> Result<Value, String> {
+    if ids.is_empty() || ids.len() > 256 || ids.iter().any(|id| !container_id(id))
+        || !["start", "stop", "restart"].contains(&action.as_str()) {
+        return Err("시작·중지·재시작할 컨테이너 ID를 1~256개 지정하세요.".into());
+    }
+    let mut order: [u8; 256] = std::array::from_fn(|index| index as u8);
+    let order = &mut order[..ids.len()];
+    order.sort_unstable_by(|left,right| ids[*left as usize].cmp(&ids[*right as usize]));
+    if order.windows(2).any(|pair| ids[pair[0] as usize] == ids[pair[1] as usize]) {
+        return Err("중복된 컨테이너 ID는 한 번만 지정하세요.".into());
+    }
+    let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
+    let client = connected()?;
+    let containers = client.containers()?;
+    let mut container_order: Vec<_> = (0..containers.len()).collect();
+    container_order.sort_unstable_by(|left,right| text(&containers[*left],"Id").cmp(text(&containers[*right],"Id")));
+    let results: [OnceLock<Value>; 256] = std::array::from_fn(|_| OnceLock::new());
+    let next = std::sync::atomic::AtomicUsize::new(0);
+    std::thread::scope(|scope| {
+        for _ in 0..ids.len().min(4) {
+            scope.spawn(|| loop {
+                let index = next.fetch_add(1, Ordering::Relaxed);
+                let Some(id) = ids.get(index) else { break };
+                let entry = (|| {
+                    let position = container_order.binary_search_by(|position| text(&containers[*position],"Id").cmp(id.as_str())).map_err(|_| "Container no longer exists".to_string())?;
+                    let container = &containers[container_order[position]];
+                    let name = container["Names"].as_array().and_then(|names| names.first()).and_then(Value::as_str).unwrap_or(id).trim_start_matches('/');
+                    let current_state = text(container,"State");
+                    let active = ["running","paused","restarting"].contains(&current_state);
+                    if (action == "start" && active) || (action != "start" && !active) {
+                        return Ok(json!({"id":id,"name":name,"outcome":"skipped","state":current_state}));
+                    }
+                    match container_action_with_client(&client,id,&action,current_state) {
+                        Ok(mut result) => {
+                            let failed = action != "stop" && (result["state"] == "dead" || (result["state"] == "exited" && result["exitCode"].as_i64() != Some(0)));
+                            result["id"] = json!(id); result["name"] = json!(name); result["outcome"] = json!(if failed {"failed"} else {"completed"});
+                            if failed {result["error"] = result["message"].clone();}
+                            Ok(result)
+                        }
+                        Err(error) => Ok(json!({"id":id,"name":name,"outcome":"failed","error":error})),
+                    }
+                })().unwrap_or_else(|error:String| json!({"id":id,"name":id,"outcome":"failed","error":error}));
+                let _ = results[index].set(entry);
+            });
+        }
+    });
+    let results: Vec<_> = results.into_iter().take(ids.len()).enumerate().map(|(index,result)| result.into_inner().unwrap_or_else(|| json!({"id":ids[index],"name":ids[index],"outcome":"failed","error":"컨테이너 작업 결과를 확인할 수 없습니다."}))).collect();
+    Ok(json!({"results":results}))
 }
 
 #[derive(Deserialize)]

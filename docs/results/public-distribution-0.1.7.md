@@ -9,6 +9,6 @@
 - 검사기는 블록 매핑·한 줄 리터럴 uses를 요구한다. 외부 GitHub 참조는 40자리 SHA, Docker 참조는 64자리 sha256, 로컬 액션은 저장소 안에서 재귀 확인한다. 외부 액션의 런타임 다운로드와 러너 이미지를 고정하는 검사는 아니다.
 - 공식 upload-pages-artifact의 고정 메타데이터도 확인했다. 내부 upload-artifact 호출 역시 전체 SHA로 고정돼 있었다. 일회성 Release 게시 workflow는 main에서 제거했다.
 
-사이트의 주 다운로드·Release·지문표·검사 링크 7개를 브라우저에서 대조했고 1366px·390px에서 가로 넘침·스크립트 오류가 없었다. 실제 사이트 반영은 [최종 구조화 기록](public-distribution-0.1.7.json)의 sitePublicVerified와 Pages 실행 결과로 구분한다.
+사이트의 주 다운로드·Release·지문표·검사 링크 7개를 브라우저에서 대조했고 1366px·390px에서 가로 넘침·스크립트 오류가 없었다. 게시 후 공식 사이트의 HTML·CSS·JavaScript·가이드·체크섬 5개를 다시 받아 빌드 결과와 일치함을 확인했다. [Pages 실행](https://github.com/seo-gali/dockslate/actions/runs/42024561247)과 [SHA 고정 검사](https://github.com/seo-gali/dockslate/actions/runs/42024561272)도 성공했다. 실제 조회 시각과 결과는 [구조화 기록](public-distribution-0.1.7.json)에 남겼다.
 
 실행 파일을 다시 만들거나 설치·엔진·사용자 DB·커널·전역 인증 설정을 변경한 작업이 아니다. 서명 추가·실제 설치/제거·장시간 부하는 이번 후속 작업에 포함하지 않는다.

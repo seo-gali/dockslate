@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-05T10:31:35.964Z",
+  "observedAt": "2026-11-05T13:51:25.756Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -10,7 +10,7 @@
     "hookFixtureExecuted": false,
     "frontendBuildExit": 0,
     "browserCompleted": true,
-    "installerBuildExit": 0,
+    "installerBuildExit": 1,
     "hookCompilationExit": 0,
     "installerExecuted": false,
     "browserChecks": 27,
@@ -40,29 +40,29 @@
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 8,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 24,
+    "currentNativeChecks": 6,
     "dependencyVersionsChanged": false,
-    "lockChangeScope": "App root version metadata only.",
+    "lockChangeScope": "Application root version metadata only.",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "Actual 0.1.7 Windows app, approved scratch container/network/image/volume, actual owned WSL stop/start and original SQL state restoration.",
-    "installerBuildScope": "0.1.7 remote packaging; earlier local NSIS failure remains in historical 0.1.6 records."
+    "currentNativeScope": "0.1.8 read-only native UI, input rejection, English and window layout. No real batch actions or autostart registration.",
+    "installerBuildScope": "0.1.8 local NSIS failed reading installer/user-path.ps1; same result outside sandbox. No protection settings changed."
   },
   "artifacts": [
     {
       "name": "dockslate.exe",
       "path": "src-tauri/target/release/dockslate.exe",
-      "bytes": 5074944,
-      "sha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
+      "bytes": 5132288,
+      "sha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
       "executed": true,
-      "executionMode": "24 actual native event/restart checks in engine-events.json"
+      "executionMode": "0.1.8 actual native read-only UI, input rejection, version and layout checks; lifecycle tests pending."
     },
     {
       "name": "docker.exe",
       "path": "src-tauri/target/release/docker.exe",
       "bytes": 315904,
-      "sha256": "1EEA58E708CC04968DF09DF4116FC07F39B02F3694E0B991802BE66DB8E0D2A2",
-      "executed": true,
-      "executionMode": "Four offline version commands from the complete 0.1.7 portable folder."
+      "sha256": "1E0F51F1FFEB280C0FD6CDDD82C84FFE5AFEEFFEB7B8BA52D7B26F2009A204EF",
+      "executed": false,
+      "executionMode": "0.1.8 launcher built; portable checks pending."
     }
   ],
   "installerFilePresent": true,
@@ -281,154 +281,56 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.7",
-    "checkedAt": "2026-11-04T15:45:22.048Z",
-    "sourceBaseCommit": "00b07901efe86c966290f25979d372bfd312b510",
+    "version": "0.1.8",
+    "checkedAt": "2026-11-05T13:51:25.756Z",
     "commands": [
       {
-        "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
-        "exit": 0
-      },
-      {
-        "command": "powershell -NoProfile -File scripts/build-cli.ps1",
-        "exit": 0
+        "command": "powershell -NoProfile -File scripts/build-installer.ps1",
+        "appAndCliBuildExit": 0,
+        "installerPackagingExit": 1
       },
       {
         "command": "cargo check --manifest-path src-tauri/Cargo.toml --locked --offline",
         "exit": 0
-      },
-      {
-        "command": "powershell -NoProfile -File scripts/package-local.ps1",
-        "exit": 0
-      },
-      {
-        "command": "node .analysis/check-release017-portable.mjs",
-        "exit": 0
-      },
-      {
-        "command": "powershell -NoProfile -File .analysis/check-release017-archive.ps1",
-        "exit": 0
-      },
-      {
-        "command": "powershell -NoProfile -File scripts/verify-installer-path.ps1",
-        "exit": 0
-      },
-      {
-        "command": "GitHub release017-installer.yml: build-installer.ps1 -SkipBuild -AllowToolDownload",
-        "exit": 0
-      },
-      {
-        "command": "npm run build:site",
-        "exit": 0
-      },
-      {
-        "command": "node .analysis/verify-release017-public.mjs",
-        "exit": 0
-      },
-      {
-        "command": "node .analysis/verify017-legacy.mjs",
-        "exit": 0
       }
     ],
     "nativeSmoke": {
-      "report": "docs/results/engine-events.json",
-      "checks": 24,
-      "sha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954"
+      "report": "docs/results/startup-bulk-feedback.json",
+      "checks": 6,
+      "sha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546"
     },
-    "dependencyVersionsChanged": false,
-    "lockFilesChanged": true,
-    "lockChangeScope": "App root version metadata only.",
-    "installerExecuted": false,
-    "rendererExceptions": 0,
-    "originalContainerStatesPreserved": true,
-    "ownedWslRestartVerified": true,
-    "packagingStatus": "0.1.7 EXE/ZIP published; embedded contents and public HTTP delivery verified.",
-    "portable": {
-      "version": "0.1.7",
-      "file": "DockSlate-0.1.7-windows-x64.zip",
-      "bytes": 63383003,
-      "sha256": "38570792E66A43B8E54E1C893542E0BC2CEDB5675BFCBBDCAC877CCA6874D61F",
-      "files": 604,
-      "allEntriesMatchPortableFolder": true,
-      "duplicateEntries": false,
-      "installerExecuted": false
-    },
-    "offlineCli": {
-      "version": "0.1.7",
-      "observedAt": "2026-11-04T15:46:36.283Z",
-      "appSha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
-      "launcherSha256": "1EEA58E708CC04968DF09DF4116FC07F39B02F3694E0B991802BE66DB8E0D2A2",
-      "checks": [
+    "nativeLayout": {
+      "observedAt": "2026-11-05T13:51:24.770Z",
+      "artifactSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+      "viewports": [
         {
-          "args": [
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
+          "width": 1500,
+          "height": 975,
+          "documentWidth": 1500,
+          "tableOverflow": false
         },
         {
-          "args": [
-            "--debug",
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "compose",
-            "version"
-          ],
-          "exit": 0,
-          "output": "Docker Compose version v5.6.0"
-        },
-        {
-          "args": [
-            "buildx",
-            "version"
-          ],
-          "exit": 0,
-          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+          "width": 1000,
+          "height": 640,
+          "documentWidth": 1000,
+          "tableOverflow": false
         }
       ],
-      "existingProfileUsed": false,
-      "engineConnectionRequired": false
-    },
-    "installerPathChecks": 8,
-    "installerPathUserAndMachineValuesPreserved": true,
-    "installerPackaging": {
-      "runId": 41861445565,
-      "url": "https://github.com/seo-gali/dockslate/actions/runs/41861445565",
-      "conclusion": "success",
-      "sourceCommit": "df04ca155b9606415a19d2eba2946a3c5fa26bce",
-      "artifactId": 13340541254
-    },
-    "deliveryRuntimeObservation": {
-      "observedAt": "2026-11-05T10:25:54.074Z",
-      "command": "downloads/DockSlate-0.1.7-windows-x64/bin/docker.exe ps -a --format \"{{.Names}} {{.State}}\"",
-      "exit": 1,
-      "state": "stopped",
-      "message": "The verified DockSlate WSL runtime is installed and stopped.",
-      "startedForDelivery": false,
-      "scope": "Post-build read-only observation, separate from the earlier successful actual WSL restart and SQL state-restoration test."
-    },
-    "siteDelivery": {
-      "buildCommand": "npm run build:site",
-      "buildExit": 0,
-      "pages": {
-        "sourceCommit": "c095992013a22428110f69b1ace0328e6494a594",
-        "runId": 42010772236,
-        "status": "completed",
-        "conclusion": "success",
-        "url": "https://github.com/seo-gali/dockslate/actions/runs/42010772236"
+      "englishLabelsVerified": true,
+      "settingsWidth": {
+        "width": 1000,
+        "documentWidth": 1000
       },
-      "verificationReport": "docs/results/release-0.1.7.json",
-      "publicDownloads": 3,
-      "publicStaticAssets": 3,
-      "historicalLicenseUrls": 2,
-      "browserExecuted": false
+      "exceptions": []
     },
-    "publicDistributionReport": "docs/results/public-distribution-0.1.7.json"
+    "dependencyVersionsChanged": false,
+    "lockChangeScope": "Application root version metadata only",
+    "installerExecuted": false,
+    "rendererExceptions": 0,
+    "ownedWslRestartVerified": false,
+    "actualContainerBatchLifecycleVerified": false,
+    "actualAutomaticStartupVerified": false,
+    "packagingStatus": "Portable packaging next; local NSIS blocked reading user-path.ps1."
   },
   "portableDelivery": {
     "version": "0.1.7",

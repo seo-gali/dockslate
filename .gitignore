@@ -13,3 +13,7 @@ src-tauri/gen/
 !/downloads/DockSlate-0.1.7-windows-x64.zip
 !/downloads/DockSlate-0.1.7-third-party-licenses.zip
 !/downloads/SHA256SUMS.txt
+
+!/downloads/DockSlate_0.1.8_x64-setup.exe
+!/downloads/DockSlate-0.1.8-windows-x64.zip
+!/downloads/DockSlate-0.1.8-third-party-licenses.zip

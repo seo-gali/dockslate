@@ -53,31 +53,48 @@ function Update-DockSlateUserPath {
     foreach ($name in @('PathEntry', 'PathAdded', 'PathWasPresent')) { $InstallerKey.DeleteValue($name, $false) }
 }
 
+function Remove-DockSlateStartupRegistration {
+    param([Microsoft.Win32.RegistryKey]$RunKey, [string]$Executable)
+    if (!$RunKey -or $RunKey.GetValueNames() -notcontains 'DockSlate') { return }
+    if ($RunKey.GetValueKind('DockSlate') -ne [Microsoft.Win32.RegistryValueKind]::String) { return }
+    $value = [string]$RunKey.GetValue('DockSlate', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+    $prefix = '"' + $Executable + '"'
+    $commands = @($prefix, ($prefix + ' --startup engine'), ($prefix + ' --startup app'), ($prefix + ' --startup both'))
+    if ($commands -contains $value) { $RunKey.DeleteValue('DockSlate', $false) }
+}
+
 if ($MyInvocation.InvocationName -eq '.') { return }
 $ErrorActionPreference = 'Stop'
 $environmentKey = $null
 $installerKey = $null
+$runKey = $null
 try {
     $mode = $env:DOCKSLATE_PATH_MODE
     if ($mode -notin @('check', 'install', 'uninstall')) { throw 'Unsupported installer PATH operation.' }
     $writable = $mode -ne 'check'
     $environmentKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', $writable)
     if (!$environmentKey) {
-        if ($mode -ne 'install') { exit 0 }
-        $environmentKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Environment')
+        if ($mode -eq 'install') { $environmentKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Environment') }
     }
     if ($mode -eq 'install') {
         $installerKey = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Software\DockSlate\Installer')
     } elseif ($mode -eq 'uninstall') {
         $installerKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Software\DockSlate\Installer', $true)
-        if (!$installerKey) { exit 0 }
     }
-    Update-DockSlateUserPath -EnvironmentKey $environmentKey -InstallerKey $installerKey -Mode $mode -Bin $env:DOCKSLATE_PATH_BIN
+    if ($environmentKey -and ($mode -ne 'uninstall' -or $installerKey)) {
+        Update-DockSlateUserPath -EnvironmentKey $environmentKey -InstallerKey $installerKey -Mode $mode -Bin $env:DOCKSLATE_PATH_BIN
+    }
+    if ($mode -eq 'uninstall') {
+        $runKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Software\Microsoft\Windows\CurrentVersion\Run', $true)
+        $executable = [IO.Path]::Combine([IO.Path]::GetDirectoryName($env:DOCKSLATE_PATH_BIN), 'dockslate.exe')
+        Remove-DockSlateStartupRegistration -RunKey $runKey -Executable $executable
+    }
     exit 0
 } catch {
     [Console]::Error.WriteLine($_.Exception.Message)
     exit 1
 } finally {
+    if ($runKey) { $runKey.Dispose() }
     if ($installerKey) { $installerKey.Dispose() }
     if ($environmentKey) { $environmentKey.Dispose() }
 }

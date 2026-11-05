@@ -16,6 +16,7 @@ mod pipe;
 mod process;
 mod resources;
 mod runtime;
+mod startup;
 mod volumes;
 mod wsl;
 
@@ -29,6 +30,25 @@ use tauri::{Emitter, Manager};
 static MUTATION: Mutex<()> = Mutex::new(());
 static EXIT_PENDING: AtomicBool = AtomicBool::new(false);
 static INSTALLER_SETUP: AtomicBool = AtomicBool::new(false);
+static AUTO_START_ALLOWED: AtomicBool = AtomicBool::new(true);
+
+#[tauri::command]
+async fn startup_settings() -> Result<Value, String> {
+    read(|| {
+        let mut value = startup::settings()?;
+        value["autoStartAllowed"] = Value::Bool(AUTO_START_ALLOWED.load(Ordering::Acquire));
+        Ok(value)
+    }).await
+}
+
+#[tauri::command]
+async fn startup_set(start_engine: bool, start_app: bool) -> Result<Value, String> {
+    mutate(move || {
+        let mut value = startup::set(start_engine, start_app)?;
+        value["autoStartAllowed"] = Value::Bool(AUTO_START_ALLOWED.load(Ordering::Acquire));
+        Ok(value)
+    }).await
+}
 
 async fn read<F>(operation: F) -> Result<Value, String>
 where
@@ -336,6 +356,10 @@ async fn container_action(id: String, action: String) -> Result<Value, String> {
     mutate(move || docker::container_action(id, action)).await
 }
 #[tauri::command]
+async fn containers_action(ids: Vec<String>, action: String) -> Result<Value, String> {
+    mutate(move || docker::containers_action(ids, action)).await
+}
+#[tauri::command]
 async fn container_run(
     image_id: String,
     name: String,
@@ -595,6 +619,15 @@ async fn compose_discard(id: String) -> Result<Value, String> {
 fn main() {
     let mut arguments = std::env::args().skip(1);
     let first = arguments.next();
+    if first.as_deref() == Some("--startup") {
+        let mode = arguments.next().unwrap_or_default();
+        if arguments.next().is_some() { std::process::exit(2); }
+        match startup::from_login(&mode) {
+            Ok(true) => (),
+            Ok(false) => return,
+            Err(error) => { eprintln!("DockSlate startup: {error}"); std::process::exit(1); }
+        }
+    }
     if first.as_deref() == Some("--engine-proxy") {
         if arguments.next().is_some() {
             std::process::exit(2);
@@ -610,8 +643,10 @@ fn main() {
             std::process::exit(2);
         }
         INSTALLER_SETUP.store(true, Ordering::Release);
+        AUTO_START_ALLOWED.store(false, Ordering::Release);
     }
     if first.as_deref() == Some("--dockslate-elevated") {
+        AUTO_START_ALLOWED.store(false, Ordering::Release);
         if arguments.next().is_some() || desktop::prepare_elevated_startup().is_err() {
             std::process::exit(1);
         }
@@ -642,6 +677,8 @@ fn main() {
             dashboard_snapshot,
             installer_setup_mode,
             installer_setup_finish,
+            startup_settings,
+            startup_set,
             overview,
             containers_list,
             container_inspect,
@@ -650,6 +687,7 @@ fn main() {
             containers_metrics,
             container_open_port,
             container_action,
+            containers_action,
             container_run,
             networks_list,
             network_create,
@@ -702,6 +740,9 @@ fn main() {
                         "close-blocked",
                         "엔진 설치 또는 상태 변경이 진행 중입니다. 완료 결과를 확인할 때까지 앱을 종료할 수 없습니다.",
                     );
+                } else if MUTATION.try_lock().is_err() {
+                    api.prevent_close();
+                    let _ = window.emit("close-blocked", "선택한 작업이 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.");
                 } else if installer_setup_mode() {
                     api.prevent_close();
                     window.app_handle().exit(2);

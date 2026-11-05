@@ -1,0 +1,11 @@
+{
+  "version": "0.1.8",
+  "status": "Building local installer and portable packages",
+  "published": false,
+  "dependencyVersionsChanged": false,
+  "lockChangeScope": "Application root version metadata only",
+  "installerExecuted": false,
+  "actualContainerBatchLifecycleVerified": false,
+  "actualAutomaticStartupVerified": false,
+  "virusTotalSubmitted": false
+}

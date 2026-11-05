@@ -1,0 +1,74 @@
+{
+  "observedAt": "2026-11-05T13:51:25.756Z",
+  "status": "local development; actual lifecycle tests await approval",
+  "packageVersion": "0.1.8",
+  "publishedArtifactChanged": false,
+  "localExecutableSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+  "frontendBuildExit": 0,
+  "rustCheckExit": 0,
+  "finalNativeBuildExit": 0,
+  "installerHelperFixtureExit": 0,
+  "installerHelperChecks": 9,
+  "workflowPinLint": {
+    "files": 2,
+    "references": 6,
+    "selfChecks": 25,
+    "errors": 0
+  },
+  "readonlyNative": {
+    "observedAt": "2026-11-05T13:51:23.521Z",
+    "artifactSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+    "checks": [
+      "existing startup registration absent; independent defaults both off",
+      "empty, duplicate, malformed, over-limit and unsupported batch inputs rejected",
+      "header selection, row selection, indeterminate state and state-aware buttons rendered",
+      "search changes clear selection without changing containers",
+      "settings exposes independent engine and app startup choices",
+      "native screenshots captured; no actual lifecycle or registry changes and no renderer exceptions"
+    ],
+    "passed": true
+  },
+  "nativeLayout": {
+    "observedAt": "2026-11-05T13:51:24.770Z",
+    "artifactSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+    "viewports": [
+      {
+        "width": 1500,
+        "height": 975,
+        "documentWidth": 1500,
+        "tableOverflow": false
+      },
+      {
+        "width": 1000,
+        "height": 640,
+        "documentWidth": 1000,
+        "tableOverflow": false
+      }
+    ],
+    "englishLabelsVerified": true,
+    "settingsWidth": {
+      "width": 1000,
+      "documentWidth": 1000
+    },
+    "exceptions": []
+  },
+  "inactiveStartupArguments": {
+    "unregisteredEngineModeExit": 0,
+    "unsupportedModeExit": 1
+  },
+  "userResources": {
+    "runningContainers": 4,
+    "existingIdsAndStatesPreserved": true,
+    "startupRegistrationAbsent": true,
+    "sqlQueriesExecuted": false,
+    "environmentContentsRead": false
+  },
+  "pending": [
+    "two approved scratch-container lifecycle tests",
+    "real startup registration and restoration",
+    "owned engine restart and restoration of four running user containers",
+    "actual Windows login/reboot",
+    "installer packaging and public redistribution"
+  ],
+  "deletedFiles": []
+}

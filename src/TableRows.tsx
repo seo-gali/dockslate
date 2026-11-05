@@ -5,6 +5,7 @@ type Value = string | number | null | undefined;
 type Column<T> = { value: (row: T) => Value; enum?: boolean; label?: (value: string) => string } | null;
 export interface TableControls {
   revision: string;
+  filterRevision: string;
   direction: (index: number) => 'ascending' | 'descending' | 'none';
   heading: (index: number, label: ReactNode) => ReactNode;
   filter: (index: number, label: string) => ReactNode;
@@ -29,7 +30,7 @@ export function useTableRows<T>(input: readonly T[], columns: readonly Column<T>
   }
   const direction = (index: number) => sort?.index === index ? sort.descending ? 'descending' as const : 'ascending' as const : 'none' as const;
   const controls: TableControls = {
-    revision: JSON.stringify([sort, filters]), direction, clearFilters: () => setFilters({}),
+    revision: JSON.stringify([sort, filters]), filterRevision: JSON.stringify(filters), direction, clearFilters: () => setFilters({}),
     heading: (index, label) => {
       const column = columns[index];
       if (!column) return label;

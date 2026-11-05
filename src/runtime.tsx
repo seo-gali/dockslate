@@ -127,7 +127,10 @@ export function useDockSlateRuntime(externalBusy = false) {
       setAcknowledged(false);
       return;
     }
-    const action = confirmation;
+    await perform(confirmation);
+  };
+
+  const perform = async (action: RuntimeAction): Promise<string | null> => {
     requestInFlight.current = true;
     setPending(action);
     setDialogError(null);
@@ -140,16 +143,21 @@ export function useDockSlateRuntime(externalBusy = false) {
       setConfirmation(null);
       setAcknowledged(false);
       setPreview(null);
+      return failed ? result.message : null;
     } catch (failure) {
       const message = t("{p1} 실패: {p2}", { p1: t(actionLabels[action]), p2: errorMessage(failure) });
       setDialogError(message);
       setOperation({ tone: 'danger', message });
       setAcknowledged(false);
+      return message;
     } finally {
-      await refreshDashboardAfterMutation();
-      setPending(null);
-      requestInFlight.current = false;
+      try { await refreshDashboardAfterMutation(); }
+      finally { setPending(null); requestInFlight.current = false; }
     }
+  };
+  const startAutomatically = async () => {
+    if (controlsDisabled || requestInFlight.current || query.data?.state !== 'stopped' || query.data.blockedReasons.length) return null;
+    return perform('start');
   };
 
   const dialog = confirmation && <ConfirmDialog
@@ -181,7 +189,7 @@ export function useDockSlateRuntime(externalBusy = false) {
     </>}
   </ConfirmDialog>;
 
-  return ({ query, preparing, busy, controlsDisabled, preview, operation, setOperation, prepareInstall, requestAction, dialog });
+  return ({ query, preparing, busy, controlsDisabled, preview, operation, setOperation, prepareInstall, requestAction, startAutomatically, dialog });
 }
 
 export function RuntimePanel({ runtime }: { runtime: ReturnType<typeof useDockSlateRuntime> }) {

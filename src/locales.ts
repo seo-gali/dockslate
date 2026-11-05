@@ -1,4 +1,7 @@
 export const korean: Readonly<Record<string, string>> = {
+  "Container no longer exists": "컨테이너가 이미 삭제되었습니다. 목록을 새로고친 뒤 남은 항목을 선택하세요.",
+  "Container is already active": "이미 실행 중이거나 일시정지된 컨테이너입니다.",
+  "Container is already stopped": "이미 중지된 컨테이너입니다.",
   "Selected cache was not deleted; it may have become referenced": "엔진이 이 캐시를 유지했습니다. 이미지 공유 또는 다른 캐시의 참조 상태를 확인하세요.",
   "The engine retained this cache; refresh usage to check image sharing and cache references": "엔진이 이 캐시를 유지했습니다. 목록을 새로고쳐 이미지 공유와 다른 캐시의 참조 상태를 확인하세요.",
   "Build cache is referenced by other cache records; clean dependent caches first": "다른 빌드 캐시가 참조 중입니다. 참조하는 캐시를 먼저 정리한 뒤 다시 확인하세요.",
