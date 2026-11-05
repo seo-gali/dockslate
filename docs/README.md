@@ -20,6 +20,7 @@
 | 문서 | 읽는 범위 |
 | --- | --- |
 | [요청·검증 현황](REQUEST_STATUS.md) · [배포 전 점검](results/production-readiness.md) | 구현·실행 확인·미검증의 현재 요약 |
+| [0.1.7 릴리스](results/release-0.1.7.md) · [이벤트 자동 갱신](results/engine-events.md) | 실제 앱 24개·CLI 4개·패키지 검증, DockSlate WSL 재시작·기존 SQL 실행 상태 복원 |
 | [0.1.6 제작 기록](results/release-0.1.6.md) · [고정 공개 검사](results/public-release-0.1.6.json) | 2026-10-31 빌드·패키지·공개 파일 검사 |
 | [실제 재설치](results/reinstall-recovery.md) | 2026-11-02 이 PC의 빈 엔진 재설치·앱·CLI 확인 |
 | [가이드 촬영](results/guide-video.json) | 0.1.6 예제 빌드·실행·영상 검사. 로컬 media는 Git 제외 |

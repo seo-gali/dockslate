@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-04T15:45:22.048Z",
+  "observedAt": "2026-11-05T10:24:00.642Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -65,7 +65,7 @@
     }
   ],
   "installerFilePresent": true,
-  "blocker": "Refreshed installer/portable packaging, embedded-file checks and public HTTP delivery passed. Local NSIS PATH-helper reading, actual setup/uninstall, complete regression, signing and original security-alert root cause remain unverified or unresolved.",
+  "blocker": "Actual setup/uninstall, long-running load, signing and new security scan were not performed. Current 0.1.7 native event/restart checks and embedded package verification passed.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -177,38 +177,39 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "observedAt": "2026-11-04T13:54:14.2073695Z",
-    "version": "0.1.6",
-    "file": "DockSlate_0.1.6_x64-setup.exe",
-    "bytes": 49292194,
-    "sha256": "DC3950189016220A60207B04C589F6C2EB6646E4B79C7961867ADA4DC50B920E",
+    "observedAt": "2026-11-05T10:23:47.6881376Z",
+    "version": "0.1.7",
+    "file": "DockSlate_0.1.7_x64-setup.exe",
+    "bytes": 49286181,
+    "sha256": "AD1F57E7A3DCFB16AD04898B090C6F313AEDED825926708A0533E3CD9DF75E4C",
     "signatureStatus": "NotSigned",
-    "artifactId": 13329851635,
-    "artifactDigest": "sha256:d3b2bcb191a60639131d2a7b58c9e69c02a9faf4cc2963b7653f54ebc35431fc",
-    "archiveBytes": 49286896,
+    "artifactId": 13340541254,
+    "artifactDigest": "sha256:348f46a18158cfe171ec73b846180cb021357a17d37b4690a9ff50f99fb99a3d",
+    "archiveBytes": 49280886,
     "githubDigestVerified": true,
     "embeddedApplicationAndLauncherMatch": true,
     "verifiedLicenseFiles": 375,
     "nativeComponentFilesVerified": 3,
     "exampleFilesVerified": 5,
-    "packagedDocumentFilesVerified": 8,
+    "packagedDocumentFilesVerified": 12,
     "embeddedPathHelperMatches": true,
     "installerExecuted": false,
-    "appSha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB",
-    "launcherSha256": "B0EAC4D24279E74CA13E58096D63973917E7A7EF313CBE2758E97C41D3497B59",
-    "runId": 41841670394,
-    "sourceCommit": "f0f67d25d6c634061e290d2a65e1d008b6e90c7c",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/41841670394",
-    "buildConclusion": "success",
+    "appSha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
+    "launcherSha256": "1EEA58E708CC04968DF09DF4116FC07F39B02F3694E0B991802BE66DB8E0D2A2",
+    "runId": 41861445565,
+    "sourceCommit": "df04ca155b9606415a19d2eba2946a3c5fa26bce",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/41861445565",
+    "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/41861445565/artifacts",
     "inputZip": {
-      "file": ".github/repack-installer-input.zip",
-      "bytes": 2215251,
-      "sha256": "052218C6CD15BF167F645ABBB94F150F4F9D39B0E745A4AA415E1096DFEE710F"
+      "file": ".github/release017-installer-input.zip",
+      "bytes": 2226199,
+      "sha256": "B113C21C5D2CD438FB7FC535B5EEBC3744980127EA8B88756A258EA3427784C2"
     },
-    "publicDownloadVerified": true,
+    "publicDownloadVerified": false,
     "temporaryWorkflowRemoved": true,
-    "packagedDocumentsScope": "Snapshot at installer input commit; final release evidence is maintained in repository.",
-    "publicDownloadReport": "docs/results/repackage-0.1.6.json"
+    "packagedDocumentsScope": "Snapshot at installer source commit; final delivery receipts are maintained in the repository."
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -323,7 +324,7 @@
     "rendererExceptions": 0,
     "originalContainerStatesPreserved": true,
     "ownedWslRestartVerified": true,
-    "packagingStatus": "Native tests complete; installer and portable delivery pending.",
+    "packagingStatus": "Installer and portable internally verified; public publication pending.",
     "portable": {
       "version": "0.1.7",
       "file": "DockSlate-0.1.7-windows-x64.zip",
@@ -376,29 +377,43 @@
       "engineConnectionRequired": false
     },
     "installerPathChecks": 8,
-    "installerPathUserAndMachineValuesPreserved": true
+    "installerPathUserAndMachineValuesPreserved": true,
+    "installerPackaging": {
+      "runId": 41861445565,
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/41861445565",
+      "conclusion": "success",
+      "sourceCommit": "df04ca155b9606415a19d2eba2946a3c5fa26bce",
+      "artifactId": 13340541254
+    },
+    "deliveryRuntimeObservation": {
+      "observedAt": "2026-11-05T10:25:54.074Z",
+      "command": "downloads/DockSlate-0.1.7-windows-x64/bin/docker.exe ps -a --format \"{{.Names}} {{.State}}\"",
+      "exit": 1,
+      "state": "stopped",
+      "message": "The verified DockSlate WSL runtime is installed and stopped.",
+      "startedForDelivery": false,
+      "scope": "Post-build read-only observation, separate from the earlier successful actual WSL restart and SQL state-restoration test."
+    }
   },
   "portableDelivery": {
-    "version": "0.1.6",
-    "file": "DockSlate-0.1.6-windows-x64.zip",
-    "bytes": 63364334,
-    "sha256": "B7F731C6BC17EB88802B9A7F0CF04A6DDD961FCDA7749804E555DEC4CCC543D7",
-    "files": 600,
+    "version": "0.1.7",
+    "file": "DockSlate-0.1.7-windows-x64.zip",
+    "bytes": 63383003,
+    "sha256": "38570792E66A43B8E54E1C893542E0BC2CEDB5675BFCBBDCAC877CCA6874D61F",
+    "files": 604,
     "allEntriesMatchPortableFolder": true,
     "duplicateEntries": false,
     "installerExecuted": false,
-    "observedAt": "2026-11-04T13:56:05.375Z",
-    "appSha256": "E14AA485512763EE5FC6F68FE102EF25617C6885B5478B15E9128C13094069FB",
-    "launcherSha256": "B0EAC4D24279E74CA13E58096D63973917E7A7EF313CBE2758E97C41D3497B59",
-    "sameFilesVerifiedInsideZip": true,
-    "publicDownloadVerified": true,
+    "observedAt": "2026-11-05T10:24:00.642Z",
+    "appSha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
+    "launcherSha256": "1EEA58E708CC04968DF09DF4116FC07F39B02F3694E0B991802BE66DB8E0D2A2",
     "legalArchive": {
-      "file": "DockSlate-0.1.6-third-party-licenses.zip",
-      "bytes": 5161524,
-      "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B"
+      "file": "DockSlate-0.1.7-third-party-licenses.zip",
+      "bytes": 5163491,
+      "sha256": "FEEC9196A121DC84C4A1ACA9790FAD2F3BD7F4A80E5A1F73713998F899A518F8"
     },
-    "packagedDocumentsScope": "Snapshot at ZIP generation; subsequent installer/public receipts are maintained in repository.",
-    "publicDownloadReport": "docs/results/repackage-0.1.6.json"
+    "publicDownloadVerified": false,
+    "packagedDocumentsScope": "Snapshot at ZIP generation; later installer and public receipts are maintained in the repository."
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",
