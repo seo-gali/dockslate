@@ -10,7 +10,7 @@
     "hookFixtureExecuted": false,
     "frontendBuildExit": 0,
     "browserCompleted": true,
-    "installerBuildExit": 1,
+    "installerBuildExit": 0,
     "hookCompilationExit": 0,
     "installerExecuted": false,
     "browserChecks": 27,
@@ -34,7 +34,7 @@
     "originalResourcesPreserved": true,
     "guideDeliveryExit": 0,
     "guideDeliveryChecks": 7,
-    "portableInternalFilesVerified": 604,
+    "portableInternalFilesVerified": 611,
     "engineRestoredStopped": true,
     "remoteInstallerBuildExit": 0,
     "installerPathPreservationExit": 0,
@@ -45,7 +45,7 @@
     "lockChangeScope": "Application root version metadata only.",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
     "currentNativeScope": "0.1.8 read-only native UI, input rejection, English and window layout. No real batch actions or autostart registration.",
-    "installerBuildScope": "0.1.8 local NSIS failed reading installer/user-path.ps1; same result outside sandbox. No protection settings changed."
+    "installerBuildScope": "0.1.8 packaging once on GitHub using two SHA-verified binaries. Local NSIS read failures retained in currentBuild commands."
   },
   "artifacts": [
     {
@@ -61,8 +61,8 @@
       "path": "src-tauri/target/release/docker.exe",
       "bytes": 315904,
       "sha256": "1E0F51F1FFEB280C0FD6CDDD82C84FFE5AFEEFFEB7B8BA52D7B26F2009A204EF",
-      "executed": false,
-      "executionMode": "0.1.8 launcher built; portable checks pending."
+      "executed": true,
+      "executionMode": "Four offline 0.1.8 portable CLI version commands."
     }
   ],
   "installerFilePresent": true,
@@ -178,40 +178,34 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "observedAt": "2026-11-05T10:23:47.6881376Z",
-    "version": "0.1.7",
-    "file": "DockSlate_0.1.7_x64-setup.exe",
-    "bytes": 49286181,
-    "sha256": "AD1F57E7A3DCFB16AD04898B090C6F313AEDED825926708A0533E3CD9DF75E4C",
-    "signatureStatus": "NotSigned",
-    "artifactId": 13340541254,
-    "artifactDigest": "sha256:348f46a18158cfe171ec73b846180cb021357a17d37b4690a9ff50f99fb99a3d",
-    "archiveBytes": 49280886,
-    "githubDigestVerified": true,
-    "embeddedApplicationAndLauncherMatch": true,
-    "verifiedLicenseFiles": 375,
-    "nativeComponentFilesVerified": 3,
-    "exampleFilesVerified": 5,
-    "packagedDocumentFilesVerified": 12,
-    "embeddedPathHelperMatches": true,
-    "installerExecuted": false,
-    "appSha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
-    "launcherSha256": "1EEA58E708CC04968DF09DF4116FC07F39B02F3694E0B991802BE66DB8E0D2A2",
-    "runId": 41861445565,
-    "sourceCommit": "df04ca155b9606415a19d2eba2946a3c5fa26bce",
-    "status": "completed",
-    "conclusion": "success",
-    "url": "https://github.com/seo-gali/dockslate/actions/runs/41861445565",
-    "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/41861445565/artifacts",
-    "inputZip": {
-      "file": ".github/release017-installer-input.zip",
-      "bytes": 2226199,
-      "sha256": "B113C21C5D2CD438FB7FC535B5EEBC3744980127EA8B88756A258EA3427784C2"
+    "version": "0.1.8",
+    "run": {
+      "runId": 42040328613,
+      "sourceCommit": "8c9400744fb042f13b0bc3e5d2245706402c42c2",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/42040328613",
+      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42040328613/artifacts"
     },
-    "publicDownloadVerified": true,
-    "temporaryWorkflowRemoved": true,
-    "packagedDocumentsScope": "Snapshot at installer source commit; final delivery receipts are maintained in the repository.",
-    "publicDownloadReport": "docs/results/release-0.1.7.json"
+    "inspection": {
+      "observedAt": "2026-11-05T14:06:10.5496360Z",
+      "version": "0.1.8",
+      "file": "DockSlate_0.1.8_x64-setup.exe",
+      "bytes": 49306747,
+      "sha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF",
+      "signatureStatus": "NotSigned",
+      "embeddedApplicationAndLauncherMatch": true,
+      "verifiedLicenseFiles": 375,
+      "nativeComponentFilesVerified": 3,
+      "exampleFilesVerified": 5,
+      "textComparisonNormalization": "CRLF to LF",
+      "licenseMetadataAndGuideFilesVerified": 4,
+      "packagedDocumentFilesVerified": 19,
+      "embeddedStartupAndPathHelperMatches": true,
+      "installerExecuted": false
+    },
+    "published": false,
+    "installerExecuted": false
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -330,28 +324,112 @@
     "ownedWslRestartVerified": false,
     "actualContainerBatchLifecycleVerified": false,
     "actualAutomaticStartupVerified": false,
-    "packagingStatus": "Portable packaging next; local NSIS blocked reading user-path.ps1."
+    "packagingStatus": "0.1.8 EXE and ZIP created and inspected; public website remains 0.1.7.",
+    "installerRun": {
+      "runId": 42040328613,
+      "sourceCommit": "8c9400744fb042f13b0bc3e5d2245706402c42c2",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/42040328613",
+      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42040328613/artifacts"
+    },
+    "installerInspection": {
+      "observedAt": "2026-11-05T14:06:10.5496360Z",
+      "version": "0.1.8",
+      "file": "DockSlate_0.1.8_x64-setup.exe",
+      "bytes": 49306747,
+      "sha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF",
+      "signatureStatus": "NotSigned",
+      "embeddedApplicationAndLauncherMatch": true,
+      "verifiedLicenseFiles": 375,
+      "nativeComponentFilesVerified": 3,
+      "exampleFilesVerified": 5,
+      "textComparisonNormalization": "CRLF to LF",
+      "licenseMetadataAndGuideFilesVerified": 4,
+      "packagedDocumentFilesVerified": 19,
+      "embeddedStartupAndPathHelperMatches": true,
+      "installerExecuted": false
+    },
+    "portable": {
+      "version": "0.1.8",
+      "file": "DockSlate-0.1.8-windows-x64.zip",
+      "bytes": 63419336,
+      "sha256": "238997FB8508F316B2D6D2B8A73BE7A9359EFCC6290114F500F929A79C74DA72",
+      "files": 611,
+      "allEntriesMatchPortableFolder": true,
+      "duplicateEntries": false,
+      "installerExecuted": false
+    },
+    "offlineCli": {
+      "version": "0.1.8",
+      "observedAt": "2026-11-05T13:53:19.578Z",
+      "appSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+      "launcherSha256": "1E0F51F1FFEB280C0FD6CDDD82C84FFE5AFEEFFEB7B8BA52D7B26F2009A204EF",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.8.2, build 7fc2dff"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.6.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+        }
+      ],
+      "existingProfileUsed": false,
+      "engineConnectionRequired": false
+    },
+    "publicDownloadsVerified": false,
+    "artifactFiles": [
+      {
+        "file": "DockSlate_0.1.8_x64-setup.exe",
+        "bytes": 49306747,
+        "sha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF"
+      },
+      {
+        "file": "DockSlate-0.1.8-windows-x64.zip",
+        "bytes": 63419336,
+        "sha256": "238997FB8508F316B2D6D2B8A73BE7A9359EFCC6290114F500F929A79C74DA72"
+      },
+      {
+        "file": "DockSlate-0.1.8-third-party-licenses.zip",
+        "bytes": 5161543,
+        "sha256": "416EA8CC040754C27FF91A891CC9CEFA7DCAA02586DE628957E97CE62AC8E663"
+      }
+    ]
   },
   "portableDelivery": {
-    "version": "0.1.7",
-    "file": "DockSlate-0.1.7-windows-x64.zip",
-    "bytes": 63383003,
-    "sha256": "38570792E66A43B8E54E1C893542E0BC2CEDB5675BFCBBDCAC877CCA6874D61F",
-    "files": 604,
+    "version": "0.1.8",
+    "file": "DockSlate-0.1.8-windows-x64.zip",
+    "bytes": 63419336,
+    "sha256": "238997FB8508F316B2D6D2B8A73BE7A9359EFCC6290114F500F929A79C74DA72",
+    "files": 611,
     "allEntriesMatchPortableFolder": true,
     "duplicateEntries": false,
     "installerExecuted": false,
-    "observedAt": "2026-11-05T10:24:00.642Z",
-    "appSha256": "35DB040CA956B89B252211C27AD4D90320BBE46689F06251A3AD94FE8364F954",
-    "launcherSha256": "1EEA58E708CC04968DF09DF4116FC07F39B02F3694E0B991802BE66DB8E0D2A2",
-    "legalArchive": {
-      "file": "DockSlate-0.1.7-third-party-licenses.zip",
-      "bytes": 5163491,
-      "sha256": "FEEC9196A121DC84C4A1ACA9790FAD2F3BD7F4A80E5A1F73713998F899A518F8"
-    },
-    "publicDownloadVerified": true,
-    "packagedDocumentsScope": "Snapshot at ZIP generation; later installer and public receipts are maintained in the repository.",
-    "publicDownloadReport": "docs/results/release-0.1.7.json"
+    "published": false
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

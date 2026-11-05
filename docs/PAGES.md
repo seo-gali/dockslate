@@ -8,6 +8,8 @@
 
 게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 작업의 원격 전환·게시 여부는 [요청 현황](REQUEST_STATUS.md)에 기록합니다.
 
+릴리스 준비 중 `package.json`과 `site/release.json`의 버전이 다르면 SHA 고정 검사만 실행하고 사이트 빌드·게시를 건너뛰어 기존 사이트를 유지합니다. 파일·체크섬·공개 Release를 준비하고 게시를 승인받은 뒤 릴리스 명세의 버전을 맞춥니다. 버전이 다른 준비 상태에서는 로컬 `build:site`도 기존 버전 일치 검사로 거부합니다.
+
 | 원본 | 출력·역할 |
 | --- | --- |
 | `site/index.html` · `site/styles.css` · `site/main.js` | 공개 메인·자산 |

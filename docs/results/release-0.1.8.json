@@ -1,11 +1,186 @@
 {
   "version": "0.1.8",
-  "status": "Building local installer and portable packages",
+  "observedAt": "2026-11-05T14:06:45.486Z",
+  "status": "Installer and portable packages created and inspected; public website remains 0.1.7",
   "published": false,
+  "sourceCommit": "8c9400744fb042f13b0bc3e5d2245706402c42c2",
+  "buildRun": {
+    "runId": 42040328613,
+    "sourceCommit": "8c9400744fb042f13b0bc3e5d2245706402c42c2",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/42040328613",
+    "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42040328613/artifacts"
+  },
+  "files": [
+    {
+      "file": "DockSlate_0.1.8_x64-setup.exe",
+      "bytes": 49306747,
+      "sha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF"
+    },
+    {
+      "file": "DockSlate-0.1.8-windows-x64.zip",
+      "bytes": 63419336,
+      "sha256": "238997FB8508F316B2D6D2B8A73BE7A9359EFCC6290114F500F929A79C74DA72"
+    },
+    {
+      "file": "DockSlate-0.1.8-third-party-licenses.zip",
+      "bytes": 5161543,
+      "sha256": "416EA8CC040754C27FF91A891CC9CEFA7DCAA02586DE628957E97CE62AC8E663"
+    }
+  ],
+  "checksumManifest": "downloads/SHA256SUMS.txt",
+  "installer": {
+    "observedAt": "2026-11-05T14:06:10.5496360Z",
+    "version": "0.1.8",
+    "file": "DockSlate_0.1.8_x64-setup.exe",
+    "bytes": 49306747,
+    "sha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF",
+    "signatureStatus": "NotSigned",
+    "embeddedApplicationAndLauncherMatch": true,
+    "verifiedLicenseFiles": 375,
+    "nativeComponentFilesVerified": 3,
+    "exampleFilesVerified": 5,
+    "textComparisonNormalization": "CRLF to LF",
+    "licenseMetadataAndGuideFilesVerified": 4,
+    "packagedDocumentFilesVerified": 19,
+    "embeddedStartupAndPathHelperMatches": true,
+    "installerExecuted": false
+  },
+  "githubArtifact": {
+    "artifactId": 13420483745,
+    "archiveBytes": 49301463,
+    "githubDigest": "sha256:3dd813cd8ecf0d595c8cdd8efc4062322052e0f36f02a69b256c55923e097bb4",
+    "githubDigestVerified": true,
+    "installerSha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF",
+    "installerBytes": 49306747,
+    "installerExecuted": false
+  },
+  "portable": {
+    "version": "0.1.8",
+    "file": "DockSlate-0.1.8-windows-x64.zip",
+    "bytes": 63419336,
+    "sha256": "238997FB8508F316B2D6D2B8A73BE7A9359EFCC6290114F500F929A79C74DA72",
+    "files": 611,
+    "allEntriesMatchPortableFolder": true,
+    "duplicateEntries": false,
+    "installerExecuted": false
+  },
+  "cli": {
+    "version": "0.1.8",
+    "observedAt": "2026-11-05T13:53:19.578Z",
+    "appSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+    "launcherSha256": "1E0F51F1FFEB280C0FD6CDDD82C84FFE5AFEEFFEB7B8BA52D7B26F2009A204EF",
+    "checks": [
+      {
+        "args": [
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "--debug",
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "compose",
+          "version"
+        ],
+        "exit": 0,
+        "output": "Docker Compose version v5.6.0"
+      },
+      {
+        "args": [
+          "buildx",
+          "version"
+        ],
+        "exit": 0,
+        "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+      }
+    ],
+    "existingProfileUsed": false,
+    "engineConnectionRequired": false
+  },
+  "licenses": {
+    "version": "0.1.8",
+    "files": 378,
+    "allEntriesMatch": true,
+    "bytes": 5161543,
+    "sha256": "416EA8CC040754C27FF91A891CC9CEFA7DCAA02586DE628957E97CE62AC8E663"
+  },
+  "nativeReadonly": {
+    "observedAt": "2026-11-05T13:51:23.521Z",
+    "artifactSha256": "319EA3C4C9F46DC3572C78EC2A6ACBC6580288AB0CDD8AA74CB2A1964F3AE546",
+    "checks": [
+      "existing startup registration absent; independent defaults both off",
+      "empty, duplicate, malformed, over-limit and unsupported batch inputs rejected",
+      "header selection, row selection, indeterminate state and state-aware buttons rendered",
+      "search changes clear selection without changing containers",
+      "settings exposes independent engine and app startup choices",
+      "native screenshots captured; no actual lifecycle or registry changes and no renderer exceptions"
+    ],
+    "passed": true
+  },
+  "publicSitePreserved": {
+    "observedAt": "2026-11-05T13:58:38.598Z",
+    "sourceCommit": "8c9400744fb042f13b0bc3e5d2245706402c42c2",
+    "ci": [
+      {
+        "workflow": ".github/workflows/pages.yml",
+        "runId": 42040328715,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42040328715",
+        "jobs": [
+          {
+            "name": "Check workflow SHA pins",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "deploy",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "build",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "workflow": ".github/workflows/workflow-pins.yml",
+        "runId": 42040328548,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42040328548"
+      }
+    ],
+    "publicSite": {
+      "version": "0.1.7",
+      "httpStatus": 200,
+      "htmlSha256": "d83f8500096a881edc3eb141acfaa9488f2b30d0164b480d5802385b800671b1",
+      "checksumHttpStatus": 200,
+      "oldDownloadsPreserved": true
+    }
+  },
   "dependencyVersionsChanged": false,
   "lockChangeScope": "Application root version metadata only",
   "installerExecuted": false,
   "actualContainerBatchLifecycleVerified": false,
   "actualAutomaticStartupVerified": false,
-  "virusTotalSubmitted": false
+  "virusTotalSubmitted": false,
+  "packageDocumentsAreBuildTimeSnapshots": true,
+  "remaining": [
+    "Real batch container lifecycle and automatic startup registration/engine start",
+    "Windows login/reboot and installer setup/uninstall",
+    "VirusTotal reports and v0.1.8 public Release/website publication"
+  ]
 }
