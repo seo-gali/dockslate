@@ -4,6 +4,7 @@
 
 | 현재 근거 | 확인 범위 |
 | --- | --- |
+| [0.1.7 릴리스](results/release-0.1.7.md) | 실제 앱 24개·CLI 4개, ZIP 604개 파일·설치 EXE 내부, 공개 다운로드 3개 및 사이트·과거 고지 경로 검증 |
 | [0.1.6 릴리스](results/release-0.1.6.md) | 앱·CLI 빌드, Rust·TypeScript, 읽기 전용 Windows 검사 10개·CLI 명령 4개, 설치 파일 내부·공개 다운로드 검증 |
 | [실제 재설치](results/reinstall-recovery.md) | 기존 데이터가 없는 이 PC의 잔여 등록 정리·새 엔진 설치 후 실제 설치 EXE 종료 0. CLI·커널 검사 14개·앱 화면 검사 5개. 기존 데이터 복원·제거·전체 회귀는 미검증 |
 | [0.1.6 가이드 촬영](results/guide-video.json) | 실제 이미지 검색·Pull·컨테이너 생성·HTTP, 상세·로그·파일·터미널, Dockerfile·단일 서비스 Compose 빌드·승인 실행. 실제 정리·압축은 실행하지 않음 |

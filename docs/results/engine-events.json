@@ -552,7 +552,7 @@
     ],
     "scope": "Approved actual owned WSL stop/start and restoration; no global WSL shutdown, kernel update or DB writes."
   },
-  "publicReleaseUpdated": false,
+  "publicReleaseUpdated": true,
   "buildCommands": [
     {
       "command": "powershell -NoProfile -File scripts/desktop.ps1 -Mode build",
@@ -603,5 +603,6 @@
       "normalization": "LF",
       "sha256": "B3208AB0B659F3DA96B984A5B72B8579B3591221C0C388B5B6A442247A429C69"
     }
-  ]
+  ],
+  "releaseReport": "release-0.1.7.json"
 }

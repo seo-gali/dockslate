@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-05T10:24:00.642Z",
+  "observedAt": "2026-11-05T10:31:35.964Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -10,7 +10,7 @@
     "hookFixtureExecuted": false,
     "frontendBuildExit": 0,
     "browserCompleted": true,
-    "installerBuildExit": 1,
+    "installerBuildExit": 0,
     "hookCompilationExit": 0,
     "installerExecuted": false,
     "browserChecks": 27,
@@ -44,7 +44,8 @@
     "dependencyVersionsChanged": false,
     "lockChangeScope": "App root version metadata only.",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "Actual 0.1.7 Windows app, approved scratch container/network/image/volume, actual owned WSL stop/start and original SQL state restoration."
+    "currentNativeScope": "Actual 0.1.7 Windows app, approved scratch container/network/image/volume, actual owned WSL stop/start and original SQL state restoration.",
+    "installerBuildScope": "0.1.7 remote packaging; earlier local NSIS failure remains in historical 0.1.6 records."
   },
   "artifacts": [
     {
@@ -207,9 +208,10 @@
       "bytes": 2226199,
       "sha256": "B113C21C5D2CD438FB7FC535B5EEBC3744980127EA8B88756A258EA3427784C2"
     },
-    "publicDownloadVerified": false,
+    "publicDownloadVerified": true,
     "temporaryWorkflowRemoved": true,
-    "packagedDocumentsScope": "Snapshot at installer source commit; final delivery receipts are maintained in the repository."
+    "packagedDocumentsScope": "Snapshot at installer source commit; final delivery receipts are maintained in the repository.",
+    "publicDownloadReport": "docs/results/release-0.1.7.json"
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -310,6 +312,22 @@
       {
         "command": "powershell -NoProfile -File scripts/verify-installer-path.ps1",
         "exit": 0
+      },
+      {
+        "command": "GitHub release017-installer.yml: build-installer.ps1 -SkipBuild -AllowToolDownload",
+        "exit": 0
+      },
+      {
+        "command": "npm run build:site",
+        "exit": 0
+      },
+      {
+        "command": "node .analysis/verify-release017-public.mjs",
+        "exit": 0
+      },
+      {
+        "command": "node .analysis/verify017-legacy.mjs",
+        "exit": 0
       }
     ],
     "nativeSmoke": {
@@ -324,7 +342,7 @@
     "rendererExceptions": 0,
     "originalContainerStatesPreserved": true,
     "ownedWslRestartVerified": true,
-    "packagingStatus": "Installer and portable internally verified; public publication pending.",
+    "packagingStatus": "0.1.7 EXE/ZIP published; embedded contents and public HTTP delivery verified.",
     "portable": {
       "version": "0.1.7",
       "file": "DockSlate-0.1.7-windows-x64.zip",
@@ -393,6 +411,22 @@
       "message": "The verified DockSlate WSL runtime is installed and stopped.",
       "startedForDelivery": false,
       "scope": "Post-build read-only observation, separate from the earlier successful actual WSL restart and SQL state-restoration test."
+    },
+    "siteDelivery": {
+      "buildCommand": "npm run build:site",
+      "buildExit": 0,
+      "pages": {
+        "sourceCommit": "c095992013a22428110f69b1ace0328e6494a594",
+        "runId": 42010772236,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42010772236"
+      },
+      "verificationReport": "docs/results/release-0.1.7.json",
+      "publicDownloads": 3,
+      "publicStaticAssets": 3,
+      "historicalLicenseUrls": 2,
+      "browserExecuted": false
     }
   },
   "portableDelivery": {
@@ -412,8 +446,9 @@
       "bytes": 5163491,
       "sha256": "FEEC9196A121DC84C4A1ACA9790FAD2F3BD7F4A80E5A1F73713998F899A518F8"
     },
-    "publicDownloadVerified": false,
-    "packagedDocumentsScope": "Snapshot at ZIP generation; later installer and public receipts are maintained in the repository."
+    "publicDownloadVerified": true,
+    "packagedDocumentsScope": "Snapshot at ZIP generation; later installer and public receipts are maintained in the repository.",
+    "publicDownloadReport": "docs/results/release-0.1.7.json"
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

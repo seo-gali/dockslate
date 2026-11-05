@@ -1,6 +1,6 @@
 {
   "version": "0.1.7",
-  "observedAt": "2026-11-05T10:24:00.642Z",
+  "observedAt": "2026-11-05T10:31:35.964Z",
   "sourceCommit": "df04ca155b9606415a19d2eba2946a3c5fa26bce",
   "scope": "Docker events automatic refresh, isolated resource mutations, owned WSL restart and SQL state restoration, verified EXE/ZIP publication.",
   "previousPublicRelease": {
@@ -130,7 +130,7 @@
   },
   "dependencyVersionsChanged": false,
   "lockChangeScope": "App root version metadata only.",
-  "publicDownloadsVerified": false,
+  "publicDownloadsVerified": true,
   "temporaryWorkflowRemoved": true,
   "installerExecuted": false,
   "existingDataPreserved": true,
@@ -162,5 +162,109 @@
     "message": "The verified DockSlate WSL runtime is installed and stopped.",
     "startedForDelivery": false,
     "scope": "Post-build read-only observation, separate from the earlier successful actual WSL restart and SQL state-restoration test."
+  },
+  "packagingStatus": "Published and public HTTP verified",
+  "publicVerification": {
+    "observedAt": "2026-11-05T10:29:42.079Z",
+    "scope": "Actual public HTTP index, CSS, JavaScript, guide and three complete downloads; no installer execution",
+    "base": "https://seo-gali.github.io/dockslate/",
+    "publishedSourceCommit": "c095992013a22428110f69b1ace0328e6494a594",
+    "pagesRunId": 42010772236,
+    "assets": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "sourceMatches": true
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.7_x64-setup.exe",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.7_x64-setup.exe",
+        "status": 200,
+        "bytes": 49286181,
+        "sha256": "AD1F57E7A3DCFB16AD04898B090C6F313AEDED825926708A0533E3CD9DF75E4C",
+        "matchesRelease": true
+      },
+      {
+        "file": "DockSlate-0.1.7-windows-x64.zip",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.7-windows-x64.zip",
+        "status": 200,
+        "bytes": 63383003,
+        "sha256": "38570792E66A43B8E54E1C893542E0BC2CEDB5675BFCBBDCAC877CCA6874D61F",
+        "matchesRelease": true
+      },
+      {
+        "file": "DockSlate-0.1.7-third-party-licenses.zip",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5163491,
+        "sha256": "FEEC9196A121DC84C4A1ACA9790FAD2F3BD7F4A80E5A1F73713998F899A518F8",
+        "matchesRelease": true
+      }
+    ],
+    "installerExecuted": false
+  },
+  "historicalLicenseUrls": {
+    "observedAt": "2026-11-05T10:30:35.025Z",
+    "checks": [
+      {
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5161524,
+        "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B",
+        "matchesPreviousRelease": true
+      },
+      {
+        "url": "https://seo-gali.github.io/dockslate/docs/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5161524,
+        "sha256": "E302A23FE9024B1811994B77C6C7B6FEADE4649EF8AF26E4F49BE621B324104B",
+        "matchesPreviousRelease": true
+      }
+    ]
+  },
+  "pages": {
+    "sourceCommit": "c095992013a22428110f69b1ace0328e6494a594",
+    "runId": 42010772236,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/42010772236"
+  },
+  "temporaryCleanup": {
+    "observedAt": "2026-11-05T10:29:24.1791736Z",
+    "removed": [
+      {
+        "path": "downloads\\DockSlate-0.1.6-windows-x64",
+        "bytes": 163311399,
+        "files": 600
+      },
+      {
+        "path": ".analysis/release017-installer-artifact.zip",
+        "bytes": 49280886,
+        "files": 1
+      }
+    ],
+    "skipped": [],
+    "absentGeneratedDirectories": [
+      "events-native-4a2c348228314bb2aacac4f28d7eba59",
+      "legal017-stage",
+      "release017-installer-extracted",
+      "release017-installer-incoming",
+      "release017-cli-profile"
+    ],
+    "userDataChanged": false,
+    "currentPortablePreserved": true,
+    "historicalLicenseArchivesPreserved": true
   }
 }
