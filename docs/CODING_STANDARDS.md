@@ -4,6 +4,8 @@
 
 ## 구현
 
+- GitHub workflow의 외부 `uses:`는 40자리 커밋 SHA로 고정합니다. Docker 액션은 64자리 `sha256` digest를 사용하며, 로컬 액션은 같은 저장소의 파일을 재귀 검사합니다. `node scripts/check-workflow-pins.mjs`가 태그·브랜치·짧은 SHA를 거부합니다. `uses:`는 한 줄의 리터럴로 쓰고 매핑은 블록 형태로 작성합니다. PR·workflow 변경의 CI 검사와 Pages 빌드 전 검사를 통과해야 합니다. SHA를 고를 때 외부 composite 액션 안의 `uses:`도 직접 확인합니다.
+
 - Windows 11, Tauri 2·React·TypeScript·Rust와 DockSlate 전용 WSL 2 Moby 엔진을 사용합니다. Docker Desktop·Rancher Desktop의 실행 파일·엔진·디스크에 런타임 의존성을 두지 않습니다.
 - Docker API·시스템 명령·파일 조작은 제한된 Rust 명령으로 제공합니다. 렌더러에 임의 셸 실행·무제한 파일 접근·소켓 직접 접근 권한을 주지 않습니다.
 - 경로·포트·시스템 상태는 설정과 실제 조회로 확인합니다. 개인 경로와 과거 실행 결과를 기본값으로 하드코딩하지 않습니다.

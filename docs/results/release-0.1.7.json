@@ -143,7 +143,7 @@
   ],
   "limitations": [
     "No actual installer execution/uninstall",
-    "No long-running load, signing or new security scan",
+    "No long-running load or signing; public VirusTotal observations are recorded in the distribution follow-up",
     "External WSL restart needs app focus or manual reconnect; BuildKit history/cache lacks relevant Docker events"
   ],
   "removedFiles": [
@@ -266,5 +266,6 @@
     "userDataChanged": false,
     "currentPortablePreserved": true,
     "historicalLicenseArchivesPreserved": true
-  }
+  },
+  "publicDistributionReport": "public-distribution-0.1.7.json"
 }

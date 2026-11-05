@@ -1,0 +1,199 @@
+{
+  "version": "0.1.7",
+  "observedAt": "2026-11-05T12:02:58.703Z",
+  "scope": "Public GitHub Release, checksum manifest, exact-file VirusTotal observations, workflow SHA lint and website links; no application binary or dependency changes.",
+  "github": {
+    "observedAt": "2026-11-05T11:42:11.088Z",
+    "releaseId": 435123357,
+    "tag": "v0.1.7",
+    "sourceCommit": "836a57730f6b236bf90aee63707c2e7ac41e247b",
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.7",
+    "prerelease": true,
+    "publishedAt": "2026-11-05T11:35:31Z",
+    "tagMatchesLocal": true,
+    "releaseNotesMatch": true,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.7_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.7/DockSlate_0.1.7_x64-setup.exe",
+        "bytes": 49286181,
+        "sha256": "AD1F57E7A3DCFB16AD04898B090C6F313AEDED825926708A0533E3CD9DF75E4C",
+        "githubDigest": "sha256:ad1f57e7a3dcfb16ad04898b090c6f313aeded825926708a0533e3cd9df75e4c",
+        "matchesExpected": true
+      },
+      {
+        "name": "DockSlate-0.1.7-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.7/DockSlate-0.1.7-windows-x64.zip",
+        "bytes": 63383003,
+        "sha256": "38570792E66A43B8E54E1C893542E0BC2CEDB5675BFCBBDCAC877CCA6874D61F",
+        "githubDigest": "sha256:38570792e66a43b8e54e1c893542e0bc2cedb5675bfcbbdcac877cca6874d61f",
+        "matchesExpected": true
+      },
+      {
+        "name": "DockSlate-0.1.7-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.7/DockSlate-0.1.7-third-party-licenses.zip",
+        "bytes": 5163491,
+        "sha256": "FEEC9196A121DC84C4A1ACA9790FAD2F3BD7F4A80E5A1F73713998F899A518F8",
+        "githubDigest": "sha256:feec9196a121dc84c4a1aca9790fad2f3bd7f4a80e5a1f73713998f899a518f8",
+        "matchesExpected": true
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.7/SHA256SUMS.txt",
+        "bytes": 301,
+        "sha256": "01D13F9E547059D3554508E9C990AD8E8D00A4D81B3E36234DC2C8387CBC64F2",
+        "githubDigest": "sha256:01d13f9e547059d3554508e9c990ad8e8d00a4d81b3e36234dc2c8387cbc64f2",
+        "matchesExpected": true
+      }
+    ]
+  },
+  "virusTotal": {
+    "version": "0.1.7",
+    "scope": "Public VirusTotal submission and completed SHA-256 matching reports; these are observations at the stated time, not a safety guarantee.",
+    "files": [
+      {
+        "file": "DockSlate_0.1.7_x64-setup.exe",
+        "sha256": "ad1f57e7a3dcfb16ad04898b090c6f313aeded825926708a0533e3cd9df75e4c",
+        "reportUrl": "https://www.virustotal.com/gui/file/ad1f57e7a3dcfb16ad04898b090c6f313aeded825926708a0533e3cd9df75e4c/detection",
+        "observedAt": "2026-11-05T11:29:32.790Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 66,
+        "undetected": 66,
+        "unsupported": 5,
+        "timeout": 4
+      },
+      {
+        "file": "DockSlate-0.1.7-windows-x64.zip",
+        "sha256": "38570792e66a43b8e54e1c893542e0bc2cedb5675bfcbbdcac877cca6874d61f",
+        "reportUrl": "https://www.virustotal.com/gui/file/38570792e66a43b8e54e1c893542e0bc2cedb5675bfcbbdcac877cca6874d61f/detection",
+        "observedAt": "2026-11-05T11:29:34.007Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 67,
+        "undetected": 67,
+        "unsupported": 7,
+        "timeout": 0
+      }
+    ]
+  },
+  "preflight": {
+    "version": "0.1.7",
+    "observedAt": "2026-11-05T11:34:25.971Z",
+    "scope": "Distribution-only follow-up; identical existing binaries, no dependency/lock, engine, DB or global security-setting changes.",
+    "checks": [
+      {
+        "item": 1,
+        "name": "Environment and secrets",
+        "status": "verified",
+        "evidence": "GitHub short-lived platform token scoped to release upload; no personal token or secret contents read."
+      },
+      {
+        "item": 2,
+        "name": "Errors",
+        "status": "verified",
+        "evidence": "Stale checksum rejected with exit 1 before replacing site output; valid input exits 0. Existing release/tag absent."
+      },
+      {
+        "item": 3,
+        "name": "Inputs",
+        "status": "verified",
+        "evidence": "Current three artifact sizes/hashes and canonical checksum content verified; both VirusTotal reports match actual SHA-256."
+      },
+      {
+        "item": 4,
+        "name": "Authorization",
+        "status": "verified",
+        "evidence": "User requested public Release/checksum/VirusTotal; temporary publisher requests contents:write, persist-credentials:false; no engine operation."
+      },
+      {
+        "item": 5,
+        "name": "DB migration",
+        "status": "not_applicable",
+        "evidence": "No app code, metadata schema, engine or user DB change."
+      },
+      {
+        "item": 6,
+        "name": "Monitoring",
+        "status": "verified",
+        "evidence": "Public file reports, observation times and timeout/unsupported engine counts retained; workflow outcome to be checked."
+      },
+      {
+        "item": 7,
+        "name": "Tests",
+        "status": "verified",
+        "evidence": "Site build and meaningful stale-checksum failure passed; app tests are the earlier 0.1.7 record, not rerun for this distribution-only change."
+      },
+      {
+        "item": 8,
+        "name": "Rate limits",
+        "status": "not_applicable",
+        "evidence": "Static public files, two manual VirusTotal submissions; no new runtime API or polling."
+      },
+      {
+        "item": 9,
+        "name": "Security and performance",
+        "status": "verified_with_limits",
+        "evidence": "EXE 0/66 with four timeout/five unsupported; ZIP 0/67 with seven unsupported. Unsigned build; no safety guarantee or new code-signing claim."
+      },
+      {
+        "item": 10,
+        "name": "Rollback",
+        "status": "verified_with_limits",
+        "evidence": "Existing Pages file URLs and historical legal archives retained; no tag force/update or existing release replacement. Release/site rollback not rehearsed."
+      }
+    ]
+  },
+  "checksumGuard": {
+    "observedAt": "2026-11-05T11:31:40.788Z",
+    "mismatchExit": 1,
+    "expectedMismatchRejected": true,
+    "previousSitePreservedOnFailure": true,
+    "validExit": 0,
+    "publishedChecksumCopyMatches": true
+  },
+  "workflowPinLint": {
+    "observedAt": "2026-11-05T11:58:34.269Z",
+    "mutableTagExit": 1,
+    "recursiveLocalMutableTagExit": 1,
+    "recursiveLocalPinnedExit": 0,
+    "finalRepositoryExit": 0,
+    "repository": {
+      "files": 2,
+      "references": 6,
+      "selfChecks": 25,
+      "errors": 0
+    },
+    "fixturesCleaned": true,
+    "workflowRestored": true,
+    "ciScope": "All pull requests and main pushes; Pages additionally requires its own successful pin-check job before build/deploy."
+  },
+  "siteBrowser": {
+    "observedAt": "2026-11-05T12:00:58.686Z",
+    "linksVerified": 7,
+    "viewports": [
+      {
+        "width": 1366,
+        "scrollWidth": 1351,
+        "height": 768
+      },
+      {
+        "width": 390,
+        "scrollWidth": 375,
+        "height": 844
+      }
+    ],
+    "errors": []
+  },
+  "sitePublicVerified": false,
+  "temporaryPublisherRemoved": true,
+  "binaryRebuilt": false,
+  "dependencyOrLockChanged": false,
+  "installerExecuted": false,
+  "remaining": [
+    "Unsigned development binaries",
+    "Actual installer/uninstaller and long-running load were not repeated",
+    "VirusTotal EXE: four timeout and five unsupported; ZIP: seven unsupported",
+    "Lint checks repository uses references and reachable local action metadata; remote runtime downloads and runner images are outside this rule"
+  ]
+}

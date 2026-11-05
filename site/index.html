@@ -29,14 +29,17 @@
           <h2>Windows 설치판</h2><p class="file-meta">EXE · {{INSTALLER_SIZE}}</p>
           <a class="button primary download-button" data-download="installer" href="{{INSTALLER_URL}}" download>설치 EXE 다운로드 <span aria-hidden="true">↓</span></a>
           <details class="checksum"><summary>SHA-256</summary><code id="installer-hash">{{INSTALLER_SHA256}}</code><button type="button" data-copy-target="installer-hash" aria-label="설치 EXE SHA-256 복사">복사</button></details>
+          <p class="file-meta"><a href="{{INSTALLER_VIRUSTOTAL_URL}}" aria-label="설치 EXE VirusTotal 검사 결과">VirusTotal 검사 결과</a></p>
         </article>
         <article class="download-card">
           <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 9-4 9 4v12l-9 4-9-4V6Zm0 0 9 4 9-4m-9 4v12"/></svg>
           <h2>포터블 ZIP</h2><p class="file-meta">ZIP · {{ZIP_SIZE}}</p>
           <a class="button secondary download-button" data-download="zip" href="{{ZIP_URL}}" download>포터블 ZIP 다운로드 <span aria-hidden="true">↓</span></a>
           <details class="checksum"><summary>SHA-256</summary><code id="zip-hash">{{ZIP_SHA256}}</code><button type="button" data-copy-target="zip-hash" aria-label="포터블 ZIP SHA-256 복사">복사</button></details>
+          <p class="file-meta"><a href="{{ZIP_VIRUSTOTAL_URL}}" aria-label="포터블 ZIP VirusTotal 검사 결과">VirusTotal 검사 결과</a></p>
         </article>
       </div>
+      <p class="release-links"><a href="{{RELEASE_URL}}">GitHub Release</a><a href="{{CHECKSUMS_URL}}" download>SHA256SUMS.txt</a></p>
       <p class="security-note">미서명 개발 버전</p>
     </section>
     <section class="section" id="features" aria-labelledby="features-title">

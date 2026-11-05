@@ -66,7 +66,7 @@
     }
   ],
   "installerFilePresent": true,
-  "blocker": "Actual setup/uninstall, long-running load, signing and new security scan were not performed. Current 0.1.7 native event/restart checks and embedded package verification passed.",
+  "blocker": "Actual setup/uninstall, long-running load and signing were not performed. Exact installer/ZIP public VirusTotal results are recorded separately; native event/restart and embedded package checks passed.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -427,7 +427,8 @@
       "publicStaticAssets": 3,
       "historicalLicenseUrls": 2,
       "browserExecuted": false
-    }
+    },
+    "publicDistributionReport": "docs/results/public-distribution-0.1.7.json"
   },
   "portableDelivery": {
     "version": "0.1.7",

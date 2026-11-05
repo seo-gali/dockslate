@@ -9,14 +9,17 @@ const release = JSON.parse(fs.readFileSync(path.join(root, 'site/release.json'),
 const app = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 if (release.version !== app.version || !/^\d+\.\d+\.\d+$/.test(release.version)) throw Error('Website version must match the application version.');
 const siteUrl = 'https://seo-gali.github.io/dockslate/';
-const values = { VERSION: release.version, SITE_URL: siteUrl };
+const releasesUrl = 'https://github.com/seo-gali/dockslate/releases/';
+const assetUrl = releasesUrl + 'download/v' + release.version + '/';
+const values = { VERSION: release.version, SITE_URL: siteUrl, RELEASE_URL: releasesUrl + 'tag/v' + release.version };
 let verifiedDownloads = 0;
 const checksumLines = [];
 for (const key of ['installer', 'zip', 'licenses']) {
   const asset = release[key];
   if (!asset || !/^[A-Za-z0-9_.-]+\.(exe|zip)$/.test(asset.file) || !/^[A-F0-9]{64}$/.test(asset.sha256) || !Number.isSafeInteger(asset.bytes) || asset.bytes <= 0) throw Error(`Invalid release metadata: ${key}`);
   const prefix = key.toUpperCase();
-  values[`${prefix}_URL`] = './downloads/' + encodeURIComponent(asset.file);
+  values[`${prefix}_URL`] = assetUrl + encodeURIComponent(asset.file);
+  if (key !== 'licenses') values[`${prefix}_VIRUSTOTAL_URL`] = 'https://www.virustotal.com/gui/file/' + asset.sha256.toLowerCase() + '/detection';
   values[`${prefix}_SIZE`] = (asset.bytes / 1000000).toFixed(1) + ' MB';
   values[`${prefix}_SHA256`] = asset.sha256;
   const source = path.join(root, 'downloads', asset.file);
@@ -35,7 +38,7 @@ for (const key of ['installer', 'zip', 'licenses']) {
 }
 const checksumFile = path.join(root, 'downloads/SHA256SUMS.txt');
 if (fs.readFileSync(checksumFile, 'utf8').replaceAll('\r\n', '\n') !== checksumLines.join('\n') + '\n') throw Error('SHA256SUMS.txt differs from the verified release metadata.');
-values.CHECKSUMS_URL = './downloads/SHA256SUMS.txt';
+values.CHECKSUMS_URL = assetUrl + 'SHA256SUMS.txt';
 if (!fs.readFileSync(path.join(root, 'licenses/THIRD_PARTY_NOTICES.md'), 'utf8').includes(release.licenses.file)) throw Error('Notices must link to the current license/source archive.');
 let html = fs.readFileSync(path.join(root, 'site/index.html'), 'utf8');
 for (const [key, value] of Object.entries(values)) html = html.replaceAll(`{{${key}}}`, value);
