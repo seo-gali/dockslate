@@ -32,9 +32,9 @@ npm run build:site
 
 릴리스 명세의 EXE·포터블·고지 소스 ZIP을 크기·SHA-256으로 검증하고 `downloads/SHA256SUMS.txt`의 세 항목과 대조한 뒤 `site-dist/`를 만듭니다. 지문표가 다르면 기존 출력 교체 전에 실패합니다. `site-dist/index.html`을 브라우저로 열어 확인합니다. 로컬 명령은 외부로 전송하지 않습니다.
 
-사이트 빌드는 0.1.3~0.1.6 고지 ZIP을 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 8개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
+사이트 빌드는 0.1.3~0.1.8 고지 ZIP을 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 12개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
 
-현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.7)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.7.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
+현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.9)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.9.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
 
 설치 EXE는 `scripts/build-installer.ps1`, 포터블은 `npm run package:local`로 별도 생성합니다. Pages workflow는 앱 설치 파일을 빌드하지 않습니다. `site-dist/`에는 공개 웹 파일과 다운로드만 포함하며 앱 소스·검증 자료·로컬 영상은 게시하지 않습니다.
 

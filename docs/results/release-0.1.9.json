@@ -1,7 +1,7 @@
 {
   "version": "0.1.9",
-  "status": "Installer and portable packages created and inspected; public website remains 0.1.7",
-  "published": false,
+  "status": "GitHub v0.1.9 Release published and downloaded; website deployment pending",
+  "published": true,
   "dependencyVersionsChanged": false,
   "lockChangeScope": "Application root version metadata only",
   "installerExecuted": false,
@@ -215,5 +215,51 @@
   ],
   "temporaryWorkflowRemoved": true,
   "temporaryBuildInputRemoved": true,
-  "virusTotalReport": "docs/results/virustotal-0.1.9.json"
+  "virusTotalReport": "docs/results/virustotal-0.1.9.json",
+  "githubRelease": {
+    "observedAt": "2026-11-06T17:36:41.399Z",
+    "releaseId": 436800141,
+    "tag": "v0.1.9",
+    "sourceCommit": "29f709823fd42cfaff4c8d01fb4a8876fba83ef1",
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.9",
+    "prerelease": true,
+    "publishedAt": "2026-11-06T17:35:52Z",
+    "tagMatchesLocal": true,
+    "releaseNotesMatch": true,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.9_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.9/DockSlate_0.1.9_x64-setup.exe",
+        "bytes": 49330186,
+        "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
+        "githubDigest": "sha256:5940e73edf2759d24be9179f140f6f05ee1d7b6fd719e86ad1f1b16ef6f58174",
+        "matchesExpected": true
+      },
+      {
+        "name": "DockSlate-0.1.9-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.9/DockSlate-0.1.9-windows-x64.zip",
+        "bytes": 63425436,
+        "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0",
+        "githubDigest": "sha256:05f31116ae67fdad4bfb36b0b1f4c9fdd7415c06784f30fc76bf8f26f239c0b0",
+        "matchesExpected": true
+      },
+      {
+        "name": "DockSlate-0.1.9-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.9/DockSlate-0.1.9-third-party-licenses.zip",
+        "bytes": 5161546,
+        "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4",
+        "githubDigest": "sha256:aada31925345f4586f664964bf9e4d92c3c26e4d98cff6a8e9e73a3ad41a1ae4",
+        "matchesExpected": true
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.9/SHA256SUMS.txt",
+        "bytes": 301,
+        "sha256": "D590F12911E6652695401C9DA9A8110CD32E1F9ECDC40605E82BDA9C1BEBB9EC",
+        "githubDigest": "sha256:d590f12911e6652695401c9da9a8110cd32e1f9ecdc40605e82bda9c1bebb9ec",
+        "matchesExpected": true
+      }
+    ]
+  },
+  "websitePublished": false
 }

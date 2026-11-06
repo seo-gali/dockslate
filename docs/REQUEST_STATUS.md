@@ -1,13 +1,13 @@
 # 사용자 요청 체크리스트
 
-갱신: 2026-11-06 · 개발판 **0.1.9**, 공개 배포본 **0.1.7**. 구현·실제 Windows 확인·전체 회귀를 구분한다. 정식 배포 점검 전체 완료를 의미하지 않는다.
+갱신: 2026-11-07 · 개발·공개 버전 **0.1.9**. 구현·실제 Windows 확인·전체 회귀를 구분한다. 정식 배포 점검 전체 완료를 의미하지 않는다.
 
 | 현재 근거 | 확인 범위 |
 | --- | --- |
 | [0.1.9 제작](results/release-0.1.9.md) | 설치 EXE·포터블 ZIP·고지 ZIP·SHA256SUMS 생성. 내부 앱·CLI·공식 구성 요소·문서 대조와 ZIP 615개 파일 검사 통과. 실제 설치·제거·공개 배포와 구분 |
 | [설치·제거 후반 대기](results/installer-delay.md) | 0.1.9 설치판 반영: 알림 전체 2초 예산·등록 단계/경과 시간 표시. 실제 NSIS·지연 창 24개에서 두 경로 2,015ms, PATH 검사 9개 통과. 원래 지연 호출·실제 전체 제거는 미확정 |
-| [공개 배포·무결성·검사](results/public-distribution-0.1.7.md) | GitHub Release 첨부 4개·SHA256SUMS·VirusTotal 해시 조회, workflow SHA 린트 |
-| [0.1.8 제작](results/release-0.1.8.md) · [자동 시작·컨테이너 일괄 작업](results/startup-bulk-feedback.md) | 독립된 엔진·창 자동 시작, 표 체크박스·시작·중지·재시작. 실제 실행 검증·공개 배포는 제작·검사 결과와 구분. 공개 0.1.7에는 미포함 |
+| [공개 배포·무결성·검사](results/public-distribution-0.1.9.md) | 0.1.9 GitHub Release 첨부 4개·SHA256SUMS 공개 다운로드 대조. VirusTotal EXE 0/64·ZIP 0/65. 홈페이지 전환 진행 중 |
+| [0.1.8 제작](results/release-0.1.8.md) · [자동 시작·컨테이너 일괄 작업](results/startup-bulk-feedback.md) | 독립된 엔진·창 자동 시작, 표 체크박스·시작·중지·재시작. 실제 실행 검증·공개 배포는 제작·검사 결과와 구분. 공개 0.1.9에 포함 |
 | [0.1.7 릴리스](results/release-0.1.7.md) | 실제 앱 24개·CLI 4개, ZIP 604개 파일·설치 EXE 내부, 공개 다운로드 3개 및 사이트·과거 고지 경로 검증 |
 | [0.1.6 릴리스](results/release-0.1.6.md) | 앱·CLI 빌드, Rust·TypeScript, 읽기 전용 Windows 검사 10개·CLI 명령 4개, 설치 파일 내부·공개 다운로드 검증 |
 | [실제 재설치](results/reinstall-recovery.md) | 기존 데이터가 없는 이 PC의 잔여 등록 정리·새 엔진 설치 후 실제 설치 EXE 종료 0. CLI·커널 검사 14개·앱 화면 검사 5개. 기존 데이터 복원·제거·전체 회귀는 미검증 |
@@ -116,7 +116,7 @@ Compose 가져오기 제한: 1~16개 서비스, 프로젝트 내부 상대 컨�
 
 ## 근거
 
-- [현재 0.1.7 빌드·산출물](results/release-0.1.7.md)
+- [현재 0.1.9 빌드·산출물](results/release-0.1.9.md)
 - [이전 프런트엔드·성능 검증](results/refinement-verification.md)
 - [이전 확장 기능 검증](results/workbench-verification.md)
 - [독립 엔진 검증](results/standalone-runtime-verification.md)

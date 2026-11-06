@@ -204,7 +204,7 @@
       "embeddedStartupAndPathHelperMatches": true,
       "installerExecuted": false
     },
-    "published": false,
+    "published": true,
     "installerExecuted": false
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
@@ -318,7 +318,7 @@
     "nativeGuiExecuted": false,
     "installerExecuted": false,
     "engineChanged": false,
-    "packagingStatus": "0.1.9 EXE and ZIP created and inspected; public website remains 0.1.7.",
+    "packagingStatus": "0.1.9 packages published on GitHub Release; website switch pending.",
     "portable": {
       "version": "0.1.9",
       "file": "DockSlate-0.1.9-windows-x64.zip",
@@ -412,8 +412,10 @@
         "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4"
       }
     ],
-    "publicDownloadsVerified": false,
-    "actualAutomaticStartupVerified": false
+    "publicDownloadsVerified": true,
+    "actualAutomaticStartupVerified": false,
+    "publicDownloadsScope": "Exact four GitHub Release assets; Pages switch is separate.",
+    "publicReleaseReport": "docs/results/public-distribution-0.1.9.json"
   },
   "portableDelivery": {
     "version": "0.1.9",
@@ -424,7 +426,7 @@
     "allEntriesMatchPortableFolder": true,
     "duplicateEntries": false,
     "installerExecuted": false,
-    "published": false
+    "published": true
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

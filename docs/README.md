@@ -1,6 +1,6 @@
 # 문서 안내
 
-현재 개발 버전은 0.1.9이며 공개 배포본은 0.1.7이다. 사용 방법·개발 계약과 과거 실행 결과를 구분한다. 검증 문서의 날짜·버전·EXE 해시는 해당 실행의 기준이며, 문서를 고쳤다고 앱을 다시 검증한 것은 아니다.
+현재 개발·공개 버전은 0.1.9다. 사용 방법·개발 계약과 과거 실행 결과를 구분한다. 검증 문서의 날짜·버전·EXE 해시는 해당 실행의 기준이며, 문서를 고쳤다고 앱을 다시 검증한 것은 아니다.
 
 ## 현재 안내와 개발 기준
 
@@ -20,6 +20,7 @@
 | 문서 | 읽는 범위 |
 | --- | --- |
 | [요청·검증 현황](REQUEST_STATUS.md) · [배포 전 점검](results/production-readiness.md) | 구현·실행 확인·미검증의 현재 요약 |
+| [0.1.9 공개 배포](results/public-distribution-0.1.9.md) · [제작·검사](results/release-0.1.9.md) | Release 첨부 4개·체크섬·VirusTotal, 자동 시작·일괄 작업·제거 알림 대기 변경과 미검증 범위 |
 | [0.1.7 릴리스](results/release-0.1.7.md) · [이벤트 자동 갱신](results/engine-events.md) | 실제 앱 24개·CLI 4개·패키지 검증, DockSlate WSL 재시작·기존 SQL 실행 상태 복원 |
 | [0.1.6 제작 기록](results/release-0.1.6.md) · [고정 공개 검사](results/public-release-0.1.6.json) | 2026-10-31 빌드·패키지·공개 파일 검사 |
 | [실제 재설치](results/reinstall-recovery.md) | 2026-11-02 이 PC의 빈 엔진 재설치·앱·CLI 확인 |
@@ -47,4 +48,4 @@
 
 [IObit 제출 초안](results/iobit-access-review-draft.md)은 미전송 문서이며 제출 승인이나 원래 경고의 원인 확정이 아니다. [라이선스 자료](../licenses/README.md)는 원문·소스·고지 목록을 관리한다.
 
-[현재 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.7이며 사이트 빌드 시 다운로드 경로에 복사한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.
+[현재 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.9이며 사이트 빌드 시 다운로드 경로에 복사한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.
