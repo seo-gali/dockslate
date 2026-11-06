@@ -10,7 +10,7 @@
     "hookFixtureExecuted": false,
     "frontendBuildExit": 0,
     "browserCompleted": true,
-    "installerBuildExit": 1,
+    "installerBuildExit": 0,
     "hookCompilationExit": 0,
     "installerExecuted": false,
     "browserChecks": 27,
@@ -38,14 +38,14 @@
     "engineRestoredStopped": true,
     "remoteInstallerBuildExit": 0,
     "installerPathPreservationExit": 0,
-    "installerPathPreservationChecks": 8,
+    "installerPathPreservationChecks": 9,
     "correctedInstallerGuideChecks": 11,
     "currentNativeChecks": 0,
     "dependencyVersionsChanged": false,
     "lockChangeScope": "Application root version metadata only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
     "currentNativeScope": "0.1.9 PE product version and source-matching NSIS notification fixture; no native GUI/engine lifecycle.",
-    "installerBuildScope": "0.1.9 local NSIS packaging failed; see currentBuild."
+    "installerBuildScope": "0.1.9 packaging once on GitHub using two SHA-verified local binaries and the Windows-tested notification source; local NSIS read failure retained in currentBuild."
   },
   "artifacts": [
     {
@@ -66,7 +66,7 @@
     }
   ],
   "installerFilePresent": true,
-  "blocker": "Actual setup/uninstall, long-running load and signing were not performed. Exact installer/ZIP public VirusTotal results are recorded separately; native event/restart and embedded package checks passed.",
+  "blocker": "0.1.9 package creation and extraction passed. Actual setup/uninstall, native GUI/engine lifecycle, signing and VirusTotal submission were not performed; historical observations do not certify the current binaries.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -178,21 +178,21 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "version": "0.1.8",
+    "version": "0.1.9",
     "run": {
-      "runId": 42040328613,
-      "sourceCommit": "8c9400744fb042f13b0bc3e5d2245706402c42c2",
+      "runId": 42232618099,
+      "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/seo-gali/dockslate/actions/runs/42040328613",
-      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42040328613/artifacts"
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618099",
+      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42232618099/artifacts"
     },
     "inspection": {
-      "observedAt": "2026-11-05T14:06:10.5496360Z",
-      "version": "0.1.8",
-      "file": "DockSlate_0.1.8_x64-setup.exe",
-      "bytes": 49306747,
-      "sha256": "5BC369BAA21AADBF64C7A607225C9D5F66421E59E9E7F4C7A230DDD0CAAF64CF",
+      "observedAt": "2026-11-06T14:23:07.3179767Z",
+      "version": "0.1.9",
+      "file": "DockSlate_0.1.9_x64-setup.exe",
+      "bytes": 49330186,
+      "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
       "signatureStatus": "NotSigned",
       "embeddedApplicationAndLauncherMatch": true,
       "verifiedLicenseFiles": 375,
@@ -200,7 +200,7 @@
       "exampleFilesVerified": 5,
       "textComparisonNormalization": "CRLF to LF",
       "licenseMetadataAndGuideFilesVerified": 4,
-      "packagedDocumentFilesVerified": 19,
+      "packagedDocumentFilesVerified": 21,
       "embeddedStartupAndPathHelperMatches": true,
       "installerExecuted": false
     },
@@ -276,7 +276,7 @@
   },
   "currentBuild": {
     "version": "0.1.9",
-    "checkedAt": "2026-11-06T13:56:45.105Z",
+    "checkedAt": "2026-11-06T14:23:38.785Z",
     "appAndCliBuildExit": 0,
     "rustCheckExit": 0,
     "frontendBuildExit": 0,
@@ -318,7 +318,7 @@
     "nativeGuiExecuted": false,
     "installerExecuted": false,
     "engineChanged": false,
-    "packagingStatus": "Application and portable packages created; installer requires external build approval after local NSIS read failure",
+    "packagingStatus": "0.1.9 EXE and ZIP created and inspected; public website remains 0.1.7.",
     "portable": {
       "version": "0.1.9",
       "file": "DockSlate-0.1.9-windows-x64.zip",
@@ -369,14 +369,58 @@
       ],
       "existingProfileUsed": false,
       "engineConnectionRequired": false
-    }
+    },
+    "installerRun": {
+      "runId": 42232618099,
+      "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618099",
+      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42232618099/artifacts"
+    },
+    "installerInspection": {
+      "observedAt": "2026-11-06T14:23:07.3179767Z",
+      "version": "0.1.9",
+      "file": "DockSlate_0.1.9_x64-setup.exe",
+      "bytes": 49330186,
+      "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
+      "signatureStatus": "NotSigned",
+      "embeddedApplicationAndLauncherMatch": true,
+      "verifiedLicenseFiles": 375,
+      "nativeComponentFilesVerified": 3,
+      "exampleFilesVerified": 5,
+      "textComparisonNormalization": "CRLF to LF",
+      "licenseMetadataAndGuideFilesVerified": 4,
+      "packagedDocumentFilesVerified": 21,
+      "embeddedStartupAndPathHelperMatches": true,
+      "installerExecuted": false
+    },
+    "artifactFiles": [
+      {
+        "file": "DockSlate_0.1.9_x64-setup.exe",
+        "bytes": 49330186,
+        "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174"
+      },
+      {
+        "file": "DockSlate-0.1.9-windows-x64.zip",
+        "bytes": 63425436,
+        "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0"
+      },
+      {
+        "file": "DockSlate-0.1.9-third-party-licenses.zip",
+        "bytes": 5161546,
+        "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4"
+      }
+    ],
+    "publicDownloadsVerified": false,
+    "actualAutomaticStartupVerified": false
   },
   "portableDelivery": {
-    "version": "0.1.8",
-    "file": "DockSlate-0.1.8-windows-x64.zip",
-    "bytes": 63419336,
-    "sha256": "238997FB8508F316B2D6D2B8A73BE7A9359EFCC6290114F500F929A79C74DA72",
-    "files": 611,
+    "version": "0.1.9",
+    "file": "DockSlate-0.1.9-windows-x64.zip",
+    "bytes": 63425436,
+    "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0",
+    "files": 615,
     "allEntriesMatchPortableFolder": true,
     "duplicateEntries": false,
     "installerExecuted": false,

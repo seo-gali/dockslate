@@ -1,13 +1,13 @@
 {
   "version": "0.1.9",
-  "status": "Application and portable packages created; installer requires external build approval after local NSIS read failure",
+  "status": "Installer and portable packages created and inspected; public website remains 0.1.7",
   "published": false,
   "dependencyVersionsChanged": false,
   "lockChangeScope": "Application root version metadata only",
   "installerExecuted": false,
   "realUninstallDelayReproduced": false,
   "virusTotalSubmitted": false,
-  "observedAt": "2026-11-06T14:02:56.959Z",
+  "observedAt": "2026-11-06T14:23:38.785Z",
   "peVersion": {
     "appProductVersion": "0.1.9",
     "appFileVersion": "0.1.9",
@@ -77,7 +77,7 @@
     "file": ".github/release019-installer-input.zip",
     "bytes": 2247778,
     "sha256": "64943898D3319A808569B5B3A528808DF407506720C42F269FC7D9224761FBDD",
-    "uploaded": false
+    "uploaded": true
   },
   "notificationCheck": {
     "observedAt": "2026-11-06T12:42:59.4562577Z",
@@ -106,5 +106,113 @@
   "localInstallerExit": 1,
   "localInstallerFailure": "NSIS failed opening src-tauri/installer/user-path.ps1 in both sandboxed and normal-user packaging.",
   "userDataChanged": false,
-  "publicSiteMetadataChanged": false
+  "publicSiteMetadataChanged": false,
+  "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
+  "buildRun": {
+    "runId": 42232618099,
+    "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618099",
+    "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42232618099/artifacts"
+  },
+  "files": [
+    {
+      "file": "DockSlate_0.1.9_x64-setup.exe",
+      "bytes": 49330186,
+      "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174"
+    },
+    {
+      "file": "DockSlate-0.1.9-windows-x64.zip",
+      "bytes": 63425436,
+      "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0"
+    },
+    {
+      "file": "DockSlate-0.1.9-third-party-licenses.zip",
+      "bytes": 5161546,
+      "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4"
+    }
+  ],
+  "checksumManifest": "downloads/SHA256SUMS.txt",
+  "installer": {
+    "observedAt": "2026-11-06T14:23:07.3179767Z",
+    "version": "0.1.9",
+    "file": "DockSlate_0.1.9_x64-setup.exe",
+    "bytes": 49330186,
+    "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
+    "signatureStatus": "NotSigned",
+    "embeddedApplicationAndLauncherMatch": true,
+    "verifiedLicenseFiles": 375,
+    "nativeComponentFilesVerified": 3,
+    "exampleFilesVerified": 5,
+    "textComparisonNormalization": "CRLF to LF",
+    "licenseMetadataAndGuideFilesVerified": 4,
+    "packagedDocumentFilesVerified": 21,
+    "embeddedStartupAndPathHelperMatches": true,
+    "installerExecuted": false
+  },
+  "githubArtifact": {
+    "artifactId": 13508623296,
+    "archiveBytes": 49324893,
+    "githubDigest": "sha256:3c8aa69eec022e929e25a85feb0bf5472caa25c5f8dd74b54b84c0f77058e81e",
+    "githubDigestVerified": true,
+    "installerSha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
+    "installerBytes": 49330186,
+    "installerExecuted": false
+  },
+  "publicSitePreserved": {
+    "observedAt": "2026-11-06T14:20:37.822Z",
+    "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
+    "ci": [
+      {
+        "workflow": ".github/workflows/pages.yml",
+        "runId": 42232618126,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618126",
+        "jobs": [
+          {
+            "name": "Check workflow SHA pins",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "build",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "deploy",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "workflow": ".github/workflows/workflow-pins.yml",
+        "runId": 42232618213,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618213"
+      }
+    ],
+    "publicSite": {
+      "version": "0.1.7",
+      "httpStatus": 200,
+      "htmlSha256": "d83f8500096a881edc3eb141acfaa9488f2b30d0164b480d5802385b800671b1",
+      "checksumHttpStatus": 200,
+      "oldDownloadsPreserved": true
+    }
+  },
+  "packageDocumentsAreBuildTimeSnapshots": true,
+  "nativeGuiExecuted": false,
+  "actualAutomaticStartupVerified": false,
+  "actualContainerBatchLifecycleVerified": false,
+  "remaining": [
+    "Actual setup/uninstall and original delay diagnosis",
+    "Native GUI, container batch lifecycle, Windows login and engine automatic startup",
+    "Signing, VirusTotal reports and public v0.1.9 Release/website publication"
+  ],
+  "temporaryWorkflowRemoved": true,
+  "temporaryBuildInputRemoved": true
 }
