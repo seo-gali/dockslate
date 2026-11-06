@@ -89,6 +89,7 @@ FunctionEnd
 Function ${PREFIX}DockSlateUpdateUserPath
   Push $0
   Push $1
+  Push $2
   StrCpy $DockSlatePathExit 1
   InitPluginsDir
   ClearErrors
@@ -103,10 +104,23 @@ Function ${PREFIX}DockSlateUpdateUserPath
   ${If} ${RunningX64}
     StrCpy $0 "$WINDIR\Sysnative\WindowsPowerShell\v1.0\powershell.exe"
   ${EndIf}
+  ${If} $LANGUAGE = 1042
+    DetailPrint "Windows 명령·자동 시작 등록 처리 중 ($DockSlatePathMode)..."
+  ${Else}
+    DetailPrint "Processing Windows command and startup registration ($DockSlatePathMode)..."
+  ${EndIf}
+  System::Call 'kernel32::GetTickCount() i.r2'
   ; Keep the complete registry value in .NET, outside NSIS's fixed-size strings.
   nsExec::ExecToStack /TIMEOUT=30000 `"$0" -NoLogo -NoProfile -NonInteractive -Command "& ([scriptblock]::Create([IO.File]::ReadAllText($$env:DOCKSLATE_PATH_SCRIPT)))"`
   Pop $DockSlatePathExit
   Pop $1
+  System::Call 'kernel32::GetTickCount() i.r0'
+  IntOp $0 $0 - $2
+  ${If} $LANGUAGE = 1042
+    DetailPrint "Windows 등록 처리 결과: $DockSlatePathExit ($0 ms)"
+  ${Else}
+    DetailPrint "Windows registration result: $DockSlatePathExit ($0 ms)"
+  ${EndIf}
   ${If} $DockSlatePathExit != "0"
     DetailPrint "Windows PATH operation failed: $1"
   ${EndIf}
@@ -114,6 +128,7 @@ Function ${PREFIX}DockSlateUpdateUserPath
   System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_MODE", p 0)'
   System::Call 'kernel32::SetEnvironmentVariableW(w "DOCKSLATE_PATH_BIN", p 0)'
 path_update_done:
+  Pop $2
   Pop $1
   Pop $0
 FunctionEnd
@@ -121,6 +136,65 @@ FunctionEnd
 
 !insertmacro DockSlatePathFunctions ""
 !insertmacro DockSlatePathFunctions "un."
+
+!macro DockSlateEnvironmentFunctions PREFIX
+Function ${PREFIX}DockSlateNotifyEnvironment
+  Push $0
+  Push $1
+  Push $2
+  Push $3
+  Push $4
+  Push $5
+  ${If} $LANGUAGE = 1042
+    DetailPrint "Windows 명령 변경을 알리는 중..."
+  ${Else}
+    DetailPrint "Notifying Windows of command changes..."
+  ${EndIf}
+  System::Call 'kernel32::GetTickCount() i.r1'
+  FindWindow $4 "Progman" ""
+  ${If} $4 <> 0
+    System::Call 'user32::SendMessageTimeoutW(p r4, i ${WM_SETTINGCHANGE}, p 0, w "Environment", i 0x22, i 750, *p .r5) p.r5'
+  ${EndIf}
+  ; shortcut: stop waiting at 2 s; use a background sender if every window must be notified.
+  System::Call 'user32::GetTopWindow(p 0) p.r0'
+notify_next:
+  StrCmp $0 0 notify_done
+  System::Call 'kernel32::GetTickCount() i.r2'
+  IntOp $2 $2 - $1
+  IntCmp $2 2000 notify_timeout 0 notify_timeout
+  System::Call 'user32::GetWindow(p r0, i 2) p.r3'
+  ${If} $0 <> $4
+    IntOp $2 2000 - $2
+    ${If} $2 > 100
+      StrCpy $2 100
+    ${EndIf}
+    System::Call 'user32::SendMessageTimeoutW(p r0, i ${WM_SETTINGCHANGE}, p 0, w "Environment", i 0x22, i r2, *p .r5) p.r5'
+  ${EndIf}
+  StrCpy $0 $3
+  Goto notify_next
+notify_timeout:
+  ${If} $LANGUAGE = 1042
+    DetailPrint "응답이 느린 프로그램의 알림 대기를 생략했습니다. 필요하면 해당 프로그램을 다시 여세요."
+  ${Else}
+    DetailPrint "Skipped waiting for slow programs. Reopen those programs if needed."
+  ${EndIf}
+notify_done:
+  ${If} $LANGUAGE = 1042
+    DetailPrint "Windows 변경 알림 대기를 마쳤습니다."
+  ${Else}
+    DetailPrint "Finished waiting for Windows change notifications."
+  ${EndIf}
+  Pop $5
+  Pop $4
+  Pop $3
+  Pop $2
+  Pop $1
+  Pop $0
+FunctionEnd
+!macroend
+
+!insertmacro DockSlateEnvironmentFunctions ""
+!insertmacro DockSlateEnvironmentFunctions "un."
 
 !macro NSIS_HOOK_PREINSTALL
   IfSilent setup_silent_unsupported setup_interactive
@@ -150,7 +224,7 @@ setup_interactive:
     ${EndIf}
     Abort "Windows docker command registration is incomplete. Review the PATH error in the installation details. Existing engine data was preserved."
   ${EndIf}
-  SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
+  Call DockSlateNotifyEnvironment
   DetailPrint "Verified the DockSlate bin folder in this user's PATH. Open a new terminal to use docker."
   IfFileExists "$INSTDIR\dockslate.exe" 0 setup_files_missing
   IfFileExists "$INSTDIR\bin\docker.exe" 0 setup_files_missing
@@ -184,7 +258,7 @@ setup_complete:
   Call un.DockSlateUpdateUserPath
   ${If} $DockSlatePathExit == "0"
     DeleteRegKey /ifempty HKCU "${DOCKSLATE_INSTALLER_KEY}"
-    SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
+    Call un.DockSlateNotifyEnvironment
   ${Else}
     DetailPrint "The owned PATH entry could not be removed. Other entries were preserved."
   ${EndIf}

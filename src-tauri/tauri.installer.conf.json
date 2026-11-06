@@ -34,10 +34,12 @@
       "../docs/USER_GUIDE.md": "docs/USER_GUIDE.md",
       "../examples/": "examples/",
       "../licenses/": "licenses/",
-      "../docs/results/release-0.1.8.md": "docs/results/release-0.1.8.md",
-      "../docs/results/release-0.1.8.json": "docs/results/release-0.1.8.json",
       "../docs/results/startup-bulk-feedback.md": "docs/results/startup-bulk-feedback.md",
-      "../docs/results/startup-bulk-feedback.json": "docs/results/startup-bulk-feedback.json"
+      "../docs/results/startup-bulk-feedback.json": "docs/results/startup-bulk-feedback.json",
+      "../docs/results/release-0.1.9.md": "docs/results/release-0.1.9.md",
+      "../docs/results/release-0.1.9.json": "docs/results/release-0.1.9.json",
+      "../docs/results/installer-delay.md": "docs/results/installer-delay.md",
+      "../docs/results/installer-delay.json": "docs/results/installer-delay.json"
     },
     "windows": {
       "allowDowngrades": false,
