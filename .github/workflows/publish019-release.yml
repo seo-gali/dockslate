@@ -1,0 +1,58 @@
+name: Publish verified 0.1.9 release once
+
+on:
+  push:
+    tags: [v0.1.9]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Verify tag, exact files, scans and SHA-256 manifest
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          import {createHash} from 'node:crypto';
+          const report=JSON.parse(fs.readFileSync('docs/results/release-0.1.9.json','utf8'));
+          const app=JSON.parse(fs.readFileSync('package.json','utf8'));
+          const scans=JSON.parse(fs.readFileSync('docs/results/virustotal-0.1.9.json','utf8'));
+          assert.equal(process.env.GITHUB_REF_NAME,'v0.1.9');
+          assert.equal(app.version,'0.1.9');assert.equal(report.version,app.version);
+          assert.equal(report.files.length,3);
+          for(const file of report.files){
+            assert(/^(DockSlate_0\.1\.9_x64-setup\.exe|DockSlate-0\.1\.9-(windows-x64|third-party-licenses)\.zip)$/.test(file.file));
+            const contents=fs.readFileSync('downloads/'+file.file);
+            assert.equal(contents.length,file.bytes);
+            assert.equal(createHash('sha256').update(contents).digest('hex').toUpperCase(),file.sha256);
+            if(file.file.endsWith('third-party-licenses.zip'))continue;
+            const scan=scans.files.find(scan=>scan.file===file.file);
+            assert(scan?.completed&&scan.totalEngines>0&&scan.detections===0);
+            assert.equal(scan.sha256.toUpperCase(),file.sha256);
+          }
+          const sums=report.files.map(file=>file.sha256+'  '+file.file).join('\n')+'\n';
+          assert.equal(fs.readFileSync('downloads/SHA256SUMS.txt','utf8'),sums);
+          NODE
+      - name: Upload verified assets and publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            downloads/DockSlate_0.1.9_x64-setup.exe \
+            downloads/DockSlate-0.1.9-windows-x64.zip \
+            downloads/DockSlate-0.1.9-third-party-licenses.zip \
+            downloads/SHA256SUMS.txt \
+            --verify-tag --prerelease --title "DockSlate 0.1.9" \
+            --notes-file docs/releases/v0.1.9.md

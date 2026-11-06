@@ -1,0 +1,88 @@
+{
+  "version": "0.1.9",
+  "observedAt": "2026-11-06T17:35:10.087Z",
+  "status": "Prepared for approved publication; remote release and website not yet switched",
+  "published": false,
+  "files": [
+    {
+      "file": "DockSlate_0.1.9_x64-setup.exe",
+      "bytes": 49330186,
+      "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174"
+    },
+    {
+      "file": "DockSlate-0.1.9-windows-x64.zip",
+      "bytes": 63425436,
+      "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0"
+    },
+    {
+      "file": "DockSlate-0.1.9-third-party-licenses.zip",
+      "bytes": 5161546,
+      "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4"
+    }
+  ],
+  "virusTotal": {
+    "version": "0.1.9",
+    "scope": "Public VirusTotal submission and completed SHA-256 matching reports; observations at the stated time.",
+    "files": [
+      {
+        "file": "DockSlate_0.1.9_x64-setup.exe",
+        "sha256": "5940e73edf2759d24be9179f140f6f05ee1d7b6fd719e86ad1f1b16ef6f58174",
+        "reportUrl": "https://www.virustotal.com/gui/file/5940e73edf2759d24be9179f140f6f05ee1d7b6fd719e86ad1f1b16ef6f58174/detection",
+        "observedAt": "2026-11-06T17:35:01.167Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 64,
+        "undetected": 64,
+        "unsupported": 5,
+        "timeout": 5,
+        "failure": 1,
+        "categories": {
+          "undetected": 64,
+          "timeout": 5,
+          "type-unsupported": 5,
+          "failure": 1
+        }
+      },
+      {
+        "file": "DockSlate-0.1.9-windows-x64.zip",
+        "sha256": "05f31116ae67fdad4bfb36b0b1f4c9fdd7415c06784f30fc76bf8f26f239c0b0",
+        "reportUrl": "https://www.virustotal.com/gui/file/05f31116ae67fdad4bfb36b0b1f4c9fdd7415c06784f30fc76bf8f26f239c0b0/detection",
+        "observedAt": "2026-11-06T17:35:01.187Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 65,
+        "undetected": 65,
+        "unsupported": 8,
+        "timeout": 1,
+        "failure": 1,
+        "categories": {
+          "undetected": 65,
+          "timeout": 1,
+          "type-unsupported": 8,
+          "failure": 1
+        }
+      }
+    ]
+  },
+  "preflight": {
+    "items": 10,
+    "record": "docs/results/production-readiness.md#019-공개-배포",
+    "workflowPins": {
+      "files": 3,
+      "references": 8,
+      "selfChecks": 25,
+      "errors": 0
+    },
+    "existingTagAndReleaseAbsent": true,
+    "exactFileHashesVerified": true,
+    "checksumVerified": true,
+    "installerExecuted": false,
+    "engineChanged": false,
+    "dependencyVersionsChanged": false,
+    "personalSecretsRead": false,
+    "remaining": [
+      "Actual setup/uninstall and full native lifecycle/login regression",
+      "Code signing, full vulnerability/security audit and rollback rehearsal"
+    ]
+  }
+}

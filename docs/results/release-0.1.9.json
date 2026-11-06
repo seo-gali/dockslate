@@ -6,7 +6,7 @@
   "lockChangeScope": "Application root version metadata only",
   "installerExecuted": false,
   "realUninstallDelayReproduced": false,
-  "virusTotalSubmitted": false,
+  "virusTotalSubmitted": true,
   "observedAt": "2026-11-06T14:23:38.785Z",
   "peVersion": {
     "appProductVersion": "0.1.9",
@@ -214,5 +214,6 @@
     "Signing, VirusTotal reports and public v0.1.9 Release/website publication"
   ],
   "temporaryWorkflowRemoved": true,
-  "temporaryBuildInputRemoved": true
+  "temporaryBuildInputRemoved": true,
+  "virusTotalReport": "docs/results/virustotal-0.1.9.json"
 }
