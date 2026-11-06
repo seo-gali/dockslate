@@ -318,7 +318,7 @@
     "nativeGuiExecuted": false,
     "installerExecuted": false,
     "engineChanged": false,
-    "packagingStatus": "0.1.9 packages published on GitHub Release; website switch pending.",
+    "packagingStatus": "0.1.9 packages published on GitHub Release and Pages; exact public hashes verified.",
     "portable": {
       "version": "0.1.9",
       "file": "DockSlate-0.1.9-windows-x64.zip",
@@ -414,8 +414,9 @@
     ],
     "publicDownloadsVerified": true,
     "actualAutomaticStartupVerified": false,
-    "publicDownloadsScope": "Exact four GitHub Release assets; Pages switch is separate.",
-    "publicReleaseReport": "docs/results/public-distribution-0.1.9.json"
+    "publicDownloadsScope": "Four GitHub Release assets, three full Pages downloads and site assets; original legal URLs preserved.",
+    "publicReleaseReport": "docs/results/public-distribution-0.1.9.json",
+    "websitePublished": true
   },
   "portableDelivery": {
     "version": "0.1.9",

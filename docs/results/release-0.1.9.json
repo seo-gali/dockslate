@@ -1,6 +1,6 @@
 {
   "version": "0.1.9",
-  "status": "GitHub v0.1.9 Release published and downloaded; website deployment pending",
+  "status": "GitHub Release and website published; exact public files verified",
   "published": true,
   "dependencyVersionsChanged": false,
   "lockChangeScope": "Application root version metadata only",
@@ -261,5 +261,6 @@
       }
     ]
   },
-  "websitePublished": false
+  "websitePublished": true,
+  "publicDistributionReport": "docs/results/public-distribution-0.1.9.json"
 }

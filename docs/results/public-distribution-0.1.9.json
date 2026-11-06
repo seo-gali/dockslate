@@ -1,7 +1,7 @@
 {
   "version": "0.1.9",
-  "observedAt": "2026-11-06T17:35:10.087Z",
-  "status": "GitHub Release published and verified; website switch pending",
+  "observedAt": "2026-11-06T17:52:55.341Z",
+  "status": "GitHub Release and 0.1.9 Pages downloads published and verified",
   "published": true,
   "files": [
     {
@@ -85,7 +85,7 @@
       "Code signing, full vulnerability/security audit and rollback rehearsal"
     ]
   },
-  "websitePublished": false,
+  "websitePublished": true,
   "github": {
     "observedAt": "2026-11-06T17:36:41.399Z",
     "releaseId": 436800141,
@@ -130,5 +130,143 @@
         "matchesExpected": true
       }
     ]
+  },
+  "pages": {
+    "observedAt": "2026-11-06T17:50:04.085Z",
+    "scope": "Actual public HTTP index, CSS, JavaScript, guide and three complete downloads; no installer execution",
+    "base": "https://seo-gali.github.io/dockslate/",
+    "publishedSourceCommit": "65f02378a8047e30b600813ebbb058f294f98733",
+    "pagesRunId": 42263600237,
+    "assets": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "sourceMatches": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "sourceMatches": true
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.9_x64-setup.exe",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate_0.1.9_x64-setup.exe",
+        "status": 200,
+        "bytes": 49330186,
+        "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
+        "matchesRelease": true
+      },
+      {
+        "file": "DockSlate-0.1.9-windows-x64.zip",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.9-windows-x64.zip",
+        "status": 200,
+        "bytes": 63425436,
+        "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0",
+        "matchesRelease": true
+      },
+      {
+        "file": "DockSlate-0.1.9-third-party-licenses.zip",
+        "url": "https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5161546,
+        "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4",
+        "matchesRelease": true
+      }
+    ],
+    "installerExecuted": false
+  },
+  "legacyLegalDownloads": {
+    "observedAt": "2026-11-06T17:50:12.179Z",
+    "base": "https://seo-gali.github.io/dockslate/",
+    "urls": [
+      {
+        "path": "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "bytes": 5161432,
+        "sha256": "fa89b812dc50c71240d07286eb0793e63642727952ed95991d4d1d006bf7c77c",
+        "matchesSource": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "bytes": 5161432,
+        "sha256": "fa89b812dc50c71240d07286eb0793e63642727952ed95991d4d1d006bf7c77c",
+        "matchesSource": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "bytes": 5161430,
+        "sha256": "297e60f066ab10467010e296fd47dd4b7c7cfc81c9067d3335bc2f189f98aaf1",
+        "matchesSource": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "bytes": 5161430,
+        "sha256": "297e60f066ab10467010e296fd47dd4b7c7cfc81c9067d3335bc2f189f98aaf1",
+        "matchesSource": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "bytes": 5161525,
+        "sha256": "d427ba1e60254372e5c4f7f7a4862a86139c838943426c98cd160929268807d4",
+        "matchesSource": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "bytes": 5161525,
+        "sha256": "d427ba1e60254372e5c4f7f7a4862a86139c838943426c98cd160929268807d4",
+        "matchesSource": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "bytes": 5161524,
+        "sha256": "e302a23fe9024b1811994b77c6c7b6feade4649ef8af26e4f49be621b324104b",
+        "matchesSource": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "bytes": 5161524,
+        "sha256": "e302a23fe9024b1811994b77c6c7b6feade4649ef8af26e4f49be621b324104b",
+        "matchesSource": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "bytes": 5163491,
+        "sha256": "feec9196a121dc84c4a1aca9790fad2f3bd7f4a80e5a1f73713998f899a518f8",
+        "matchesSource": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "bytes": 5163491,
+        "sha256": "feec9196a121dc84c4a1aca9790fad2f3bd7f4a80e5a1f73713998f899a518f8",
+        "matchesSource": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "bytes": 5161543,
+        "sha256": "416ea8cc040754c27ff91a891cc9cefa7dcaa02586de628957e97ce62ac8e663",
+        "matchesSource": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "bytes": 5161543,
+        "sha256": "416ea8cc040754c27ff91a891cc9cefa7dcaa02586de628957e97ce62ac8e663",
+        "matchesSource": true
+      }
+    ]
+  },
+  "temporaryPublisherRemoved": true,
+  "checksumFailureCheck": {
+    "observedAt": "2026-11-06T17:38:11.793Z",
+    "mismatchExit": 1,
+    "expectedMismatchRejected": true,
+    "previousSitePreservedOnFailure": true,
+    "validExit": 0,
+    "publishedChecksumCopyMatches": true
   }
 }

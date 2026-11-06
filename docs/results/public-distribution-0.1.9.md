@@ -1,6 +1,6 @@
 # DockSlate 0.1.9 공개 배포
 
-2026-11-07. [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.9)에 설치 EXE·포터블 ZIP·라이선스 ZIP·SHA256SUMS 4개를 미서명 개발 버전으로 게시했다. 실제 공개 다운로드 네 파일의 크기·SHA-256, 태그와 설명을 대조했다. 기존 v0.1.7 Release·태그·첨부는 교체하지 않았다. 홈페이지 다운로드 전환과 공개 Pages 파일 검사는 진행 중이다.
+2026-11-07. [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.9)에 설치 EXE·포터블 ZIP·라이선스 ZIP·SHA256SUMS 4개를 미서명 개발 버전으로 게시했다. 실제 공개 다운로드 네 파일의 크기·SHA-256, 태그와 설명을 대조했다. 기존 v0.1.7 Release·태그·첨부는 교체하지 않았다. 홈페이지도 0.1.9로 전환했다. 공개 CSS·JavaScript·안내서와 다운로드 3개의 크기·SHA-256, 과거 라이선스 URL 12개를 대조했다. 임시 게시 workflow는 삭제했다.
 
 VirusTotal 공개 제출·완료 결과는 EXE 0/64, ZIP 0/65다. 시간 초과·미지원·검사 실패는 [정확한 해시의 검사 기록](virustotal-0.1.9.json)에 구분했다. 이전 버전 결과를 재사용하지 않았다.
 
