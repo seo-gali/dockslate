@@ -15,7 +15,7 @@
     {
       "file": "src-tauri/Cargo.toml",
       "normalization": "LF",
-      "sha256": "99b4d0b51e938ba92194f7fb0eeab1e12515283f891859847522fdedb8e59ec1"
+      "sha256": "e780788428e8e9fd1bc62cf8315e41b2c16e589d6936dd75443cef7ee67b4836"
     },
     {
       "file": "scripts/windows-docker.manifest.json",

@@ -1,5 +1,6 @@
 export const english: Readonly<Record<string, string>> = {
   "자동 시작": "Automatic startup",
+  "선택한 작업이 진행 중입니다. 완료 후 다시 시도하세요.": "An operation is running. Try again after it finishes.",
   "선택한 작업이 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.": "The selected operation is still running. Wait for it to finish before closing DockSlate.",
   "엔진 자동 시작": "Start the engine automatically",
   "Windows 로그인 또는 DockSlate 실행 시 설치된 전용 엔진을 시작합니다.": "Start the installed DockSlate engine when you sign in to Windows or open DockSlate.",

@@ -134,6 +134,32 @@ export default function App() {
   const engineProps: EngineProps = { engine, engineLoading: engineQuery.loading, engineError: engine?.state === 'busy' ? null : engineQuery.error, reloadEngine: engineQuery.reload, openRuntimeSettings: showSettings, language, mutationBlocked: imageBuildBusy || imageRunBusy || containerEditBusy || volumeBusy || buildTransferBusy || composeBusy };
   const busy = diskBusy || containerEditBusy;
   const events = useDockerEvents(engine, !runtime.busy && !diskBusy && !showEngineSetup);
+  const trayRefreshDisabled = engineQuery.loading || runtime.busy || runtime.preparing || diskBusy || !!engineProps.mutationBlocked;
+  useEffect(() => {
+    if (!('__TAURI_INTERNALS__' in window)) return;
+    let disposed = false;
+    let unsubscribe: (() => void) | undefined;
+    void listen<string>('tray-action', ({ payload }) => {
+      if (payload === 'refresh') {
+        if (!trayRefreshDisabled) void engineQuery.reload();
+        return;
+      }
+      if (diskBusy || containerEditBusy) {
+        setCloseNotice(t('선택한 작업이 진행 중입니다. 완료 후 다시 시도하세요.'));
+        return;
+      }
+      setShowEngineSetup(false);
+      if (payload === 'settings') setPage('Settings');
+      else if (payload === 'containers') setPage('Containers');
+      else if (payload === 'images') setPage('Images');
+    }).then(stop => { if (disposed) stop(); else unsubscribe = stop; })
+      .catch(error => setCloseNotice(errorMessage(error)));
+    return () => { disposed = true; unsubscribe?.(); };
+  }, [diskBusy, containerEditBusy, setPage, trayRefreshDisabled, engineQuery.reload]);
+  useEffect(() => {
+    if (!('__TAURI_INTERNALS__' in window)) return;
+    void backend('desktop_tray_language', { language }).catch(error => setCloseNotice(errorMessage(error)));
+  }, [language]);
   const tone = engine?.state === 'connected' ? 'success' : engine?.state === 'busy' ? 'accent' : engine?.state === 'permission_denied' ? 'danger' : 'warning';
 
   if (installerMode === null) return <main className="main-content"><StatePanel busy={!installerQuery.error} title={t('설치 상태를 확인하고 있습니다.')} />{installerQuery.error && <ErrorNotice message={installerQuery.error} onRetry={() => void installerQuery.reload()} />}</main>;

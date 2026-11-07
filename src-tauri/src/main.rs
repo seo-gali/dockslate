@@ -17,6 +17,7 @@ mod process;
 mod resources;
 mod runtime;
 mod startup;
+mod tray;
 mod volumes;
 mod wsl;
 
@@ -31,6 +32,37 @@ static MUTATION: Mutex<()> = Mutex::new(());
 static EXIT_PENDING: AtomicBool = AtomicBool::new(false);
 static INSTALLER_SETUP: AtomicBool = AtomicBool::new(false);
 static AUTO_START_ALLOWED: AtomicBool = AtomicBool::new(true);
+
+#[tauri::command]
+fn desktop_tray_language(app: tauri::AppHandle, language: String) -> Result<(), String> {
+    tray::set_language(&app, &language)
+}
+
+fn request_exit(app: &tauri::AppHandle, code: i32) {
+    let guard = MUTATION.try_lock();
+    let blocked = if docker::is_pulling() {
+        Some("An image download is running. Wait for it to finish before closing DockSlate.")
+    } else if image_build::is_building() {
+        Some("이미지 빌드가 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.")
+    } else if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
+        Some("파일 전송 중입니다. 완료 후 앱을 종료할 수 있습니다.")
+    } else if wsl::is_compacting() {
+        Some("VHDX 압축이 진행 중이므로 앱을 종료할 수 없습니다.")
+    } else if runtime::is_mutating() {
+        Some("엔진 설치 또는 상태 변경이 진행 중입니다. 완료 결과를 확인할 때까지 앱을 종료할 수 없습니다.")
+    } else if guard.is_err() {
+        Some("선택한 작업이 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.")
+    } else {
+        None
+    };
+    if let Some(reason) = blocked {
+        tray::show_window(app);
+        let _ = app.emit("close-blocked", reason);
+        return;
+    }
+    EXIT_PENDING.store(true, Ordering::Release);
+    app.exit(code);
+}
 
 #[tauri::command]
 async fn startup_settings() -> Result<Value, String> {
@@ -662,6 +694,7 @@ fn main() {
         return;
     }
     tauri::Builder::default()
+        .setup(tray::setup)
         .invoke_handler(tauri::generate_handler![
  network_delete_preview, network_delete_execute, image_removal_preview, image_removal_execute, compose_pick_file, compose_preview, compose_build_start, compose_run_preview, compose_run_start, compose_job_status, compose_discard,
             volumes_list, volume_inspect, volume_create, volume_clone, volume_browse, volume_file_preview,
@@ -715,40 +748,26 @@ fn main() {
             runtime_start,
             runtime_stop,
             desktop_restart_elevated,
-            desktop_open_windows_features
+            desktop_open_windows_features,
+            desktop_tray_language
         ])
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {
-                if docker::is_pulling() {
-                    api.prevent_close();
-                    let _ = window.emit("close-blocked", "An image download is running. Wait for it to finish before closing DockSlate.");
-                } else if image_build::is_building() {
-                    api.prevent_close();
-                    let _ = window.emit("close-blocked", "이미지 빌드가 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.");
-                } else if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
-                    api.prevent_close();
-                    let _ = window.emit("close-blocked", "파일 전송 중입니다. 완료 후 앱을 종료할 수 있습니다.");
-                } else if wsl::is_compacting() {
-                    api.prevent_close();
-                    let _ = window.emit(
-                        "close-blocked",
-                        "VHDX 압축이 진행 중이므로 앱을 종료할 수 없습니다.",
-                    );
-                } else if runtime::is_mutating() {
-                    api.prevent_close();
-                    let _ = window.emit(
-                        "close-blocked",
-                        "엔진 설치 또는 상태 변경이 진행 중입니다. 완료 결과를 확인할 때까지 앱을 종료할 수 없습니다.",
-                    );
-                } else if MUTATION.try_lock().is_err() {
-                    api.prevent_close();
-                    let _ = window.emit("close-blocked", "선택한 작업이 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.");
-                } else if installer_setup_mode() {
-                    api.prevent_close();
-                    window.app_handle().exit(2);
-                } else { let _ = engine_events::close_all(); container_tools::close_all(); live_logs::close_all(); }
+                api.prevent_close();
+                if installer_setup_mode() {
+                    request_exit(window.app_handle(), 2);
+                } else if let Err(error) = window.hide() {
+                    let _ = window.emit("close-blocked", format!("창을 트레이로 숨기지 못했습니다: {error}"));
+                }
             }
         })
-        .run(tauri::generate_context!())
-        .expect("DockSlate Windows 실행 실패");
+        .build(tauri::generate_context!())
+        .expect("DockSlate Windows 실행 실패")
+        .run(|_, event| {
+            if let tauri::RunEvent::Exit = event {
+                let _ = engine_events::close_all();
+                container_tools::close_all();
+                live_logs::close_all();
+            }
+        });
 }

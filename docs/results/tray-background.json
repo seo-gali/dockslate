@@ -1,0 +1,95 @@
+{
+  "observedAt": "2026-11-07T01:18:59.634Z",
+  "scope": "Actual built Windows candidate, Shell registration, owned Windows tray notification messages and native menu commands; physical mouse/Explorer hit testing not covered",
+  "artifactSha256": "5F3B154AF18EA363521E9F92A7B15F737CE03C61068BF7E6AD40036CE2DDD9F8",
+  "version": "0.1.9",
+  "unreleasedCandidate": true,
+  "checks": [
+    {
+      "name": "Automatic startup disabled for the isolated executable",
+      "passed": true
+    },
+    {
+      "name": "Actual Windows Shell icon registered",
+      "passed": true
+    },
+    {
+      "name": "X hides a live process",
+      "passed": true
+    },
+    {
+      "name": "Owned native tray notification restores the window",
+      "passed": true
+    },
+    {
+      "name": "Korean native menu labels",
+      "passed": true
+    },
+    {
+      "name": "Native Settings menu opens Settings",
+      "passed": true
+    },
+    {
+      "name": "Native Containers menu opens Containers",
+      "passed": true
+    },
+    {
+      "name": "Native Images menu opens Images",
+      "passed": true
+    },
+    {
+      "name": "Native Refresh menu performs actual refresh IPC",
+      "passed": true
+    },
+    {
+      "name": "English native menu labels",
+      "passed": true
+    },
+    {
+      "name": "Invalid tray language rejected by real backend",
+      "passed": true
+    },
+    {
+      "name": "Korean native menu restored",
+      "passed": true
+    },
+    {
+      "name": "Renderer exceptions",
+      "passed": true
+    },
+    {
+      "name": "No engine, container or startup mutations invoked",
+      "passed": true
+    },
+    {
+      "name": "Native Quit exits the real process",
+      "passed": true
+    }
+  ],
+  "exceptions": [],
+  "commands": [
+    "startup_settings",
+    "docker_events_snapshot",
+    "containers_metrics",
+    "builds_snapshot",
+    "dashboard_snapshot",
+    "plugin:event|unlisten",
+    "plugin:event|listen",
+    "desktop_tray_language"
+  ],
+  "dependencyVersionsChanged": false,
+  "lockFilesChanged": false,
+  "installerModeExitVerified": false,
+  "busyExitVerified": false,
+  "actualInstallerExecuted": false,
+  "published": false,
+  "passed": true,
+  "verificationScriptExternalSessionRejected": true,
+  "sourceFiles": {
+    "src-tauri/Cargo.toml": "e780788428e8e9fd1bc62cf8315e41b2c16e589d6936dd75443cef7ee67b4836",
+    "src-tauri/src/main.rs": "ecdc2a6de6351f85b4e0159f992543164013df0c6e69055976c1f3c7309191d0",
+    "src-tauri/src/tray.rs": "1fdcfeddc55d22f4dbefed1219f320c3ebf421e86d79aed475e94790b0004d47",
+    "src/App.tsx": "d2cf3b42a85e746ec46ca2018855a1bea946a4bc70f397db3849c568a6b26004",
+    "src/locales.en.ts": "50d5532b017364b13aab851a203266cec3d6840b7d3209f9bfdbc1f5fa1cd039"
+  }
+}

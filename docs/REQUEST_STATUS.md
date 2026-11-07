@@ -5,6 +5,7 @@
 | 현재 근거 | 확인 범위 |
 | --- | --- |
 | [0.1.9 제작](results/release-0.1.9.md) | 설치 EXE·포터블 ZIP·고지 ZIP·SHA256SUMS 생성. 내부 앱·CLI·공식 구성 요소·문서 대조와 ZIP 615개 파일 검사 통과. 실제 설치·제거·공개 배포와 구분 |
+| [트레이 후속 개발](results/tray-background.md) | X로 트레이 숨김·복원, 열기·컨테이너·이미지·전체 새로고침·설정·완전 종료, 한영 메뉴. 격리 Windows 후보 검사. 공개 0.1.9에는 미포함 |
 | [설치·제거 후반 대기](results/installer-delay.md) | 0.1.9 설치판 반영: 알림 전체 2초 예산·등록 단계/경과 시간 표시. 실제 NSIS·지연 창 24개에서 두 경로 2,015ms, PATH 검사 9개 통과. 원래 지연 호출·실제 전체 제거는 미확정 |
 | [공개 배포·무결성·검사](results/public-distribution-0.1.9.md) | 0.1.9 GitHub Release 첨부 4개·SHA256SUMS 공개 다운로드 대조. VirusTotal EXE 0/64·ZIP 0/65. 홈페이지·정적 자산·공개 파일 및 과거 고지 URL 12개 대조 통과 |
 | [0.1.8 제작](results/release-0.1.8.md) · [자동 시작·컨테이너 일괄 작업](results/startup-bulk-feedback.md) | 독립된 엔진·창 자동 시작, 표 체크박스·시작·중지·재시작. 실제 실행 검증·공개 배포는 제작·검사 결과와 구분. 공개 0.1.9에 포함 |
