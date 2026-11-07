@@ -36,10 +36,12 @@
       "../licenses/": "licenses/",
       "../docs/results/startup-bulk-feedback.md": "docs/results/startup-bulk-feedback.md",
       "../docs/results/startup-bulk-feedback.json": "docs/results/startup-bulk-feedback.json",
-      "../docs/results/release-0.1.9.md": "docs/results/release-0.1.9.md",
-      "../docs/results/release-0.1.9.json": "docs/results/release-0.1.9.json",
       "../docs/results/installer-delay.md": "docs/results/installer-delay.md",
-      "../docs/results/installer-delay.json": "docs/results/installer-delay.json"
+      "../docs/results/installer-delay.json": "docs/results/installer-delay.json",
+      "../docs/results/release-0.1.10.md": "docs/results/release-0.1.10.md",
+      "../docs/results/tray-background.md": "docs/results/tray-background.md",
+      "../docs/results/release-0.1.10.json": "docs/results/release-0.1.10.json",
+      "../docs/results/tray-background.json": "docs/results/tray-background.json"
     },
     "windows": {
       "allowDowngrades": false,

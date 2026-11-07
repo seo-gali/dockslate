@@ -2,6 +2,10 @@
 
 [다운로드](https://seo-gali.github.io/dockslate/) · [사용 가이드 영상](https://youtu.be/EbL7LkbNrPY) · [지원·검증 현황](REQUEST_STATUS.md)
 
+## 트레이
+
+0.1.10부터 창의 X를 누르면 시계 옆 트레이로 숨깁니다. 아이콘 왼쪽 클릭은 창을 다시 열고, 오른쪽 메뉴에서 컨테이너·이미지·전체 새로고침·설정·완전 종료를 선택합니다. 완전 종료해도 Docker Engine과 컨테이너는 계속 실행됩니다. 빌드·전송 등 작업 중에는 종료를 막고 진행 상태를 표시합니다.
+
 ## 설치와 엔진
 
 Windows 11 x64·WSL 2.4.10+·WebView2가 필요하며 최초 엔진 설치에는 인터넷이 필요합니다. 설치 EXE에서 앱·Windows CLI를 준비한 뒤 엔진 대상과 영향을 확인해 승인합니다. 포터블은 ZIP 전체를 풀고 `DockSlate.exe`·`bin`·`libexec`를 함께 유지합니다.

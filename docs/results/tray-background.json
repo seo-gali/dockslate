@@ -1,8 +1,8 @@
 {
-  "observedAt": "2026-11-07T01:18:59.634Z",
+  "observedAt": "2026-11-07T02:54:37.257Z",
   "scope": "Actual built Windows candidate, Shell registration, owned Windows tray notification messages and native menu commands; physical mouse/Explorer hit testing not covered",
-  "artifactSha256": "5F3B154AF18EA363521E9F92A7B15F737CE03C61068BF7E6AD40036CE2DDD9F8",
-  "version": "0.1.9",
+  "artifactSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+  "version": "0.1.10",
   "unreleasedCandidate": true,
   "checks": [
     {
@@ -69,12 +69,13 @@
   "exceptions": [],
   "commands": [
     "startup_settings",
-    "docker_events_snapshot",
     "containers_metrics",
-    "builds_snapshot",
-    "dashboard_snapshot",
     "plugin:event|unlisten",
     "plugin:event|listen",
+    "engine_events_start",
+    "docker_events_snapshot",
+    "builds_snapshot",
+    "dashboard_snapshot",
     "desktop_tray_language"
   ],
   "dependencyVersionsChanged": false,
@@ -86,7 +87,7 @@
   "passed": true,
   "verificationScriptExternalSessionRejected": true,
   "sourceFiles": {
-    "src-tauri/Cargo.toml": "e780788428e8e9fd1bc62cf8315e41b2c16e589d6936dd75443cef7ee67b4836",
+    "src-tauri/Cargo.toml": "44c0fbf53c22dea53a3ee027c48e24fec78dc057900f034d6efc7ea09807c1cf",
     "src-tauri/src/main.rs": "ecdc2a6de6351f85b4e0159f992543164013df0c6e69055976c1f3c7309191d0",
     "src-tauri/src/tray.rs": "1fdcfeddc55d22f4dbefed1219f320c3ebf421e86d79aed475e94790b0004d47",
     "src/App.tsx": "d2cf3b42a85e746ec46ca2018855a1bea946a4bc70f397db3849c568a6b26004",

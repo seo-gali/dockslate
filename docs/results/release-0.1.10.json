@@ -1,0 +1,212 @@
+{
+  "version": "0.1.10",
+  "status": "0.1.10 application, native tray, portable and CLI verified; approved installer packaging pending",
+  "published": false,
+  "dependencyVersionsChanged": false,
+  "lockChangeScope": "Application root version metadata only",
+  "installerExecuted": false,
+  "virusTotalSubmitted": false,
+  "nativeTrayRecord": "docs/results/tray-background.json",
+  "observedAt": "2026-11-07T02:55:34.026Z",
+  "peVersion": {
+    "appProductVersion": "0.1.10",
+    "appFileVersion": "0.1.10",
+    "appBytes": 5221888,
+    "appSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+    "launcherSha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7"
+  },
+  "nativeTray": {
+    "observedAt": "2026-11-07T02:54:37.257Z",
+    "scope": "Actual built Windows candidate, Shell registration, owned Windows tray notification messages and native menu commands; physical mouse/Explorer hit testing not covered",
+    "artifactSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+    "version": "0.1.10",
+    "unreleasedCandidate": true,
+    "checks": [
+      {
+        "name": "Automatic startup disabled for the isolated executable",
+        "passed": true
+      },
+      {
+        "name": "Actual Windows Shell icon registered",
+        "passed": true
+      },
+      {
+        "name": "X hides a live process",
+        "passed": true
+      },
+      {
+        "name": "Owned native tray notification restores the window",
+        "passed": true
+      },
+      {
+        "name": "Korean native menu labels",
+        "passed": true
+      },
+      {
+        "name": "Native Settings menu opens Settings",
+        "passed": true
+      },
+      {
+        "name": "Native Containers menu opens Containers",
+        "passed": true
+      },
+      {
+        "name": "Native Images menu opens Images",
+        "passed": true
+      },
+      {
+        "name": "Native Refresh menu performs actual refresh IPC",
+        "passed": true
+      },
+      {
+        "name": "English native menu labels",
+        "passed": true
+      },
+      {
+        "name": "Invalid tray language rejected by real backend",
+        "passed": true
+      },
+      {
+        "name": "Korean native menu restored",
+        "passed": true
+      },
+      {
+        "name": "Renderer exceptions",
+        "passed": true
+      },
+      {
+        "name": "No engine, container or startup mutations invoked",
+        "passed": true
+      },
+      {
+        "name": "Native Quit exits the real process",
+        "passed": true
+      }
+    ],
+    "exceptions": [],
+    "commands": [
+      "startup_settings",
+      "containers_metrics",
+      "plugin:event|unlisten",
+      "plugin:event|listen",
+      "engine_events_start",
+      "docker_events_snapshot",
+      "builds_snapshot",
+      "dashboard_snapshot",
+      "desktop_tray_language"
+    ],
+    "dependencyVersionsChanged": false,
+    "lockFilesChanged": false,
+    "installerModeExitVerified": false,
+    "busyExitVerified": false,
+    "actualInstallerExecuted": false,
+    "published": false,
+    "passed": true,
+    "verificationScriptExternalSessionRejected": true,
+    "sourceFiles": {
+      "src-tauri/Cargo.toml": "44c0fbf53c22dea53a3ee027c48e24fec78dc057900f034d6efc7ea09807c1cf",
+      "src-tauri/src/main.rs": "ecdc2a6de6351f85b4e0159f992543164013df0c6e69055976c1f3c7309191d0",
+      "src-tauri/src/tray.rs": "1fdcfeddc55d22f4dbefed1219f320c3ebf421e86d79aed475e94790b0004d47",
+      "src/App.tsx": "d2cf3b42a85e746ec46ca2018855a1bea946a4bc70f397db3849c568a6b26004",
+      "src/locales.en.ts": "50d5532b017364b13aab851a203266cec3d6840b7d3209f9bfdbc1f5fa1cd039"
+    }
+  },
+  "nativeGuiExecuted": true,
+  "appBuild": {
+    "version": "0.1.10",
+    "startedAt": "2026-11-07T02:49:47.8463209Z",
+    "appBuildExit": 0,
+    "installerExecuted": false,
+    "finishedAt": "2026-11-07T02:53:45.2107251Z"
+  },
+  "userDataChanged": false,
+  "notificationCheck": {
+    "observedAt": "2026-11-06T12:42:59.4562577Z",
+    "scope": "Actual compiled NSIS install/uninstall notification functions; 24 hidden windows on separate threads delay handling by 5000 ms; no real installation or removal",
+    "source": "src-tauri/installer/hooks.nsh",
+    "sourceNormalization": "LF",
+    "sourceSha256": "D5F29A5B5D462662252BF443F86E0EA0D92283C900608820B6B8FE0BB5DBFE07",
+    "originalSingleWindowWaitMs": 5000,
+    "checks": [
+      {
+        "name": "installer",
+        "elapsedMs": 2015,
+        "registersPreserved": true
+      },
+      {
+        "name": "uninstaller",
+        "elapsedMs": 2015,
+        "registersPreserved": true
+      }
+    ],
+    "delayedWindowReceived": true,
+    "realPathUnchanged": true,
+    "engineChanged": false,
+    "passed": true
+  },
+  "localInstallerAttempted": false,
+  "portable": {
+    "version": "0.1.10",
+    "file": "DockSlate-0.1.10-windows-x64.zip",
+    "bytes": 63480743,
+    "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45",
+    "files": 622,
+    "allEntriesMatchPortableFolder": true,
+    "duplicateEntries": false,
+    "installerExecuted": false
+  },
+  "cli": {
+    "version": "0.1.10",
+    "observedAt": "2026-11-07T02:57:06.029Z",
+    "appSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+    "launcherSha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7",
+    "checks": [
+      {
+        "args": [
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "--debug",
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "compose",
+          "version"
+        ],
+        "exit": 0,
+        "output": "Docker Compose version v5.6.0"
+      },
+      {
+        "args": [
+          "buildx",
+          "version"
+        ],
+        "exit": 0,
+        "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+      }
+    ],
+    "existingProfileUsed": false,
+    "engineConnectionRequired": false
+  },
+  "licenses": {
+    "version": "0.1.10",
+    "files": 378,
+    "allEntriesMatch": true,
+    "bytes": 5161544,
+    "sha256": "AB5FD24FB16F780F4E08E3B14E794DF1C68E6A72C37DE9E69DEF6F23B721EE3A"
+  },
+  "installerInput": {
+    "file": ".github/release010-installer-input.zip",
+    "bytes": 2286582,
+    "sha256": "74B170CA6AE5961C36A65B3752EED4D45676B24295226D61B7CC4DF7E2CE14C1",
+    "uploaded": false
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-06T13:56:45.105Z",
+  "observedAt": "2026-11-07T02:55:34.026Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -16,7 +16,7 @@
     "browserChecks": 27,
     "lockedDependencyFetchExit": 0,
     "lockFilesChanged": true,
-    "latestNativeFlowExecuted": false,
+    "latestNativeFlowExecuted": true,
     "powerShellParserFiles": 5,
     "powerShellParserErrors": 0,
     "offlineComponentGuardExit": 1,
@@ -34,35 +34,35 @@
     "originalResourcesPreserved": true,
     "guideDeliveryExit": 0,
     "guideDeliveryChecks": 7,
-    "portableInternalFilesVerified": 615,
+    "portableInternalFilesVerified": 622,
     "engineRestoredStopped": true,
     "remoteInstallerBuildExit": 0,
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 9,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 0,
+    "currentNativeChecks": 15,
     "dependencyVersionsChanged": false,
     "lockChangeScope": "Application root version metadata only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "0.1.9 PE product version and source-matching NSIS notification fixture; no native GUI/engine lifecycle.",
+    "currentNativeScope": "0.1.10 tray integration only; physical mouse, busy exit and full setup/uninstall not tested.",
     "installerBuildScope": "0.1.9 packaging once on GitHub using two SHA-verified local binaries and the Windows-tested notification source; local NSIS read failure retained in currentBuild."
   },
   "artifacts": [
     {
       "name": "dockslate.exe",
       "path": "src-tauri/target/release/dockslate.exe",
-      "bytes": 5132288,
-      "sha256": "8F6769C82C9FBD5DDA7834D571E3BFEAAE852CCF93012BF17C703B02890CF4E6",
-      "executed": false,
-      "executionMode": "0.1.9 PE product version inspected; native GUI and engine flow not run."
+      "bytes": 5221888,
+      "sha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+      "executed": true,
+      "executionMode": "0.1.10 actual Windows tray integration: 15 checks; isolated profile, native notifications/menu commands; no engine mutations."
     },
     {
       "name": "docker.exe",
       "path": "src-tauri/target/release/docker.exe",
       "bytes": 315904,
-      "sha256": "E7BD1B68D0DB054390DCF5397F7ECF3BE63118744BFC70AAEC97A457BCDF9F7A",
+      "sha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7",
       "executed": true,
-      "executionMode": "Four offline 0.1.9 portable CLI version commands."
+      "executionMode": "Four offline 0.1.10 portable CLI version commands."
     }
   ],
   "installerFilePresent": true,
@@ -275,65 +275,137 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.9",
-    "checkedAt": "2026-11-06T14:23:38.785Z",
+    "version": "0.1.10",
+    "checkedAt": "2026-11-07T02:55:34.026Z",
     "appAndCliBuildExit": 0,
     "rustCheckExit": 0,
     "frontendBuildExit": 0,
-    "localInstallerPackagingExit": 1,
-    "localInstallerFailure": "NSIS bundling failed (exit 1). No installer was executed.",
     "peVersion": {
-      "appProductVersion": "0.1.9",
-      "appFileVersion": "0.1.9",
-      "appBytes": 5132288,
-      "appSha256": "8F6769C82C9FBD5DDA7834D571E3BFEAAE852CCF93012BF17C703B02890CF4E6",
-      "launcherSha256": "E7BD1B68D0DB054390DCF5397F7ECF3BE63118744BFC70AAEC97A457BCDF9F7A"
+      "appProductVersion": "0.1.10",
+      "appFileVersion": "0.1.10",
+      "appBytes": 5221888,
+      "appSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+      "launcherSha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7"
     },
-    "notificationCheck": {
-      "observedAt": "2026-11-06T12:42:59.4562577Z",
-      "scope": "Actual compiled NSIS install/uninstall notification functions; 24 hidden windows on separate threads delay handling by 5000 ms; no real installation or removal",
-      "source": "src-tauri/installer/hooks.nsh",
-      "sourceNormalization": "LF",
-      "sourceSha256": "D5F29A5B5D462662252BF443F86E0EA0D92283C900608820B6B8FE0BB5DBFE07",
-      "originalSingleWindowWaitMs": 5000,
+    "nativeTray": {
+      "observedAt": "2026-11-07T02:54:37.257Z",
+      "scope": "Actual built Windows candidate, Shell registration, owned Windows tray notification messages and native menu commands; physical mouse/Explorer hit testing not covered",
+      "artifactSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+      "version": "0.1.10",
+      "unreleasedCandidate": true,
       "checks": [
         {
-          "name": "installer",
-          "elapsedMs": 2015,
-          "registersPreserved": true
+          "name": "Automatic startup disabled for the isolated executable",
+          "passed": true
         },
         {
-          "name": "uninstaller",
-          "elapsedMs": 2015,
-          "registersPreserved": true
+          "name": "Actual Windows Shell icon registered",
+          "passed": true
+        },
+        {
+          "name": "X hides a live process",
+          "passed": true
+        },
+        {
+          "name": "Owned native tray notification restores the window",
+          "passed": true
+        },
+        {
+          "name": "Korean native menu labels",
+          "passed": true
+        },
+        {
+          "name": "Native Settings menu opens Settings",
+          "passed": true
+        },
+        {
+          "name": "Native Containers menu opens Containers",
+          "passed": true
+        },
+        {
+          "name": "Native Images menu opens Images",
+          "passed": true
+        },
+        {
+          "name": "Native Refresh menu performs actual refresh IPC",
+          "passed": true
+        },
+        {
+          "name": "English native menu labels",
+          "passed": true
+        },
+        {
+          "name": "Invalid tray language rejected by real backend",
+          "passed": true
+        },
+        {
+          "name": "Korean native menu restored",
+          "passed": true
+        },
+        {
+          "name": "Renderer exceptions",
+          "passed": true
+        },
+        {
+          "name": "No engine, container or startup mutations invoked",
+          "passed": true
+        },
+        {
+          "name": "Native Quit exits the real process",
+          "passed": true
         }
       ],
-      "delayedWindowReceived": true,
-      "realPathUnchanged": true,
-      "engineChanged": false,
-      "passed": true
+      "exceptions": [],
+      "commands": [
+        "startup_settings",
+        "containers_metrics",
+        "plugin:event|unlisten",
+        "plugin:event|listen",
+        "engine_events_start",
+        "docker_events_snapshot",
+        "builds_snapshot",
+        "dashboard_snapshot",
+        "desktop_tray_language"
+      ],
+      "dependencyVersionsChanged": false,
+      "lockFilesChanged": false,
+      "installerModeExitVerified": false,
+      "busyExitVerified": false,
+      "actualInstallerExecuted": false,
+      "published": false,
+      "passed": true,
+      "verificationScriptExternalSessionRejected": true,
+      "sourceFiles": {
+        "src-tauri/Cargo.toml": "44c0fbf53c22dea53a3ee027c48e24fec78dc057900f034d6efc7ea09807c1cf",
+        "src-tauri/src/main.rs": "ecdc2a6de6351f85b4e0159f992543164013df0c6e69055976c1f3c7309191d0",
+        "src-tauri/src/tray.rs": "1fdcfeddc55d22f4dbefed1219f320c3ebf421e86d79aed475e94790b0004d47",
+        "src/App.tsx": "d2cf3b42a85e746ec46ca2018855a1bea946a4bc70f397db3849c568a6b26004",
+        "src/locales.en.ts": "50d5532b017364b13aab851a203266cec3d6840b7d3209f9bfdbc1f5fa1cd039"
+      }
     },
-    "dependencyVersionsChanged": false,
-    "lockChangeScope": "Application root version metadata only",
-    "nativeGuiExecuted": false,
+    "nativeGuiExecuted": true,
     "installerExecuted": false,
     "engineChanged": false,
-    "packagingStatus": "0.1.9 packages published on GitHub Release and Pages; exact public hashes verified.",
+    "dependencyVersionsChanged": false,
+    "lockChangeScope": "Application root version metadata only",
+    "localInstallerAttempted": false,
+    "localInstallerNotAttemptedReason": "Existing NSIS read block recorded in release-0.1.9.json; approved one-time GitHub packaging.",
+    "packagingStatus": "0.1.10 application, native tray, portable and CLI verified; approved installer packaging pending",
     "portable": {
-      "version": "0.1.9",
-      "file": "DockSlate-0.1.9-windows-x64.zip",
-      "bytes": 63425436,
-      "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0",
-      "files": 615,
+      "version": "0.1.10",
+      "file": "DockSlate-0.1.10-windows-x64.zip",
+      "bytes": 63480743,
+      "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45",
+      "files": 622,
       "allEntriesMatchPortableFolder": true,
       "duplicateEntries": false,
       "installerExecuted": false
     },
     "offlineCli": {
-      "version": "0.1.9",
-      "observedAt": "2026-11-06T13:59:30.885Z",
-      "appSha256": "8F6769C82C9FBD5DDA7834D571E3BFEAAE852CCF93012BF17C703B02890CF4E6",
-      "launcherSha256": "E7BD1B68D0DB054390DCF5397F7ECF3BE63118744BFC70AAEC97A457BCDF9F7A",
+      "version": "0.1.10",
+      "observedAt": "2026-11-07T02:57:06.029Z",
+      "appSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
+      "launcherSha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7",
       "checks": [
         {
           "args": [
@@ -369,54 +441,7 @@
       ],
       "existingProfileUsed": false,
       "engineConnectionRequired": false
-    },
-    "installerRun": {
-      "runId": 42232618099,
-      "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618099",
-      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42232618099/artifacts"
-    },
-    "installerInspection": {
-      "observedAt": "2026-11-06T14:23:07.3179767Z",
-      "version": "0.1.9",
-      "file": "DockSlate_0.1.9_x64-setup.exe",
-      "bytes": 49330186,
-      "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
-      "signatureStatus": "NotSigned",
-      "embeddedApplicationAndLauncherMatch": true,
-      "verifiedLicenseFiles": 375,
-      "nativeComponentFilesVerified": 3,
-      "exampleFilesVerified": 5,
-      "textComparisonNormalization": "CRLF to LF",
-      "licenseMetadataAndGuideFilesVerified": 4,
-      "packagedDocumentFilesVerified": 21,
-      "embeddedStartupAndPathHelperMatches": true,
-      "installerExecuted": false
-    },
-    "artifactFiles": [
-      {
-        "file": "DockSlate_0.1.9_x64-setup.exe",
-        "bytes": 49330186,
-        "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174"
-      },
-      {
-        "file": "DockSlate-0.1.9-windows-x64.zip",
-        "bytes": 63425436,
-        "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0"
-      },
-      {
-        "file": "DockSlate-0.1.9-third-party-licenses.zip",
-        "bytes": 5161546,
-        "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4"
-      }
-    ],
-    "publicDownloadsVerified": true,
-    "actualAutomaticStartupVerified": false,
-    "publicDownloadsScope": "Four GitHub Release assets, three full Pages downloads and site assets; original legal URLs preserved.",
-    "publicReleaseReport": "docs/results/public-distribution-0.1.9.json",
-    "websitePublished": true
+    }
   },
   "portableDelivery": {
     "version": "0.1.9",
