@@ -45,7 +45,7 @@
     "lockChangeScope": "Application root version metadata only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
     "currentNativeScope": "0.1.10 tray integration only; physical mouse, busy exit and full setup/uninstall not tested.",
-    "installerBuildScope": "0.1.9 packaging once on GitHub using two SHA-verified local binaries and the Windows-tested notification source; local NSIS read failure retained in currentBuild."
+    "installerBuildScope": "0.1.10 packaged once on GitHub from SHA-verified local app/CLI; installed/uninstalled neither."
   },
   "artifacts": [
     {
@@ -178,21 +178,21 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "version": "0.1.9",
+    "version": "0.1.10",
     "run": {
-      "runId": 42232618099,
-      "sourceCommit": "5b77b223a835fba2ebbbbe9984fc5bd588fdbbde",
+      "runId": 42331749779,
+      "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/seo-gali/dockslate/actions/runs/42232618099",
-      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42232618099/artifacts"
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749779",
+      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42331749779/artifacts"
     },
     "inspection": {
-      "observedAt": "2026-11-06T14:23:07.3179767Z",
-      "version": "0.1.9",
-      "file": "DockSlate_0.1.9_x64-setup.exe",
-      "bytes": 49330186,
-      "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174",
+      "observedAt": "2026-11-07T03:05:31.7230015Z",
+      "version": "0.1.10",
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "bytes": 49352637,
+      "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32",
       "signatureStatus": "NotSigned",
       "embeddedApplicationAndLauncherMatch": true,
       "verifiedLicenseFiles": 375,
@@ -200,11 +200,11 @@
       "exampleFilesVerified": 5,
       "textComparisonNormalization": "CRLF to LF",
       "licenseMetadataAndGuideFilesVerified": 4,
-      "packagedDocumentFilesVerified": 21,
+      "packagedDocumentFilesVerified": 23,
       "embeddedStartupAndPathHelperMatches": true,
       "installerExecuted": false
     },
-    "published": true,
+    "published": false,
     "installerExecuted": false
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
@@ -390,7 +390,7 @@
     "lockChangeScope": "Application root version metadata only",
     "localInstallerAttempted": false,
     "localInstallerNotAttemptedReason": "Existing NSIS read block recorded in release-0.1.9.json; approved one-time GitHub packaging.",
-    "packagingStatus": "0.1.10 application, native tray, portable and CLI verified; approved installer packaging pending",
+    "packagingStatus": "Build and internal payload verification complete; publication held for unresolved Microsoft installer detection",
     "portable": {
       "version": "0.1.10",
       "file": "DockSlate-0.1.10-windows-x64.zip",
@@ -441,18 +441,73 @@
       ],
       "existingProfileUsed": false,
       "engineConnectionRequired": false
-    }
+    },
+    "installerRun": {
+      "runId": 42331749779,
+      "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749779",
+      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42331749779/artifacts"
+    },
+    "installerInspection": {
+      "observedAt": "2026-11-07T03:05:31.7230015Z",
+      "version": "0.1.10",
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "bytes": 49352637,
+      "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32",
+      "signatureStatus": "NotSigned",
+      "embeddedApplicationAndLauncherMatch": true,
+      "verifiedLicenseFiles": 375,
+      "nativeComponentFilesVerified": 3,
+      "exampleFilesVerified": 5,
+      "textComparisonNormalization": "CRLF to LF",
+      "licenseMetadataAndGuideFilesVerified": 4,
+      "packagedDocumentFilesVerified": 23,
+      "embeddedStartupAndPathHelperMatches": true,
+      "installerExecuted": false
+    },
+    "artifactFiles": [
+      {
+        "file": "DockSlate_0.1.10_x64-setup.exe",
+        "bytes": 49352637,
+        "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32"
+      },
+      {
+        "file": "DockSlate-0.1.10-windows-x64.zip",
+        "bytes": 63480743,
+        "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45"
+      },
+      {
+        "file": "DockSlate-0.1.10-third-party-licenses.zip",
+        "bytes": 5161544,
+        "sha256": "AB5FD24FB16F780F4E08E3B14E794DF1C68E6A72C37DE9E69DEF6F23B721EE3A"
+      }
+    ],
+    "publicDownloadsVerified": false,
+    "publicationHold": {
+      "observedAt": "2026-11-07T03:13:59.103Z",
+      "reason": "Microsoft Trojan:Win32/Wacatac.B!ml, 1/50 on exact installer hash",
+      "falsePositiveConfirmed": false,
+      "microsoftReviewSubmitted": false,
+      "installerExecuted": false,
+      "installerRepackagedToAvoidDetection": false,
+      "publicVersionPreserved": "0.1.9",
+      "githubReleaseCreated": false,
+      "tagCreated": false
+    },
+    "virusTotalRecord": "docs/results/virustotal-0.1.10.json"
   },
   "portableDelivery": {
-    "version": "0.1.9",
-    "file": "DockSlate-0.1.9-windows-x64.zip",
-    "bytes": 63425436,
-    "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0",
-    "files": 615,
+    "version": "0.1.10",
+    "file": "DockSlate-0.1.10-windows-x64.zip",
+    "bytes": 63480743,
+    "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45",
+    "files": 622,
     "allEntriesMatchPortableFolder": true,
     "duplicateEntries": false,
     "installerExecuted": false,
-    "published": true
+    "published": false
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

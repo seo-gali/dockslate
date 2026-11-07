@@ -1,0 +1,36 @@
+{
+  "version": "0.1.10",
+  "scope": "Exact new files submitted publicly; positive installer detection blocks publication pending review.",
+  "files": [
+    {
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "sha256": "ddaa30e6bf5f98ada8f5727547bb66dfd14d88146a07926c8695331403df8f32",
+      "reportUrl": "https://www.virustotal.com/gui/file/ddaa30e6bf5f98ada8f5727547bb66dfd14d88146a07926c8695331403df8f32/detection",
+      "observedAt": "2026-11-07T03:13:59.103Z",
+      "completed": true,
+      "detections": 1,
+      "totalEngines": 50,
+      "undetected": 49,
+      "unsupported": 5,
+      "timeout": 20,
+      "failure": 0,
+      "detectionDetails": [{"vendor": "Microsoft", "classification": "Trojan:Win32/Wacatac.B!ml"}]
+    },
+    {
+      "file": "DockSlate-0.1.10-windows-x64.zip",
+      "sha256": "b962563e6f4ff8a032cdfaaaeb90025a2a8d36cef99f03e5423c08ec9de79e45",
+      "reportUrl": "https://www.virustotal.com/gui/file/b962563e6f4ff8a032cdfaaaeb90025a2a8d36cef99f03e5423c08ec9de79e45/detection",
+      "observedAt": "2026-11-07T03:13:59.123Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 67,
+      "undetected": 67,
+      "unsupported": 7,
+      "timeout": 0,
+      "failure": 1,
+      "detectionDetails": []
+    }
+  ],
+  "microsoftReviewSubmitted": false,
+  "falsePositiveConfirmed": false
+}

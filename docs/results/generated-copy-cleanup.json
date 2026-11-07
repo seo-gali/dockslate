@@ -1,0 +1,210 @@
+{
+  "observedAt": "2026-11-07T03:30:24.631Z",
+  "targets": 28,
+  "files": 3145,
+  "logicalBytes": 2098504684,
+  "actualFreedSpaceMeasured": false,
+  "engineOrUserDataChanged": false,
+  "startupAndShortcutsChanged": false,
+  "entries": [
+    {
+      "path": ".analysis/cli-release-0.1.1-2eb42ebd0eab461d9fa1aa4e49ec2a89",
+      "files": 2,
+      "logicalBytes": 103390760,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/current-installer-incoming",
+      "files": 1,
+      "logicalBytes": 49205746,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/release010-cli-profile",
+      "files": 2,
+      "logicalBytes": 103390760,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/release010-installer-extracted-e78cc9b60d05412a887b5d8986f94d36",
+      "files": 429,
+      "logicalBytes": 162390067,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/release018-cli-profile",
+      "files": 2,
+      "logicalBytes": 103390760,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/release019-cli-profile",
+      "files": 2,
+      "logicalBytes": 103390760,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/release019-installer-extracted-4434491548084e35b1ee2575e0af9fdf",
+      "files": 427,
+      "logicalBytes": 162291197,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/tray-native-4923aafd06db4b6e849b8da0535c311a",
+      "files": 179,
+      "logicalBytes": 14178527,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/tray-native-88a36bb7a071472585ec38d9df46cd3c",
+      "files": 191,
+      "logicalBytes": 15514222,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/tray-native-9791bdd8473f48d9bbee89004e0ca5e3",
+      "files": 182,
+      "logicalBytes": 14183929,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/tray-native-a2d8db6d1fe143fa9003457438ee3fe8",
+      "files": 271,
+      "logicalBytes": 77344229,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/tray-native-cbeff6566de34dfaaf09f35827fb7425",
+      "files": 179,
+      "logicalBytes": 14178346,
+      "verification": "Known copied payload or verified isolated fixture; no active process/startup or reparse point"
+    },
+    {
+      "path": ".analysis/installer-0.1.1/public-DockSlate_0.1.1_x64-setup.exe",
+      "files": 1,
+      "logicalBytes": 49255610,
+      "retained": "be193cd3a4ce3f8360dc4821c84719cc7c26d29f:downloads/DockSlate_0.1.1_x64-setup.exe",
+      "verification": "Exact historical Git object retained"
+    },
+    {
+      "path": ".analysis/installer-0.1.1/public-DockSlate-0.1.1-windows-x64.zip",
+      "files": 1,
+      "logicalBytes": 63248889,
+      "retained": "6e33a3eff1c3e54ef491c2913ecd1e36cc559bd2:downloads/DockSlate-0.1.1-windows-x64.zip",
+      "verification": "Exact historical Git object retained"
+    },
+    {
+      "path": ".analysis/installer-0.1.2/public-DockSlate_0.1.2_x64-setup.exe",
+      "files": 1,
+      "logicalBytes": 49255585,
+      "retained": "aaed039da2e7261a60911b48ad2bf4a06aec651c:downloads/DockSlate_0.1.2_x64-setup.exe",
+      "verification": "Exact historical Git object retained"
+    },
+    {
+      "path": ".analysis/installer-0.1.2/public-DockSlate-0.1.2-windows-x64.zip",
+      "files": 1,
+      "logicalBytes": 63254224,
+      "retained": "13a0d39e03f950eb61f28401b23edc3abe1b0236:downloads/DockSlate-0.1.2-windows-x64.zip",
+      "verification": "Exact historical Git object retained"
+    },
+    {
+      "path": ".analysis/current-installer-artifact.zip",
+      "files": 1,
+      "logicalBytes": 49200413,
+      "retained": ".analysis/public-current-installer.exe",
+      "verification": "Installer transport ZIP payload matches retained original; only checksum text accompanies it"
+    },
+    {
+      "path": ".analysis/release010-installer-artifact.zip",
+      "files": 1,
+      "logicalBytes": 49347364,
+      "retained": "downloads/DockSlate_0.1.10_x64-setup.exe",
+      "verification": "Installer transport ZIP payload matches retained original; only checksum text accompanies it"
+    },
+    {
+      "path": ".analysis/release019-installer-artifact.zip",
+      "files": 1,
+      "logicalBytes": 49324893,
+      "retained": "downloads/DockSlate_0.1.9_x64-setup.exe",
+      "verification": "Installer transport ZIP payload matches retained original; only checksum text accompanies it"
+    },
+    {
+      "path": ".analysis/release018-installer-artifact.zip",
+      "files": 1,
+      "logicalBytes": 49301463,
+      "retained": "60c55a83c6e635a064db2788dec4a301685c4dc8:downloads/DockSlate_0.1.8_x64-setup.exe",
+      "verification": "Installer transport ZIP payload matches retained original; only checksum text accompanies it"
+    },
+    {
+      "path": ".analysis/installer-0.1.1/artifact.zip",
+      "files": 1,
+      "logicalBytes": 49250298,
+      "retained": "be193cd3a4ce3f8360dc4821c84719cc7c26d29f:downloads/DockSlate_0.1.1_x64-setup.exe",
+      "verification": "Installer transport ZIP payload matches retained original; only checksum text accompanies it"
+    },
+    {
+      "path": ".analysis/installer-0.1.2/artifact.zip",
+      "files": 1,
+      "logicalBytes": 49250275,
+      "retained": "aaed039da2e7261a60911b48ad2bf4a06aec651c:downloads/DockSlate_0.1.2_x64-setup.exe",
+      "verification": "Installer transport ZIP payload matches retained original; only checksum text accompanies it"
+    },
+    {
+      "path": "downloads/DockSlate-0.1.9-windows-x64",
+      "files": 615,
+      "logicalBytes": 163474519,
+      "retained": "downloads/DockSlate-0.1.9-windows-x64.zip",
+      "verification": "Every file matches retained portable ZIP; no extra files"
+    },
+    {
+      "path": "downloads/DockSlate-0.1.10-windows-x64",
+      "files": 622,
+      "logicalBytes": 163606291,
+      "retained": "downloads/DockSlate-0.1.10-windows-x64.zip",
+      "verification": "Every file matches retained portable ZIP; no extra files"
+    },
+    {
+      "path": "src-tauri/target/release/bundle/nsis/DockSlate_0.1.8_x64-setup.exe",
+      "files": 1,
+      "logicalBytes": 49306747,
+      "retained": "60c55a83c6e635a064db2788dec4a301685c4dc8:downloads/DockSlate_0.1.8_x64-setup.exe",
+      "verification": "Generated NSIS copy matches retained original"
+    },
+    {
+      "path": "src-tauri/target/release/bundle/nsis/DockSlate_0.1.9_x64-setup.exe",
+      "files": 1,
+      "logicalBytes": 49330186,
+      "retained": "downloads/DockSlate_0.1.9_x64-setup.exe",
+      "verification": "Generated NSIS copy matches retained original"
+    },
+    {
+      "path": "src-tauri/target/release/bundle/nsis/DockSlate_0.1.10_x64-setup.exe",
+      "files": 1,
+      "logicalBytes": 49352637,
+      "retained": "downloads/DockSlate_0.1.10_x64-setup.exe",
+      "verification": "Generated NSIS copy matches retained original"
+    },
+    {
+      "path": "site-dist",
+      "files": 28,
+      "logicalBytes": 179895987,
+      "retained": "site/, docs/downloads/, downloads/, licenses/, scripts/build-site.mjs",
+      "verification": "Generated website output; build-site explicitly removes and recreates it; published version remains 0.1.9"
+    }
+  ],
+  "kept": [
+    "src-tauri/target/windows-docker-cache/",
+    "src-tauri/target/windows-docker/",
+    "src-tauri/target/release/libexec/",
+    "downloads/DockSlate_0.1.9_x64-setup.exe",
+    "downloads/DockSlate-0.1.9-windows-x64.zip",
+    "downloads/DockSlate-0.1.9-third-party-licenses.zip",
+    "downloads/DockSlate_0.1.10_x64-setup.exe",
+    "downloads/DockSlate-0.1.10-windows-x64.zip",
+    "downloads/DockSlate-0.1.10-third-party-licenses.zip",
+    ".analysis/public-current-installer.exe",
+    "licenses/",
+    "docs/downloads/"
+  ],
+  "previouslyAbsentTrackedFilesExcludedFromSize": true
+}

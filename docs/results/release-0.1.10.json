@@ -1,13 +1,13 @@
 {
   "version": "0.1.10",
-  "status": "0.1.10 application, native tray, portable and CLI verified; approved installer packaging pending",
+  "status": "Build and internal payload verification complete; publication held for unresolved Microsoft installer detection",
   "published": false,
   "dependencyVersionsChanged": false,
   "lockChangeScope": "Application root version metadata only",
   "installerExecuted": false,
-  "virusTotalSubmitted": false,
+  "virusTotalSubmitted": true,
   "nativeTrayRecord": "docs/results/tray-background.json",
-  "observedAt": "2026-11-07T02:55:34.026Z",
+  "observedAt": "2026-11-07T03:07:06.856Z",
   "peVersion": {
     "appProductVersion": "0.1.10",
     "appFileVersion": "0.1.10",
@@ -207,6 +207,119 @@
     "file": ".github/release010-installer-input.zip",
     "bytes": 2286582,
     "sha256": "74B170CA6AE5961C36A65B3752EED4D45676B24295226D61B7CC4DF7E2CE14C1",
-    "uploaded": false
-  }
+    "uploaded": true
+  },
+  "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
+  "buildRun": {
+    "runId": 42331749779,
+    "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749779",
+    "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42331749779/artifacts"
+  },
+  "files": [
+    {
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "bytes": 49352637,
+      "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32"
+    },
+    {
+      "file": "DockSlate-0.1.10-windows-x64.zip",
+      "bytes": 63480743,
+      "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45"
+    },
+    {
+      "file": "DockSlate-0.1.10-third-party-licenses.zip",
+      "bytes": 5161544,
+      "sha256": "AB5FD24FB16F780F4E08E3B14E794DF1C68E6A72C37DE9E69DEF6F23B721EE3A"
+    }
+  ],
+  "checksumManifest": "downloads/SHA256SUMS.txt",
+  "installer": {
+    "observedAt": "2026-11-07T03:05:31.7230015Z",
+    "version": "0.1.10",
+    "file": "DockSlate_0.1.10_x64-setup.exe",
+    "bytes": 49352637,
+    "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32",
+    "signatureStatus": "NotSigned",
+    "embeddedApplicationAndLauncherMatch": true,
+    "verifiedLicenseFiles": 375,
+    "nativeComponentFilesVerified": 3,
+    "exampleFilesVerified": 5,
+    "textComparisonNormalization": "CRLF to LF",
+    "licenseMetadataAndGuideFilesVerified": 4,
+    "packagedDocumentFilesVerified": 23,
+    "embeddedStartupAndPathHelperMatches": true,
+    "installerExecuted": false
+  },
+  "githubArtifact": {
+    "artifactId": 13557203577,
+    "archiveBytes": 49347364,
+    "githubDigest": "sha256:ce2bdc98c1ab3f37e6a3706a47db22c4a58e740375a1df4ddb074bc6ec469ec2",
+    "githubDigestVerified": true,
+    "installerSha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32",
+    "installerBytes": 49352637,
+    "installerExecuted": false
+  },
+  "publicSitePreserved": {
+    "observedAt": "2026-11-07T02:58:41.402Z",
+    "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
+    "ci": [
+      {
+        "workflow": ".github/workflows/pages.yml",
+        "runId": 42331749793,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749793",
+        "jobs": [
+          {
+            "name": "Check workflow SHA pins",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "build",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "deploy",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "workflow": ".github/workflows/workflow-pins.yml",
+        "runId": 42331749805,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749805"
+      }
+    ],
+    "publicSite": {
+      "version": "0.1.9",
+      "httpStatus": 200,
+      "htmlSha256": "bca6fd04f7f32cb9721d0ac491e40c451222840c3d5753e6320eeede033fa85f",
+      "checksumHttpStatus": 200,
+      "oldDownloadsPreserved": true
+    }
+  },
+  "temporaryInstallerWorkflowRemoved": true,
+  "temporaryBuildInputRemoved": true,
+  "packageDocumentsAreBuildTimeSnapshots": true,
+  "virusTotalRecord": "docs/results/virustotal-0.1.10.json",
+  "publicationHold": {
+    "observedAt": "2026-11-07T03:13:59.103Z",
+    "reason": "Microsoft Trojan:Win32/Wacatac.B!ml, 1/50 on exact installer hash",
+    "falsePositiveConfirmed": false,
+    "microsoftReviewSubmitted": false,
+    "installerExecuted": false,
+    "installerRepackagedToAvoidDetection": false,
+    "publicVersionPreserved": "0.1.9",
+    "githubReleaseCreated": false,
+    "tagCreated": false
+  },
+  "generatedCopyCleanup": "docs/results/generated-copy-cleanup.json"
 }
