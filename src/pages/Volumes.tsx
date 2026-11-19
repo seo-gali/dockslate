@@ -1,32 +1,23 @@
+import { useEffect,useRef,useState } from 'react';
+import { OperationNotice,type Operation } from '../actions';
+import { backend,refreshDashboardAfterMutation,useBackendQuery } from '../api';
+import { EngineGate,type EngineProps } from '../App';
+import { ConfirmDialog,ContainerReferences,DetailPanel,ErrorNotice,Icon,PageHeader,Pagination,SearchInput,StatePanel,StatusBadge,TaskProgress,errorMessage,formatBytes } from '../components';
+import { getLocale,t } from "../i18n";
+import type { Directory,DirectoryEntry,DockerVolume,FilePreview,VolumeJob,VolumePreview } from '../ipc/contracts/resources';
 import { ResizableTable } from '../ResizableColumns';
-import { TableFilters, useTableRows } from '../TableRows';
-import { useEffect, useRef, useState } from 'react';
-import { EngineGate, type EngineProps } from '../App';
-import { backend, refreshDashboardAfterMutation, useBackendQuery } from '../api';
-import { OperationNotice, type Operation } from '../actions';
-import { ContainerReferences, ConfirmDialog, DetailPanel, ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, TaskProgress, errorMessage, formatBytes } from '../components';
-import { getLocale, t } from "../i18n";
+import { TableFilters,useTableRows } from '../TableRows';
+export type { DockerVolume } from '../ipc/contracts/resources';
 
 
-interface VolumeReference { id: string; name: string; state: string }
-export interface DockerVolume {
-  name: string; driver: string; scope: string; mountpoint: string; createdAt: string | null;
-  labels: Record<string, string> | null; options: Record<string, string> | null;
-  referenceCount: number; activeReferences: number; containers: VolumeReference[];
-  sizeBytes: number | null; fileSupported: boolean;
-}
-interface VolumeJob { id: string; kind: string; name: string; destination?: string; state: 'running' | 'completed' | 'failed'; entries: number; bytes: number; error?: string; result?: { message?: string; path?: string; bytes?: number; entries?: number } }
-interface ArchiveSelection { cancelled: boolean; token?: string; path?: string; sizeBytes?: number }
-interface VolumePreview {
-  name: string; kind: 'delete' | 'empty' | 'import'; eligible: boolean; token: string | null; expiresAt: number | null;
-  mode: 'merge' | 'replace' | null;
-  importPlan: { overwrittenFiles: number; overwrittenPaths: string[]; overwrittenPathsTruncated: boolean; createdFiles: number; removedEntries: number; removedBytes: number; preservedEntries: number } | null;
-  references: VolumeReference[]; blockedReasons: string[]; summary: { entries: number; bytes: number } | null;
-  archive: { path: string; entries: number; bytes: number } | null; impact: string; warnings: string[];
-}
-interface DirectoryEntry { name: string; kind: 'directory' | 'file' | 'unsupported'; size: number; modified: number }
-interface Directory { path: string; entries: DirectoryEntry[] }
-interface FilePreview { path: string; text: string; truncated: boolean; limitBytes: number }
+
+
+
+
+
+
+
+
 const labels = { delete: '볼륨 삭제', empty: '볼륨 비우기', import: 'tar 가져오기' };
 
 function VolumeFiles({ volume, blocked }: { volume: DockerVolume; blocked: boolean }) {
@@ -40,7 +31,7 @@ function VolumeFiles({ volume, blocked }: { volume: DockerVolume; blocked: boole
   const browse = async (next: string) => {
     const current = ++generation.current;
     setLoading(true); setFailure(null); setFile(null);
-    try { const result = await backend<Directory>('volume_browse', { name: volume.name, path: next }); if (current === generation.current) { setDirectory(result); setPath(next); } }
+    try { const result = await backend('volume_browse', { name: volume.name, path: next }); if (current === generation.current) { setDirectory(result); setPath(next); } }
     catch (error) { if (current === generation.current) setFailure(errorMessage(error)); }
     finally { if (current === generation.current) setLoading(false); }
   };
@@ -49,7 +40,7 @@ function VolumeFiles({ volume, blocked }: { volume: DockerVolume; blocked: boole
     const current = ++generation.current;
     setLoading(true); setFailure(null);
     const relative = [path, entry.name].filter(Boolean).join('/');
-    try { const result = await backend<FilePreview>('volume_file_preview', { name: volume.name, path: relative }); if (current === generation.current) setFile(result); }
+    try { const result = await backend('volume_file_preview', { name: volume.name, path: relative }); if (current === generation.current) setFile(result); }
     catch (error) { if (current === generation.current) setFailure(errorMessage(error)); }
     finally { if (current === generation.current) setLoading(false); }
   };
@@ -64,7 +55,7 @@ function VolumeFiles({ volume, blocked }: { volume: DockerVolume; blocked: boole
 }
 
 export default function Volumes(props: EngineProps & { noPageHeader?: boolean; onBusy?: (busy: boolean) => void }) {
-  const query = useBackendQuery<DockerVolume[]>('volumes_list', undefined, props.engine?.state === 'connected');
+  const query = useBackendQuery('volumes_list', undefined, props.engine?.state === 'connected');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const [selectedName, setSelectedName] = useState<string | null>(null);
@@ -93,7 +84,7 @@ export default function Volumes(props: EngineProps & { noPageHeader?: boolean; o
     let timer: number | undefined;
     const poll = async () => {
       try {
-        const result = await backend<VolumeJob>('volume_job_status', { id: job.id });
+        const result = await backend('volume_job_status', { id: job.id });
         if (disposed) return;
         setJob(result);
         if (result.state !== 'running') {
@@ -124,25 +115,29 @@ export default function Volumes(props: EngineProps & { noPageHeader?: boolean; o
     finally { inFlight.current = false; setWorking(false); }
   };
   const create = () => mutate(async () => {
-    const result = await backend<{ message: string; name: string }>('volume_create', { name: newName.trim() });
+    const result = await backend('volume_create', { name: newName.trim() });
     setOperation({ tone: 'success', message: result.message }); setNewName(''); setShowCreate(false); setSelectedName(result.name); setTab('details');
     await refreshDashboardAfterMutation();
   });
   const clone = (volume: DockerVolume) => mutate(async () => {
-    setJob(await backend<VolumeJob>('volume_clone', { name: volume.name, destination: cloneName.trim() }));
+    setJob(await backend('volume_clone', { name: volume.name, destination: cloneName.trim() }));
     setCloneName('');
   });
   const exportArchive = (volume: DockerVolume) => mutate(async () => {
-    const archive = await backend<ArchiveSelection>('volume_pick_archive', { purpose: 'export' });
+    const archive = await backend('volume_pick_archive', { purpose: 'export' });
     if (archive.cancelled || !archive.token) return;
-    setJob(await backend<VolumeJob>('volume_export', { name: volume.name, archiveToken: archive.token }));
+    setJob(await backend('volume_export', { name: volume.name, archiveToken: archive.token }));
   });
   const prepare = async (kind: VolumePreview['kind'], volume: DockerVolume, archiveToken?: string) => {
     if (busy || target) return;
     const current = ++dialogGeneration.current;
     setTarget({ kind, volume, mode: importMode }); setPreview(null); setAcknowledged(false); setDialogError(null); setValidating(true);
     try {
-      const result = await backend<VolumePreview>(kind === 'import' ? 'volume_import_preview' : 'volume_destructive_preview', kind === 'import' ? { name: volume.name, archiveToken, mode: importMode } : { kind, name: volume.name });
+      let result: VolumePreview;
+      if (kind === 'import') {
+        if (!archiveToken) throw new Error(t('가져올 tar 파일을 먼저 선택하세요.'));
+        result = await backend('volume_import_preview', { name: volume.name, archiveToken, mode: importMode });
+      } else result = await backend('volume_destructive_preview', { kind, name: volume.name });
       if (current === dialogGeneration.current) setPreview(result);
       else if (result.token) void backend('volume_discard_preview', { token: result.token }).catch(() => {});
     } catch (error) { if (current === dialogGeneration.current) setDialogError(errorMessage(error)); }
@@ -151,7 +146,7 @@ export default function Volumes(props: EngineProps & { noPageHeader?: boolean; o
   const importArchive = async (volume: DockerVolume) => {
     if (inFlight.current || busy) return;
     inFlight.current = true; setWorking(true);
-    try { const archive = await backend<ArchiveSelection>('volume_pick_archive', { purpose: 'import' }); if (!archive.cancelled && archive.token) { setWorking(false); await prepare('import', volume, archive.token); } }
+    try { const archive = await backend('volume_pick_archive', { purpose: 'import' }); if (!archive.cancelled && archive.token) { setWorking(false); await prepare('import', volume, archive.token); } }
     catch (error) { setOperation({ tone: 'danger', message: errorMessage(error) }); }
     finally { inFlight.current = false; setWorking(false); }
   };
@@ -161,7 +156,7 @@ export default function Volumes(props: EngineProps & { noPageHeader?: boolean; o
     if (!preview.expiresAt || preview.expiresAt <= Date.now()) { setDialogError(t("승인 정보가 만료되었습니다. 취소 후 다시 검사하세요.")); return; }
     setExecuting(true); setDialogError(null);
     try {
-      const result = await backend<VolumeJob & { message?: string }>('volume_execute', { token: preview.token, approved: true });
+      const result = await backend('volume_execute', { token: preview.token, approved: true });
       if (result.state === 'running') setJob(result);
       else { setOperation({ tone: 'success', message: result.message ?? t("볼륨을 변경했습니다.") }); await refreshDashboardAfterMutation(); }
       dialogGeneration.current += 1; setTarget(null); setPreview(null); setAcknowledged(false);

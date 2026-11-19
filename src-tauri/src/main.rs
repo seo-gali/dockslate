@@ -3,6 +3,7 @@
 mod builds;
 mod cli_platform;
 mod compose;
+mod contracts;
 mod container_tools;
 mod container_edit;
 mod desktop;
@@ -16,7 +17,11 @@ mod pipe;
 mod process;
 mod resources;
 mod runtime;
+mod security;
+mod transport;
 mod startup;
+#[cfg(test)]
+mod security_tests;
 mod tray;
 mod volumes;
 mod wsl;
@@ -406,7 +411,7 @@ async fn networks_list() -> Result<Value, String> {
 }
 #[tauri::command]
 async fn network_create(name: String, internal: bool) -> Result<Value, String> {
-    mutate(move || docker::network_create(name, internal)).await
+    mutate(move || resources::network_create(name, internal)).await
 }
 #[tauri::command]
 async fn container_logs(id: String) -> Result<Value, String> {

@@ -1,3 +1,5 @@
+import type { Details, RunResult } from './ipc/contracts/images';
+export type { RunResult } from './ipc/contracts/images';
 import { useEffect, useRef, useState } from 'react';
 import { backend, refreshDashboardAfterMutation, type DockerImage } from './api';
 import { Icon, errorMessage } from './components';
@@ -7,8 +9,8 @@ import { runCommand } from './runCommand';
 import { t } from "./i18n";
 
 
-interface Details { id: string; tags: string[]; exposedPorts: string[]; entrypoint: string[]; command: string[] }
-export interface RunResult { id: string; name: string; state: string; started: boolean; message: string }
+
+
 
 export function ImageRun({ image, blocked, onClose, onCreated, onBusy }: { image: DockerImage; blocked: boolean; onClose: () => void; onCreated: (result: RunResult) => void; onBusy: (busy: boolean) => void }) {
   const [details, setDetails] = useState<Details | null>(null);
@@ -28,7 +30,7 @@ export function ImageRun({ image, blocked, onClose, onCreated, onBusy }: { image
   const read = async () => {
     setLoading(true); setError(null);
     try {
-      const result = await backend<Details>('image_details', { id: image.id });
+      const result = await backend('image_details', { id: image.id });
       setDetails(result);
       const first = result.exposedPorts[0]?.split('/');
       if (first) { setContainerPort(first[0]); setProtocol(first[1] ?? 'tcp'); }
@@ -40,7 +42,7 @@ export function ImageRun({ image, blocked, onClose, onCreated, onBusy }: { image
     if (inFlight.current || blocked || loading || settingsBusy || !details) return;
     inFlight.current = true; setRunning(true); onBusy(true); setError(null);
     try {
-      const result = await backend<RunResult>('container_run', { imageId: image.id, name: name.trim(), ports: containerPort ? [{ containerPort: Number(containerPort), hostPort: hostPort ? Number(hostPort) : null, protocol }] : [], options });
+      const result = await backend('container_run', { imageId: image.id, name: name.trim(), ports: containerPort ? [{ containerPort: Number(containerPort), hostPort: hostPort ? Number(hostPort) : null, protocol }] : [], options });
       await refreshDashboardAfterMutation();
       onCreated(result);
     } catch (failure) {

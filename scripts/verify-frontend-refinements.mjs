@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { waitFor, pause } from './native-verification.mjs';
+import { waitFor, pause, connectDebugger } from './native-verification.mjs';
 const s = JSON.parse(fs.readFileSync(process.argv[2] ?? '.analysis/frontend-browser-session.json', 'utf8').replace(/^\uFEFF/, '')), port = Number(fs.readFileSync(s.portFile, 'utf8').split('\n')[0]);
 if (!s.frontendOnly || s.nativeBackendInjected !== false || !Number.isInteger(port) || port < 1 || port > 65535)
     throw Error('Isolated frontend browser session required');
@@ -11,20 +11,12 @@ if (!page)
     throw Error('Isolated frontend missing');
 if (!['127.0.0.1', 'localhost', '[::1]'].includes(new URL(page.webSocketDebuggerUrl).hostname))
     throw Error('Only a local browser debugger is allowed');
-const ws = new WebSocket(page.webSocketDebuggerUrl);
-await new Promise((a, b) => { ws.addEventListener('open', a, { once: true }); ws.addEventListener('error', b, { once: true }); });
-let seq = 0;
-const pending = new Map(), requests = [], errors = [];
-ws.addEventListener('message', e => { const m = JSON.parse(e.data); if (m.method === 'Network.requestWillBeSent')
-    requests.push({ url: m.params.request.url, type: m.params.type }); if (m.method === 'Runtime.exceptionThrown')
-    errors.push(m.params.exceptionDetails.exception?.description ?? m.params.exceptionDetails.text); const p = pending.get(m.id); if (p) {
-    clearTimeout(p.timer);
-    pending.delete(m.id);
-    m.error ? p.reject(Error(m.error.message)) : p.resolve(m.result);
-} });
-const send = (method, params = {}) => new Promise((resolve, reject) => { const id = ++seq, timer = setTimeout(() => reject(Error('CDP timeout')), 30000); pending.set(id, { resolve, reject, timer }); ws.send(JSON.stringify({ id, method, params })); });
-const ev = async (expression) => { const r = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (r.exceptionDetails)
-    throw Error(r.exceptionDetails.exception?.description ?? r.exceptionDetails.text); return r.result.value; };
+const debuggerSession = await connectDebugger(page.webSocketDebuggerUrl);
+const { send, evaluate: ev, exceptions: errors } = debuggerSession;
+const requests = [];
+debuggerSession.onEvent(message => {
+  if (message.method === 'Network.requestWillBeSent') requests.push({ url: message.params.request.url, type: message.params.type });
+});
 const report = { observedAt: new Date().toISOString(), completed: false, target: 'Built production frontend in isolated signed Chrome; native backend unavailable; no mock data', checks: [], failure: null };
 const assert = (v, m) => { if (!v)
     throw Error(m); };
@@ -33,9 +25,6 @@ const click = (scope, text) => ev(`(()=>{const e=[...document.querySelectorAll($
 const nav = async (index, id) => { const started = Date.now(); await ev(`document.querySelectorAll('nav button')[${index}].click()`); await waitFor('page ' + id, () => ev(`(()=>{const e=document.querySelector('[data-page="${id}"]');return e&&!e.hidden&&!!e.querySelector('h1')})()`)); await ev(`new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))`); return Date.now() - started; };
 const select = value => ev(`(()=>{const e=document.querySelector('#display-language');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(e,${JSON.stringify(value)});e.dispatchEvent(new Event('change',{bubbles:true}))})()`);
 try {
-    await send('Runtime.enable');
-    await send('Network.enable');
-    await send('Page.enable');
     await send('Network.setCacheDisabled', { cacheDisabled: true });
     await ev("localStorage.setItem('dockslate.language','ko')");
     await send('Page.reload');
@@ -61,13 +50,16 @@ try {
     check('Container detail scripts and file CSS remain unloaded during list navigation');
     await nav(6, 'Settings');
     let active = await ev(`[...document.querySelectorAll('[data-page="Settings"] [role="tab"]')].map(e=>({text:e.textContent.trim(),active:e.getAttribute('aria-selected')}))`);
-    assert(active.length === 3, 'Settings not split into three tabs');
+    assert(['Appearance','Runtime','Automatic startup','Engine connection'].every(label => active.some(tab => tab.text === label)), 'Settings appearance/runtime/startup/connection tabs missing');
     await click('[data-page="Settings"] [role="tablist"]', 'Runtime');
     assert(await ev(`document.querySelector('[data-page="Settings"] .appearance-panel').closest('[hidden]')!==null`), 'Appearance remained visible beside Runtime');
     await click('[data-page="Settings"] [role="tablist"]', 'Engine connection');
     assert(await ev(`!!document.querySelector('[data-page="Settings"] .engine-details:not([hidden])')`), 'Connection tab missing');
     await click('[data-page="Settings"] [role="tablist"]', 'Appearance');
-    check('Settings uses appearance, runtime and connection tabs', active);
+    await click('[data-page="Settings"] [role="tablist"]', 'Automatic startup');
+    assert(await ev(`!!document.querySelector('[data-page="Settings"] [role="tab"][aria-selected="true"]')`), 'Startup tab missing');
+    await click('[data-page="Settings"] [role="tablist"]', 'Appearance');
+    check('Settings uses appearance, runtime, startup and connection tabs', active);
     await click('[data-page="Settings"] .appearance-panel', 'Light');
     assert(await ev(`document.documentElement.dataset.theme==='light'`), 'Light theme missing');
     await click('[data-page="Settings"] .appearance-panel', 'A+');
@@ -90,7 +82,7 @@ try {
     check('Resources preserves volume/network tab state');
     await nav(4, 'Builds');
     const tabs = await ev(`[...document.querySelectorAll('[data-page="Builds"] [role="tablist"] button')].map(e=>e.textContent)`);
-    assert(tabs.length === 5, 'Build tabs missing while disconnected');
+    assert(['Build from file','Active builds','Build history','Builder management','Imported'].every(label => tabs.includes(label)), 'Build tabs missing while disconnected');
     await click('[data-page="Builds"] [role="tablist"]', 'Build from file');
     assert(await ev(`document.querySelector('[data-page="Builds"] .image-build-panel').getClientRects().length>0`), 'File source panel hidden');
     check('Build file import has its own tab and offline actions remain disabled', tabs);
@@ -109,7 +101,5 @@ catch (e) {
 }
 finally {
     fs.writeFileSync(process.argv[3] ?? 'docs/results/frontend-refinements-e2e.json', JSON.stringify(report, null, 2));
-    for (const p of pending.values())
-        clearTimeout(p.timer);
-    ws.close();
+    debuggerSession.close();
 }

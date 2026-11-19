@@ -1,26 +1,27 @@
-import { ResizableTable } from '../ResizableColumns';
-import { TableFilters, useTableRows } from '../TableRows';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,useRef,useState } from 'react';
+import { OperationNotice,type Operation } from '../actions';
+import { backend,refreshDashboardAfterMutation,useBackendQuery } from '../api';
 import type { EngineProps } from '../App';
-import { backend, refreshDashboardAfterMutation, useBackendQuery } from '../api';
-import type { useImageBuild } from '../ImageBuild';
-import { ImageBuildPanel } from '../ImageBuildPanel';
+import { ConfirmDialog,DetailPanel,ErrorNotice,Icon,PageHeader,Pagination,SearchInput,StatePanel,StatusBadge,errorMessage } from '../components';
 import type { useComposeImport } from '../ComposeImport';
 import { ComposeImportPanel } from '../ComposeImportPanel';
-import { OperationNotice, type Operation } from '../actions';
-import { ConfirmDialog, DetailPanel, ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, errorMessage } from '../components';
-import { getLocale, t } from "../i18n";
+import { getLocale,t } from "../i18n";
+import type { useImageBuild } from '../ImageBuild';
+import { ImageBuildPanel } from '../ImageBuildPanel';
+import type { BuildRecord,Builder,BuilderRequest,History,RecordDetail,Transfer,TransferRequest } from '../ipc/contracts/builds';
+import { ResizableTable } from '../ResizableColumns';
+import { TableFilters,useTableRows } from '../TableRows';
 
 
-interface BuildRecord { id?: string; ref: string; name: string; status: string; createdAt: string | null; completedAt: string | null; totalSteps: number | null; cachedSteps: number | null; source?: string }
-interface BuilderNode { name: string; endpoint: string; status: string | number | null; version: string | null; platforms: string[]; error?: string | null }
-interface Builder { name: string; driver: string; current: boolean; nodes: BuilderNode[]; platforms: string[]; error?: string | null; lastActivity?: string | null }
-interface History { builder: string; state: 'ready' | 'unsupported' | 'error' | 'unavailable'; records: BuildRecord[]; message: string }
-interface Transfer { id: string; state: 'running' | 'completed' | 'failed'; kind: string; path: string; message: string }
-interface Snapshot { version: string; selectedBuilder: string; selectionError?: string | null; builders: Builder[]; history: History; imported: BuildRecord[]; transfer: Transfer | null }
-interface RecordDetail { details: Record<string, unknown>; logs: string; truncated: boolean; source?: string }
-interface BuilderRequest { action: 'create' | 'use' | 'remove' | 'update'; name: string; driver?: string; endpoint?: string; platforms?: string[]; node?: string }
-interface TransferRequest { kind: 'import' | 'export'; path: string; builder?: string; reference?: string; importedId?: string }
+
+
+
+
+
+
+
+
+
 type Approval = { kind: 'builder'; title: string; target: string; impact: string; request: BuilderRequest } | { kind: 'transfer'; title: string; target: string; impact: string; request: TransferRequest };
 const date = (value?: string | null) => value ? new Date(value).toLocaleString(getLocale()) : t("기록 없음");
 const activeStatus = (status: string) => /^(running|building|pending|queued|in[\s_-]?progress)$/i.test(status?.trim() ?? '');
@@ -28,7 +29,7 @@ const statusTone = (status: string) => /error|failed|canceled/i.test(status) ? '
 const statusText = (status: string) => /error|failed/i.test(status) ? t("실패") : /canceled/i.test(status) ? t("취소됨") : /^(pending|queued)$/i.test(status) ? t("대기 중") : activeStatus(status) ? t("진행 중") : /^(completed|success|succeeded)$/i.test(status) ? t("완료") : status || t("미확인");
 
 export default function Builds(props: EngineProps & { build: ReturnType<typeof useImageBuild>; compose: ReturnType<typeof useComposeImport>; importBlocked?: boolean; onBusy?: (value: boolean) => void }) {
-  const query = useBackendQuery<Snapshot>('builds_snapshot');
+  const query = useBackendQuery('builds_snapshot');
   const [tab, setTab] = useState<'source' | 'active' | 'history' | 'builders' | 'imported'>('source');
   useEffect(() => { if (props.compose.preview) { setTab('source'); props.build.discard(); } }, [props.compose.preview?.token]);
   const [search, setSearch] = useState('');
@@ -92,7 +93,7 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     const timer = window.setInterval(() => {
       if (transferRequest.current) return;
       transferRequest.current = true;
-      void backend<Transfer>('builds_transfer_status', { id: transfer.id }).then(value => setTransfer(current => current?.id === value.id ? value : current)).catch(failure => setOperation({ tone: 'danger', message: errorMessage(failure) })).finally(() => { transferRequest.current = false; });
+      void backend('builds_transfer_status', { id: transfer.id }).then(value => setTransfer(current => current?.id === value.id ? value : current)).catch(failure => setOperation({ tone: 'danger', message: errorMessage(failure) })).finally(() => { transferRequest.current = false; });
     }, 1000);
     return () => window.clearInterval(timer);
   }, [transfer?.id, transfer?.state]);
@@ -108,10 +109,10 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     request.current = true; setWorking(true); setApprovalError(null);
     try {
       if (approval.kind === 'builder') {
-        const result = await backend<{ message: string }>('builds_builder_change', { request: approval.request, approved: true });
+        const result = await backend('builds_builder_change', { request: approval.request, approved: true });
         setOperation({ tone: 'success', message: result.message }); setShowBuilder(false); setSelectedBuilder(null);
         await refreshDashboardAfterMutation();
-      } else setTransfer(await backend<Transfer>('builds_transfer_start', { request: approval.request, approved: true }));
+      } else setTransfer(await backend('builds_transfer_start', { request: approval.request, approved: true }));
       setApproval(null); setAcknowledged(false);
     } catch (failure) { setApprovalError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); }
@@ -120,7 +121,7 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     if (!builder || reading) return;
     const current = ++scopeGeneration.current;
     setReading(true); setSelected(null); setDetail(null); setOperation(null);
-    try { const result = await backend<History>('builds_history_list', { builder }); if (scopeGeneration.current === current) setHistory(result); }
+    try { const result = await backend('builds_history_list', { builder }); if (scopeGeneration.current === current) setHistory(result); }
     catch (failure) { if (scopeGeneration.current === current) setOperation({ tone: 'danger', message: errorMessage(failure) }); }
     finally { if (scopeGeneration.current === current) setReading(false); }
   };
@@ -128,7 +129,7 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     const current = ++generation.current;
     setSelected(record); setDetailError(null); setDetail(null); setDetailLoading(true);
     try {
-      const result = await backend<RecordDetail>('builds_history_detail', { builder: visibleHistory?.builder ?? builder, reference: record.ref, importedId: record.id ?? null });
+      const result = await backend('builds_history_detail', { builder: visibleHistory?.builder ?? builder, reference: record.ref, importedId: record.id ?? null });
       if (generation.current === current) setDetail(result);
     } catch (failure) { if (generation.current === current) setDetailError(errorMessage(failure)); }
     finally { if (generation.current === current) setDetailLoading(false); }
@@ -137,13 +138,13 @@ export default function Builds(props: EngineProps & { build: ReturnType<typeof u
     const current = ++builderGeneration.current;
     setSelectedBuilder(value); setNode(value.nodes[0]?.name ?? ''); setEditPlatforms(value.platforms.join(', ')); setBuilderDetails(null);
     try {
-      const result = await backend<{ output: string }>('builds_builder_inspect', { name: value.name });
+      const result = await backend('builds_builder_inspect', { name: value.name });
       if (builderGeneration.current === current) setBuilderDetails(result.output);
     } catch (failure) { if (builderGeneration.current === current) setBuilderDetails(errorMessage(failure)); }
   };
   const pick = async (save: boolean) => {
     setPicking(true); setOperation(null);
-    try { return (await backend<{ path: string | null }>('builds_pick_file', { save })).path; }
+    try { return (await backend('builds_pick_file', { save })).path; }
     catch (failure) { setOperation({ tone: 'danger', message: errorMessage(failure) }); return null; }
     finally { setPicking(false); }
   };

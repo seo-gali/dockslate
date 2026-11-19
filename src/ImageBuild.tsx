@@ -1,26 +1,16 @@
+import type { ImageBuildStatus } from './ipc/contracts/images';
+export type { ImageBuildStatus } from './ipc/contracts/images';
 import { useEffect, useRef, useState } from 'react';
 import { backend, refreshDashboardAfterMutation, useBackendQuery } from './api';
 import { errorMessage } from './components';
 
 
-export interface ImageBuildStatus {
-  id: string;
-  state: 'running' | 'completed' | 'failed';
-  contextPath: string;
-  dockerfile: string;
-  tag: string;
-  logs: string | null;
-  logVersion?: number;
-  truncated: boolean;
-  error?: string | null;
-  imageId?: string | null;
-  builder?: string | null;
-}
 
-interface BuildTarget { selectedBuilder: string; selectionError?: string | null; builders: { name: string; driver: string; nodes: { endpoint: string }[] }[] }
+
+
 
 export function useImageBuild(onBusy?: (busy: boolean) => void) {
-  const targets = useBackendQuery<BuildTarget>('builds_snapshot');
+  const targets = useBackendQuery('builds_snapshot');
   const target = targets.data?.builders.find(value => value.name === targets.data?.selectedBuilder) ?? null;
   const [contextPath, setContextPath] = useState('');
   const [dockerfile, setDockerfile] = useState('Dockerfile');
@@ -42,7 +32,7 @@ export function useImageBuild(onBusy?: (busy: boolean) => void) {
     if (!job || job.state !== 'running' || pollRequest.current) return;
     pollRequest.current = true;
     try {
-      update(await backend<ImageBuildStatus>('image_build_status', { id: job.id, logVersion: job.logVersion }));
+      update(await backend('image_build_status', { id: job.id, logVersion: job.logVersion }));
       setStatusError(null);
     } catch (failure) { setStatusError(`빌드 상태를 확인하지 못했습니다: ${errorMessage(failure)}`); }
     finally { pollRequest.current = false; }
@@ -64,7 +54,7 @@ export function useImageBuild(onBusy?: (busy: boolean) => void) {
     if (selected) { setContextPath(selected.contextPath); setDockerfile(selected.dockerfile); setTag(selected.tag); }
     request.current = true;
     setStarting(true); setJob(null); setError(null); setStatusError(null);
-    try { update(await backend<ImageBuildStatus>('image_build_start', { contextPath: source.contextPath.trim(), dockerfile: source.dockerfile.trim(), tag: source.tag.trim(), noCache })); }
+    try { update(await backend('image_build_start', { contextPath: source.contextPath.trim(), dockerfile: source.dockerfile.trim(), tag: source.tag.trim(), noCache })); }
     catch (failure) { setError(errorMessage(failure)); }
     finally { setStarting(false); request.current = false; }
   };
@@ -72,7 +62,7 @@ export function useImageBuild(onBusy?: (busy: boolean) => void) {
     if (busy || picking) return;
     setPicking(true); setError(null);
     try {
-      const result = await backend<{ path: string | null }>('image_build_pick_context');
+      const result = await backend('image_build_pick_context');
       if (result.path) setContextPath(result.path);
     } catch (failure) { setError(`빌드 폴더를 선택하지 못했습니다: ${errorMessage(failure)}`); }
     finally { setPicking(false); }

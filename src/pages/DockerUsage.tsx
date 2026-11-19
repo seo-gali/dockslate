@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { EngineGate, type EngineProps } from '../App';
-import { type CleanupCandidate, type DiskUsage, useBackendQuery } from '../api';
-import { ResizableTable, type ResizableColumn } from '../ResizableColumns';
-import { TableFilters, useTableRows } from '../TableRows';
-import { OperationNotice, useDestructiveAction } from '../actions';
-import { ErrorNotice, Icon, Pagination, SearchInput, StatePanel, StatusBadge, formatBytes, formatDate } from '../components';
+import { useEffect,useState } from 'react';
+import { EngineGate,type EngineProps } from '../App';
+import { ResizableTable,type ResizableColumn } from '../ResizableColumns';
+import { TableFilters,useTableRows } from '../TableRows';
+import { OperationNotice,useDestructiveAction } from '../actions';
+import { useBackendQuery,type CleanupCandidate } from '../api';
+import { ErrorNotice,Icon,Pagination,SearchInput,StatePanel,StatusBadge,formatBytes,formatDate } from '../components';
 import { t } from "../i18n";
 function candidateDate(value: CleanupCandidate['createdAt']): string {
   const seconds = typeof value === 'number' ? value : typeof value === 'string' ? Date.parse(value) / 1000 : NaN;
@@ -12,7 +12,7 @@ function candidateDate(value: CleanupCandidate['createdAt']): string {
 }
 
 export default function DockerUsage(props: EngineProps) {
-  const query = useBackendQuery<DiskUsage>('disk_usage', undefined, props.engine?.state === 'connected');
+  const query = useBackendQuery('disk_usage', undefined, props.engine?.state === 'connected');
   const columnSpecs: ResizableColumn[] = [
     {id:'selection',width:44,minWidth:44,maxWidth:44}, {id:'type',width:96,minWidth:80,maxWidth:220},
     {id:'target',width:380,minWidth:180,maxWidth:1200}, {id:'created',width:210,minWidth:190,maxWidth:380},

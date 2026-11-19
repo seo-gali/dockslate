@@ -1,21 +1,21 @@
-import { t, getLocale } from '../i18n';
-import { Fragment, lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment,lazy,Suspense,useCallback,useEffect,useRef,useState } from 'react';
+import { createPortal } from 'react-dom';
+import { EngineGate,type ContainerOpenRequest,type EngineProps } from '../App';
+import { ContainerDialog } from '../ContainerDialog';
+import { ContainerStats } from '../ContainerStats';
+import { ContainerUsage,metricText } from '../ContainerUsage';
+import { ResizableTable,type ResizableColumn } from '../ResizableColumns';
+import { TableFilters,useTableRows } from '../TableRows';
+import { OperationNotice,useDestructiveAction,type Operation } from '../actions';
+import { backend,refreshDashboardAfterMutation,updateContainerStatus,useBackendQuery,useContainerMetrics,type Container,type ContainerMetric } from '../api';
+import { errorMessage,ErrorNotice,formatComposeProject,Icon,PageHeader,Pagination,SearchInput,StatePanel,StatusBadge } from '../components';
+import { connectionAddress,webPort } from '../containerPorts';
+import { getLocale,t } from '../i18n';
 const Logs = lazy(() => import('../ContainerLogs'));
 const ContainerEdit = lazy(() => import('../ContainerEdit'));
-import { ResizableTable, type ResizableColumn } from '../ResizableColumns';
-import { TableFilters, useTableRows } from '../TableRows';
-import { connectionAddress, webPort } from '../containerPorts';
-import { ContainerDialog } from '../ContainerDialog';
 const ContainerInspect = lazy(() => import('../ContainerInspect').then(module => ({ default: module.ContainerInspect })));
 const ContainerFiles = lazy(() => import('../ContainerFiles').then(module => ({ default: module.ContainerFiles })));
 const ContainerTerminal = lazy(() => import('../ContainerTerminal').then(module => ({ default: module.ContainerTerminal })));
-import { ContainerStats } from '../ContainerStats';
-import { ContainerUsage, metricText } from '../ContainerUsage';
-import { createPortal } from 'react-dom';
-import { EngineGate, type EngineProps, type ContainerOpenRequest } from '../App';
-import { backend, refreshDashboardAfterMutation, type ContainerActionResult, type ContainerBatchResult, type Container, type DockerImage, useBackendQuery, useContainerMetrics, type ContainerMetric, updateContainerStatus } from '../api';
-import { OperationNotice, useDestructiveAction, type Operation } from '../actions';
-import { ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, errorMessage, formatComposeProject } from '../components';
 
 type ContainerAction = 'start' | 'stop' | 'restart' | 'pause' | 'unpause' | 'edit' | 'delete';
 const detailTabs = ['details', 'logs', 'inspect', 'files', 'terminal'] as const;
@@ -42,8 +42,8 @@ function detailStatus(container: Container): string {
 }
 
 export default function Containers(props: EngineProps & { openRequest?: ContainerOpenRequest | null; onEditBusy: (busy: boolean) => void }) {
-  const query = useBackendQuery<Container[]>('containers_list', undefined, props.engine?.state === 'connected');
-  const images = useBackendQuery<DockerImage[]>('images_list', undefined, props.engine?.state === 'connected');
+  const query = useBackendQuery('containers_list', undefined, props.engine?.state === 'connected');
+  const images = useBackendQuery('images_list', undefined, props.engine?.state === 'connected');
   const imageNames = new Map((images.data ?? []).map(image => [image.id, image.tags[0] ?? image.id]));
   const [search, setSearch] = useState('');
   const [tablePage, setTablePage] = useState(0);
@@ -125,7 +125,7 @@ export default function Containers(props: EngineProps & { openRequest?: Containe
     const actionName = t({ start: '시작', stop: '중지', restart: '재시작', pause: '일시정지', unpause: '다시 진행' }[value]);
     setOperation({ tone: 'accent', message: `${container.name} · ${actionName}…` });
     try {
-      const result = await backend<ContainerActionResult>('container_action', { id: container.id, action: value });
+      const result = await backend('container_action', { id: container.id, action: value });
       updateContainerStatus(container.id,result.state);
       setOperation({ tone: result.state === 'dead' || (result.state === 'exited' && result.exitCode !== 0) ? 'warning' : 'success', message: result.state === 'exited' && result.exitCode === 0 ? t('명령 실행을 마치고 정상 종료했습니다. 오류가 아닙니다.') : result.state === 'exited' ? t('컨테이너가 오류로 종료되었습니다. 코드 {code}', { code: result.exitCode ?? '?' }) : t('{action} 완료', { action: actionName }) });
     } catch (failure) { setOperation({ tone: 'danger', message: `${actionName}: ${errorMessage(failure)}` }); }
@@ -137,7 +137,7 @@ export default function Containers(props: EngineProps & { openRequest?: Containe
     setWorking(true);destructive.setOperation(null);
     setOperation({tone:'accent',message:t('선택한 컨테이너 {count}개 {action} 중…',{count:selection.length,action:actionName})});
     try {
-      const result = await backend<ContainerBatchResult>('containers_action',{ids:selection.map(container=>container.id),action:value});
+      const result = await backend('containers_action',{ids:selection.map(container=>container.id),action:value});
       for (const item of result.results) if(item.state) updateContainerStatus(item.id,item.state);
       const failed = result.results.filter(item=>item.outcome==='failed');
       setChecked(new Set(failed.map(item=>item.id)));

@@ -120,15 +120,15 @@ fn compare_plugin(mut input: File, target: &Path) -> Result<(), String> {
 }
 
 #[cfg(windows)]
-fn publish(source: &Path, target: &Path) -> io::Result<()> {
+fn publish(source: &Path, target: &Path, replace: bool) -> io::Result<()> {
     use std::os::windows::ffi::OsStrExt;
     #[link(name = "kernel32")]
     unsafe extern "system" {
-        fn MoveFileW(source: *const u16, target: *const u16) -> i32;
+        fn MoveFileExW(source: *const u16, target: *const u16, flags: u32) -> i32;
     }
     let source: Vec<u16> = source.as_os_str().encode_wide().chain(Some(0)).collect();
     let target: Vec<u16> = target.as_os_str().encode_wide().chain(Some(0)).collect();
-    if unsafe { MoveFileW(source.as_ptr(), target.as_ptr()) } == 0 {
+    if unsafe { MoveFileExW(source.as_ptr(), target.as_ptr(), u32::from(replace)) } == 0 {
         Err(io::Error::last_os_error())
     } else {
         Ok(())
@@ -136,9 +136,42 @@ fn publish(source: &Path, target: &Path) -> io::Result<()> {
 }
 
 #[cfg(not(windows))]
-fn publish(source: &Path, target: &Path) -> io::Result<()> {
+fn publish(source: &Path, target: &Path, replace: bool) -> io::Result<()> {
+    if replace { return fs::rename(source, target); }
     fs::hard_link(source, target)?;
     fs::remove_file(source)
+}
+
+#[cfg(windows)]
+fn sha256(bytes: &[u8]) -> Result<String, String> {
+    use std::ffi::c_void;
+    #[link(name = "bcrypt")]
+    unsafe extern "system" {
+        fn BCryptHash(algorithm: *mut c_void, secret: *const u8, secret_size: u32, input: *const u8, input_size: u32, output: *mut u8, output_size: u32) -> i32;
+    }
+    let length = u32::try_from(bytes.len()).map_err(|_| "Plugin exceeds hash input limit")?;
+    let mut digest = [0u8;32];
+    // Windows SHA-256 pseudo-handle, available since Windows 10.
+    if unsafe { BCryptHash(0x41usize as *mut c_void, std::ptr::null(), 0, bytes.as_ptr(), length, digest.as_mut_ptr(), 32) } < 0 {
+        return Err("Cannot verify the previous Docker plugin".into());
+    }
+    Ok(digest.iter().map(|byte| format!("{byte:02x}")).collect())
+}
+
+fn previous_plugin(target: &Path) -> Result<bool, String> {
+    #[cfg(windows)]
+    {
+        let expected = match target.file_name().and_then(|name| name.to_str()) {
+            Some("docker-compose.exe") => "8aeaa0055e660e12cf07cd70680dc8333957fe6718528b91ec3da084eab62483",
+            Some("docker-buildx.exe") => "b39784aed5b3f9b24d1971bbcbad8c8206033fa63ed4fea82c9141728fe0ea26",
+            _ => return Ok(false),
+        };
+        let mut bytes = Vec::new();
+        plain_file(target)?.read_to_end(&mut bytes).map_err(|error| error.to_string())?;
+        Ok(sha256(&bytes)? == expected)
+    }
+    #[cfg(not(windows))]
+    { let _ = target; Ok(false) }
 }
 
 struct PartialPlugin(PathBuf);
@@ -150,9 +183,13 @@ impl Drop for PartialPlugin {
 
 fn install_plugin(source: &Path, target: &Path) -> Result<(), String> {
     let mut input = plain_file(source)?;
-    if target.try_exists().map_err(|error| error.to_string())? {
-        return compare_plugin(input, target);
-    }
+    let replace = if target.try_exists().map_err(|error| error.to_string())? {
+        match compare_plugin(plain_file(source)?, target) {
+            Ok(()) => return Ok(()),
+            Err(error) if !previous_plugin(target)? => return Err(error),
+            Err(_) => true,
+        }
+    } else { false };
     let nonce = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map_err(|error| error.to_string())?
@@ -171,7 +208,8 @@ fn install_plugin(source: &Path, target: &Path) -> Result<(), String> {
         .and_then(|_| output.sync_all())
         .map_err(|error| format!("The Docker plugin could not be prepared: {error}"))?;
     drop(output);
-    match publish(&temporary.0, target) {
+    if replace && !previous_plugin(target)? { return Err("The Docker plugin changed during update. It was preserved.".into()); }
+    match publish(&temporary.0, target, replace) {
         Ok(()) => Ok(()),
         Err(error)
             if matches!(error.raw_os_error(), Some(80 | 183))
@@ -180,6 +218,14 @@ fn install_plugin(source: &Path, target: &Path) -> Result<(), String> {
             compare_plugin(plain_file(source)?, target)
         }
         Err(error) => Err(format!("The Docker plugin could not be published: {error}")),
+    }
+}
+
+#[cfg(all(test, windows))]
+mod security_tests {
+    #[test]
+    fn plugin_hash_matches_standard_sha256_vector() {
+        assert_eq!(super::sha256(b"abc").unwrap(),"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
     }
 }
 
@@ -242,6 +288,8 @@ fn run() -> Result<i32, String> {
         .env_remove("DOCKER_TLS_VERIFY")
         .env_remove("DOCKER_CERT_PATH")
         .env_remove("DOCKER_CONFIG")
+        .env_remove("DOCKER_API_VERSION")
+        .env_remove("DOCKER_CUSTOM_HEADERS")
         .env_remove("BUILDX_BUILDER")
         .env_remove("BUILDX_CONFIG")
         .stdin(Stdio::inherit())

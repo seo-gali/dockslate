@@ -9,10 +9,14 @@ npm ci
 
 | 작업 | 명령 |
 | --- | --- |
+| 엔진 비접촉 검사 | `npm run check` |
+| Windows 소스·프로세스 검사 | `npm run check:windows -- -Offline` |
 | 앱 빌드 | `.\scripts\desktop.ps1 -Mode build` |
 | CLI 빌드 | `.\scripts\build-cli.ps1` |
 | 포터블 폴더·ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
+
+사이트 생성은 앱 개발 버전과 독립적입니다. `site/release.json`과 버전별 공개 영수증의 버전·파일·해시·백신 결과를 먼저 대조합니다. 없는 공개 파일은 고정 소스 커밋 또는 공식 Release에서 읽어 임시 검증하며, 지운 구버전 파일을 `downloads/`에 복원하지 않습니다. 공개판은 0.1.9를 유지합니다.
 
 포터블 생성은 현재 버전의 `downloads/DockSlate-<version>-windows-x64/`와 ZIP을 갱신합니다. 앱·CLI 빌드와 `docs/results/installer-engine-integration.json`의 검증 해시가 일치해야 합니다. EXE 하나만 복사하면 동봉 CLI·플러그인이 빠질 수 있습니다. 설치 파일 생성과 내부 파일 검증은 [배포 기록](results/installer-engine-integration.json)을 따릅니다.
 
@@ -40,10 +44,18 @@ npm ci
 
 루트에는 위 진입점과 `.gitattributes`·`.gitignore`만 둡니다. 사이트 원본은 `site/`, 사용 안내는 `docs/USER_GUIDE.md`, 타사 고지는 `licenses/THIRD_PARTY_NOTICES.md`에 둡니다. `npm run build:site`는 `site-dist/`만 갱신하고, GitHub Pages는 Actions에서 이 결과를 게시합니다. [게시 설정](PAGES.md).
 
-앱·포터블 빌드는 `site/guide.html`을 패키지의 `guide.html`로 복사합니다. Markdown 안내는 `docs/USER_GUIDE.md`, 고지는 `licenses/`에 포함합니다. 소스를 옮길 때는 이 패키징 경로도 함께 수정합니다. 최신 재패키징은 정리된 경로와 최적화한 실행 파일을 설치 EXE·ZIP에 반영합니다. 배포 파일의 실제 검사 범위는 [배포 기록](results/installer-engine-integration.json)에서 확인합니다.
+앱·포터블 빌드는 `site/guide.html`을 패키지의 `guide.html`로 복사합니다. EXE와 ZIP의 Markdown 동봉 목록은 `scripts/package-docs.json` 하나로 관리합니다. 동봉하지 않은 문서의 상대 링크는 온라인 저장소로 연결합니다. 과거 검증·조사 폴더 전체를 복사하지 않으며 예제와 `licenses/`의 법적 원본은 그대로 포함합니다. 소스를 옮길 때는 이 패키징 경로도 함께 수정합니다. 배포 파일의 실제 검사 범위는 [배포 기록](results/installer-engine-integration.json)에서 확인합니다.
 
 개발·코딩·디자인 문서는 `docs/`, 실제 실행 결과와 과거 버전 기록은 `docs/results/`에 둡니다. 과거 실행 파일 경로나 미검증 표시는 당시 기록이며 현재 상태는 [요청 현황](REQUEST_STATUS.md)과 최신 결과를 확인합니다.
+
+지원 범위는 `README.md`·`docs/USER_GUIDE.md`에서 관리합니다. 중복된 `.project/plan.md`는 제거했으며 과거 검증 JSON에 적힌 파일명은 당시 조사 기록으로 남깁니다. 구조·테스트 점검과 후속 적용은 [설계 검토](ARCHITECTURE_REVIEW.md)에 모았습니다.
 
 `.analysis`를 정리할 때는 사용 중인 프로필·파일 잠금·Git 작업 사본·조사 원본을 먼저 확인합니다. 비활성 테스트 브라우저와 압축 해제 사본은 정리할 수 있지만 라이선스 소스·보안 조사 원본·실제 WSL VHDX·소유권 메타데이터는 임시 캐시로 취급하지 않습니다. `media/`의 완성 영상은 정리 대상과 구분합니다.
 
 [작업 지침](../AGENTS.md) · [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md)
+
+## 검사 경계
+
+`npm run check`는 workflow SHA, IPC 명령 등록, 문서 링크, 엄격한 TypeScript와 Node 내장 검사를 실행합니다. `npm run check:windows`는 잠긴 Rust 검사와 실제 Windows 입출력·시간 제한 7개 검사를 실행합니다. CI에도 같은 진입점을 사용하며 엔진 설치·시작·변경·배포는 하지 않습니다. 네이티브 GUI 검사는 실제 WebView 포트 파일이 필요하고, 변경을 수행하는 E2E는 지정한 fixture 승인을 별도로 받습니다.
+
+`src/api.ts`는 호환 진입점이며 명령별 타입은 `src/ipc/`, 공유 조회 수명은 `src/queries.ts`에 있습니다. Rust `runtime.rs`는 소유권과 수명, `transport.rs`는 기존 연결의 전송을 담당합니다. 전송 분리 후에도 소유권 lease·승인 토큰·작업 잠금을 유지합니다.

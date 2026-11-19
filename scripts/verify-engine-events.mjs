@@ -1,15 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {connectNative,waitFor,pause} from './native-verification.mjs';
 const execute=promisify(execFile);
 const sessionFile=process.argv[2];if(!sessionFile)throw Error('Provide an approved native verification session JSON.');
 const session=JSON.parse(fs.readFileSync(sessionFile,'utf8'));
+const resultFile=path.resolve(session.resultFile??'.analysis/engine-events-native-result.json');
+assert(resultFile.startsWith(path.resolve('.analysis')+path.sep),'Verification result must stay in .analysis');
 const prefix=session.testResourcePrefix;assert(session.approvedByUser&&/^dockslate-events-check-[a-f0-9]{4,16}$/.test(prefix));
 const release=JSON.parse(fs.readFileSync('site/release.json','utf8'));assert.match(release.version,/^\d+\.\d+\.\d+$/);
-const cli=path.resolve(`downloads/DockSlate-${release.version}-windows-x64/bin/docker.exe`);
+const cli=path.resolve(session.cliArtifact??`downloads/DockSlate-${release.version}-windows-x64/bin/docker.exe`);
+assert(cli.startsWith(path.resolve('.')+path.sep),'Verification CLI must be inside the workspace');
+if(session.cliArtifact){assert.equal(createHash('sha256').update(fs.readFileSync(cli)).digest('hex').toUpperCase(),session.cliSha256);}
 const fixture=path.join(path.dirname(session.artifact),'fixture');fs.mkdirSync(fixture,{recursive:true});
 const commands=[];
 async function docker(args,input){const pending=execute(cli,args,{encoding:'utf8',windowsHide:true,timeout:60000,maxBuffer:256*1024,env:{...process.env,LOCALAPPDATA:fixture,COMPOSE_DISABLE_ENV_FILE:'1'}});if(input)pending.child.stdin.end(input);const result=await pending;commands.push(args.map(arg=>arg.replace(fixture,'<fixture>')));return result.stdout.trim();}
@@ -112,5 +117,5 @@ try{
   if(networkId){assert.equal(await docker(['network','inspect',networkId,'--format','{{index .Labels "io.dockslate.verification"}}']),prefix);await docker(['network','rm',networkId]);}
   if(scratchImageId){assert.equal(await docker(['image','inspect',scratchImageId,'--format','{{index .Config.Labels "io.dockslate.verification"}}']),prefix);await docker(['image','rm',prefix+':events']);}
   if(createdVolume){assert.equal(await docker(['volume','inspect',prefix,'--format','{{index .Labels "io.dockslate.verification"}}']),prefix);await docker(['volume','rm',prefix]);}
-  fs.writeFileSync('.analysis/engine-events-native-result.json',JSON.stringify({observedAt:new Date().toISOString(),scope:session.scope,sha256:session.sha256,checks,exceptions:c.exceptions,commands,ipcCalls:c.calls.map(({command,durationMs,failed})=>({command,durationMs,failed})),approvedFixtureCleaned:true},null,2)+'\n');c.close();
+  fs.writeFileSync(resultFile,JSON.stringify({observedAt:new Date().toISOString(),scope:session.scope,sha256:session.sha256,checks,exceptions:c.exceptions,commands,ipcCalls:c.calls.map(({command,durationMs,failed})=>({command,durationMs,failed})),approvedFixtureCleaned:true},null,2)+'\n');c.close();
 }

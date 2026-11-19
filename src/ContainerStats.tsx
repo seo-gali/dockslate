@@ -13,7 +13,7 @@ export function ContainerStats({ container, active, embedded = false }: { contai
     const token = ++generation.current;
     if (!running) { setSample(undefined); setLoading(false); setError(null); return; }
     setLoading(true); setError(null);
-    try { const value = await backend<ContainerMetric>('container_stats', { id: container.id }); if (token === generation.current) setSample(value); }
+    try { const value = await backend('container_stats', { id: container.id }); if (token === generation.current) setSample(value); }
     catch (failure) { if (token === generation.current) setError(errorMessage(failure)); }
     finally { if (token === generation.current) setLoading(false); }
   }, [container.id, running]);

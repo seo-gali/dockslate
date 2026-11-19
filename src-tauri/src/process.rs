@@ -1,5 +1,7 @@
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
+#[cfg(windows)]
+use std::os::windows::io::{AsHandle, AsRawHandle};
 use std::{
     io::{Read, Write},
     path::Path,
@@ -45,17 +47,32 @@ pub fn execute_observed(
     let mut child = command
         .spawn()
         .map_err(|error| format!("명령을 실행할 수 없습니다: {error}"))?;
+    #[cfg(windows)]
+    let (stdout_cancel, stderr_cancel, mut stdin_cancel) = {
+        let handles = (|| -> std::io::Result<_> {
+            let stdout = child.stdout.as_ref().ok_or_else(|| std::io::Error::other("stdout missing"))?.as_handle().try_clone_to_owned()?;
+            let stderr = child.stderr.as_ref().ok_or_else(|| std::io::Error::other("stderr missing"))?.as_handle().try_clone_to_owned()?;
+            let stdin = child.stdin.as_ref().map(|pipe| pipe.as_handle().try_clone_to_owned()).transpose()?;
+            Ok((stdout, stderr, stdin))
+        })();
+        match handles {
+            Ok(handles) => handles,
+            Err(error) => { let _ = child.kill(); let _ = child.wait(); return Err(format!("명령 입출력 취소 연결 실패: {error}")); }
+        }
+    };
     let overflow = Arc::new(AtomicBool::new(false));
+    let cancelled = Arc::new(AtomicBool::new(false));
     fn reader<R: Read + Send + 'static>(
         mut stream: R,
         limit: usize,
         flag: Arc<AtomicBool>,
+        cancelled: Arc<AtomicBool>,
         mut observer: Option<Box<dyn FnMut(&[u8]) + Send>>,
     ) -> thread::JoinHandle<Vec<u8>> {
         thread::spawn(move || {
             let mut output = Vec::new();
             let mut buffer = [0u8; 8192];
-            loop {
+            while !cancelled.load(Ordering::Acquire) {
                 match stream.read(&mut buffer) {
                     Ok(0) | Err(_) => break,
                     Ok(count) => {
@@ -78,12 +95,14 @@ pub fn execute_observed(
         child.stdout.take().ok_or("표준 출력 연결 실패")?,
         max_output,
         overflow.clone(),
+        cancelled.clone(),
         on_stdout,
     );
     let stderr = reader(
         child.stderr.take().ok_or("표준 오류 연결 실패")?,
         max_output,
         overflow.clone(),
+        cancelled.clone(),
         None,
     );
     let input = stdin.map(|bytes| bytes.to_vec());
@@ -97,6 +116,8 @@ pub fn execute_observed(
     let started = Instant::now();
     let mut failure = None;
     let status = loop {
+        #[cfg(windows)]
+        if input_writer.as_ref().is_some_and(|writer| writer.is_finished()) { stdin_cancel.take(); }
         if overflow.load(Ordering::SeqCst) || started.elapsed() > timeout {
             failure = Some(if overflow.load(Ordering::SeqCst) {
                 "명령 출력이 허용 크기를 초과했습니다"
@@ -111,11 +132,45 @@ pub fn execute_observed(
             None => thread::sleep(Duration::from_millis(20)),
         }
     };
+    // Drain within the same deadline; descendants may retain inherited pipe handles.
+    while !stdout.is_finished() || !stderr.is_finished() || input_writer.as_ref().is_some_and(|writer| !writer.is_finished()) {
+        if overflow.load(Ordering::Acquire) || started.elapsed() >= timeout {
+            failure = Some(if overflow.load(Ordering::Acquire) {
+                "명령 출력이 허용 크기를 초과했습니다"
+            } else {
+                "명령 응답 시간이 초과되었습니다"
+            });
+            break;
+        }
+        thread::sleep(Duration::from_millis(2));
+    }
+    cancelled.store(true, Ordering::Release);
+    #[cfg(windows)]
+    {
+        #[link(name = "kernel32")]
+        unsafe extern "system" {
+            fn CancelSynchronousIo(thread: *mut std::ffi::c_void) -> i32;
+            fn CancelIoEx(file: *mut std::ffi::c_void, overlapped: *mut std::ffi::c_void) -> i32;
+        }
+        while !stdout.is_finished() || !stderr.is_finished() || input_writer.as_ref().is_some_and(|writer| !writer.is_finished()) {
+            // Owned duplicates pin the file objects while their workers finish.
+            for handle in [Some(stdout_cancel.as_raw_handle()), Some(stderr_cancel.as_raw_handle()), stdin_cancel.as_ref().map(AsRawHandle::as_raw_handle)].into_iter().flatten() {
+                unsafe { CancelIoEx(handle, std::ptr::null_mut()); }
+            }
+            for handle in [Some(stdout.as_raw_handle()), Some(stderr.as_raw_handle()), input_writer.as_ref().map(AsRawHandle::as_raw_handle)].into_iter().flatten() {
+                unsafe { CancelSynchronousIo(handle); }
+            }
+            thread::sleep(Duration::from_millis(2));
+        }
+    }
     if let Some(writer) = input_writer {
         let _ = writer.join();
     }
     let stdout = stdout.join().unwrap_or_default();
     let stderr = stderr.join().unwrap_or_default();
+    if overflow.load(Ordering::Acquire) {
+        return Err("명령 출력이 허용 크기를 초과했습니다".to_string());
+    }
     if let Some(message) = failure {
         return Err(message.to_string());
     }

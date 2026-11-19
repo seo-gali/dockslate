@@ -70,6 +70,20 @@ fn container_path(path: &str) -> Result<String, String> {
         format!("/{normalized}")
     })
 }
+#[cfg(test)]
+mod security_tests {
+    use super::container_path;
+    #[test]
+    fn container_paths_reject_traversal_nul_and_excessive_depth() {
+        for path in ["relative", "/etc/../shadow", "/./etc", "/a\0b"] {
+            assert!(container_path(path).is_err());
+        }
+        assert!(container_path(&format!("/{}", "x/".repeat(33))).is_err());
+        assert!(container_path(&format!("/{}", "x".repeat(4096))).is_err());
+        assert_eq!(container_path("//var///log/").unwrap(), "/var/log");
+        assert_eq!(container_path("/").unwrap(), "/");
+    }
+}
 #[cfg(windows)]
 fn wsl_program() -> Result<PathBuf, String> {
     use std::{ffi::OsString, os::windows::ffi::OsStringExt};

@@ -1,13 +1,13 @@
 # 문서 안내
 
-현재 개발·공개 버전은 0.1.9다. 사용 방법·개발 계약과 과거 실행 결과를 구분한다. 검증 문서의 날짜·버전·EXE 해시는 해당 실행의 기준이며, 문서를 고쳤다고 앱을 다시 검증한 것은 아니다.
+개발판은 **0.1.10**, 공개 배포본은 **0.1.9**다. 최초 0.1.10 설치판의 Microsoft 탐지 원인은 미확정이다. 후속 구조 개편 EXE와 보안 수정 소스는 서로 다른 대상이며 각 파일의 해시·검사 범위를 구분한다. 날짜·버전만 같다고 과거 결과를 새 파일에 적용하지 않는다.
 
 ## 현재 안내와 개발 기준
 
 | 문서 | 용도 |
 | --- | --- |
 | [프로젝트 소개](../README.md) · [사용 안내](USER_GUIDE.md) | 다운로드·설치·현재 메뉴·작업 순서 |
-| [제품 범위](../.project/plan.md) | 지원 기능·미지원 범위 |
+| [구조 점검과 확장 설계](ARCHITECTURE_REVIEW.md) · [수정 검증](results/architecture-refactor.md) | 최초 감사와 후속 책임 분리·검사·패키징 수정, 적용 범위와 남은 설계 |
 | [개발·빌드](DEVELOPMENT.md) · [Pages](PAGES.md) | 소스 구성·빌드·정적 사이트 생성 |
 | [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) | 구현·조회·데이터·화면 규칙 |
 | [Node.js 예제](../examples/basic-web/README.md) | 앱에서 선택할 Dockerfile·Compose와 소스 |
@@ -20,6 +20,8 @@
 | 문서 | 읽는 범위 |
 | --- | --- |
 | [요청·검증 현황](REQUEST_STATUS.md) · [배포 전 점검](results/production-readiness.md) | 구현·실행 확인·미검증의 현재 요약 |
+| [보안 점검과 수정](results/security-review-20261119.md) | 인증·시크릿·입력·웹 보호의 적용 범위, 의존성 갱신과 남은 권고·검사 결과 |
+| [0.1.10 제작·공개 보류](results/release-0.1.10.md) · [설치 전 제거 오류](results/installer-upgrade.md) | 제작 완료와 Microsoft 탐지 보류, 버전 독립 경로 복구 소스 수정·현재 PC 등록 복구. 실제 업그레이드·새 설치판 재빌드와 구분 |
 | [0.1.9 공개 배포](results/public-distribution-0.1.9.md) · [제작·검사](results/release-0.1.9.md) | Release 첨부 4개·체크섬·VirusTotal, 자동 시작·일괄 작업·제거 알림 대기 변경과 미검증 범위 |
 | [0.1.7 릴리스](results/release-0.1.7.md) · [이벤트 자동 갱신](results/engine-events.md) | 실제 앱 24개·CLI 4개·패키지 검증, DockSlate WSL 재시작·기존 SQL 실행 상태 복원 |
 | [0.1.6 제작 기록](results/release-0.1.6.md) · [고정 공개 검사](results/public-release-0.1.6.json) | 2026-10-31 빌드·패키지·공개 파일 검사 |
@@ -48,4 +50,4 @@
 
 [IObit 제출 초안](results/iobit-access-review-draft.md)은 미전송 문서이며 제출 승인이나 원래 경고의 원인 확정이 아니다. [라이선스 자료](../licenses/README.md)는 원문·소스·고지 목록을 관리한다.
 
-[현재 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.9이며 사이트 빌드 시 다운로드 경로에 복사한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.
+[개발판 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.10이다. 공개 0.1.9의 고지는 해당 Release에 포함된 파일을 기준으로 확인한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.

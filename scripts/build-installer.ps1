@@ -98,6 +98,16 @@ try {
     $installerResources = Join-Path $targetRoot 'installer-resources'
     New-Item -ItemType Directory -Path $installerResources -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $projectRoot 'site\guide.html') -Destination (Join-Path $installerResources 'guide.html')
+    $installerDocs = Join-Path $installerResources 'docs'
+    if (Test-Path -LiteralPath $installerDocs) {
+        foreach ($generatedParent in @($targetRoot, $installerResources)) {
+            if ((Get-Item -LiteralPath $generatedParent).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Generated document parent is a reparse point.' }
+        }
+        if ([IO.Path]::GetFullPath($installerDocs) -cne [IO.Path]::GetFullPath((Join-Path $targetRoot 'installer-resources\docs')) -or (Get-Item -LiteralPath $installerDocs).Attributes -band [IO.FileAttributes]::ReparsePoint -or @(Get-ChildItem -LiteralPath $installerDocs -Recurse -Force | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint }).Count) { throw 'Unsafe generated document directory.' }
+        Remove-Item -LiteralPath $installerDocs -Recurse -Force
+    }
+    & node.exe (Join-Path $PSScriptRoot 'package-docs.mjs') $installerDocs
+    if ($LASTEXITCODE -ne 0) { throw 'Installer document staging failed.' }
     & node.exe $cliEntry bundle --bundles nsis --config src-tauri/tauri.installer.conf.json --no-binary-patching --ci
     if ($LASTEXITCODE -ne 0) { throw "NSIS bundling failed (exit $LASTEXITCODE). No installer was executed." }
     $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'src-tauri\tauri.conf.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version

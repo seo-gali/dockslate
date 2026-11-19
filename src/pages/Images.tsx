@@ -1,23 +1,19 @@
-import { ResizableTable } from '../ResizableColumns';
-import { TableFilters, useTableRows } from '../TableRows';
-import { Fragment, useEffect, useRef, useState, type RefObject } from 'react';
 import { listen } from '@tauri-apps/api/event';
-import ImagePullDialog, { type PullProgress } from '../ImagePullDialog';
-import { EngineGate, type EngineProps } from '../App';
-import { ImageRun, type RunResult } from '../ImageRun';
-import ImageRemovalDialog from '../ImageRemovalDialog';
-import { backend, refreshDashboardAfterMutation, type ActionResult, type DockerImage, useBackendQuery } from '../api';
-import { OperationNotice, type Operation } from '../actions';
-import { ContainerReferences, ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, errorMessage, formatBytes, formatDate } from '../components';
+import { Fragment,useEffect,useRef,useState,type RefObject } from 'react';
+import { OperationNotice,type Operation } from '../actions';
+import { backend,refreshDashboardAfterMutation,useBackendQuery,type DockerImage } from '../api';
+import { EngineGate,type EngineProps } from '../App';
+import { ContainerReferences,ErrorNotice,Icon,PageHeader,Pagination,SearchInput,StatePanel,StatusBadge,errorMessage,formatBytes,formatDate } from '../components';
 import { t } from "../i18n";
+import ImagePullDialog,{ type PullProgress } from '../ImagePullDialog';
+import ImageRemovalDialog from '../ImageRemovalDialog';
+import { ImageRun,type RunResult } from '../ImageRun';
+import type { RegistryImage } from '../ipc/contracts/images';
+import { ResizableTable } from '../ResizableColumns';
+import { TableFilters,useTableRows } from '../TableRows';
 
 
-interface RegistryImage {
-  name: string;
-  description: string;
-  starCount: number;
-  isOfficial: boolean;
-}
+
 
 function RegistrySearch({ busy, connected, openSettings, onSelect }: {
   busy: boolean;
@@ -51,7 +47,7 @@ function RegistrySearch({ busy, connected, openSettings, onSelect }: {
     const current = ++generation.current;
     setSearchedTerm(requestedTerm);
     try {
-      const value = await backend<RegistryImage[]>('image_search', { term: requestedTerm });
+      const value = await backend('image_search', { term: requestedTerm });
       if (current === generation.current) setResults(value);
     } catch (error) { if (current === generation.current) setFailure(`Docker Hub 검색 실패: ${errorMessage(error)}`); }
     finally { setSearching(false); inFlight.current = false; }
@@ -94,7 +90,7 @@ function PullForm({ reference, onReference, busy, pulling, onPull, onClose, refe
 }
 
 export default function Images(props: EngineProps & { building: boolean; onRunBusy?: (busy: boolean) => void; onContainerCreated?: (result: RunResult) => void }) {
-  const query = useBackendQuery<DockerImage[]>('images_list', undefined, props.engine?.state === 'connected');
+  const query = useBackendQuery('images_list', undefined, props.engine?.state === 'connected');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -137,7 +133,7 @@ export default function Images(props: EngineProps & { building: boolean; onRunBu
       unlisten = await listen<PullProgress>('image-pull-progress', event => {
         if (!finished && event.payload.requestId === requestId) setPullProgress(event.payload);
       });
-      await backend<ActionResult>('image_pull', { reference: requested, requestId });
+      await backend('image_pull', { reference: requested, requestId });
       finished = true;
       setPullProgress(previous => previous && {...previous, phase: 'completed', error: undefined});
       setReference(''); setShowPull(false);

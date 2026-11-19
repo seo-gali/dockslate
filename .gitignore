@@ -8,6 +8,14 @@ src-tauri/target/
 src-tauri/gen/
 .tools/
 *.log
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pfx
+*.p12
+*.key
+*.pem
 /downloads/*
 !/downloads/SHA256SUMS.txt
 

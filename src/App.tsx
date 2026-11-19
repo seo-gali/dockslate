@@ -80,8 +80,8 @@ export default function App() {
   const showSettings = useCallback(() => { setRuntimeTabRequest(value => value + 1); setPage('Settings'); }, [setPage]);
   const navigateOverview = useCallback((next: Page) => { if (next === 'Disk Manager') setDockerTabRequest(value => value + 1); setPage(next); }, [setPage]);
   const createContainer = useCallback((result: RunResult) => { setContainerRequest({ ...result, sequence: Date.now() }); setPage('Containers'); }, [setPage]);
-  const engineQuery = useBackendQuery<EngineStatus>('engine_status');
-  const installerQuery = useBackendQuery<boolean>('installer_setup_mode', undefined, '__TAURI_INTERNALS__' in window);
+  const engineQuery = useBackendQuery('engine_status');
+  const installerQuery = useBackendQuery('installer_setup_mode', undefined, '__TAURI_INTERNALS__' in window);
   const installerMode = '__TAURI_INTERNALS__' in window ? installerQuery.data : false;
   const [finishingSetup, setFinishingSetup] = useState(false);
   const finishingSetupRequest = useRef(false);

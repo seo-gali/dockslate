@@ -1,21 +1,19 @@
+import type { RunOptions } from './ipc/contracts/images';
+export type { RunOptions } from './ipc/contracts/images';
 import { useRef, useState } from 'react';
 import { backend, refreshDashboardAfterMutation, useBackendQuery } from './api';
 import { Icon, errorMessage } from './components';
 import { t } from "./i18n";
 
 
-export interface RunOptions {
-  env?: string[]; command?: string[]; entrypoint?: string[]; workingDir?: string;
-  restartPolicy?: string; networkId?: string | null; memoryBytes?: number | null; nanoCpus?: number | null;
-  mounts?: { name: string; target: string; readOnly: boolean }[];
-}
+
 interface Network { id: string; name: string; driver: string; scope: string; internal: boolean; builtin: boolean }
 const lines = (value: string) => value.split(/\r?\n/).filter(line => line.trim().length > 0);
 const supportedNetwork = (network: Network) => network.scope === 'local' && (network.driver === 'bridge' || (network.driver === 'null' && network.name === 'none'));
 
 export function ImageRunAdvanced({ options, onChange, disabled, onBusy, onNetworkNone }: { options: RunOptions; onChange: (options: RunOptions) => void; disabled: boolean; onBusy: (busy: boolean) => void; onNetworkNone: (none: boolean) => void }) {
-  const volumes = useBackendQuery<{ name: string; driver: string; fileSupported: boolean }[]>('volumes_list');
-  const networks = useBackendQuery<Network[]>('networks_list');
+  const volumes = useBackendQuery('volumes_list');
+  const networks = useBackendQuery('networks_list');
   const [envText, setEnvText] = useState(options.env?.join('\n') ?? '');
   const [commandText, setCommandText] = useState(options.command?.join('\n') ?? '');
   const [entrypointText, setEntrypointText] = useState(options.entrypoint?.join('\n') ?? '');
@@ -34,11 +32,11 @@ export function ImageRunAdvanced({ options, onChange, disabled, onBusy, onNetwor
     inFlight.current = true; setCreating(true); onBusy(true); setError(null);
     try {
       if (kind === 'network') {
-        const result = await backend<{ id: string; name: string }>('network_create', { name: requestedName, internal });
+        const result = await backend('network_create', { name: requestedName, internal });
         change({ networkId: result.id }); onNetworkNone(false);
         setNetworkName(''); setInternal(false);
       } else {
-        const result = await backend<{ name: string }>('volume_create', { name: requestedName });
+        const result = await backend('volume_create', { name: requestedName });
         mount(result.name); setVolumeName('');
       }
       setCreateKind(null);

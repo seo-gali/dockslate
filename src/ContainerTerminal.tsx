@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
-import { backend, type Container } from './api';
+import { useCallback,useEffect,useRef,useState,type CSSProperties,type KeyboardEvent } from 'react';
+import { backend,type Container } from './api';
 import { errorMessage } from './components';
 import { t } from "./i18n";
 
 
 type Cell = { text: string; fg: string; bg: string; bold: boolean; inverse: boolean };
-type Output = { bytes: number[]; cursor: number; truncated: boolean; exited: boolean; exitCode: number | null };
+
 const colors = ['#17202b', '#f07878', '#53cf9f', '#e4bf69', '#79afff', '#c392f0', '#6ccbd1', '#d8e0ec', '#71839b', '#ff9b9b', '#81e9b9', '#f9d98b', '#a3c9ff', '#e2b3ff', '#9eebee', '#ffffff'];
 const blank = (): Cell => ({ text: ' ', fg: '#d8e0ec', bg: 'transparent', bold: false, inverse: false });
 
@@ -189,7 +189,7 @@ export function ContainerTerminal({ container, active }: { container: Container;
   const open = async () => {
     const version = ++epoch.current; setBusy(true); setFailure(null); setEnded(null);
     try {
-      const opened = await backend<{ sessionId: string }>('terminal_open', { id: container.id, shell, cols: screen.current.cols, rows: screen.current.rows });
+      const opened = await backend('terminal_open', { id: container.id, shell, cols: screen.current.cols, rows: screen.current.rows });
       if (version !== epoch.current) { await backend('terminal_close', { sessionId: opened.sessionId }); return; }
       screen.current = new Screen(screen.current.cols, screen.current.rows); decoder.current = new TextDecoder('utf-8'); cursor.current = 0;
       session.current = opened.sessionId; setSessionId(opened.sessionId); redraw(n => n + 1); input.current?.focus();
@@ -202,7 +202,7 @@ export function ContainerTerminal({ container, active }: { container: Container;
     let cancelled = false; let timer = 0;
     const poll = async () => {
       try {
-        const result = await backend<Output>('terminal_read', { sessionId, cursor: cursor.current });
+        const result = await backend('terminal_read', { sessionId, cursor: cursor.current });
         if (cancelled || session.current !== sessionId) return;
         if (result.truncated) { decoder.current = new TextDecoder('utf-8'); screen.current.feed('\r\n[이전 출력 일부가 버퍼에서 제외되었습니다.]\r\n', send); }
         cursor.current = result.cursor;

@@ -39,7 +39,7 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
     setAcknowledged(false);
     setError(null);
     try {
-      const checked = await backend<DestructivePreview>('destructive_preview', { request: value });
+      const checked = await backend('destructive_preview', { request: value });
       if (generation.current === current && open.current) setPreview(checked);
     } catch (failure) {
       if (generation.current === current && open.current) setError(t("대상 검사 실패: {p1}", { p1: errorMessage(failure) }));
@@ -73,7 +73,7 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
       unlisten = await listen<DeletionProgress>('destructive-progress', event => {
         if (event.payload.requestId === requestId) setProgress(event.payload);
       });
-      const result = await backend<DestructiveResult>('destructive_execute', { token: preview.token, approved: true, requestId });
+      const result = await backend('destructive_execute', { token: preview.token, approved: true, requestId });
       open.current = false;
       setRequest(null); setPreview(null);
       setAcknowledged(false);

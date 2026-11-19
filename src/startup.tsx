@@ -1,16 +1,11 @@
+import type { StartupSettings } from './ipc/contracts/runtime';
 import { useEffect, useRef, useState } from 'react';
 import { backend } from './api';
 import { ErrorNotice, errorMessage } from './components';
 import type { RuntimeStatus } from './runtime';
 import { t } from './i18n';
 
-interface StartupSettings {
-  startEngine: boolean;
-  startApp: boolean;
-  conflict: boolean;
-  executable: string;
-  autoStartAllowed: boolean;
-}
+
 
 export function useStartupSettings() {
   const [data, setData] = useState<StartupSettings | null>(null);
@@ -19,7 +14,7 @@ export function useStartupSettings() {
   const inFlight = useRef(false);
   const load = async () => {
     setLoading(true); setError(null);
-    try { setData(await backend<StartupSettings>('startup_settings')); }
+    try { setData(await backend('startup_settings')); }
     catch (failure) { setError(errorMessage(failure)); }
     finally { setLoading(false); }
   };
@@ -27,7 +22,7 @@ export function useStartupSettings() {
   const change = async (startEngine: boolean, startApp: boolean) => {
     if (inFlight.current) return;
     inFlight.current = true; setLoading(true); setError(null);
-    try { setData(await backend<StartupSettings>('startup_set', { startEngine, startApp })); }
+    try { setData(await backend('startup_set', { startEngine, startApp })); }
     catch (failure) { setError(errorMessage(failure)); }
     finally { inFlight.current = false; setLoading(false); }
   };

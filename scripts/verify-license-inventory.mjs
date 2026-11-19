@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { readGoBuildInfo } from './go-build-info.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
 const directory = path.join(root, 'licenses');
@@ -43,26 +44,15 @@ for (const entry of inventory.vendorManifests) {
   for (const [, name, version] of declarations) requireFact(modules.has(name + '@' + version), 'Vendored Go dependency has no notices: ' + name + '@' + version);
 }
 const binaries = [];
+const goSupport = inventory.components.find(c => c.ecosystem === 'support' && c.name === 'Go standard library and vendored support');
+requireFact(goSupport, 'Go standard library notices are missing.');
 for (const entry of inventory.nativeFiles) {
   const bytes = fs.readFileSync(contained(root, entry.file));
   requireFact(hash(bytes) === entry.sha256, 'Native binary differs from reviewed license inventory: ' + entry.file);
-  const start = bytes.indexOf(Buffer.from('\xff Go buildinf:', 'latin1'));
-  requireFact(start >= 0 && start % 16 === 0 && bytes[start + 15] & 2, 'Unsupported Go build information.');
-  let position = start + 32;
-  const readString = () => {
-    let size = 0, shift = 0, next;
-    do {
-      requireFact(position < bytes.length && shift < 49, 'Invalid Go build string length.');
-      next = bytes[position++]; size += (next & 127) * 2 ** shift; shift += 7;
-    } while (next & 128);
-    requireFact(position + size <= bytes.length, 'Truncated Go build string.');
-    const value = bytes.toString('utf8', position, position + size); position += size; return value;
-  };
-  const goVersion = readString(), build = readString();
-  requireFact(goVersion === 'go1.26.8', 'Go standard library version changed; review its notices.');
-  const dependencies = build.split('\n').filter(line => line.startsWith('dep\t'));
-  for (const line of dependencies) {
-    const [, name, version] = line.split('\t');
+  const {goVersion, dependencies} = readGoBuildInfo(bytes);
+  requireFact(goVersion === goSupport.version, 'Go standard library version changed; review its notices.');
+  for (const dependency of dependencies) {
+    const {name, version} = dependency.replacement ?? dependency;
     requireFact(modules.has(name + '@' + version), 'Embedded Go dependency has no notices: ' + name + '@' + version);
   }
   requireFact(dependencies.length > 0 || entry.file.endsWith('/docker.exe'), 'Plugin dependency information is missing.');

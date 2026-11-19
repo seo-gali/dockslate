@@ -1,17 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { backend, refreshDashboardAfterMutation, type DestructiveResult, type DockerImage } from './api';
-import { ConfirmDialog, StatusBadge, errorMessage } from './components';
+import { useEffect,useRef,useState } from 'react';
+import { backend,refreshDashboardAfterMutation,type DockerImage } from './api';
+import { ConfirmDialog,StatusBadge,errorMessage } from './components';
 import { t } from "./i18n";
+import type { ImagePreview,ImageRemovalResult } from './ipc/contracts/images';
+export type { ImageRemovalResult } from './ipc/contracts/images';
 
 
-interface ImagePreview {
-  token: string | null; eligible: boolean; blockedReasons: string[]; expiresAt: number | null;
-  image: { id: string; tags: string[]; size: number | null };
-  containers: { id: string; name: string; state: string }[];
-  deleteReferencingContainers: boolean;
-}
+
 interface CheckedImage { image: DockerImage; preview: ImagePreview | null; error: string | null }
-export interface ImageRemovalResult extends DestructiveResult { remaining: string[] }
+
 
 function reasonText(reason: string): string {
   if (reason.startsWith('This image is referenced by existing containers.')) return t("참조 컨테이너가 있습니다. 아래 옵션을 선택하면 중지된 참조 컨테이너를 삭제 대상에 포함해 다시 검사합니다.");
@@ -52,7 +49,7 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
       const worker = async () => {
         while (next < images.length && !cancelled) {
           const index = next++;
-          try { results[index].preview = await backend<ImagePreview>('image_removal_preview', { id: images[index].id, deleteReferencingContainers: cascade }); }
+          try { results[index].preview = await backend('image_removal_preview', { id: images[index].id, deleteReferencingContainers: cascade }); }
           catch (failure) { results[index].error = errorMessage(failure); }
           if (!cancelled && generation.current === current) setChecked(results.map(result => ({ ...result })));
         }
@@ -77,7 +74,7 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
         if (!result.preview?.token || !result.preview.expiresAt || result.preview.expiresAt <= Date.now()) { failed.push({ id: result.image.id, error: '승인 정보가 만료되어 후속 삭제를 중단했습니다.' }); break; }
         setProgress({ completed: index, detail: result.image.tags[0] ?? result.image.id });
         try {
-          const removed = await backend<ImageRemovalResult>('image_removal_execute', { token: result.preview.token, approved: true });
+          const removed = await backend('image_removal_execute', { token: result.preview.token, approved: true });
           deleted.push(...removed.deleted);
           removed.deleted.forEach(id => remaining.delete(id));
           failed.push(...removed.failed);

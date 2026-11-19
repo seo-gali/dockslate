@@ -331,3 +331,78 @@ pub fn network_delete_execute(token: String, approved: bool) -> Result<Value, St
     client.json("DELETE", &format!("/networks/{}", approval.id))?;
     Ok(json!({"message":"Network deleted","deleted":[approval.id],"failed":[]}))
 }
+
+#[cfg(test)]
+mod security_tests {
+    use super::*;
+    #[test]
+    fn expired_network_approval_is_consumed_without_contacting_engine() {
+        let token = approval_token().unwrap();
+        APPROVALS.get_or_init(||Mutex::new(HashMap::new())).lock().unwrap().insert(token.clone(),NetworkApproval {
+            created:Instant::now()-APPROVAL_TTL,
+            engine:EngineBinding {identity:String::new(),owner:String::new(),context:String::new(),api:String::new()},
+            id:String::new(),fingerprint:Value::Null,references:Value::Null,
+        });
+        let error=network_delete_execute(token.clone(),true).unwrap_err();
+        assert!(error.contains("expired"));
+        assert!(network_delete_execute(token,true).unwrap_err().contains("already consumed"));
+    }
+}
+
+pub fn network_create(name: String, internal: bool) -> Result<Value, String> {
+    let _lock = docker::MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
+    let has_controls = name.chars().any(char::is_control);
+    let name = name.trim();
+    if has_controls || name.is_empty()
+        || name.len() > 63
+        || !name.as_bytes()[0].is_ascii_alphanumeric()
+        || !name
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte))
+        || ["bridge", "host", "none", "default", "ingress"].contains(&name)
+    {
+        return Err("네트워크 이름은 영문·숫자로 시작하는 1~63자의 영문·숫자·밑줄·마침표·하이픈을 사용하세요. 기본 네트워크 이름은 사용할 수 없습니다.".into());
+    }
+    let client = docker::connected()?;
+    let networks = client.json("GET", "/networks")?;
+    let networks = networks
+        .as_array()
+        .ok_or("Docker 네트워크 목록을 확인하지 못했습니다.")?;
+    if networks.iter().any(|network| text(network, "Name") == name) {
+        return Err("같은 이름의 Docker 네트워크가 이미 있습니다. 다른 이름을 입력하세요.".into());
+    }
+    let body = serde_json::to_vec(&json!({
+        "Name":name,"Driver":"bridge","Scope":"local","Internal":internal,
+        "Attachable":false,"Ingress":false,"ConfigOnly":false
+    }))
+    .map_err(|_| "네트워크 생성 요청을 구성하지 못했습니다.")?;
+    let response =
+        client
+            .transport
+            .create_network(&client.api, &body, docker::REQUEST_TIMEOUT, docker::BODY_LIMIT)?;
+    let response: Value = serde_json::from_slice(&response)
+        .map_err(|_| "네트워크 생성 응답을 읽지 못했습니다. 네트워크 목록을 새로고침하세요.")?;
+    let id = text(&response, "Id");
+    if !object_id(id) {
+        return Err(
+            "생성된 네트워크 ID를 확인하지 못했습니다. 네트워크 목록을 새로고침하세요.".into(),
+        );
+    }
+    let network = client
+        .json("GET", &format!("/networks/{id}"))
+        .map_err(|error| format!("네트워크 {name} ({id})를 생성했지만 설정 확인을 완료하지 못했습니다. 네트워크 목록을 새로고침하세요. {error}"))?;
+    if !docker::supported_network(&network)
+        || text(&network, "Id") != id
+        || text(&network, "Name") != name
+        || text(&network, "Driver") != "bridge"
+        || network["Internal"] != internal
+    {
+        return Err(format!(
+            "네트워크 {name} ({id})의 설정이 요청과 다릅니다. 네트워크 목록을 새로고침하세요."
+        ));
+    }
+    serde_json::to_value(crate::contracts::NetworkCreated { id, name, internal }).map_err(|error| error.to_string())
+}
+
+
+fn text<'a>(value: &'a Value, key: &str) -> &'a str { value[key].as_str().unwrap_or("") }

@@ -1,17 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { backend, refreshDashboardAfterMutation, useBackendQuery } from './api';
+import { useEffect,useRef,useState } from 'react';
+import { backend,refreshDashboardAfterMutation,useBackendQuery } from './api';
+import { ConfirmDialog,ErrorNotice,Icon,errorMessage } from './components';
 import { ContainerDialog } from './ContainerDialog';
-import { ConfirmDialog, ErrorNotice, Icon, errorMessage } from './components';
 import { t } from './i18n';
+import type { Preview,Result,Settings,Source } from './ipc/contracts/containers';
 
-interface Port { containerPort: number; hostPort: number; protocol: string; hostIp: string }
-interface Mount { name: string; target: string; readOnly: boolean }
-interface Settings { id: string; name: string; ports: Port[]; mounts: Mount[]; networks: string[] }
-interface Source { settings: Settings; state: string; recreateBlockedReason: string | null; fixedMounts: { kind: string; source: string; target: string; readOnly: boolean }[] }
-interface Preview { token: string; expiresAt: number; before: Settings; after: Settings; recreate: boolean; wasRunning: boolean }
-interface Result { id: string; name: string; message: string; retainedContainer?: string | null; savedImage?: string }
-interface Network { id: string; name: string; driver: string; scope: string }
-interface Volume { name: string; driver: string; scope: string }
+
+
+
+
+
+
+
+
 
 export default function ContainerEdit({ id, active, blocked, onClose, onBusy, onComplete }: { id: string; active: boolean; blocked: boolean; onClose: () => void; onBusy: (busy: boolean) => void; onComplete: (result: Result) => void }) {
   const [source, setSource] = useState<Source | null>(null);
@@ -21,16 +22,16 @@ export default function ContainerEdit({ id, active, blocked, onClose, onBusy, on
   const [preview, setPreview] = useState<Preview | null>(null);
   const [approved, setApproved] = useState(false);
   const request = useRef(false);
-  const volumes = useBackendQuery<Volume[]>('volumes_list');
-  const networks = useBackendQuery<Network[]>('networks_list');
-  useEffect(() => { let live = true; void backend<Source>('container_edit_read', { id }).then(value => { if (live) { setSource(value); setSettings(value.settings); } }).catch(failure => { if (live) setError(errorMessage(failure)); }); return () => { live = false; }; }, [id]);
+  const volumes = useBackendQuery('volumes_list');
+  const networks = useBackendQuery('networks_list');
+  useEffect(() => { let live = true; void backend('container_edit_read', { id }).then(value => { if (live) { setSource(value); setSettings(value.settings); } }).catch(failure => { if (live) setError(errorMessage(failure)); }); return () => { live = false; }; }, [id]);
   useEffect(() => { onBusy(working); return () => onBusy(false); }, [working, onBusy]);
   const close = () => { if (!request.current) onClose(); };
   const change = (value: Partial<Settings>) => { setSettings(current => current ? { ...current, ...value } : current); setPreview(null); setApproved(false); };
   const inspect = async () => {
     if (!settings || request.current) return;
     request.current = true; setWorking(true); setError(null); setApproved(false);
-    try { setPreview(await backend<Preview>('container_edit_preview', { request: settings })); }
+    try { setPreview(await backend('container_edit_preview', { request: settings })); }
     catch (failure) { setError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); }
   };
@@ -38,7 +39,7 @@ export default function ContainerEdit({ id, active, blocked, onClose, onBusy, on
     if (!preview || !approved || request.current) return;
     if (preview.expiresAt <= Date.now()) { setPreview(null); setApproved(false); setError(t('승인 정보가 만료되었습니다. 다시 검사하세요.')); return; }
     request.current = true; setWorking(true); setError(null);
-    try { const result = await backend<Result>('container_edit_execute', { token: preview.token, approved: true }); await refreshDashboardAfterMutation(); onComplete(result); }
+    try { const result = await backend('container_edit_execute', { token: preview.token, approved: true }); await refreshDashboardAfterMutation(); onComplete(result); }
     catch (failure) { setPreview(null); setApproved(false); setError(errorMessage(failure)); await refreshDashboardAfterMutation(); }
     finally { request.current = false; setWorking(false); }
   };

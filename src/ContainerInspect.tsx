@@ -46,7 +46,7 @@ export function ContainerInspect({ container, revision, active = true, focusSect
   const read = async () => {
     const current = ++request.current;
     setLoading(true); setError(null);
-    try { const value = await backend<Record<string, unknown>>('container_inspect', { id: container.id }); if (request.current === current) { setData(value); setLoadedRevision(revision); } }
+    try { const value = await backend('container_inspect', { id: container.id }); if (request.current === current) { setData(value); setLoadedRevision(revision); } }
     catch (failure) { if (request.current === current) setError(errorMessage(failure)); }
     finally { if (request.current === current) setLoading(false); }
   };

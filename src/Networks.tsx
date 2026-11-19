@@ -1,20 +1,17 @@
+import { useEffect,useRef,useState } from 'react';
+import { OperationNotice,type Operation } from './actions';
+import { backend,refreshDashboardAfterMutation,useBackendQuery } from './api';
+import { EngineGate,type EngineProps } from './App';
+import { ConfirmDialog,ContainerReferences,DetailPanel,ErrorNotice,Icon,PageHeader,Pagination,SearchInput,StatePanel,StatusBadge,errorMessage } from './components';
+import { getLocale,t } from "./i18n";
+import type { Network,NetworkPreview } from './ipc/contracts/resources';
 import { ResizableTable } from './ResizableColumns';
-import { TableFilters, useTableRows } from './TableRows';
-import { useEffect, useRef, useState } from 'react';
-import { EngineGate, type EngineProps } from './App';
-import { backend, refreshDashboardAfterMutation, type DestructiveResult, useBackendQuery } from './api';
-import { OperationNotice, type Operation } from './actions';
-import { ContainerReferences, ConfirmDialog, DetailPanel, ErrorNotice, Icon, PageHeader, Pagination, SearchInput, StatePanel, StatusBadge, errorMessage } from './components';
-import { getLocale, t } from "./i18n";
+import { TableFilters,useTableRows } from './TableRows';
 
 
-interface NetworkContainer { id: string; name: string; state: string }
-interface Network {
-  id: string; name: string; driver: string; scope: string; internal: boolean; builtin: boolean;
-  ipam: { Driver?: string; Options?: Record<string, string> | null; Config?: { Subnet?: string; Gateway?: string; IPRange?: string; AuxiliaryAddresses?: Record<string, string> }[] | null } | null;
-  containers: NetworkContainer[]; deletable: boolean; deleteBlockedReason: string | null;
-}
-interface NetworkPreview { token: string; expiresAt: number; network: Network }
+
+
+
 
 function blockedReason(network: Network): string | null {
   if (network.builtin) return t("기본 네트워크는 삭제할 수 없습니다.");
@@ -24,7 +21,7 @@ function blockedReason(network: Network): string | null {
 }
 
 export default function Networks(props: EngineProps & { noPageHeader?: boolean; onBusy?: (busy: boolean) => void }) {
-  const query = useBackendQuery<Network[]>('networks_list', undefined, props.engine?.state === 'connected');
+  const query = useBackendQuery('networks_list', undefined, props.engine?.state === 'connected');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -60,7 +57,7 @@ export default function Networks(props: EngineProps & { noPageHeader?: boolean; 
     if (busy || inFlight.current || !name.trim()) return;
     inFlight.current = true; setWorking(true); setOperation(null);
     try {
-      const result = await backend<{ id: string; name: string }>('network_create', { name: name.trim(), internal });
+      const result = await backend('network_create', { name: name.trim(), internal });
       setOperation({ tone: 'success', message: t("{p1} 네트워크를 만들었습니다.", { p1: result.name }) });
       setName(''); setInternal(false); setShowCreate(false); setSelectedId(result.id);
     } catch (error) { setOperation({ tone: 'danger', message: t("네트워크 생성 실패: {p1}", { p1: errorMessage(error) }) }); }
@@ -70,7 +67,7 @@ export default function Networks(props: EngineProps & { noPageHeader?: boolean; 
     const current = ++generation.current;
     setValidating(true); setPreview(null); setAcknowledged(false); setDialogError(null);
     try {
-      const result = await backend<NetworkPreview>('network_delete_preview', { id: network.id });
+      const result = await backend('network_delete_preview', { id: network.id });
       if (generation.current === current) setPreview(result);
     } catch (error) { if (generation.current === current) setDialogError(errorMessage(error)); }
     finally { if (generation.current === current) setValidating(false); }
@@ -88,7 +85,7 @@ export default function Networks(props: EngineProps & { noPageHeader?: boolean; 
     if (preview.expiresAt <= Date.now()) { setPreview(null); setAcknowledged(false); setDialogError(t("승인 정보가 만료되었습니다. 대상을 다시 검사하세요.")); return; }
     inFlight.current = true; setExecuting(true); setDialogError(null);
     try {
-      const result = await backend<DestructiveResult>('network_delete_execute', { token: preview.token, approved: true });
+      const result = await backend('network_delete_execute', { token: preview.token, approved: true });
       setOperation({ tone: result.failed.length ? 'danger' : 'success', message: result.failed.length ? result.failed.map(failure => `${failure.id}: ${failure.error}`).join(' / ') : t("{p1} 네트워크를 삭제했습니다.", { p1: preview.network.name }) });
       setTarget(null); setPreview(null); setAcknowledged(false);
     } catch (error) { setDialogError(errorMessage(error)); setPreview(null); setAcknowledged(false); }

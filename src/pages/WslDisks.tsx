@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { backend, refreshDashboardAfterMutation, type DiskOperation, type WslDisk, type WslInventory, type WslPreview, useBackendQuery } from '../api';
-import { OperationNotice, type Operation } from '../actions';
-import { ConfirmDialog, ErrorNotice, Icon, StatePanel, TaskProgress, StatusBadge, errorMessage, formatBytes } from '../components';
-import type { useDockSlateRuntime } from '../runtime';
+import { useEffect,useRef,useState } from 'react';
+import { OperationNotice,type Operation } from '../actions';
+import { backend,refreshDashboardAfterMutation,useBackendQuery,type DiskOperation,type WslDisk,type WslPreview } from '../api';
+import { ConfirmDialog,ErrorNotice,Icon,StatePanel,StatusBadge,TaskProgress,errorMessage,formatBytes } from '../components';
 import { t } from "../i18n";
+import type { ShutdownPreview } from '../ipc/contracts/wsl';
+import type { useDockSlateRuntime } from '../runtime';
 
 
 const checkLabels: Record<string, string> = { ownership: 'WSL 등록 정보', runtimeOwner: '엔진 소유 정보', administrator: '관리자 권한', diskTools: 'Windows 디스크 관리 도구', wslStopped: 'WSL 배포판 종료', runtimeExited: '엔진·보조 프로세스 종료', detachedDynamicVhdx: 'VHDX 분리 상태', exclusiveLock: '디스크 파일 잠금', sourceIdentity: '원본 디스크 확인' };
-interface ShutdownPreview { token: string | null; path: string; distributions: string[]; expiresAt: number | null }
+
 
 function blockerText(reason: string): string {
   const running = 'Running WSL distributions must be stopped manually: ';
@@ -38,7 +39,7 @@ function previewChecks(value: unknown): { name: string; status: string; detail: 
 }
 
 export default function WslDisks({ revision, onLoading, onCompacting, runtime, openRuntimeSettings }: { revision: number; onLoading: (loading: boolean) => void; onCompacting: (busy: boolean) => void; runtime?: ReturnType<typeof useDockSlateRuntime>; openRuntimeSettings?: () => void }) {
-  const query = useBackendQuery<WslInventory>('wsl_inventory');
+  const query = useBackendQuery('wsl_inventory');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [preview, setPreview] = useState<WslPreview | null>(null);
   const [checking, setChecking] = useState(false);
@@ -153,7 +154,7 @@ export default function WslDisks({ revision, onLoading, onCompacting, runtime, o
     if (!selected || query.loading || checking || compacting || runtime?.busy) return;
     setChecking(true); setPreview(null); setOperation({ tone: 'accent', message: t("소유 런타임, 종료·분리 상태와 실행 권한을 검사하고 있습니다…") });
     try {
-      const result = await backend<WslPreview>('wsl_preview', { diskId: selected.id });
+      const result = await backend('wsl_preview', { diskId: selected.id });
       setPreview(result);
       setOperation({ tone: result.eligible ? 'success' : 'warning', message: result.eligible ? t("압축 사전 조건을 확인했습니다. 대상을 검토하고 승인하면 실행할 수 있습니다.") : t("압축하려면 아래 준비를 마쳐 주세요.") });
     } catch (failure) { setOperation({ tone: 'danger', message: `사전 조건 검사 실패: ${errorMessage(failure)}` }); }
@@ -162,7 +163,7 @@ export default function WslDisks({ revision, onLoading, onCompacting, runtime, o
   const prepareShutdown = async () => {
     if (!selected || !canShutdown || checkBusy) return;
     setShutdownOpen(true); setShutdownPreview(null); setShutdownApproved(false); setShutdownError(null); setShutdownBusy(true);
-    try { setShutdownPreview(await backend<ShutdownPreview>('wsl_shutdown_preview', { diskId: selected.id })); }
+    try { setShutdownPreview(await backend('wsl_shutdown_preview', { diskId: selected.id })); }
     catch (failure) { setShutdownError(errorMessage(failure)); }
     finally { setShutdownBusy(false); }
   };
@@ -180,7 +181,7 @@ export default function WslDisks({ revision, onLoading, onCompacting, runtime, o
     if (!canCompact || !preview?.token || !acknowledged || submitting) return;
     setSubmitting(true); setDialogError(null); setOperation(null);
     try {
-      const result = await backend<DiskOperation>('wsl_compact', { token: preview.token, approved: true });
+      const result = await backend('wsl_compact', { token: preview.token, approved: true });
       setDiskOperation(result);
       setDialogOpen(false); setAcknowledged(false); setPreview(null);
       if (result.status === 'in_progress') await query.poll();

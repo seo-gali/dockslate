@@ -1,0 +1,24 @@
+{
+    "observedAt":  "2026-11-11T13:03:34.3060539Z",
+    "scope":  "Compiled production recovery function with only registry keys redirected to a unique test key; actual Modern UI initialization before pages",
+    "checks":  [
+                   "actual MUI GUI callback repairs before reinstall page",
+                   "default destination follows recovered existing location",
+                   "existing language value preserved",
+                   "version 0.1.1 does not restrict recovery",
+                   "version 0.1.9 does not restrict recovery",
+                   "version 0.1.10 does not restrict recovery",
+                   "version 9.9.9 does not restrict recovery",
+                   "existing default preserved",
+                   "unquoted registered location supported",
+                   "explicit different destination preserved",
+                   "mismatched uninstall command rejected",
+                   "relative location rejected",
+                   "missing uninstaller rejected"
+               ],
+    "functionSha256":  "C76DB527641358ED99DDCCF2E3A9DF2DD4489E6B974F93C0AEDC3DBB367D2776",
+    "realInstallerOrUninstallerExecuted":  false,
+    "realInstallationChanged":  false,
+    "engineChanged":  false,
+    "passed":  true
+}

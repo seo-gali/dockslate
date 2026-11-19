@@ -1,19 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { readPublishedRelease, stagePublishedAssets } from './release-assets.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
 if (process.argv.length > 2) throw Error('Use build:site with no arguments; output is always site-dist/.');
-const release = JSON.parse(fs.readFileSync(path.join(root, 'site/release.json'), 'utf8'));
-const app = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-if (release.version !== app.version || !/^\d+\.\d+\.\d+$/.test(release.version)) throw Error('Website version must match the application version.');
+const published = readPublishedRelease(root);
+const { release } = published;
 const siteUrl = 'https://seo-gali.github.io/dockslate/';
 const releasesUrl = 'https://github.com/seo-gali/dockslate/releases/';
 const assetUrl = releasesUrl + 'download/v' + release.version + '/';
 const values = { VERSION: release.version, SITE_URL: siteUrl, RELEASE_URL: releasesUrl + 'tag/v' + release.version };
 let verifiedDownloads = 0;
-const checksumLines = [];
 for (const key of ['installer', 'zip', 'licenses']) {
   const asset = release[key];
   if (!asset || !/^[A-Za-z0-9_.-]+\.(exe|zip)$/.test(asset.file) || !/^[A-F0-9]{64}$/.test(asset.sha256) || !Number.isSafeInteger(asset.bytes) || asset.bytes <= 0) throw Error(`Invalid release metadata: ${key}`);
@@ -22,24 +20,9 @@ for (const key of ['installer', 'zip', 'licenses']) {
   if (key !== 'licenses') values[`${prefix}_VIRUSTOTAL_URL`] = 'https://www.virustotal.com/gui/file/' + asset.sha256.toLowerCase() + '/detection';
   values[`${prefix}_SIZE`] = (asset.bytes / 1000000).toFixed(1) + ' MB';
   values[`${prefix}_SHA256`] = asset.sha256;
-  const source = path.join(root, 'downloads', asset.file);
-  if (!fs.existsSync(source)) throw Error(`Missing download: ${asset.file}`);
-  const input = fs.createReadStream(source);
-  let bytes = 0;
-  const hash = createHash('sha256');
-  for await (const chunk of input) {
-    bytes += chunk.length;
-    if (bytes > asset.bytes) throw Error(`Download is larger than its verified receipt: ${asset.file}`);
-    hash.update(chunk);
-  }
-  if (bytes !== asset.bytes || hash.digest('hex').toUpperCase() !== asset.sha256) throw Error(`Download differs from its verified size or SHA-256: ${asset.file}`);
   verifiedDownloads++;
-  checksumLines.push(asset.sha256 + '  ' + asset.file);
 }
-const checksumFile = path.join(root, 'downloads/SHA256SUMS.txt');
-if (fs.readFileSync(checksumFile, 'utf8').replaceAll('\r\n', '\n') !== checksumLines.join('\n') + '\n') throw Error('SHA256SUMS.txt differs from the verified release metadata.');
 values.CHECKSUMS_URL = assetUrl + 'SHA256SUMS.txt';
-if (!fs.readFileSync(path.join(root, 'licenses/THIRD_PARTY_NOTICES.md'), 'utf8').includes(release.licenses.file)) throw Error('Notices must link to the current license/source archive.');
 let html = fs.readFileSync(path.join(root, 'site/index.html'), 'utf8');
 for (const [key, value] of Object.entries(values)) html = html.replaceAll(`{{${key}}}`, value);
 if (/\{\{[A-Z0-9_]+\}\}/.test(html)) throw Error('An unresolved website placeholder remains.');
@@ -58,6 +41,10 @@ const metadata = new Map([
   ['sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map(url => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`],
   ['robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}sitemap.xml\n`],
 ]);
+fs.mkdirSync(path.join(root, '.analysis'), { recursive: true });
+const staging = fs.mkdtempSync(path.join(root, '.analysis/site-build-'));
+try {
+const assetOrigins = await stagePublishedAssets(root, published, staging);
 const output = path.join(root, 'site-dist');
 if (!output.startsWith(root) || (fs.existsSync(output) && fs.realpathSync(output).toLowerCase() !== output.toLowerCase())) throw Error('Refusing to replace a website output outside the workspace.');
 fs.rmSync(output, { recursive: true, force: true });
@@ -67,12 +54,12 @@ for (const file of ['styles.css', 'main.js', 'icon.svg', 'google474f5421d7424578
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 fs.mkdirSync(path.join(output, 'downloads'), { recursive: true });
 const notices = 'THIRD_PARTY_NOTICES.md';
-fs.copyFileSync(path.join(root, 'licenses', notices), path.join(output, 'downloads', notices));
+fs.copyFileSync(path.join(staging, notices), path.join(output, 'downloads', notices));
 for (const key of ['installer', 'zip', 'licenses']) {
   const file = release[key].file;
-  fs.copyFileSync(path.join(root, 'downloads', file), path.join(output, 'downloads', file));
+  fs.copyFileSync(path.join(staging, file), path.join(output, 'downloads', file));
 }
-fs.copyFileSync(checksumFile, path.join(output, 'downloads/SHA256SUMS.txt'));
+fs.copyFileSync(path.join(staging, 'SHA256SUMS.txt'), path.join(output, 'downloads/SHA256SUMS.txt'));
 // 이전 패키지의 고지 URL 유지
 const legacyDownloads = path.join(root, 'docs/downloads');
 fs.mkdirSync(path.join(output, 'docs/downloads'), { recursive: true });
@@ -81,4 +68,6 @@ const legacyLicenses = fs.readdirSync(legacyDownloads).filter(file => /^DockSlat
 for (const file of legacyLicenses) {
   for (const folder of ['downloads', 'docs/downloads']) fs.copyFileSync(path.join(legacyDownloads, file), path.join(output, folder, file));
 }
-console.log(JSON.stringify({ output, version: release.version, verifiedDownloads, legacyLicenseArchives: legacyLicenses.length, sitemapUrls, deployed: false }));
+console.log(JSON.stringify({ output, version: release.version, verifiedDownloads, legacyLicenseArchives: legacyLicenses.length, sitemapUrls, assetOrigins, deployed: false }));
+
+} finally { fs.rmSync(staging, { recursive: true, force: true }); }

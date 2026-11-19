@@ -600,6 +600,20 @@ fn local_file(path: &str, purpose: &str) -> Result<Archive, String> {
         created: Instant::now(),
     })
 }
+#[cfg(test)]
+mod security_tests {
+    use super::local_file;
+    #[test]
+    fn archive_selection_rejects_remote_paths_streams_and_wrong_types() {
+        for path in ["relative.tar", r"\\server\share\volume.tar", r"C:\folder\volume.tar:stream", "C:\\folder\\bad\n.tar"] {
+            let error = local_file(path, "import").err().expect("Unsafe archive path accepted");
+            assert!(error.contains("Windows 로컬"), "Unexpected filesystem access: {error}");
+        }
+        let error = local_file(r"C:\folder\volume.zip", "import").err().expect("Non-tar archive accepted");
+        assert!(error.contains(".tar"));
+    }
+}
+
 pub fn pick_archive(purpose: String) -> Result<Value, String> {
     if !["import", "export"].contains(&purpose.as_str()) {
         return Err("지원하지 않는 파일 선택입니다.".into());

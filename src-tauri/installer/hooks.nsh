@@ -5,6 +5,46 @@
 !define MUI_FINISHPAGE_RUN_NOTCHECKED
 !define DOCKSLATE_INSTALLER_KEY "Software\DockSlate\Installer"
 !define DOCKSLATE_PATH_SCRIPT_SOURCE "${__FILEDIR__}\user-path.ps1"
+!define MUI_CUSTOMFUNCTION_GUIINIT DockSlateRestoreInstallLocation
+
+Function DockSlateRestoreInstallLocation
+  Push $0
+  Push $1
+  ReadRegStr $0 HKCU "Software\DockSlate\DockSlate" ""
+  ${If} $0 == ""
+    ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\DockSlate" "InstallLocation"
+    StrCpy $1 $0 1
+    ${If} $1 == '$\"'
+      StrCpy $1 $0 1 -1
+      ${If} $1 != '$\"'
+        Goto restore_install_location_done
+      ${EndIf}
+      StrCpy $0 $0 -1 1
+    ${EndIf}
+    ${If} $0 == ""
+      Goto restore_install_location_done
+    ${EndIf}
+    GetFullPathName $1 $0
+    ${If} $1 != $0
+      Goto restore_install_location_done
+    ${EndIf}
+    ReadRegStr $1 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\DockSlate" "UninstallString"
+    ${If} $1 == '$\"$0\uninstall.exe$\"'
+      IfFileExists "$0\uninstall.exe" 0 restore_install_location_done
+      IfFileExists "$0\dockslate.exe" 0 restore_install_location_done
+      ; Restore the directory before Tauri builds the old uninstaller's _?= argument.
+      ClearErrors
+      WriteRegStr HKCU "Software\DockSlate\DockSlate" "" $0
+      ${IfNot} ${Errors}
+      ${AndIf} $INSTDIR == "$LOCALAPPDATA\DockSlate"
+        StrCpy $INSTDIR $0
+      ${EndIf}
+    ${EndIf}
+  ${EndIf}
+restore_install_location_done:
+  Pop $1
+  Pop $0
+FunctionEnd
 
 Var DockSlatePathMode
 Var DockSlatePathExit

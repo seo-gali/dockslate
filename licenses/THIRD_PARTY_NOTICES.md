@@ -17,16 +17,18 @@ Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/8af9
 
 **[고지·소스 전체 ZIP 다운로드](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.10-third-party-licenses.zip)**
 
+웹의 버전별 고지는 과거 배포 스냅샷입니다. 미공개 보안 수정 후보의 정확한 구성은 동봉 `inventory.json`과 원문·소스가 기준이며, 새 고지 ZIP은 해당 로컬 포터블 ZIP과 함께 제공합니다.
+
 저작권자와 개별 조건은 각 원문에 유지했습니다. 라이선스 표현의 OR·AND를 일괄 변환하거나 별도 권한을 부여하지 않습니다. MPL 구성 요소는 수정하지 않은 원본 소스를 함께 제공하며 각 원본의 고지와 조건을 유지합니다. NSIS LZMA의 CPL과 linking exception도 원문과 소스에 포함합니다.
 
 이전 0.1.4 설치판·포터블에 포함한 고지 표지는 0.1.3 의존성 스냅샷입니다. 구성 요소 버전·조건은 동일하며, 해당 문서의 [0.1.3 고지 ZIP 링크](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.3-third-party-licenses.zip)를 계속 제공합니다.
 
 ## 검토 범위
 
-- Windows normal/build Rust 그래프 242개, 설치된 npm 패키지 24개, Windows CLI·플러그인의 Go 모듈 276개를 기록했습니다. 빌드 전용·보수적으로 포함한 vendor 집합은 실제 앱 실행 의존성과 구분합니다.
+- Windows normal/build Rust 그래프 242개, 설치된 npm 패키지 24개, Windows CLI·플러그인의 Go 모듈 309개를 기록했습니다. 빌드 전용·보수적으로 포함한 vendor 집합은 실제 앱 실행 의존성과 구분합니다.
 - Go 표준 라이브러리, Rust 표준 라이브러리의 전체 저작권 문서, WebView2 정적 로더, NSIS와 보조 DLL의 고지도 포함합니다.
 - WebView2 1.0.3800.47의 정적 로더는 공식 NuGet SDK와 SHA-256이 일치합니다. NSIS 보조 DLL은 공개 manifest의 의존성 조건과 고지를 검토했으며 upstream은 해당 소스에 Cargo.lock을 제공하지 않습니다.
-- 원문 362개와 소스 아카이브 11개를 파일 해시로 연결했습니다. 잠금 파일·대상 코드·공식 CLI 파일이 달라지면 패키징 검증을 중단합니다.
+- 원문 392개와 소스 아카이브 11개를 파일 해시로 연결했습니다. 잠금 파일·대상 코드·공식 CLI 파일이 달라지면 패키징 검증을 중단합니다.
 
 ## Linux 런타임
 

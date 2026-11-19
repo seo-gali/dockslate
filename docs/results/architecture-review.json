@@ -1,0 +1,192 @@
+{
+  "reviewDate": "2026-11-15",
+  "executionDate": "2026-11-11",
+  "sourceCommit": "8089ea7d0523c545265e5ba15ae734fa1df1928d",
+  "scope": "Repository architecture, direct dependency use, tests, documentation and expansion proposal; earlier installer hook repair remains a separate change",
+  "inventory": {
+    "observedAt": "2026-11-11T13:11:58.010Z",
+    "groups": [
+      {
+        "prefix": "src/",
+        "files": 46,
+        "lines": 5256
+      },
+      {
+        "prefix": "src-tauri/src/",
+        "files": 24,
+        "lines": 15298
+      },
+      {
+        "prefix": "src-tauri/scripts/",
+        "files": 2,
+        "lines": 1254
+      },
+      {
+        "prefix": "scripts/",
+        "files": 69,
+        "lines": 8172
+      },
+      {
+        "prefix": "docs/",
+        "files": 62,
+        "lines": 2999
+      }
+    ],
+    "largest": [
+      {
+        "path": "src-tauri/src/docker.rs",
+        "lines": 1922
+      },
+      {
+        "path": "src-tauri/src/runtime.rs",
+        "lines": 1552
+      },
+      {
+        "path": "src-tauri/src/compose.rs",
+        "lines": 1277
+      },
+      {
+        "path": "src-tauri/src/pipe.rs",
+        "lines": 1190
+      },
+      {
+        "path": "src-tauri/src/builds.rs",
+        "lines": 1046
+      },
+      {
+        "path": "src-tauri/src/container_tools.rs",
+        "lines": 971
+      },
+      {
+        "path": "src-tauri/src/volumes.rs",
+        "lines": 953
+      },
+      {
+        "path": "src/locales.en.ts",
+        "lines": 877
+      },
+      {
+        "path": "src-tauri/src/build_archive.rs",
+        "lines": 868
+      },
+      {
+        "path": "src-tauri/src/main.rs",
+        "lines": 774
+      },
+      {
+        "path": "src-tauri/scripts/wsl-disks.ps1",
+        "lines": 747
+      },
+      {
+        "path": "src-tauri/src/container_edit.rs",
+        "lines": 608
+      },
+      {
+        "path": "src-tauri/src/live_logs.rs",
+        "lines": 540
+      },
+      {
+        "path": "src-tauri/scripts/runtime-control.ps1",
+        "lines": 507
+      }
+    ],
+    "verificationScripts": 49,
+    "markdownDocs": 62
+  },
+  "findings": {
+    "mustFix": [
+      1
+    ],
+    "shouldFix": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "niceToHave": [
+      9
+    ]
+  },
+  "dependencies": {
+    "npmRuntime": 3,
+    "npmDevelopment": 5,
+    "rustRuntime": 3,
+    "rustBuild": 1,
+    "confirmedUnusedDirect": 0,
+    "versionsOrLocksChanged": false,
+    "onlineVulnerabilityAudit": false
+  },
+  "processTimeout": {
+    "source": "src-tauri/src/process.rs",
+    "sourceSha256": "86e5ce4d0860696ea5f521bc509379b93b1333aff4d14c15a0f93627b03daf87",
+    "requestedTimeoutMs": 1000,
+    "elapsedMs": 3809,
+    "descendantStarted": true,
+    "returnedError": true,
+    "productionCodeChanged": false,
+    "scope": "Real production process module compiled into an isolated Windows harness; only owned short-lived PowerShell descendants"
+  },
+  "packagingObservation": {
+    "version": "0.1.10",
+    "portableFiles": 622,
+    "historyFiles": 223,
+    "historyUncompressedBytes": 1797219,
+    "packageChanged": false
+  },
+  "checks": [
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit": 0,
+      "executedOn": "2026-11-11"
+    },
+    {
+      "command": "cargo check --locked --offline --manifest-path src-tauri/Cargo.toml",
+      "exit": 0,
+      "executedOn": "2026-11-11",
+      "localToolchain": true
+    },
+    {
+      "command": "node scripts/build-site.mjs",
+      "exit": 1,
+      "expectedFailure": true,
+      "reason": "development 0.1.10 differs from public 0.1.9"
+    },
+    {
+      "command": "node scripts/check-workflow-pins.mjs",
+      "exit": 0,
+      "files": 2,
+      "references": 6,
+      "selfChecks": 25,
+      "errors": 0
+    },
+    {
+      "command": "node .analysis/cleanup-audit/audit-docs.mjs",
+      "exit": 0,
+      "files": 68,
+      "checkedLinks": 488,
+      "checkedAnchors": 14,
+      "missing": [],
+      "missingAnchors": []
+    }
+  ],
+  "documentation": {
+    "removed": ".project/plan.md",
+    "removedLines": 35,
+    "supportedScopeRetainedIn": "docs/USER_GUIDE.md",
+    "historicalEvidencePreserved": true
+  },
+  "applicationRefactored": false,
+  "dependenciesRemoved": 0,
+  "enginesOrUserDataChanged": false,
+  "published": false,
+  "notChecked": [
+    "Full native regression",
+    "Actual install/uninstall/upgrade",
+    "All Win32 FFI and archive input cases",
+    "Online advisories",
+    "Cause of prior antivirus detection"
+  ]
+}

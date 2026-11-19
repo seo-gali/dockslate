@@ -1,31 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { backend, refreshDashboardAfterMutation, useBackendQuery } from './api';
-import { OperationNotice, type Operation } from './actions';
-import { ConfirmDialog, ErrorNotice, Icon, StatePanel, StatusBadge, errorMessage } from './components';
-import { getLocale, t } from "./i18n";
+import { useCallback,useEffect,useRef,useState } from 'react';
+import { OperationNotice,type Operation } from './actions';
+import { backend,refreshDashboardAfterMutation,useBackendQuery } from './api';
+import { ConfirmDialog,ErrorNotice,Icon,StatePanel,StatusBadge,errorMessage } from './components';
+import { getLocale,t } from "./i18n";
+import type { RuntimeInstallPreview,RuntimeResult,RuntimeState } from './ipc/contracts/runtime';
+export type { RuntimeInstallPreview,RuntimeState,RuntimeStatus } from './ipc/contracts/runtime';
 
 
-export type RuntimeState = 'not_installed' | 'stopped' | 'running' | 'installing' | 'starting' | 'stopping' | 'failed' | 'unsupported';
-export interface RuntimeStatus {
-  state: RuntimeState;
-  distribution: string;
-  installPath: string | null;
-  message: string;
-  blockedReasons: string[];
-  retryableInstallation: boolean;
-  operation?: { state: string; message: string; processId?: number; startedAt?: number } | null;
-}
-export interface RuntimeInstallPreview {
-  token: string | null;
-  targets: string[];
-  impact: string[];
-  requirements: string[];
-  eligible: boolean;
-  retryableInstallation: boolean;
-  blockedReasons: string[];
-  expiresAt: number | null;
-}
-interface RuntimeResult { state: RuntimeState; message: string }
+
+
+
+
 type RuntimeAction = 'install' | 'start' | 'stop';
 
 const stateLabels: Record<RuntimeState, string> = {
@@ -45,7 +30,7 @@ const statusMessages: Partial<Record<RuntimeState, string>> = {
 const runtimeMessage = (state: RuntimeState) => { const message = statusMessages[state]; return message ? t(message) : undefined; };
 
 export function useDockSlateRuntime(externalBusy = false) {
-  const query = useBackendQuery<RuntimeStatus>('runtime_status');
+  const query = useBackendQuery('runtime_status');
   const [preparing, setPreparing] = useState(false);
   const [pending, setPending] = useState<RuntimeAction | null>(null);
   const [tracking, setTracking] = useState<RuntimeAction | null>(null);
@@ -87,7 +72,7 @@ export function useDockSlateRuntime(externalBusy = false) {
     setDialogError(null);
     setOperation({ tone: 'accent', message: t("설치 대상과 필요한 환경을 확인하고 있습니다…") });
     try {
-      const value = await backend<RuntimeInstallPreview>('runtime_install_preview');
+      const value = await backend('runtime_install_preview');
       setPreview(value);
       setAcknowledged(false);
       if (value.eligible && value.token) {
@@ -136,7 +121,12 @@ export function useDockSlateRuntime(externalBusy = false) {
     setDialogError(null);
     setOperation({ tone: 'accent', message: t("DockSlate 런타임 {p1} 요청을 처리하고 있습니다…", { p1: t(actionLabels[action]) }) });
     try {
-      const result = await backend<RuntimeResult>(`runtime_${action}`, action === 'install' ? { token: preview!.token, approved: true, startEngine: true } : { approved: true });
+      const token = preview?.token;
+      let result: RuntimeResult;
+      if (action === 'install') {
+        if (!token) throw new Error(t("설치 확인 정보가 만료되었습니다. 취소한 뒤 설치 조건을 다시 확인하세요."));
+        result = await backend('runtime_install', { token, approved: true, startEngine: true });
+      } else result = await backend(action === 'start' ? 'runtime_start' : 'runtime_stop', { approved: true });
       const failed = result.state === 'failed' || result.state === 'unsupported' || result.state === 'not_installed';
       setOperation(failed ? { tone: 'danger', message: result.message } : isWorking(result.state) ? { tone: 'accent', message: runtimeMessage(result.state) ?? t("DockSlate 런타임 {p1} 중입니다.", { p1: t(actionLabels[action]) }) } : null);
       setTracking(isWorking(result.state) ? action : null);

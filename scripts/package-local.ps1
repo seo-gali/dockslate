@@ -1,8 +1,14 @@
-param()
+param([string]$OutputDirectory = 'downloads')
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$downloadRoot = Join-Path $projectRoot 'downloads'
+$downloadRoot = [IO.Path]::GetFullPath((Join-Path $projectRoot $OutputDirectory))
+if (!$downloadRoot.StartsWith(($projectRoot + [IO.Path]::DirectorySeparatorChar), [StringComparison]::OrdinalIgnoreCase)) { throw 'Package output must remain inside the workspace.' }
+$outputParent = $downloadRoot
+while ($outputParent -and $outputParent -ne $projectRoot) {
+    if ((Test-Path -LiteralPath $outputParent) -and ((Get-Item -LiteralPath $outputParent).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Package output must not contain reparse points.' }
+    $outputParent = [IO.Path]::GetDirectoryName($outputParent)
+}
 $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
 $packageName = "DockSlate-$version-windows-x64"
 $portableRoot = Join-Path $downloadRoot $packageName
@@ -56,11 +62,8 @@ try {
     Copy-Item -LiteralPath (Join-Path $projectRoot 'examples') -Destination (Join-Path $packageRoot 'examples') -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'site\guide.html') -Destination (Join-Path $packageRoot 'guide.html')
     $docsRoot = Join-Path $packageRoot 'docs'
-    New-Item -ItemType Directory -Path $docsRoot -Force | Out-Null
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\USER_GUIDE.md') -Destination (Join-Path $docsRoot 'USER_GUIDE.md')
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\REQUEST_STATUS.md') -Destination (Join-Path $docsRoot 'REQUEST_STATUS.md')
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\results') -Destination (Join-Path $docsRoot 'results') -Recurse
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs\research') -Destination (Join-Path $docsRoot 'research') -Recurse
+    & node.exe (Join-Path $PSScriptRoot 'package-docs.mjs') $docsRoot
+    if ($LASTEXITCODE -ne 0) { throw 'Package document staging failed.' }
     $exampleFiles = @('Dockerfile', 'compose.yaml', 'server.mjs', '.dockerignore', 'README.md') | ForEach-Object {
         $relative = 'examples/basic-web/' + $_
         $filePath = Join-Path $packageRoot $relative

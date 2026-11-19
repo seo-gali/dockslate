@@ -1,4 +1,5 @@
 export const english: Readonly<Record<string, string>> = {
+  "가져올 tar 파일을 먼저 선택하세요.": "Select a tar archive to import first.",
   "자동 시작": "Automatic startup",
   "선택한 작업이 진행 중입니다. 완료 후 다시 시도하세요.": "An operation is running. Try again after it finishes.",
   "선택한 작업이 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.": "The selected operation is still running. Wait for it to finish before closing DockSlate.",

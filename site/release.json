@@ -1,5 +1,11 @@
 {
   "version": "0.1.9",
+  "notices": {
+    "file": "THIRD_PARTY_NOTICES.md",
+    "sourceCommit": "29f709823fd42cfaff4c8d01fb4a8876fba83ef1",
+    "bytes": 3594,
+    "sha256": "DACA541F678A717491BBBFA84C032FC5A658D39DA29D1E76655A3CD198A5FD65"
+  },
   "installer": {
     "file": "DockSlate_0.1.9_x64-setup.exe",
     "bytes": 49330186,

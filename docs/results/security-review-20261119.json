@@ -1,0 +1,432 @@
+{
+  "observedAt": "2026-11-19T14:55:30.225Z",
+  "version": "0.1.10",
+  "publicVersion": "0.1.9",
+  "releaseReady": false,
+  "sourceRevision": "8089ea7d0523c545265e5ba15ae734fa1df1928d",
+  "sourceIsUncommitted": true,
+  "changes": [
+    "CSP/referrer/headers and disabled desktop devtools",
+    "Reject control characters in network names",
+    "Tokio 1.53.3",
+    "Official Windows CLI 29.10.0, Compose 5.8.0, Buildx 0.39.0 with Go 1.27.4",
+    "Only exact known previous plugins may be replaced; unknown files preserved",
+    "Bounded metadata-only local pipe rejection log",
+    "Redacted secret scans and scheduled dependency review definitions"
+  ],
+  "checks": {
+    "nodeTests": {
+      "passed": 14,
+      "failed": 0
+    },
+    "nativeSecurityTests": {
+      "passed": 10,
+      "failed": 0
+    },
+    "windowsProcessChecks": {
+      "passed": 7,
+      "failed": 0
+    },
+    "offlineCli": {
+      "observedAt": "2026-11-19T14:55:30.103Z",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.8.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f"
+        },
+        {
+          "name": "previous official plugins upgraded to exact new payloads",
+          "passed": true
+        },
+        {
+          "name": "unknown plugin preserved and execution blocked",
+          "passed": true
+        }
+      ],
+      "engineChanged": false,
+      "existingUserProfileUsed": false
+    },
+    "releaseAppBuildExit": 0,
+    "releaseCliBuildExit": 0,
+    "siteBuildExit": 0,
+    "licenseInventory": {
+      "components": 588,
+      "noticeTexts": 392,
+      "sourceArchives": 11,
+      "newGoModulesVerified": 104
+    },
+    "actionCommits": [
+      {
+        "repo": "actions/checkout",
+        "sha": "d23441a48e516b6c34aea4fa41551a30e30af803",
+        "status": 200,
+        "actual": "d23441a48e516b6c34aea4fa41551a30e30af803",
+        "message": "backport fixes to releases-v6 (#2527)"
+      },
+      {
+        "repo": "actions/setup-node",
+        "sha": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+        "status": 200,
+        "actual": "249970729cb0ef3589644e2896645e5dc5ba9c38",
+        "message": "Update @actions/cache to 5.1.0 and add security overrides for undici and fast-xml-parser (#1579)"
+      },
+      {
+        "repo": "actions/upload-pages-artifact",
+        "sha": "7b1f4a764d45c48632c6b24a0339c27f5614fb0b",
+        "status": 200,
+        "actual": "7b1f4a764d45c48632c6b24a0339c27f5614fb0b",
+        "message": "Merge pull request #127 from heavymachinery/pin-sha"
+      },
+      {
+        "repo": "actions/deploy-pages",
+        "sha": "d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e",
+        "status": 200,
+        "actual": "d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e",
+        "message": "Merge pull request #324 from actions/error-message-request-id"
+      }
+    ],
+    "npmAudit": {
+      "exit": 0,
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "dependencies": {
+        "prod": 5,
+        "dev": 80,
+        "optional": 64,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 84
+      }
+    },
+    "secrets": {
+      "checkedFiles": 443,
+      "history": true,
+      "addedHistoryLines": 101324,
+      "rules": 9,
+      "findings": [],
+      "valuesPrinted": false,
+      "limitations": [
+        "Pattern-based first-party text scan; binaries and third-party sources excluded; runtime environment values not read."
+      ]
+    },
+    "dependencyReview": {
+      "checkedAt": "2026-11-19T10:51:08.636Z",
+      "queries": 716,
+      "findings": [
+        {
+          "package": {
+            "name": "chrono",
+            "ecosystem": "crates.io"
+          },
+          "version": "0.4.45",
+          "advisories": [
+            "RUSTSEC-2026-0543"
+          ]
+        },
+        {
+          "package": {
+            "name": "glib",
+            "ecosystem": "crates.io"
+          },
+          "version": "0.18.5",
+          "advisories": [
+            "GHSA-wrw7-89jp-8q8g",
+            "RUSTSEC-2024-0429"
+          ]
+        },
+        {
+          "package": {
+            "name": "proc-macro-error",
+            "ecosystem": "crates.io"
+          },
+          "version": "1.0.4",
+          "advisories": [
+            "RUSTSEC-2024-0370"
+          ]
+        },
+        {
+          "package": {
+            "name": "github.com/klauspost/compress",
+            "ecosystem": "Go"
+          },
+          "version": "v1.20.0",
+          "advisories": [
+            "GO-2026-6865"
+          ]
+        },
+        {
+          "package": {
+            "name": "go.opentelemetry.io/otel/sdk",
+            "ecosystem": "Go"
+          },
+          "version": "v1.46.0",
+          "advisories": [
+            "GHSA-q7gw-24fr-5p69"
+          ]
+        },
+        {
+          "package": {
+            "name": "go.opentelemetry.io/otel/trace",
+            "ecosystem": "Go"
+          },
+          "version": "v1.46.0",
+          "advisories": [
+            "GHSA-q7gw-24fr-5p69"
+          ]
+        },
+        {
+          "package": {
+            "name": "golang.org/x/crypto",
+            "ecosystem": "Go"
+          },
+          "version": "v0.57.0",
+          "advisories": [
+            "GO-2026-5932"
+          ]
+        },
+        {
+          "package": {
+            "name": "golang.org/x/net",
+            "ecosystem": "Go"
+          },
+          "version": "v0.60.0",
+          "advisories": [
+            "GO-2026-6860",
+            "GO-2026-6866"
+          ]
+        },
+        {
+          "package": {
+            "name": "github.com/docker/docker",
+            "ecosystem": "Go"
+          },
+          "version": "v28.5.2+incompatible",
+          "advisories": [
+            "GHSA-pxq6-2prw-chj9",
+            "GHSA-rg2x-37c3-w2rh",
+            "GHSA-vp62-88p7-qqf5",
+            "GHSA-x86f-5xw2-fm2r",
+            "GO-2026-4883",
+            "GO-2026-4887",
+            "GO-2026-5617",
+            "GO-2026-5668",
+            "GO-2026-5746"
+          ]
+        },
+        {
+          "package": {
+            "name": "github.com/moby/go-archive",
+            "ecosystem": "Go"
+          },
+          "version": "v0.2.0",
+          "advisories": [
+            "GHSA-hfg8-hc9c-6c3h",
+            "GO-2026-6253"
+          ]
+        },
+        {
+          "package": {
+            "name": "golang.org/x/crypto",
+            "ecosystem": "Go"
+          },
+          "version": "v0.58.0",
+          "advisories": [
+            "GO-2026-5932"
+          ]
+        },
+        {
+          "package": {
+            "name": "github.com/docker/distribution",
+            "ecosystem": "Go"
+          },
+          "version": "v2.8.3+incompatible",
+          "advisories": [
+            "GHSA-685w-q87j-wqw3",
+            "GO-2026-6778"
+          ]
+        }
+      ],
+      "scope": "All Cargo registry versions, Windows CLI/plugin vendor modules and Go runtime; version matches require target and code-path review. npm is checked separately by npm audit.",
+      "exit": 1
+    },
+    "targetChecks": [
+      {
+        "name": "chrono",
+        "exit": 0,
+        "windowsDependencyTree": null
+      },
+      {
+        "name": "glib",
+        "exit": 0,
+        "windowsDependencyTree": null
+      },
+      {
+        "name": "proc-macro-error",
+        "exit": 0,
+        "windowsDependencyTree": null
+      }
+    ],
+    "exposure": [
+      {
+        "directory": "dist",
+        "files": 23,
+        "forbidden": []
+      },
+      {
+        "directory": "site-dist",
+        "files": 28,
+        "forbidden": []
+      }
+    ],
+    "publicBrowser": {
+      "pages": 3,
+      "inlineScriptInjectionBlocked": true,
+      "formRequestsSent": 0,
+      "pageErrors": 0,
+      "scope": "Loopback preview of freshly built site-dist, not the deployed site or native WebView"
+    },
+    "publicTransport": {
+      "observedAt": "2026-11-19T14:58:13.151Z",
+      "httpStatus": 301,
+      "location": "https://seo-gali.github.io/dockslate/",
+      "httpsStatus": 200,
+      "hsts": "max-age=31556952",
+      "csp": null,
+      "cors": "*"
+    },
+    "finalSourceCheck": {
+      "exit": 0,
+      "nodeTestsPassed": 14,
+      "documentFiles": 71,
+      "localLinks": 500,
+      "anchors": 14,
+      "workflowFiles": 2,
+      "workflowReferences": 11
+    },
+    "outsideDecisionPage": {
+      "decisions": 20,
+      "pendingAtTop": 4,
+      "desktopFitsOneScreen": [
+        [
+          1280,
+          640
+        ],
+        [
+          1366,
+          768
+        ]
+      ],
+      "mobileNoHorizontalOverflow": true
+    }
+  },
+  "binaries": [
+    {
+      "name": "dockslate.exe",
+      "path": "src-tauri/target/release/dockslate.exe",
+      "bytes": 5223424,
+      "sha256": "1CB2B04CDC2A8D9E0C20E0329F33AB8238F3F47CDC521FBAEDBD3A07E1692830",
+      "executed": false,
+      "executionMode": "Optimized security build, GUI not executed."
+    },
+    {
+      "name": "docker.exe",
+      "path": "src-tauri/target/release/docker.exe",
+      "bytes": 320000,
+      "sha256": "7F57284751503CCB11BE770D8F716F6C1BD60D8AD460959BC8BFFFE50614A932",
+      "executed": true,
+      "executionMode": "Six engine-free checks with an isolated profile."
+    }
+  ],
+  "notApplicable": [
+    "Account authentication/password hashes/admin web routes",
+    "Login sessions/reset links",
+    "Application SQL database/queries",
+    "Price and payment verification"
+  ],
+  "remaining": [
+    "Upstream Go dependency advisories and cross-platform/maintenance notices need target/code-path triage",
+    "Fresh installer with these security changes not produced or executed",
+    "Unsigned; no new antivirus upload or false-positive resolution",
+    "No GUI/engine/WSL/user database mutation tests",
+    "New CI definitions not pushed or run; Pages response headers not deployed",
+    "Kernel, installed Linux engine and user containers not patched in this task"
+  ],
+  "engineChanged": false,
+  "userDataChanged": false,
+  "globalAgentSettingsChanged": false,
+  "credentialsRead": false,
+  "secretValuesPrinted": false,
+  "keysRotated": 0,
+  "installerExecuted": false,
+  "published": false,
+  "gitPushed": false,
+  "verifiedAt": "2026-11-19T15:05:09.144Z",
+  "delivery": {
+    "directory": "downloads/local-security-20261119",
+    "files": [
+      {
+        "file": "DockSlate-0.1.10-windows-x64.zip",
+        "bytes": 54943992,
+        "sha256": "8457ABB2D0E30FE73F58701D522939677AC414F0A85CB03EA725CB01A43B1145"
+      },
+      {
+        "file": "DockSlate-0.1.10-third-party-licenses.zip",
+        "bytes": 5194696,
+        "sha256": "285991B5CD4EE4C0B0E48CA91C199354C7C58A4CF7B4163864E5D1FEB6B2FB56"
+      }
+    ],
+    "verification": {
+      "observedAt": "2026-11-20T00:03:28.6533307+09:00",
+      "portableFiles": 434,
+      "licenseFiles": 410,
+      "allZipFileSizesAndSha256Verified": true,
+      "candidateBinariesMatch": true,
+      "signature": "NotSigned",
+      "installerCreated": false,
+      "installerExecuted": false,
+      "engineChanged": false
+    },
+    "documents": [
+      "USER_GUIDE.md",
+      "REQUEST_STATUS.md",
+      "results/code-signing.md",
+      "results/security-review-20261119.md"
+    ],
+    "securityInstallerIncluded": false
+  },
+  "decisionsPageOutsideRepository": true,
+  "deletedTrackedFilesInSecurityTask": []
+}

@@ -1,0 +1,303 @@
+{
+  "observedAt": "2026-11-16T10:58:20.407Z",
+  "baseCommit": "8089ea7d0523c545265e5ba15ae734fa1df1928d",
+  "sourceChangesUncommitted": true,
+  "developmentVersion": "0.1.10",
+  "publicVersion": "0.1.9",
+  "sourceSha256": {
+    ".github/workflows/pages.yml": "93fdca8f31457c0ecab65da33b098f4ee7cf2a10e5efec01d53cd2f519e21e6e",
+    ".github/workflows/workflow-pins.yml": "07294320b08d73a4d2ed7d03f5dd94a6f11a1a641b432c2f68819308befe9a6e",
+    "scripts/build-installer.ps1": "3c92072449a6a1eeb442616eea2ed3dea4c9137586dfc5e81bc8a7fc0006cf32",
+    "scripts/build-site.mjs": "72e04a1680fa595d762ff5656801f8ec64d6267cc0aa432e7fc35010685a0bc4",
+    "scripts/check-docs.mjs": "55a97a15d392c946527c040bb5808a9efe718d134c99d9d6756b52218754c46b",
+    "scripts/check-ipc.mjs": "fca2a51b5cc3a2da2e9f9c25ecc3aa45d96e59845c89a54480ace28296700ad0",
+    "scripts/check-windows.ps1": "713103b7f801d70af0557d5ea2907dca883a6acf936648b14ecdeb90fb90d439",
+    "scripts/check.mjs": "436d599f95f3eb5041d0163cff0ab2b1f5bf76905a6de01bbf3ee47dc663202f",
+    "scripts/native-verification.mjs": "1897687714c7f121b247334ddd2882dff542c74562ffc58fd0f33d08e237fd78",
+    "scripts/package-docs.json": "8b95ff6c4cf7a40b193f27d648991431f27e83d62e21d75becfa19a86500c289",
+    "scripts/package-docs.mjs": "abf1151bb851732537d565e1d3f056b408250e26875b873f29b9f2c979cd8a4d",
+    "scripts/package-local.ps1": "a96baa373f463696010f516e43eec096bdd150101fe1aa43bfced73dbb866187",
+    "scripts/release-assets.mjs": "bd23cc356abe0f71b9461ede611090986585fb15ef2e7efac301940a2b94b0fe",
+    "scripts/tests/native-verification.test.mjs": "ee06ef90241021bf6316305007cecdac149ee6f670978c3f86b9bb1c9d412510",
+    "scripts/tests/package-docs.test.mjs": "92531a6adc3efcc9f0190e43abee271a075479441da0e48fbb5c8e4b1b70af54",
+    "scripts/tests/release-assets.test.mjs": "323175ee1b9562e504e9f7e135f899bcbc250485733dd7c878e3ca0385f8eac3",
+    "scripts/verify-frontend-refinements.mjs": "21d2c0ea9b9b5886816594712d3209b2218191268fa3279a06ee5774150c0a9d",
+    "scripts/verify-global-refresh.mjs": "c2c50cb6435d8bdc29ae2fa9defe53828330bf17f46f879045cb494189f2cb4f",
+    "scripts/verify-installer-upgrade.ps1": "c120273d91e5803c4db553a098c4ea025c369bda844217ba47c79cbff74373b6",
+    "scripts/verify-process.rs": "696dec28c026a938afb7171606adf3bb468153c347e1cd727a54f48627218ca8",
+    "src-tauri/src/contracts.rs": "319de876c8d3b7d27c9a11f288b4b6cb4df72955e1ed566fcd00e023b284d80d",
+    "src-tauri/src/docker.rs": "82b021bbfef3c0023228e2f81b8c7fd1ef9027cbd9c9134aee8d062a711a0578",
+    "src-tauri/src/main.rs": "899d036d1c92c3d5f513e531de0c0b62e78b51c1031c1b1b8ad716790ae35ddc",
+    "src-tauri/src/pipe.rs": "c813da9d85e3fe08648d30cdafc9720f33815ccbbc8a594d5092ed493455e216",
+    "src-tauri/src/process.rs": "55985eb20e9b0f64b6ef3ed5244f1aa77a664dad99d612a9cb9c3d3e42f81b39",
+    "src-tauri/src/resources.rs": "b372b38989de29632672a12d22ef85ad79b20b86de48a8e4fedc903e6b21577f",
+    "src-tauri/src/runtime.rs": "c16dae16cebb1cecfe7c2414ab2caacd15b8987433d4399f48b91cad429a045d",
+    "src-tauri/src/transport.rs": "c65df73f37cea10b2268ecc85fe582f83e7210cb3c4426f2e857bfe614cb3713",
+    "src/App.tsx": "1646d07fdea3c9d69319fd0e341a9d9178a82a040a1c44b9456fc2a349dd53d5",
+    "src/ComposeImport.tsx": "09f474fbfce8e5b2d01f328cccdc09ca8c4b4ef78ef1bb9e38e8a76ce3d6f385",
+    "src/ContainerEdit.tsx": "dad5cb3f22db6912403305b7236b4fcbf7566d58572651a552c26b5b98b9f872",
+    "src/ContainerInspect.tsx": "095983d5a06e74c30a5bdcfe593c0142641310dde71a76d3c844b445ee56d816",
+    "src/ContainerStats.tsx": "c05a830502312ca9703b7c6412c27cb085b95af6749f22bc910f1db99f661756",
+    "src/ContainerTerminal.tsx": "786d8f311a19053313c790a28e057bc1c4ad78c3c8e15d1a1f0bd669a8c5746d",
+    "src/ImageBuild.tsx": "905aea36ad8cf346b9d6c18e3418d32ea3c3c59f824236b7e0c9cdf5a63a0df1",
+    "src/ImageRemovalDialog.tsx": "fe348b56338ad575c081d99dc9fbc6c0287d2fa4cbc4be12ea14b32a4207ca2b",
+    "src/ImageRun.tsx": "d7174557be7dc63c4788092c66f79895dd56434bd84a330b0dcb6621c456fb39",
+    "src/ImageRunAdvanced.tsx": "7db1b87d28dc2d69dd194847d9958dc9233dce797d8ef62fa16be89bbe682494",
+    "src/Networks.tsx": "0bdfbe4d40582b10f97793feca2d37f8c4779a4402e94b80874630024cd75482",
+    "src/actions.tsx": "d87308011a17bab4660c27411158c56a8fd26ea143daf6e3b89b3386b9b684b2",
+    "src/api.ts": "1e2260d06e41e00319e0ac81ae19b7f0420ce7fddfa181102399d303e416fa98",
+    "src/containerFileReads.ts": "6b505f5919c5b61c0f27df2cdf03b8f2eb696bb39d54d950a591987ba9ed8227",
+    "src/ipc/client.ts": "5a46e6d19396a01f22c5ae98ab20674e3b065f668f65efc70c01c8430d407df7",
+    "src/ipc/commands.check.ts": "17bf143ce23dc8124a1336d73a781a0d04ff72eb69962d2d5f71f90d56feb9fe",
+    "src/ipc/commands.ts": "8a10fe4c4d3d82c4427696fe9c583cf34f06c8599db9423ef9973ee23d494140",
+    "src/ipc/contracts/builds.ts": "aef1b323937b3397f3dcf2569256b576cffb2eedbd804081f95e0445c8cd1d7c",
+    "src/ipc/contracts/compose.ts": "81cf57a22364b923767c1553dc2e1191cc1a9de224da40bd82965fadfba144f6",
+    "src/ipc/contracts/containers.ts": "c81a4e0ffa31fcde2c37d38949865e44dbfaf7de6571bcafeaa3746ed4c1f311",
+    "src/ipc/contracts/core.ts": "bc9f48487ed70762c14797b7660d0afd7d450c974507bffb685f0e07b24d2067",
+    "src/ipc/contracts/files.ts": "895f40b5567c5a2b5396a0643f96d5a69da167c6e138e997669d0fe2960d09dc",
+    "src/ipc/contracts/images.ts": "c262785bfbb12949a1afbda02b755a05c854b375d619b31743e5acac581e4c80",
+    "src/ipc/contracts/resources.ts": "619c76b6e47dc9c319a116f14b7e8b5b5cc30fd3fb90cf281f9c44c037e13be0",
+    "src/ipc/contracts/runtime.ts": "2ea8ca42d14dc5e440a872385448fffa307dd76af49bfdd2e13a217a29b6898d",
+    "src/ipc/contracts/terminal.ts": "087e2d8fd22f24fd0e990377218e3f7e9ff0852d8f9c36eb9b9a2b8e1bf9259a",
+    "src/ipc/contracts/wsl.ts": "45cf3b619cecdb454b969e270ccc1ffa9704eeb6f7d7c5195f7b0d9e1fb5e9c4",
+    "src/locales.en.ts": "6eb386782e3629321cd754c5493d7b814fd7f0d328395985d8834ea6ac70e174",
+    "src/pages/Builds.tsx": "2d9c03c11acfdf113f52c348a80be329fa8b35202bf899af65f0228cf10413be",
+    "src/pages/Containers.tsx": "08e587e7ef378d51be8b8926a7aff55f783538c0baa79847210d2677e514d58f",
+    "src/pages/DockerUsage.tsx": "788a3420fa964fa77cf611a3779d76ef68c8d5b8930fe423ef4f035638c052d6",
+    "src/pages/Images.tsx": "8e681c6c08dd1eb19636f2b08e4396e838e1347926c178dcad75545af0dcf61e",
+    "src/pages/Overview.tsx": "8094e0fcedcecd5b401c7548169fa3d04e4744876fc82fb9b7d611ea812ef347",
+    "src/pages/Volumes.tsx": "db744770b8963ae5c94cbf0bb5defcd71d8289bea22c8688639a9675edd7e251",
+    "src/pages/WslDisks.tsx": "76688d0baf814aa016c02bf1b51bba2945fc2971104783b142d473a0a41ab560",
+    "src/queries.ts": "b11a5c1105a8541a61ed4daeb1813f17db922dc2718fbf2901fb11426cba2926",
+    "src/runtime.tsx": "3b19d1a4753ba24617344e3457400d11958f89bbae55f8f7c3f4f5ab27c0e68d",
+    "src/startup.tsx": "fd3162712265c0472a9a4284a899e6b6343d33d4ee5f2bf6e3a2ea84c657ff50",
+    "package.json": "a28206a2b06e0e01c4e9a20fa1c442b15f0966ff5b81f2cf9abd1aec681d3e1d",
+    "src-tauri/tauri.installer.conf.json": "5e0cd012270292b6d7da584fd0d717242f280505c9408c19ade83563b41e5f07"
+  },
+  "checks": {
+    "common": {
+      "command": "npm run check",
+      "exit": 0,
+      "workflowFiles": 2,
+      "pinnedReferences": 9,
+      "pinSelfChecks": 25,
+      "ipcContracts": 85,
+      "nativeCommands": 88,
+      "unknownContracts": 0,
+      "typescript": "--noEmit --noUnusedLocals --noUnusedParameters",
+      "nodeTests": 9,
+      "failed": 0,
+      "documentation": {
+        "files": 69,
+        "links": 491,
+        "anchors": 14,
+        "missing": 0
+      }
+    },
+    "windows": {
+      "command": "powershell -NoProfile -File scripts/check-windows.ps1 -Offline",
+      "exit": 0,
+      "lockedRust": true,
+      "processChecks": 7,
+      "timeoutMs": 206,
+      "blockedInputMs": 206,
+      "inheritedPipeMs": [
+        1021,
+        1005
+      ],
+      "persistentDescendantsPreserved": true
+    },
+    "appFrontendBuild": {
+      "command": "npm run build",
+      "exit": 0
+    },
+    "siteBuild": {
+      "command": "npm run build:site",
+      "exit": 0,
+      "verifiedDownloads": 3,
+      "origins": [
+        "git",
+        "git",
+        "git",
+        "git",
+        "git"
+      ],
+      "legacyLicenseArchives": 6,
+      "deployed": false
+    },
+    "frontend": {
+      "observedAt": "2026-11-16T10:54:55.513Z",
+      "completed": true,
+      "target": "Built production frontend in isolated signed Chrome; native backend unavailable; no mock data",
+      "checks": [
+        {
+          "name": "Only entry and Overview scripts load for initial Korean screen",
+          "passed": true,
+          "evidence": [
+            "http://127.0.0.1:52259/assets/index-CVPMgb0o.js",
+            "http://127.0.0.1:52259/assets/Overview-DYuWVc1Q.js"
+          ]
+        },
+        {
+          "name": "English catalog loads on selection and translates navigation",
+          "passed": true
+        },
+        {
+          "name": "English preference persists after actual browser reload",
+          "passed": true
+        },
+        {
+          "name": "All seven lazy screens mount without JavaScript errors",
+          "passed": true,
+          "evidence": [
+            {
+              "page": "Overview",
+              "firstVisitMs": 249
+            },
+            {
+              "page": "Containers",
+              "firstVisitMs": 367
+            },
+            {
+              "page": "Images",
+              "firstVisitMs": 350
+            },
+            {
+              "page": "Resources",
+              "firstVisitMs": 333
+            },
+            {
+              "page": "Builds",
+              "firstVisitMs": 351
+            },
+            {
+              "page": "Disk Manager",
+              "firstVisitMs": 366
+            },
+            {
+              "page": "Settings",
+              "firstVisitMs": 350
+            }
+          ]
+        },
+        {
+          "name": "Container detail scripts and file CSS remain unloaded during list navigation",
+          "passed": true
+        },
+        {
+          "name": "Settings uses appearance, runtime, startup and connection tabs",
+          "passed": true,
+          "evidence": [
+            {
+              "text": "Appearance",
+              "active": "true"
+            },
+            {
+              "text": "Runtime",
+              "active": "false"
+            },
+            {
+              "text": "Automatic startup",
+              "active": "false"
+            },
+            {
+              "text": "Engine connection",
+              "active": "false"
+            }
+          ]
+        },
+        {
+          "name": "Theme and font size controls work after lazy loading",
+          "passed": true
+        },
+        {
+          "name": "Images separates local and registry blocks and preserves tab state",
+          "passed": true
+        },
+        {
+          "name": "Resources preserves volume/network tab state",
+          "passed": true
+        },
+        {
+          "name": "Build file import has its own tab and offline actions remain disabled",
+          "passed": true,
+          "evidence": [
+            "Build from file",
+            "Active builds",
+            "Build history",
+            "Builder management",
+            "Imported"
+          ]
+        }
+      ],
+      "failure": null,
+      "scripts": [
+        "http://127.0.0.1:52259/assets/index-CVPMgb0o.js",
+        "http://127.0.0.1:52259/assets/Overview-DYuWVc1Q.js",
+        "http://127.0.0.1:52259/assets/Settings-Beb2ctCa.js",
+        "http://127.0.0.1:52259/assets/locales.en-eOyurtCu.js",
+        "http://127.0.0.1:52259/assets/Containers-Dr2MnUaZ.js",
+        "http://127.0.0.1:52259/assets/TableRows-BrH3F3um.js",
+        "http://127.0.0.1:52259/assets/Images-CAA77D-w.js",
+        "http://127.0.0.1:52259/assets/Resources-BD4cq-D2.js",
+        "http://127.0.0.1:52259/assets/Builds-PuiSG034.js",
+        "http://127.0.0.1:52259/assets/DiskManager-Czod8xRf.js"
+      ],
+      "errors": []
+    },
+    "siteBrowser": {
+      "widths": [
+        1366,
+        390
+      ],
+      "paths": [
+        "/dockslate/",
+        "/dockslate/guide.html"
+      ],
+      "cssLoaded": true,
+      "horizontalOverflow": false
+    },
+    "decisionPage": {
+      "outsideRepository": true,
+      "sha256": "cd601e09f82ff75284e531d5a67fd6c6942dc7153dbeddea9631cda18d77618d",
+      "decisions": 16,
+      "redConfirmations": 4,
+      "desktopFooterBottom": 617.4500122070312,
+      "viewport": [
+        1280,
+        640
+      ],
+      "horizontalOverflow": false
+    },
+    "cleanup": {
+      "profiles": 4,
+      "bytes": 83106020,
+      "activeOwnedBrowsers": 0,
+      "previewStopped": true
+    }
+  },
+  "deleted": [
+    ".project/plan.md",
+    "scripts/verify-navigation-cache.mjs",
+    "scripts/verify-navigation.mjs"
+  ],
+  "preservedUserDeletions": [
+    "downloads/DockSlate_0.1.9_x64-setup.exe",
+    "downloads/DockSlate-0.1.9-windows-x64.zip",
+    "downloads/DockSlate-0.1.9-third-party-licenses.zip"
+  ],
+  "dependencyAndLockChanges": false,
+  "engineChanged": false,
+  "installerBuilt": false,
+  "installerExecuted": false,
+  "gitPush": false,
+  "deployed": false,
+  "untested": [
+    "Remote CI execution",
+    "Native engine navigation/global-refresh verification",
+    "Installer/portable repackaging and upgrade/uninstall",
+    "Engine-changing E2E and data recovery",
+    "HTTP public-asset fallback in the actual website build",
+    "Resolution of the existing 0.1.10 installer antivirus finding"
+  ]
+}

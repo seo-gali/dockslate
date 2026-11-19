@@ -1,0 +1,217 @@
+{
+  "observedAt": "2026-11-16T12:53:23.705Z",
+  "version": "0.1.10",
+  "variant": "architecture-refactor-20261116",
+  "deliveryDirectory": "downloads/local-refactor-20261116",
+  "publicVersion": "0.1.9",
+  "binaries": [
+    {
+      "name": "dockslate.exe",
+      "path": "downloads/local-refactor-20261116/DockSlate-0.1.10-windows-x64/DockSlate.exe",
+      "bytes": 5221888,
+      "sha256": "8BBE60E549674E9C81611BB2B7BFAAF5EF4FA8FF334BD7EBB4EAE305C91C0C32",
+      "executed": false,
+      "executionMode": "Fresh local architecture-refactor build; no application or engine execution."
+    },
+    {
+      "name": "docker.exe",
+      "path": "downloads/local-refactor-20261116/DockSlate-0.1.10-windows-x64/bin/docker.exe",
+      "bytes": 315904,
+      "sha256": "7084A801D4749B209511FB018AA0671A6CD8048C6CFF25D4A7C3280CD74FF41C",
+      "executed": false,
+      "executionMode": "Fresh local architecture-refactor build; no application or engine execution."
+    }
+  ],
+  "files": [
+    {
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "bytes": 49319749,
+      "sha256": "65EA290B2EEF49D48DBA4DF52838E4532D7578814E18FAAAB15897B49C9D40B3"
+    },
+    {
+      "file": "DockSlate-0.1.10-windows-x64.zip",
+      "bytes": 62962235,
+      "sha256": "53828A69A1F64894D65F1C0EDA48C3ECC296DC71C2E1F2C439C7745D5B0AC3A4"
+    },
+    {
+      "file": "DockSlate-0.1.10-third-party-licenses.zip",
+      "bytes": 5161544,
+      "sha256": "AB5FD24FB16F780F4E08E3B14E794DF1C68E6A72C37DE9E69DEF6F23B721EE3A"
+    }
+  ],
+  "portableCheck": {
+    "checkedAt": "2026-11-16T21:45:01.0871044+09:00",
+    "version": "0.1.10",
+    "variant": "architecture-refactor-20261116",
+    "zipFilesVerified": 401,
+    "sharedPayloadFilesVerified": 397,
+    "packagedDocumentsVerified": 3,
+    "installerInspected": false,
+    "embeddedInstallerHelperMatches": false,
+    "binaryVersionsMatch": true,
+    "originalFilesPreserved": 6,
+    "installerExecuted": false,
+    "engineChanged": false,
+    "extractDirectory": null,
+    "signatureStatus": "Not built"
+  },
+  "offlineCli": {
+    "observedAt": "2026-11-16T12:46:15.185Z",
+    "checks": [
+      {
+        "args": [
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "--debug",
+          "--version"
+        ],
+        "exit": 0,
+        "output": "Docker version 29.8.2, build 7fc2dff"
+      },
+      {
+        "args": [
+          "compose",
+          "version"
+        ],
+        "exit": 0,
+        "output": "Docker Compose version v5.6.0"
+      },
+      {
+        "args": [
+          "buildx",
+          "version"
+        ],
+        "exit": 0,
+        "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
+      }
+    ],
+    "existingProfileUsed": false,
+    "engineConnectionRequired": false
+  },
+  "input": {
+    "localFile": ".analysis/refactor-installer-input.zip",
+    "remoteFile": ".github/refactor-installer-input.zip",
+    "bytes": 2303743,
+    "sha256": "6735A1C9DD2A9CF0978885DF531147075274FEE289C7D12D6B1B5B468827D0DB",
+    "entries": [
+      {
+        "name": "dockslate.exe",
+        "bytes": 5221888,
+        "sha256": "8BBE60E549674E9C81611BB2B7BFAAF5EF4FA8FF334BD7EBB4EAE305C91C0C32"
+      },
+      {
+        "name": "docker.exe",
+        "bytes": 315904,
+        "sha256": "7084A801D4749B209511FB018AA0671A6CD8048C6CFF25D4A7C3280CD74FF41C"
+      },
+      {
+        "name": "docs/USER_GUIDE.md",
+        "bytes": 9353,
+        "sha256": "8C50683A7ED515A5C535C29C3BA3A752FD5D38BF1CEE26A6FEB2671F770C3863"
+      },
+      {
+        "name": "docs/REQUEST_STATUS.md",
+        "bytes": 23584,
+        "sha256": "F4783CB5B1C3F8DC1A25D27A7FF2801CD26A5B215FD7FC65D68435F5F159CE80"
+      },
+      {
+        "name": "docs/results/code-signing.md",
+        "bytes": 9889,
+        "sha256": "17DCA0E2D3178C7C13CC743377E5E9C403154C3DC03F41F88ED9D16A3D0709A6"
+      }
+    ],
+    "documentsFromPortableSnapshot": true,
+    "uploaded": true,
+    "branch": "build/refactor-installer-20261116",
+    "installerExecuted": false
+  },
+  "localInstaller": {
+    "attempts": 2,
+    "exit": 1,
+    "failure": "NSIS failed opening src-tauri/installer/user-path.ps1",
+    "causeConfirmed": false
+  },
+  "externalBuild": {
+    "approved": true,
+    "branch": "build/refactor-installer-20261116",
+    "commit": "92fec0aee7e67d29dbc804c1b9c460c438e33488",
+    "pushed": true,
+    "conclusion": "success",
+    "stagedFiles": 90,
+    "mainChanged": false,
+    "id": 43870975182,
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/43870975182",
+    "headSha": "92fec0aee7e67d29dbc804c1b9c460c438e33488",
+    "status": "completed",
+    "createdAt": "2026-11-16T12:55:36Z",
+    "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/43870975182/artifacts",
+    "jobsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/43870975182/jobs",
+    "source": "Approved temporary branch only; main unchanged",
+    "installerRuns": 1,
+    "remoteBranchDeleted": true,
+    "checkedAt": "2026-11-18T20:24:19.0877239+09:00",
+    "temporaryWorktreeRemoved": true,
+    "localBranchDeleted": true
+  },
+  "installerExecuted": false,
+  "engineChanged": false,
+  "antivirusSubmitted": false,
+  "protectionChanged": false,
+  "publicReleasePublished": false,
+  "verifiedAt": "2026-11-18T11:22:59.551Z",
+  "portableAndInstallerCheck": {
+    "checkedAt": "2026-11-18T20:21:47.7511439+09:00",
+    "version": "0.1.10",
+    "variant": "architecture-refactor-20261116",
+    "zipFilesVerified": 401,
+    "sharedPayloadFilesVerified": 397,
+    "packagedDocumentsVerified": 3,
+    "installerInspected": true,
+    "embeddedInstallerHelperMatches": true,
+    "binaryVersionsMatch": true,
+    "originalFilesPreserved": 6,
+    "installerExecuted": false,
+    "engineChanged": false,
+    "extractDirectory": null,
+    "normalizedTextOrJsonFiles": [
+      "licenses\\inventory.json",
+      "licenses\\README.md",
+      "licenses\\THIRD_PARTY_NOTICES.md",
+      "examples\\basic-web\\.dockerignore",
+      "examples\\basic-web\\compose.yaml",
+      "examples\\basic-web\\Dockerfile",
+      "examples\\basic-web\\README.md",
+      "examples\\basic-web\\server.mjs",
+      "libexec\\manifest.json",
+      "guide.html"
+    ],
+    "signatureStatus": "NotSigned",
+    "extractionCleaned": true
+  },
+  "installerDownload": {
+    "checkedAt": "2026-11-18T20:18:53.4759859+09:00",
+    "runId": 43870975182,
+    "sourceCommit": "92fec0aee7e67d29dbc804c1b9c460c438e33488",
+    "artifactId": 14228486266,
+    "archiveBytes": 49314463,
+    "githubDigest": "sha256:e65affa99e84ab95f4952530afc050cf08b2d5850ba588882695212f0dfe47f8",
+    "githubDigestVerified": true,
+    "installerSha256": "65EA290B2EEF49D48DBA4DF52838E4532D7578814E18FAAAB15897B49C9D40B3",
+    "installerBytes": 49319749,
+    "installerExecuted": false
+  },
+  "sourceWhitespaceCleanup": {
+    "files": [
+      "src/ipc/client.ts",
+      "src/ipc/contracts/core.ts"
+    ],
+    "change": "Trailing blank lines only",
+    "productionFrontendFilesHashMatched": 23
+  },
+  "postSecurityChangesIncluded": false
+}

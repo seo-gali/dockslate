@@ -8,7 +8,7 @@
 
 게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 작업의 원격 전환·게시 여부는 [요청 현황](REQUEST_STATUS.md)에 기록합니다.
 
-릴리스 준비 중 `package.json`과 `site/release.json`의 버전이 다르면 SHA 고정 검사만 실행하고 사이트 빌드·게시를 건너뛰어 기존 사이트를 유지합니다. 파일·체크섬·공개 Release를 준비하고 게시를 승인받은 뒤 릴리스 명세의 버전을 맞춥니다. 버전이 다른 준비 상태에서는 로컬 `build:site`도 기존 버전 일치 검사로 거부합니다.
+사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 또는 탐지가 남은 버전은 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다.
 
 | 원본 | 출력·역할 |
 | --- | --- |
@@ -16,8 +16,8 @@
 | `site/guide.html` | 독립 사용 안내서. 사이트·앱·배포 패키지에 복사 |
 | `site/404.html` | 중첩 경로에서도 동작하는 오류 화면 |
 | `site/google474f5421d7424578.html` | 원문을 유지하는 Google 소유권 확인 파일 |
-| `site/release.json` · `downloads/` | 현재 다운로드 3개의 버전·크기·SHA-256과 배포 원본 |
-| `licenses/THIRD_PARTY_NOTICES.md` | 현재 고지. 사이트의 `downloads/THIRD_PARTY_NOTICES.md`로 복사 |
+| `site/release.json` · 버전별 공개 영수증 | 다운로드 3개와 공개판 고지의 버전·크기·SHA-256·고정 소스 커밋 |
+| 공개판 고정 커밋의 `licenses/THIRD_PARTY_NOTICES.md` | 공개판과 같은 고지. 개발판 고지로 대체하지 않음 |
 | `docs/downloads/` | 과거 패키지가 참조하는 고지 ZIP 원본·0.1.5 고지 스냅샷 |
 | `scripts/build-site.mjs` | 메인·404·Sitemap·robots와 다운로드 출력 생성 |
 | `src/index.html` → `dist/index.html` | 공개 사이트와 분리된 데스크톱 React 앱 |
@@ -30,7 +30,7 @@
 npm run build:site
 ```
 
-릴리스 명세의 EXE·포터블·고지 소스 ZIP을 크기·SHA-256으로 검증하고 `downloads/SHA256SUMS.txt`의 세 항목과 대조한 뒤 `site-dist/`를 만듭니다. 지문표가 다르면 기존 출력 교체 전에 실패합니다. `site-dist/index.html`을 브라우저로 열어 확인합니다. 로컬 명령은 외부로 전송하지 않습니다.
+릴리스 명세의 EXE·포터블·고지 소스 ZIP을 크기·SHA-256으로 검증하고 공개판 고정 커밋의 `SHA256SUMS.txt`와 대조한 뒤 `site-dist/`를 만듭니다. 로컬 파일이 없으면 고정 Git 객체를 읽고, 그 객체도 없으면 해당 공개 GitHub Release에서 다운로드해 검증합니다. 이미 있는 로컬 파일이 다르면 실패하며 다른 사본으로 숨기지 않습니다. 지문표가 다르면 기존 출력 교체 전에 실패합니다. `site-dist/index.html`을 브라우저로 열어 확인합니다. 로컬 빌드는 게시·파일 업로드를 하지 않습니다. Git 객체가 없는 환경에서는 공개 파일 다운로드가 필요하며 검증용 임시 파일은 작업 후 삭제합니다.
 
 사이트 빌드는 0.1.3~0.1.8 고지 ZIP을 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 12개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
 

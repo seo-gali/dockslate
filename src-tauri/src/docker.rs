@@ -1,4 +1,5 @@
-use crate::runtime::Transport;
+use crate::contracts::DockerSnapshot;
+use crate::transport::Transport;
 use serde::Deserialize;
 use serde_json::{json, Value};
 use std::{
@@ -11,9 +12,9 @@ use std::{
 };
 
 const ENDPOINT: &str = "wsl://DockSlate/var/run/docker.sock";
-const BODY_LIMIT: usize = 16 * 1024 * 1024;
-const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
-static MUTATION: Mutex<()> = Mutex::new(());
+pub(crate) const BODY_LIMIT: usize = 16 * 1024 * 1024;
+pub(crate) const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
+pub(crate) static MUTATION: Mutex<()> = Mutex::new(());
 static PREVIEWS: OnceLock<Mutex<HashMap<String, Preview>>> = OnceLock::new();
 static PULLING: AtomicBool = AtomicBool::new(false);
 
@@ -326,9 +327,9 @@ fn encode(value: &str) -> String {
 pub fn engine_status() -> Result<Value, String> {
     probe().map(|(status, _)| status)
 }
-fn unavailable_snapshot(engine: Result<Value, String>, message: String) -> Value {
+fn unavailable_snapshot(engine: Result<Value, String>, message: String) -> DockerSnapshot {
     let error: Result<Value, String> = Err(message);
-    json!({"engine_status":engine,"overview":error,"containers_list":error,"images_list":error,"disk_usage":error,"volumes_list":error,"networks_list":error})
+    DockerSnapshot { engine_status: engine, overview: error.clone(), containers_list: error.clone(), images_list: error.clone(), disk_usage: error.clone(), volumes_list: error.clone(), networks_list: error }
 }
 pub fn dashboard_snapshot() -> Result<Value, String> {
     std::thread::scope(|scope| {
@@ -338,7 +339,7 @@ pub fn dashboard_snapshot() -> Result<Value, String> {
             .as_ref()
             .map_err(Clone::clone)
             .and_then(Transport::from_status);
-        let mut snapshot = docker_snapshot(transport);
+        let mut snapshot = serde_json::to_value(docker_snapshot(transport)).map_err(|error| error.to_string())?;
         if let Some(object) = snapshot.as_object_mut() {
             object.insert(
                 "runtime_status".into(),
@@ -356,10 +357,10 @@ pub fn dashboard_snapshot() -> Result<Value, String> {
 }
 
 pub fn events_snapshot() -> Result<Value, String> {
-    Ok(docker_snapshot(Transport::discover()))
+    serde_json::to_value(docker_snapshot(Transport::discover())).map_err(|error| error.to_string())
 }
 
-fn docker_snapshot(transport: Result<Transport, String>) -> Value {
+fn docker_snapshot(transport: Result<Transport, String>) -> DockerSnapshot {
     let (engine, client) = match probe_transport(transport) {
         Ok(result) => result,
         Err(message) => {
@@ -419,7 +420,7 @@ fn docker_snapshot(transport: Result<Transport, String>) -> Value {
         (Err(message), _, _, _) | (_, Err(message), _, _) | (_, _, Err(message), _) | (_, _, _, Err(message)) => Err(message.clone()),
     };
     let engine_status: Result<Value, String> = Ok(engine);
-    json!({"engine_status":engine_status,"overview":overview,"containers_list":container_list,"images_list":image_list,"disk_usage":disk_usage,"volumes_list":volumes,"networks_list":networks})
+    DockerSnapshot { engine_status, overview, containers_list: container_list, images_list: image_list, disk_usage, volumes_list: volumes, networks_list: networks }
 }
 pub fn overview() -> Result<Value, String> {
     let (engine, client) = probe()?;
@@ -746,7 +747,7 @@ impl ContainerOptions {
     }
 }
 
-fn supported_network(network: &Value) -> bool {
+pub(crate) fn supported_network(network: &Value) -> bool {
     container_id(text(network, "Id"))
         && network["Scope"].as_str() == Some("local")
         && network["ConfigOnly"].as_bool() == Some(false)
@@ -756,59 +757,6 @@ fn supported_network(network: &Value) -> bool {
             || (text(network, "Driver") == "null" && text(network, "Name") == "none"))
 }
 
-pub fn network_create(name: String, internal: bool) -> Result<Value, String> {
-    let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
-    let name = name.trim();
-    if name.is_empty()
-        || name.len() > 63
-        || !name.as_bytes()[0].is_ascii_alphanumeric()
-        || !name
-            .bytes()
-            .all(|byte| byte.is_ascii_alphanumeric() || b"_.-".contains(&byte))
-        || ["bridge", "host", "none", "default", "ingress"].contains(&name)
-    {
-        return Err("네트워크 이름은 영문·숫자로 시작하는 1~63자의 영문·숫자·밑줄·마침표·하이픈을 사용하세요. 기본 네트워크 이름은 사용할 수 없습니다.".into());
-    }
-    let client = connected()?;
-    let networks = client.json("GET", "/networks")?;
-    let networks = networks
-        .as_array()
-        .ok_or("Docker 네트워크 목록을 확인하지 못했습니다.")?;
-    if networks.iter().any(|network| text(network, "Name") == name) {
-        return Err("같은 이름의 Docker 네트워크가 이미 있습니다. 다른 이름을 입력하세요.".into());
-    }
-    let body = serde_json::to_vec(&json!({
-        "Name":name,"Driver":"bridge","Scope":"local","Internal":internal,
-        "Attachable":false,"Ingress":false,"ConfigOnly":false
-    }))
-    .map_err(|_| "네트워크 생성 요청을 구성하지 못했습니다.")?;
-    let response =
-        client
-            .transport
-            .create_network(&client.api, &body, REQUEST_TIMEOUT, BODY_LIMIT)?;
-    let response: Value = serde_json::from_slice(&response)
-        .map_err(|_| "네트워크 생성 응답을 읽지 못했습니다. 네트워크 목록을 새로고침하세요.")?;
-    let id = text(&response, "Id");
-    if !container_id(id) {
-        return Err(
-            "생성된 네트워크 ID를 확인하지 못했습니다. 네트워크 목록을 새로고침하세요.".into(),
-        );
-    }
-    let network = client
-        .json("GET", &format!("/networks/{id}"))
-        .map_err(|error| format!("네트워크 {name} ({id})를 생성했지만 설정 확인을 완료하지 못했습니다. 네트워크 목록을 새로고침하세요. {error}"))?;
-    if !supported_network(&network)
-        || text(&network, "Id") != id
-        || text(&network, "Name") != name
-        || text(&network, "Driver") != "bridge"
-        || network["Internal"] != internal
-    {
-        return Err(format!(
-            "네트워크 {name} ({id})의 설정이 요청과 다릅니다. 네트워크 목록을 새로고침하세요."
-        ));
-    }
-    Ok(json!({"id":id,"name":name,"internal":internal}))
-}
 
 fn local_image(client: &Client, id: &str) -> Result<Value, String> {
     if !image_id(id) {

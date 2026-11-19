@@ -2,7 +2,7 @@
 mod windows {
     use crate::{
         cli_platform::native::{self, Handle, RawHandle},
-        runtime::Transport,
+        transport::Transport,
     };
     use serde_json::Value;
     use std::{
@@ -74,7 +74,7 @@ mod windows {
             wait: i32,
         ) -> i32;
         fn WaitForSingleObject(handle: RawHandle, timeout: u32) -> u32;
-        fn CancelIoEx(handle: RawHandle, overlapped: *mut Overlapped) -> i32;
+        fn CancelIoEx(handle: RawHandle, overlapped: *mut c_void) -> i32;
         fn CancelSynchronousIo(thread: RawHandle) -> i32;
         fn OpenThread(access: u32, inherit: i32, id: u32) -> RawHandle;
         fn GetCurrentThreadId() -> u32;
@@ -166,7 +166,7 @@ mod windows {
     fn cancel_operation(handle: &Handle, operation: &mut Overlapped) {
         let mut count = 0;
         unsafe {
-            CancelIoEx(handle.raw(), operation);
+            CancelIoEx(handle.raw(), (operation as *mut Overlapped).cast());
             GetOverlappedResult(handle.raw(), operation, &mut count, 1);
         }
     }
@@ -711,6 +711,7 @@ mod windows {
             && rest == "containers/create"
     }
     fn docker_error(writer: &mut Stream, status: u16, message: &str) {
+        crate::security::rejected_pipe_request(status);
         writer.deadline = Some(Instant::now() + Duration::from_secs(5));
         let body = serde_json::json!({"message":message}).to_string();
         let reason = if status == 501 {
@@ -1153,6 +1154,30 @@ mod windows {
         let _ = input.join();
         let _ = output.join();
         let _ = errors.join();
+    }
+    #[cfg(test)]
+    mod security_tests {
+        use super::*;
+        use std::io::Cursor;
+        #[test]
+        fn conflicting_or_oversized_http_headers_are_rejected() {
+            for request in [
+                "POST /containers/create HTTP/1.1\r\nContent-Length: 1\r\nContent-Length: 1\r\n\r\n",
+                "POST /containers/create HTTP/1.1\r\nContent-Length: 1\r\nTransfer-Encoding: chunked\r\n\r\n",
+                "GET / HTTP/1.1\r\nX-Test: bad\0value\r\n\r\n",
+            ] { assert!(Headers::read(&mut Cursor::new(request)).is_err()); }
+            assert!(Headers::read(&mut Cursor::new(vec![b'a'; HEADER_LIMIT+1])).is_err());
+            assert!(Headers::read(&mut Cursor::new("GET /_ping HTTP/1.1\r\n\r\n")).unwrap().is_some());
+        }
+        #[test]
+        fn chunk_decoding_obeys_size_and_trailer_limits() {
+            let mut body=Vec::new();
+            chunks(&mut Cursor::new("2\r\nok\r\n0\r\n\r\n"),&mut body,true,Some(2)).unwrap();
+            assert_eq!(body,b"ok");
+            for request in ["3\r\nbad\r\n0\r\n\r\n","1\r\nx!!","0\r\nContent-Length: 1\r\n\r\n"] {
+                assert!(chunks(&mut Cursor::new(request),&mut Vec::new(),true,Some(2)).is_err());
+            }
+        }
     }
     pub(crate) fn serve() -> Result<(), String> {
         let security = descriptor()?;

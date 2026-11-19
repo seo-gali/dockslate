@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-07T02:55:34.026Z",
+  "observedAt": "2026-11-16T12:41:09.387Z",
   "scope": "artifacts and currentBuild identify the current application binaries. installerDelivery records installer packaging and its input ZIP; portableDelivery records the latest portable packaging. Other checks and integration observations are historical unless currentBuild explicitly repeats them; they do not certify full setup or a complete regression run.",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
   "completed": false,
@@ -10,13 +10,13 @@
     "hookFixtureExecuted": false,
     "frontendBuildExit": 0,
     "browserCompleted": true,
-    "installerBuildExit": 0,
+    "installerBuildExit": null,
     "hookCompilationExit": 0,
     "installerExecuted": false,
     "browserChecks": 27,
     "lockedDependencyFetchExit": 0,
     "lockFilesChanged": true,
-    "latestNativeFlowExecuted": true,
+    "latestNativeFlowExecuted": false,
     "powerShellParserFiles": 5,
     "powerShellParserErrors": 0,
     "offlineComponentGuardExit": 1,
@@ -24,7 +24,7 @@
     "browserScope": "0.1.6 local Chrome file/HTTP site and root publishing output; no native backend. Public verification is separate.",
     "componentPreparationExit": 0,
     "portablePackagingExit": 0,
-    "offlineNativeCliChecks": 4,
+    "offlineNativeCliChecks": 6,
     "offlineNativeCliExit": 0,
     "nativeCliIntegrationExit": 1,
     "nativeCliCommands": 34,
@@ -34,39 +34,39 @@
     "originalResourcesPreserved": true,
     "guideDeliveryExit": 0,
     "guideDeliveryChecks": 7,
-    "portableInternalFilesVerified": 622,
+    "portableInternalFilesVerified": 401,
     "engineRestoredStopped": true,
     "remoteInstallerBuildExit": 0,
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 9,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 15,
-    "dependencyVersionsChanged": false,
-    "lockChangeScope": "Application root version metadata only",
+    "currentNativeChecks": 0,
+    "dependencyVersionsChanged": true,
+    "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "0.1.10 tray integration only; physical mouse, busy exit and full setup/uninstall not tested.",
-    "installerBuildScope": "0.1.10 packaged once on GitHub from SHA-verified local app/CLI; installed/uninstalled neither."
+    "currentNativeScope": "Ten native security tests, seven Windows process checks and six isolated offline CLI checks; no GUI or engine changes.",
+    "installerBuildScope": "Previous refactor installer excludes the current security source and dependency updates."
   },
   "artifacts": [
     {
       "name": "dockslate.exe",
       "path": "src-tauri/target/release/dockslate.exe",
-      "bytes": 5221888,
-      "sha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
-      "executed": true,
-      "executionMode": "0.1.10 actual Windows tray integration: 15 checks; isolated profile, native notifications/menu commands; no engine mutations."
+      "bytes": 5223424,
+      "sha256": "1CB2B04CDC2A8D9E0C20E0329F33AB8238F3F47CDC521FBAEDBD3A07E1692830",
+      "executed": false,
+      "executionMode": "Optimized security build, GUI not executed."
     },
     {
       "name": "docker.exe",
       "path": "src-tauri/target/release/docker.exe",
-      "bytes": 315904,
-      "sha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7",
+      "bytes": 320000,
+      "sha256": "7F57284751503CCB11BE770D8F716F6C1BD60D8AD460959BC8BFFFE50614A932",
       "executed": true,
-      "executionMode": "Four offline 0.1.10 portable CLI version commands."
+      "executionMode": "Six engine-free checks with an isolated profile."
     }
   ],
   "installerFilePresent": true,
-  "blocker": "0.1.9 package creation and extraction passed. Actual setup/uninstall, native GUI/engine lifecycle, signing and VirusTotal submission were not performed; historical observations do not certify the current binaries.",
+  "blocker": "New local build has no current installer scan or actual setup/uninstall/engine regression result; public release remains 0.1.9.",
   "remaining": [
     "Validate actual setup/cancel/uninstall without deleting existing WSL data.",
     "Resolve native CLI host-file upload and overwrite access errors.",
@@ -276,238 +276,54 @@
   },
   "currentBuild": {
     "version": "0.1.10",
-    "checkedAt": "2026-11-07T02:55:34.026Z",
+    "variant": "security-20261119",
+    "checkedAt": "2026-11-19T14:55:30.225Z",
     "appAndCliBuildExit": 0,
-    "rustCheckExit": 0,
     "frontendBuildExit": 0,
-    "peVersion": {
-      "appProductVersion": "0.1.10",
-      "appFileVersion": "0.1.10",
-      "appBytes": 5221888,
-      "appSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
-      "launcherSha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7"
-    },
-    "nativeTray": {
-      "observedAt": "2026-11-07T02:54:37.257Z",
-      "scope": "Actual built Windows candidate, Shell registration, owned Windows tray notification messages and native menu commands; physical mouse/Explorer hit testing not covered",
-      "artifactSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
-      "version": "0.1.10",
-      "unreleasedCandidate": true,
-      "checks": [
-        {
-          "name": "Automatic startup disabled for the isolated executable",
-          "passed": true
-        },
-        {
-          "name": "Actual Windows Shell icon registered",
-          "passed": true
-        },
-        {
-          "name": "X hides a live process",
-          "passed": true
-        },
-        {
-          "name": "Owned native tray notification restores the window",
-          "passed": true
-        },
-        {
-          "name": "Korean native menu labels",
-          "passed": true
-        },
-        {
-          "name": "Native Settings menu opens Settings",
-          "passed": true
-        },
-        {
-          "name": "Native Containers menu opens Containers",
-          "passed": true
-        },
-        {
-          "name": "Native Images menu opens Images",
-          "passed": true
-        },
-        {
-          "name": "Native Refresh menu performs actual refresh IPC",
-          "passed": true
-        },
-        {
-          "name": "English native menu labels",
-          "passed": true
-        },
-        {
-          "name": "Invalid tray language rejected by real backend",
-          "passed": true
-        },
-        {
-          "name": "Korean native menu restored",
-          "passed": true
-        },
-        {
-          "name": "Renderer exceptions",
-          "passed": true
-        },
-        {
-          "name": "No engine, container or startup mutations invoked",
-          "passed": true
-        },
-        {
-          "name": "Native Quit exits the real process",
-          "passed": true
-        }
-      ],
-      "exceptions": [],
-      "commands": [
-        "startup_settings",
-        "containers_metrics",
-        "plugin:event|unlisten",
-        "plugin:event|listen",
-        "engine_events_start",
-        "docker_events_snapshot",
-        "builds_snapshot",
-        "dashboard_snapshot",
-        "desktop_tray_language"
-      ],
-      "dependencyVersionsChanged": false,
-      "lockFilesChanged": false,
-      "installerModeExitVerified": false,
-      "busyExitVerified": false,
-      "actualInstallerExecuted": false,
-      "published": false,
-      "passed": true,
-      "verificationScriptExternalSessionRejected": true,
-      "sourceFiles": {
-        "src-tauri/Cargo.toml": "44c0fbf53c22dea53a3ee027c48e24fec78dc057900f034d6efc7ea09807c1cf",
-        "src-tauri/src/main.rs": "ecdc2a6de6351f85b4e0159f992543164013df0c6e69055976c1f3c7309191d0",
-        "src-tauri/src/tray.rs": "1fdcfeddc55d22f4dbefed1219f320c3ebf421e86d79aed475e94790b0004d47",
-        "src/App.tsx": "d2cf3b42a85e746ec46ca2018855a1bea946a4bc70f397db3849c568a6b26004",
-        "src/locales.en.ts": "50d5532b017364b13aab851a203266cec3d6840b7d3209f9bfdbc1f5fa1cd039"
-      }
-    },
-    "nativeGuiExecuted": true,
+    "rustCheckExit": 0,
+    "priorSourceVerification": "docs/results/security-review-20261119.json",
+    "nativeGuiExecuted": false,
     "installerExecuted": false,
     "engineChanged": false,
-    "dependencyVersionsChanged": false,
-    "lockChangeScope": "Application root version metadata only",
-    "localInstallerAttempted": false,
-    "localInstallerNotAttemptedReason": "Existing NSIS read block recorded in release-0.1.9.json; approved one-time GitHub packaging.",
-    "packagingStatus": "Build and internal payload verification complete; publication held for unresolved Microsoft installer detection",
-    "portable": {
-      "version": "0.1.10",
-      "file": "DockSlate-0.1.10-windows-x64.zip",
-      "bytes": 63480743,
-      "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45",
-      "files": 622,
-      "allEntriesMatchPortableFolder": true,
-      "duplicateEntries": false,
-      "installerExecuted": false
-    },
-    "offlineCli": {
-      "version": "0.1.10",
-      "observedAt": "2026-11-07T02:57:06.029Z",
-      "appSha256": "5F9D128F96D7D174365C7A4BB04D92D34F555ABC82F6195E620E0CA75BB8C95E",
-      "launcherSha256": "1FF22E41E04D4FF40A15C62238B2513C5CF82EB5E45B7C3222367559ED5C40A7",
-      "checks": [
-        {
-          "args": [
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "--debug",
-            "--version"
-          ],
-          "exit": 0,
-          "output": "Docker version 29.8.2, build 7fc2dff"
-        },
-        {
-          "args": [
-            "compose",
-            "version"
-          ],
-          "exit": 0,
-          "output": "Docker Compose version v5.6.0"
-        },
-        {
-          "args": [
-            "buildx",
-            "version"
-          ],
-          "exit": 0,
-          "output": "github.com/docker/buildx v0.38.0 0dbe87f36ed472fe36b6796c3f70b4210a731fc5"
-        }
-      ],
-      "existingProfileUsed": false,
-      "engineConnectionRequired": false
-    },
-    "installerRun": {
-      "runId": 42331749779,
-      "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749779",
-      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42331749779/artifacts"
-    },
-    "installerInspection": {
-      "observedAt": "2026-11-07T03:05:31.7230015Z",
-      "version": "0.1.10",
-      "file": "DockSlate_0.1.10_x64-setup.exe",
-      "bytes": 49352637,
-      "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32",
-      "signatureStatus": "NotSigned",
-      "embeddedApplicationAndLauncherMatch": true,
-      "verifiedLicenseFiles": 375,
-      "nativeComponentFilesVerified": 3,
-      "exampleFilesVerified": 5,
-      "textComparisonNormalization": "CRLF to LF",
-      "licenseMetadataAndGuideFilesVerified": 4,
-      "packagedDocumentFilesVerified": 23,
-      "embeddedStartupAndPathHelperMatches": true,
-      "installerExecuted": false
-    },
-    "artifactFiles": [
-      {
-        "file": "DockSlate_0.1.10_x64-setup.exe",
-        "bytes": 49352637,
-        "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32"
-      },
+    "dependencyVersionsChanged": true,
+    "lockFilesChanged": true,
+    "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
+    "packagingStatus": "Security portable ZIP and legal ZIP fully verified; 434 and 410 files. No security installer or public release.",
+    "publicVersion": "0.1.9",
+    "published": false,
+    "previousRefactorDelivery": "docs/results/refactor-packages-20261116.json",
+    "deliveryDirectory": "downloads/local-security-20261119"
+  },
+  "portableDelivery": {
+    "observedAt": "2026-11-20T00:03:28.6533307+09:00",
+    "version": "0.1.10",
+    "variant": "security-20261119",
+    "directory": "downloads/local-security-20261119",
+    "files": [
       {
         "file": "DockSlate-0.1.10-windows-x64.zip",
-        "bytes": 63480743,
-        "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45"
+        "bytes": 54943992,
+        "sha256": "8457ABB2D0E30FE73F58701D522939677AC414F0A85CB03EA725CB01A43B1145"
       },
       {
         "file": "DockSlate-0.1.10-third-party-licenses.zip",
-        "bytes": 5161544,
-        "sha256": "AB5FD24FB16F780F4E08E3B14E794DF1C68E6A72C37DE9E69DEF6F23B721EE3A"
+        "bytes": 5194696,
+        "sha256": "285991B5CD4EE4C0B0E48CA91C199354C7C58A4CF7B4163864E5D1FEB6B2FB56"
       }
     ],
-    "publicDownloadsVerified": false,
-    "publicationHold": {
-      "observedAt": "2026-11-07T03:13:59.103Z",
-      "reason": "Microsoft Trojan:Win32/Wacatac.B!ml, 1/50 on exact installer hash",
-      "falsePositiveConfirmed": false,
-      "microsoftReviewSubmitted": false,
+    "fullVerification": {
+      "observedAt": "2026-11-20T00:03:28.6533307+09:00",
+      "portableFiles": 434,
+      "licenseFiles": 410,
+      "allZipFileSizesAndSha256Verified": true,
+      "candidateBinariesMatch": true,
+      "signature": "NotSigned",
+      "installerCreated": false,
       "installerExecuted": false,
-      "installerRepackagedToAvoidDetection": false,
-      "publicVersionPreserved": "0.1.9",
-      "githubReleaseCreated": false,
-      "tagCreated": false
+      "engineChanged": false
     },
-    "virusTotalRecord": "docs/results/virustotal-0.1.10.json"
-  },
-  "portableDelivery": {
-    "version": "0.1.10",
-    "file": "DockSlate-0.1.10-windows-x64.zip",
-    "bytes": 63480743,
-    "sha256": "B962563E6F4FF8A032CDFAAAEB90025A2A8D36CEF99F03E5423C08EC9DE79E45",
-    "files": 622,
-    "allEntriesMatchPortableFolder": true,
-    "duplicateEntries": false,
-    "installerExecuted": false,
-    "published": false
+    "installerCreated": false,
+    "publicReleasePublished": false
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",
