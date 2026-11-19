@@ -15,7 +15,7 @@ const release=JSON.parse(fs.readFileSync('site/release.json','utf8'));assert.mat
 const cli=path.resolve(session.cliArtifact??`downloads/DockSlate-${release.version}-windows-x64/bin/docker.exe`);
 assert(cli.startsWith(path.resolve('.')+path.sep),'Verification CLI must be inside the workspace');
 if(session.cliArtifact){assert.equal(createHash('sha256').update(fs.readFileSync(cli)).digest('hex').toUpperCase(),session.cliSha256);}
-const fixture=path.join(path.dirname(session.artifact),'fixture');fs.mkdirSync(fixture,{recursive:true});
+const fixture=path.resolve('.analysis',prefix+'-fixture');fs.mkdirSync(fixture,{recursive:true});
 const commands=[];
 async function docker(args,input){const pending=execute(cli,args,{encoding:'utf8',windowsHide:true,timeout:60000,maxBuffer:256*1024,env:{...process.env,LOCALAPPDATA:fixture,COMPOSE_DISABLE_ENV_FILE:'1'}});if(input)pending.child.stdin.end(input);const result=await pending;commands.push(args.map(arg=>arg.replace(fixture,'<fixture>')));return result.stdout.trim();}
 const sorted=text=>[...new Set(text.split(/\r?\n/).filter(Boolean))].sort();

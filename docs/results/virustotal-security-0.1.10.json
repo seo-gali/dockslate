@@ -1,0 +1,108 @@
+{
+  "version": "0.1.10",
+  "variant": "security-20261120",
+  "scope": "Exact new security build hashes; old 0.1.10 detection report is preserved separately.",
+  "files": [
+    {
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "sha256": "7283fb8dea405a362578a993846e755c3f6e8450909c514be0347f51beab765d",
+      "reportUrl": "https://www.virustotal.com/gui/file/7283fb8dea405a362578a993846e755c3f6e8450909c514be0347f51beab765d/detection",
+      "observedAt": "2026-11-19T15:55:56.936Z",
+      "analysisAt": "2026-11-19T15:48:00.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 59,
+      "undetected": 59,
+      "unsupported": 4,
+      "timeout": 11,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 59,
+        "harmless": 0,
+        "timeout": 11,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 4
+      },
+      "scope": "Explicit public upload, completed analysis"
+    },
+    {
+      "file": "DockSlate-0.1.10-windows-x64.zip",
+      "sha256": "8457abb2d0e30fe73f58701d522939677ac414f0a85cb03ea725cb01a43b1145",
+      "reportUrl": "https://www.virustotal.com/gui/file/8457abb2d0e30fe73f58701d522939677ac414f0a85cb03ea725cb01a43b1145/detection",
+      "observedAt": "2026-11-19T15:55:56.938Z",
+      "analysisAt": "2026-11-19T15:43:17.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 63,
+      "undetected": 63,
+      "unsupported": 7,
+      "timeout": 4,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 63,
+        "harmless": 0,
+        "timeout": 4,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 7
+      },
+      "scope": "Explicit public whole-ZIP upload; archive inspection limits apply"
+    },
+    {
+      "file": "DockSlate.exe",
+      "sha256": "1cb2b04cdc2a8d9e0c20e0329f33ab8238f3f47cdc521fbaedbd3a07e1692830",
+      "reportUrl": "https://www.virustotal.com/gui/file/1cb2b04cdc2a8d9e0c20e0329f33ab8238f3f47cdc521fbaedbd3a07e1692830/detection",
+      "observedAt": "2026-11-19T15:55:56.938Z",
+      "analysisAt": "2026-11-19T15:46:41.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 71,
+      "undetected": 71,
+      "unsupported": 3,
+      "timeout": 0,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 71,
+        "harmless": 0,
+        "timeout": 0,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 3
+      },
+      "scope": "Exact SHA-256 public file report queried separately"
+    },
+    {
+      "file": "bin/docker.exe",
+      "sha256": "7f57284751503ccb11be770d8f716f6c1bd60d8ad460959bc8bfffe50614a932",
+      "reportUrl": "https://www.virustotal.com/gui/file/7f57284751503ccb11be770d8f716f6c1bd60d8ad460959bc8bfffe50614a932/detection",
+      "observedAt": "2026-11-19T15:55:56.938Z",
+      "analysisAt": "2026-11-19T15:46:39.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 71,
+      "undetected": 71,
+      "unsupported": 3,
+      "timeout": 0,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 71,
+        "harmless": 0,
+        "timeout": 0,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 3
+      },
+      "scope": "Exact SHA-256 public file report queried separately"
+    }
+  ],
+  "archiveInspectionLimit": "VirusTotal warned about a multi-file archive larger than 3MB; do not interpret the ZIP verdict as a complete nested-file scan."
+}

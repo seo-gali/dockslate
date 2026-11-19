@@ -1,0 +1,306 @@
+{
+  "version": "0.1.10",
+  "variant": "security-20261120",
+  "observedAt": "2026-11-19T15:55:57.043Z",
+  "published": false,
+  "signing": {
+    "requested": true,
+    "completed": false,
+    "status": "NotSigned",
+    "userConfirmedNoCertificate": true,
+    "unsignedPublicationApproved": true,
+    "reason": "No code-signing certificate or service is available. No self-signed trust exception was created.",
+    "approval": "User explicitly approved unsigned prerelease publication on 2026-11-20"
+  },
+  "build": {
+    "sourceCommit": "3e653addd00317c2d775ea8c86f7fbad76fd0e28",
+    "runId": 44553873193,
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/44553873193",
+    "conclusion": "success",
+    "inputSha256": "438078AAAECBFFCF7B09E5696D6DA30F7BD1314C1B789CF5DC3D3E91B03DED22",
+    "download": {
+      "observedAt": "2026-11-20T00:43:37.4665462+09:00",
+      "runId": 44553873193,
+      "sourceCommit": "3e653addd00317c2d775ea8c86f7fbad76fd0e28",
+      "artifactId": 14543963751,
+      "githubDigest": "sha256:3447b2da76695c9431ec81ca1439031875349303f999ec0f276f20fe5d2f4107",
+      "githubDigestVerified": true,
+      "installerSha256": "7283FB8DEA405A362578A993846E755C3F6E8450909C514BE0347F51BEAB765D",
+      "installerBytes": 41122883,
+      "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-security-20261119\\DockSlate_0.1.10_x64-setup.exe",
+      "installerExecuted": false,
+      "signature": "NotSigned"
+    }
+  },
+  "files": [
+    {
+      "file": "DockSlate_0.1.10_x64-setup.exe",
+      "bytes": 41122883,
+      "sha256": "7283FB8DEA405A362578A993846E755C3F6E8450909C514BE0347F51BEAB765D"
+    },
+    {
+      "file": "DockSlate-0.1.10-windows-x64.zip",
+      "bytes": 54943992,
+      "sha256": "8457ABB2D0E30FE73F58701D522939677AC414F0A85CB03EA725CB01A43B1145"
+    },
+    {
+      "file": "DockSlate-0.1.10-third-party-licenses.zip",
+      "bytes": 5194696,
+      "sha256": "285991B5CD4EE4C0B0E48CA91C199354C7C58A4CF7B4163864E5D1FEB6B2FB56"
+    }
+  ],
+  "virusTotal": {
+    "files": [
+      {
+        "file": "DockSlate_0.1.10_x64-setup.exe",
+        "sha256": "7283fb8dea405a362578a993846e755c3f6e8450909c514be0347f51beab765d",
+        "reportUrl": "https://www.virustotal.com/gui/file/7283fb8dea405a362578a993846e755c3f6e8450909c514be0347f51beab765d/detection",
+        "observedAt": "2026-11-19T15:55:56.936Z",
+        "analysisAt": "2026-11-19T15:48:00.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 59,
+        "undetected": 59,
+        "unsupported": 4,
+        "timeout": 11,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 59,
+          "harmless": 0,
+          "timeout": 11,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 4
+        },
+        "scope": "Explicit public upload, completed analysis"
+      },
+      {
+        "file": "DockSlate-0.1.10-windows-x64.zip",
+        "sha256": "8457abb2d0e30fe73f58701d522939677ac414f0a85cb03ea725cb01a43b1145",
+        "reportUrl": "https://www.virustotal.com/gui/file/8457abb2d0e30fe73f58701d522939677ac414f0a85cb03ea725cb01a43b1145/detection",
+        "observedAt": "2026-11-19T15:55:56.938Z",
+        "analysisAt": "2026-11-19T15:43:17.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 63,
+        "undetected": 63,
+        "unsupported": 7,
+        "timeout": 4,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 63,
+          "harmless": 0,
+          "timeout": 4,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 7
+        },
+        "scope": "Explicit public whole-ZIP upload; archive inspection limits apply"
+      },
+      {
+        "file": "DockSlate.exe",
+        "sha256": "1cb2b04cdc2a8d9e0c20e0329f33ab8238f3f47cdc521fbaedbd3a07e1692830",
+        "reportUrl": "https://www.virustotal.com/gui/file/1cb2b04cdc2a8d9e0c20e0329f33ab8238f3f47cdc521fbaedbd3a07e1692830/detection",
+        "observedAt": "2026-11-19T15:55:56.938Z",
+        "analysisAt": "2026-11-19T15:46:41.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 71,
+        "undetected": 71,
+        "unsupported": 3,
+        "timeout": 0,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 71,
+          "harmless": 0,
+          "timeout": 0,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 3
+        },
+        "scope": "Exact SHA-256 public file report queried separately"
+      },
+      {
+        "file": "bin/docker.exe",
+        "sha256": "7f57284751503ccb11be770d8f716f6c1bd60d8ad460959bc8bfffe50614a932",
+        "reportUrl": "https://www.virustotal.com/gui/file/7f57284751503ccb11be770d8f716f6c1bd60d8ad460959bc8bfffe50614a932/detection",
+        "observedAt": "2026-11-19T15:55:56.938Z",
+        "analysisAt": "2026-11-19T15:46:39.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 71,
+        "undetected": 71,
+        "unsupported": 3,
+        "timeout": 0,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 71,
+          "harmless": 0,
+          "timeout": 0,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 3
+        },
+        "scope": "Exact SHA-256 public file report queried separately"
+      }
+    ],
+    "zipPublicUploadExplicitlyApproved": true,
+    "archiveInspectionLimit": "VirusTotal warned about a multi-file archive larger than 3MB; do not interpret the ZIP verdict as a complete nested-file scan."
+  },
+  "checks": {
+    "sourceCi": {
+      "runId": 44553873198,
+      "url": "https://github.com/seo-gali/dockslate/actions/runs/44553873198",
+      "source": "success",
+      "windows": "success",
+      "scheduledDependencyJob": "skipped on push"
+    },
+    "package": {
+      "checkedAt": "2026-11-20T00:52:05.9180149+09:00",
+      "version": "0.1.10",
+      "variant": "security-20261120",
+      "zipFilesVerified": 434,
+      "sharedPayloadFilesVerified": 430,
+      "packagedDocumentsVerified": 4,
+      "installerInspected": true,
+      "embeddedInstallerHelperMatches": true,
+      "binaryVersionsMatch": true,
+      "originalFilesPreserved": 3,
+      "installerExecuted": false,
+      "engineChanged": false,
+      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\security-installer-check-915cafcbf1034117bd8c8cc32875ed36",
+      "normalizedTextOrJsonFiles": [
+        "licenses\\inventory.json",
+        "licenses\\README.md",
+        "licenses\\THIRD_PARTY_NOTICES.md",
+        "examples\\basic-web\\.dockerignore",
+        "examples\\basic-web\\compose.yaml",
+        "examples\\basic-web\\Dockerfile",
+        "examples\\basic-web\\README.md",
+        "examples\\basic-web\\server.mjs",
+        "libexec\\manifest.json",
+        "guide.html"
+      ],
+      "signatureStatus": "NotSigned"
+    },
+    "nativeEngine": {
+      "checks": [
+        {
+          "name": "actual owned Docker event subscription connected",
+          "passed": true
+        },
+        {
+          "name": "invalid subscription and wrong engine rejected",
+          "passed": true
+        },
+        {
+          "name": "external network create updates Resources",
+          "passed": true
+        },
+        {
+          "name": "external Compose up updates container group and running status",
+          "passed": true
+        },
+        {
+          "name": "external rename updates current row",
+          "passed": true
+        },
+        {
+          "name": "external Compose stop updates status",
+          "passed": true
+        },
+        {
+          "name": "external Compose start updates status",
+          "passed": true
+        },
+        {
+          "name": "external Compose down removes row",
+          "passed": true
+        },
+        {
+          "name": "external network removal updates Resources",
+          "passed": true
+        },
+        {
+          "name": "external image import updates Images",
+          "passed": true
+        },
+        {
+          "name": "external image removal updates Images",
+          "passed": true
+        },
+        {
+          "name": "external volume create updates Resources",
+          "passed": true
+        },
+        {
+          "name": "external volume removal updates Resources",
+          "passed": true
+        },
+        {
+          "name": "external events avoid WSL dashboard and build history refresh",
+          "passed": true
+        },
+        {
+          "name": "idle connection sends no periodic inventory queries",
+          "passed": true
+        },
+        {
+          "name": "interrupted own reader reconnects and resynchronizes",
+          "passed": true
+        },
+        {
+          "name": "original containers states images volumes networks preserved",
+          "passed": true,
+          "containers": 5,
+          "volumes": 17
+        },
+        {
+          "name": "no renderer exceptions",
+          "passed": true
+        }
+      ],
+      "rendererExceptions": 0,
+      "approvedFixturesCleaned": true,
+      "preexistingContainers": 5,
+      "preexistingContainerStates": "All stopped before and after",
+      "existingEngineStatePreserved": true,
+      "nativeQuitExit": 0
+    },
+    "nodeTests": 14,
+    "nativeSecurityTests": 10,
+    "windowsProcessChecks": 7,
+    "offlineCliChecks": 6,
+    "localDefender": {
+      "available": false,
+      "AMServiceEnabled": false,
+      "AntivirusEnabled": false,
+      "settingsChanged": false
+    },
+    "dependencies": {
+      "queries": 716,
+      "flaggedVersions": 12,
+      "advisoryIds": 22,
+      "exit": 1,
+      "details": "docs/results/security-review-20261119.json"
+    }
+  },
+  "remaining": [
+    "Publicly trusted code signature requires certificate issuance and identity validation",
+    "Upstream dependency advisory matches require target/code-path review",
+    "Actual install/uninstall, login/reboot, WSL restart and rollback not performed in this release check"
+  ],
+  "userDataPreserved": true,
+  "kernelOrEngineUpdated": false,
+  "oldFlaggedInstallerReused": false,
+  "releaseApprovalPending": null,
+  "approvedPrereleaseReady": true
+}
