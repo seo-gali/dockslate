@@ -1,24 +1,24 @@
 {
-  "version": "0.1.9",
+  "version": "0.1.10",
   "notices": {
     "file": "THIRD_PARTY_NOTICES.md",
-    "sourceCommit": "29f709823fd42cfaff4c8d01fb4a8876fba83ef1",
-    "bytes": 3594,
-    "sha256": "DACA541F678A717491BBBFA84C032FC5A658D39DA29D1E76655A3CD198A5FD65"
+    "sourceCommit": "6fd88e41d31b3cb54d15b3edf56015ef097b025b",
+    "bytes": 3844,
+    "sha256": "F541C1BAA61B8B0F0A2BB4B3CF9815A80AC5EDC8CD337E637812B196CEE153E5"
   },
   "installer": {
-    "file": "DockSlate_0.1.9_x64-setup.exe",
-    "bytes": 49330186,
-    "sha256": "5940E73EDF2759D24BE9179F140F6F05EE1D7B6FD719E86AD1F1B16EF6F58174"
+    "file": "DockSlate_0.1.10_x64-setup.exe",
+    "bytes": 41122883,
+    "sha256": "7283FB8DEA405A362578A993846E755C3F6E8450909C514BE0347F51BEAB765D"
   },
   "zip": {
-    "file": "DockSlate-0.1.9-windows-x64.zip",
-    "bytes": 63425436,
-    "sha256": "05F31116AE67FDAD4BFB36B0B1F4C9FDD7415C06784F30FC76BF8F26F239C0B0"
+    "file": "DockSlate-0.1.10-windows-x64.zip",
+    "bytes": 54943992,
+    "sha256": "8457ABB2D0E30FE73F58701D522939677AC414F0A85CB03EA725CB01A43B1145"
   },
   "licenses": {
-    "file": "DockSlate-0.1.9-third-party-licenses.zip",
-    "bytes": 5161546,
-    "sha256": "AADA31925345F4586F664964BF9E4D92C3C26E4D98CFF6A8E9E73A3AD41A1AE4"
+    "file": "DockSlate-0.1.10-third-party-licenses.zip",
+    "bytes": 5194696,
+    "sha256": "285991B5CD4EE4C0B0E48CA91C199354C7C58A4CF7B4163864E5D1FEB6B2FB56"
   }
 }

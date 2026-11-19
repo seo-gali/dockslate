@@ -16,7 +16,7 @@ npm ci
 | 포터블 폴더·ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
 
-사이트 생성은 앱 개발 버전과 독립적입니다. `site/release.json`과 버전별 공개 영수증의 버전·파일·해시·백신 결과를 먼저 대조합니다. 없는 공개 파일은 고정 소스 커밋 또는 공식 Release에서 읽어 임시 검증하며, 지운 구버전 파일을 `downloads/`에 복원하지 않습니다. 공개판은 0.1.9를 유지합니다.
+사이트 생성은 앱 개발 버전과 독립적입니다. `site/release.json`과 버전별 공개 영수증의 버전·파일·해시·백신 결과를 먼저 대조합니다. 없는 공개 파일은 고정 소스 커밋 또는 공식 Release에서 읽어 임시 검증하며, 지운 구버전 앱 파일을 `downloads/`에 복원하지 않습니다. 공개 버전 전환 전에는 이전 버전의 고지 ZIP을 원래 배포 해시와 대조해 `docs/downloads/`에 보존합니다. 현재 공개 버전은 `site/release.json`이 기준입니다.
 
 포터블 생성은 현재 버전의 `downloads/DockSlate-<version>-windows-x64/`와 ZIP을 갱신합니다. 앱·CLI 빌드와 `docs/results/installer-engine-integration.json`의 검증 해시가 일치해야 합니다. EXE 하나만 복사하면 동봉 CLI·플러그인이 빠질 수 있습니다. 설치 파일 생성과 내부 파일 검증은 [배포 기록](results/installer-engine-integration.json)을 따릅니다.
 

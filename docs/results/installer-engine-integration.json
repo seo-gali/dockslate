@@ -16,7 +16,7 @@
     "browserChecks": 27,
     "lockedDependencyFetchExit": 0,
     "lockFilesChanged": true,
-    "latestNativeFlowExecuted": false,
+    "latestNativeFlowExecuted": true,
     "powerShellParserFiles": 5,
     "powerShellParserErrors": 0,
     "offlineComponentGuardExit": 1,
@@ -40,11 +40,11 @@
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 9,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 0,
+    "currentNativeChecks": 18,
     "dependencyVersionsChanged": true,
     "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "Ten native security tests, seven Windows process checks and six isolated offline CLI checks; no GUI or engine changes.",
+    "currentNativeScope": "Actual isolated Docker event fixtures, preservation of all five stopped user containers and resources, renderer exceptions 0 and native tray quit exit 0. No installation, WSL restart or DB writes.",
     "installerBuildScope": "Previous refactor installer excludes the current security source and dependency updates."
   },
   "artifacts": [
@@ -53,8 +53,8 @@
       "path": "src-tauri/target/release/dockslate.exe",
       "bytes": 5223424,
       "sha256": "1CB2B04CDC2A8D9E0C20E0329F33AB8238F3F47CDC521FBAEDBD3A07E1692830",
-      "executed": false,
-      "executionMode": "Optimized security build, GUI not executed."
+      "executed": true,
+      "executionMode": "Actual isolated native GUI and 18 engine event checks; user data preserved."
     },
     {
       "name": "docker.exe",
@@ -62,7 +62,7 @@
       "bytes": 320000,
       "sha256": "7F57284751503CCB11BE770D8F716F6C1BD60D8AD460959BC8BFFFE50614A932",
       "executed": true,
-      "executionMode": "Six engine-free checks with an isolated profile."
+      "executionMode": "Six offline checks and actual isolated Compose/event fixture commands."
     }
   ],
   "installerFilePresent": true,
@@ -179,33 +179,17 @@
   },
   "installerDelivery": {
     "version": "0.1.10",
-    "run": {
-      "runId": 42331749779,
-      "sourceCommit": "70da27971eb7a8d0ab457c9dfaf88ac4c48310c7",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/seo-gali/dockslate/actions/runs/42331749779",
-      "artifactsUrl": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/42331749779/artifacts"
-    },
-    "inspection": {
-      "observedAt": "2026-11-07T03:05:31.7230015Z",
-      "version": "0.1.10",
+    "variant": "security-20261120",
+    "file": {
       "file": "DockSlate_0.1.10_x64-setup.exe",
-      "bytes": 49352637,
-      "sha256": "DDAA30E6BF5F98ADA8F5727547BB66DFD14D88146A07926C8695331403DF8F32",
-      "signatureStatus": "NotSigned",
-      "embeddedApplicationAndLauncherMatch": true,
-      "verifiedLicenseFiles": 375,
-      "nativeComponentFilesVerified": 3,
-      "exampleFilesVerified": 5,
-      "textComparisonNormalization": "CRLF to LF",
-      "licenseMetadataAndGuideFilesVerified": 4,
-      "packagedDocumentFilesVerified": 23,
-      "embeddedStartupAndPathHelperMatches": true,
-      "installerExecuted": false
+      "bytes": 41122883,
+      "sha256": "7283FB8DEA405A362578A993846E755C3F6E8450909C514BE0347F51BEAB765D"
     },
-    "published": false,
-    "installerExecuted": false
+    "sourceCommit": "6fd88e41d31b3cb54d15b3edf56015ef097b025b",
+    "buildRun": 44553873193,
+    "signature": "NotSigned",
+    "installerExecuted": false,
+    "publicDownloadVerified": true
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -282,17 +266,21 @@
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
     "priorSourceVerification": "docs/results/security-review-20261119.json",
-    "nativeGuiExecuted": false,
+    "nativeGuiExecuted": true,
     "installerExecuted": false,
     "engineChanged": false,
     "dependencyVersionsChanged": true,
     "lockFilesChanged": true,
     "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
-    "packagingStatus": "Security portable ZIP and legal ZIP fully verified; 434 and 410 files. No security installer or public release.",
-    "publicVersion": "0.1.9",
-    "published": false,
+    "packagingStatus": "Approved unsigned security EXE/ZIP published; exact GitHub public downloads verified.",
+    "publicVersion": "0.1.10",
+    "published": true,
     "previousRefactorDelivery": "docs/results/refactor-packages-20261116.json",
-    "deliveryDirectory": "downloads/local-security-20261119"
+    "deliveryDirectory": "downloads/local-security-20261119",
+    "existingEngineStatePreserved": true,
+    "isolatedEngineFixturesChanged": true,
+    "engineInstallationOrVersionChanged": false,
+    "releaseSourceCommit": "6fd88e41d31b3cb54d15b3edf56015ef097b025b"
   },
   "portableDelivery": {
     "observedAt": "2026-11-20T00:03:28.6533307+09:00",
