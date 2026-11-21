@@ -50,8 +50,8 @@
   "artifacts": [
     {
       "name": "dockslate.exe",
-      "bytes": 5352448,
-      "sha256": "6C8CEB3E50610850296BFCF9E2C2C073085CF5799E4811E2B1A3E4714C9E4196"
+      "bytes": 5352960,
+      "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094"
     },
     {
       "name": "docker.exe",
@@ -252,7 +252,7 @@
   },
   "currentBuild": {
     "version": "0.1.12",
-    "observedAt": "2026-11-21T19:05:34.492Z",
+    "observedAt": "2026-11-21T19:17:54.337Z",
     "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
