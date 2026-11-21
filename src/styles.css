@@ -346,6 +346,9 @@ select option { color: var(--text); background: var(--surface); }
 .settings-help { padding: 18px; display: flex; flex-direction: column; gap: 16px; }
 .settings-help h3 { font-size: 0.923077rem; font-weight: 600; margin-bottom: 6px; }
 .settings-help p { font-size: 0.923077rem; color: var(--muted); line-height: 1.8; }
+.migration-content > .button { align-self: flex-start; }
+.migration-content > .settings-properties { padding: 0; }
+.migration-content .warning { color: var(--warning); }
 .runtime-diagnostics { color: var(--muted); font-size: 0.923077rem; line-height: 1.7; }
 .runtime-diagnostics summary { cursor: pointer; }
 .runtime-diagnostics p { overflow-wrap: anywhere; }

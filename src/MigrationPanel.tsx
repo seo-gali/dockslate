@@ -57,8 +57,11 @@ export default function MigrationPanel({ active, connected, blocked, onBusy }: {
   };
   return <section className="settings-panel" hidden={!active}>
     <h2>{t('Docker Desktop에서 가져오기')}</h2>
-    <p>{t('이미지·중지된 컨테이너·볼륨을 DockSlate로 복사합니다. Docker Desktop은 실행한 채로 두세요. 원본 데이터는 삭제하지 않습니다.')}</p>
-    <p className="usage-note">{t('컨테이너와 볼륨을 쓰는 서비스를 먼저 정상 중지하세요. 복사본의 동작을 확인하기 전에는 Docker Desktop을 제거하지 마세요.')}</p>
+    <div className="settings-help migration-content">
+    <div>
+      <p>{t('이미지·중지된 컨테이너·볼륨을 DockSlate로 복사합니다. Docker Desktop은 실행한 채로 두세요. 원본 데이터는 삭제하지 않습니다.')}</p>
+      <p className="usage-note">{t('컨테이너와 볼륨을 쓰는 서비스를 먼저 정상 중지하세요. 복사본의 동작을 확인하기 전에는 Docker Desktop을 제거하지 마세요.')}</p>
+    </div>
     {!connected && <p className="usage-note warning">{t('DockSlate 엔진을 먼저 시작하세요.')}</p>}
     <button className="button" disabled={busy || blocked || !connected} onClick={() => void load()}>{working ? t('검사 중…') : t('Docker Desktop 목록 조회')}</button>
     {error && <ErrorNotice message={error} />}
@@ -73,6 +76,7 @@ export default function MigrationPanel({ active, connected, blocked, onBusy }: {
     </>}
     {preview && !preview.eligible && <div className="notice error" role="alert"><div><strong>{t('가져올 수 없는 항목')}</strong><ul>{preview.blockedReasons.map((reason, index) => <li key={index}>{t(reason)}</li>)}</ul></div></div>}
     {job && <div aria-live="polite" role="status"><h3>{t(job.state === 'running' ? '데이터 복사 중' : job.state === 'completed' ? '데이터 복사 완료' : '데이터 복사 중단')}</h3><p>{t(job.message)}</p>{job.state === 'running' && <progress aria-label={t('데이터 복사 중')} />}{job.error && <ErrorNotice message={job.error} />}<ul>{job.completed.map((item, index) => <li key={index}>{item}</li>)}</ul>{job.warnings.map((item, index) => <p className="usage-note warning" key={index}>{item}</p>)}</div>}
+    </div>
     {preview?.eligible && <ConfirmDialog title={t('Docker Desktop 데이터 복사 승인')} label={t('복사 시작')} busy={working} error={null} acknowledged={approved} onAcknowledge={setApproved} onCancel={() => { setPreview(null); setApproved(false); }} onConfirm={() => void execute()}>
       <p>Docker Desktop → DockSlate</p>
       {(['containers', 'volumes', 'images', 'networks'] as const).map(kind => <div key={kind}><strong>{t({ containers: '컨테이너', volumes: '볼륨', images: '이미지', networks: '네트워크' }[kind])} · {preview[kind].length}</strong><ul className="dialog-target-list">{preview[kind].map(value => <li key={value}>{value}</li>)}</ul></div>)}
