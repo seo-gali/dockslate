@@ -2,7 +2,7 @@
   "version": "0.1.11",
   "observedAt": "2026-11-21T13:09:45.854Z",
   "published": true,
-  "websitePublished": false,
+  "websitePublished": true,
   "files": [
     {
       "file": "DockSlate_0.1.11_x64-setup.exe",
@@ -190,5 +190,132 @@
     "publishedBytesVerified": true,
     "tagVerified": true,
     "oldReleasePreserved": true
+  },
+  "status": "Approved unsigned 0.1.11 migration prerelease and website published; public files and legal routes verified.",
+  "postPublicationCi": {
+    "runId": 44907887658,
+    "sourceCommit": "e3b2145fddbf94d2597641e0ddbe2d2550dd2063",
+    "conclusion": "success"
+  },
+  "pages": {
+    "htmlSha256": "C55575A84131B27A114EC74254A333C6AABDFC547313729EA1EAE2B17F9F938A",
+    "observedAt": "2026-11-21T13:19:06.726Z",
+    "url": "https://seo-gali.github.io/dockslate/",
+    "status": 200,
+    "version": "0.1.11",
+    "downloadLinksVerified": 3,
+    "publicGithubFilesPreviouslyHashed": 4,
+    "staticFiles": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "bytes": 8014,
+        "sha256": "82D5BF704BDBF946CE32251D03FF0DDAC10F0AC52DE08D5FA31E07BF331F3609",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "bytes": 1667,
+        "sha256": "6175863061971231A7E2C8C0502E031EB9DAFB2C5004928C190959B2AB740831",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "bytes": 5726,
+        "sha256": "9C906A7D2BD82E58B789FE05D9A0C3EC39820E3C6269926260C513312D1B5C8C",
+        "matchesDeployedGitBlob": true
+      }
+    ],
+    "checksumMatches": true,
+    "legacyLegalRoutes": [
+      {
+        "path": "downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous010HashVerified": false
+      }
+    ],
+    "firstVerifiedDeployment": {
+      "runId": 44907887657,
+      "sourceCommit": "e3b2145fddbf94d2597641e0ddbe2d2550dd2063",
+      "conclusion": "success"
+    },
+    "deployed": true
   }
 }
