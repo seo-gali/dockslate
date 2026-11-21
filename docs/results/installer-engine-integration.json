@@ -50,13 +50,13 @@
   "artifacts": [
     {
       "name": "dockslate.exe",
-      "bytes": 5349376,
-      "sha256": "699CF512ABBA55E25C22C47D1DAE1241EF4947B5B4650CA9823BDCAE790B9F04"
+      "bytes": 5352448,
+      "sha256": "6C8CEB3E50610850296BFCF9E2C2C073085CF5799E4811E2B1A3E4714C9E4196"
     },
     {
       "name": "docker.exe",
       "bytes": 320000,
-      "sha256": "1CF4B068AED5140C348B78FA968EB1A3F71CFE5C781B955F259EA0F5BC4E5F1B"
+      "sha256": "2B97539DDDEDF395FA3262F5F7A985FF0F1096222D1319DAEC659B8881D354AD"
     }
   ],
   "installerFilePresent": true,
@@ -251,12 +251,12 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.11",
-    "observedAt": "2026-11-21T07:56:40.533Z",
+    "version": "0.1.12",
+    "observedAt": "2026-11-21T19:05:34.492Z",
     "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
-    "sourceScope": "Desktop migration, coexisting PATH registration and systemd readiness; package version-only lockfile changes",
+    "sourceScope": "Windows runtime path identity, ordered shared CLI initialization and preserved diagnostics; package version-only lockfile changes",
     "dependenciesChanged": false,
     "nativeEngineDataChanged": false,
     "fullDesktopMigrationVerified": false

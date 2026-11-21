@@ -285,6 +285,31 @@ pub fn inspect_status() -> Result<Value, String> {
     Ok(result)
 }
 
+pub(crate) fn same_ownership_fingerprint(expected: &Value, current: &Value) -> bool {
+    let (Some(expected), Some(current)) = (expected.as_object(), current.as_object()) else {
+        return false;
+    };
+    if expected.len() != 5 || current.len() != 5 {
+        return false;
+    }
+    for key in ["registrationId", "installId", "engineVersion", "rootfsSha256"] {
+        let value = expected.get(key).and_then(Value::as_str).filter(|value| !value.is_empty());
+        if value.is_none() || value != current.get(key).and_then(Value::as_str) {
+            return false;
+        }
+    }
+    #[cfg(windows)]
+    if let (Some(expected), Some(current)) = (
+        expected.get("installPath").and_then(Value::as_str),
+        current.get("installPath").and_then(Value::as_str),
+    ) {
+        if let (Ok(expected), Ok(current)) = (native_guard::normalize(expected), native_guard::normalize(current)) {
+            return expected == current;
+        }
+    }
+    false
+}
+
 pub fn public_status(mut result: Value) -> Value {
     if let Some(object) = result.as_object_mut() {
         object.remove("fingerprint");
@@ -577,7 +602,7 @@ mod native_guard {
     fn changed() -> String {
         "The owned runtime stopped or its ownership changed. Refresh the connection.".into()
     }
-    fn normalize(value: &str) -> Result<String, String> {
+    pub(super) fn normalize(value: &str) -> Result<String, String> {
         let value = value.strip_prefix("\\\\?\\").unwrap_or(value);
         let bytes = value.as_bytes();
         if bytes.len() < 3

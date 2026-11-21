@@ -1,5 +1,9 @@
 # 사용자 요청 체크리스트
 
+## 0.1.12 준비
+
+공개 0.1.11 이후 소스 수정이며 0.1.12 제작·배포 승인을 받았다. 등록 경로의 `\\?\` 표기를 같은 Windows 경로로 비교하고, 최초 CLI 초기화가 끝난 뒤 플러그인을 병렬 검사한다. 실패 안내에는 실제 오류·종료 코드를 표시한다. 특정 사용자명·드라이브·설치 폴더를 고정하지 않는다. [경로·CLI 검사 기록](results/windows-cli-contract.md#엔진-연결)의 Node 16개·Rust 보안 20개·PATH 11개·프로세스 7개, 격리 플러그인 순서 검사 18개가 통과했다. [완전 이전과 단독 설치](MIGRATION.md)를 지원하며 Docker Desktop 상시 관리 모드는 추가하지 않는다. 공개 설치판 재배포와 원격 PC의 전체 설치 완료 확인은 아직 남아 있다.
+
 ## 0.1.11 공개
 
 Docker Desktop 데이터 가져오기, 기존 Docker PATH 공존 검사와 systemd 준비 대기를 포함한다. [가져오기 검사](results/desktop-migration.json)의 Node 16개·Rust 18개·실제 격리 볼륨 검사는 통과했다. 앱·CLI·새 EXE·ZIP 제작과 파일 대조·실제 native GUI 5개·백신 확인을 완료하고 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.11)에 공개했다. 공개 파일 4개를 실제 다운로드해 SHA-256을 대조했다. Docker Desktop과의 전체 이전, 전체 설치·제거·WSL 재부팅 검사는 미실행이다.

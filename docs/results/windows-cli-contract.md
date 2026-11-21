@@ -1,10 +1,10 @@
 # Windows Docker CLI
 
-0.1.6 소스의 CLI 연결 계약이다. 공식 Windows Docker CLI 29.8.2·Compose 5.6.0·Buildx 0.38.0을 DockSlate 소유 Linux 엔진에 연결한다. 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
+현재 소스의 Windows CLI 연결 계약이다. 공식 Docker CLI·Compose·Buildx의 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
 
 ## 실행과 프로필
 
-2026-11-20 PATH 공존 검사·systemd 준비 대기는 후속 수정 소스이며 현재 공개 0.1.10 EXE에는 아직 포함되지 않았다.
+PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아래 설치 완료 검사 수정은 0.1.11 이후 소스 변경이며 공개 EXE에는 아직 포함되지 않았다.
 
 - 설치 완료는 등록된 PATH에 설치한 `bin/docker.exe`가 존재하는지와 그 실행 파일의 엔진 ID·Compose·Buildx 출력을 확인한다. 기존 Docker Desktop의 시스템 PATH가 먼저인 경우에도 설치를 막거나 다른 제품의 PATH를 변경하지 않는다. 이 경우 일반 `docker` 명령은 기존 제품을 사용하므로 DockSlate CLI는 설치 폴더의 전체 경로로 실행한다.
 
@@ -16,6 +16,16 @@
 - 도움말·클라이언트 버전·플러그인 버전은 엔진 중지 상태에서도 실행할 수 있어야 한다. CLI가 엔진을 자동 설치·시작하지 않는다.
 
 ## 엔진 연결
+
+설치 완료 시 `info --format {{.ID}}`가 실패한 PC에서 WSL은 실행 중이었으며 등록 BasePath는 `\\?\C:\Users\<user>\AppData\Local\DockSlateData\runtime\wsl` 형태였다. 네이티브 조회는 이 표기를 보존하고 PowerShell 상태 조회는 `\\?\`를 제거하므로, 전체 fingerprint의 문자열 비교가 같은 경로를 다른 런타임으로 오판했다. Windows 경로 표기를 기존 Windows API 정규화 함수로 비교하도록 수정했다. 특정 사용자·드라이브·설치 경로는 고정하지 않으며 등록 ID·설치 ID·엔진 버전·rootfs 해시와 기존 파일·프로세스 검증은 유지한다. 다른 경로·신원·누락된 필드는 계속 차단한다.
+
+설치 검사는 플러그인을 준비하는 첫 `info` 조회와 엔진 ID 대조가 끝난 뒤 Compose·Buildx 버전을 병렬 조회한다. 기존 공식 플러그인을 갱신하는 격리 프로필에서 동시 실행 18개 중 7개가 접근 거부 또는 갱신 충돌로 실패했다. 동일한 오프라인 시험에서 첫 버전 명령을 완료한 뒤 플러그인 버전 명령을 병렬 실행하자 18개 모두 성공했다. 이 시험은 공유 플러그인 초기화 순서를 확인하며 실제 설치 완료 전체 검증을 대신하지 않는다.
+
+CLI 실패 안내에 실제 표준 오류·종료 코드를 포함하고 제어 문자를 걸러 최대 2,000자로 제한했다. 종료 코드가 0이어도 필수 출력이 없으면 완료 처리하지 않는다. Windows 경로 회귀 검사는 기존 코드에서 실패함을 확인한 뒤 수정했다. C·D·Z 드라이브, 한글·공백·대소문자·접두사·경로 구분자와 다른 신원 거절을 검사한다.
+
+2026-11-22 소스 검증: `npm run check`(Node 16개·IPC 계약·TypeScript·문서·workflow·패턴 시크릿 검사), `scripts/check-windows.ps1 -Offline`(Rust check·보안 20개·PATH 11개·프로세스 7개)은 모두 종료 0이었다. Windows 검사는 격리 AppData를 사용했으며 테스트용 레지스트리 키만 생성·정리했다. 샌드박스에서 AppData·테스트 키 접근이 거부된 초기 실행은 통과로 합산하지 않는다. 이 PC와 보고된 PC의 경로·실행 상태를 읽었으며 WSL 재시작·등록 변경·기존 데이터 조작은 하지 않았다. 공개 0.1.11 설치판과 원격 PC의 전체 설치 완료 재검증은 남아 있다.
+
+버전 표기 변경 전(0.1.11)의 수정 코드 후보: `cargo build --locked --offline --release --manifest-path src-tauri/Cargo.toml --bin dockslate` 종료 0. 5,168,640 bytes·SHA-256 `BAC2EC1082A04DB846A711058131AAFCEBDFCF9193C3B99E4A5F0CD90B0670FE`의 로컬 후보에서 기존 실행 중인 소유 엔진의 `info --format {{.ID}}`, Compose 5.8.0, Buildx 0.39.0 실제 조회 3개가 종료 0이었다. 후보용 AppData와 broker만 사용했으며 엔진·기존 프로필을 변경하지 않았다. 이 해시는 공개 0.1.11 배포물이나 다음 버전의 해시로 사용하지 않는다.
 
 WSL 시작·중지는 systemd manager가 실제 요청에 응답한 뒤 진행한다. 첫 부팅 직후 소켓이 아직 준비되지 않은 경우 최대 30초 동안 확인하며, 계속 실패하면 서비스를 조작하거나 배포판을 강제 종료하지 않고 오류를 반환한다. 이 검사는 앱에서 전달하므로 기존에 설치된 런타임에도 적용된다. 사용자 PC의 `Failed to connect to bus` 보고 후 조회에서는 PID 1과 두 소켓이 정상이고 상태가 `running`이었다. 부팅 시점의 일시적 오류 가능성이 있으며 원격 PC의 당시 상태는 확정하지 않는다.
 

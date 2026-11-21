@@ -290,6 +290,26 @@ async fn dashboard_snapshot() -> Result<Value, String> {
 fn installer_setup_mode() -> bool {
     INSTALLER_SETUP.load(Ordering::Acquire)
 }
+
+fn installer_cli_output(arguments: &[&str], output: Result<std::process::Output, String>) -> Result<String, String> {
+    let failure = |reason: &str| format!(
+        "Windows Docker CLI verification failed: {}.\n{reason}\nSetup is not complete.",
+        arguments.join(" ")
+    );
+    let output = output.map_err(|error| failure(&error))?;
+    let value = std::str::from_utf8(&output.stdout).ok().map(str::trim);
+    if !output.status.success() || value == Some("") {
+        let detail = if output.stderr.is_empty() { &output.stdout } else { &output.stderr };
+        let detail: String = String::from_utf8_lossy(detail).chars()
+            .filter(|value| !value.is_control() || matches!(value, '\n' | '\t'))
+            .take(2000).collect();
+        let code = output.status.code().map(|code| code.to_string()).unwrap_or_else(|| "terminated".into());
+        return Err(failure(&format!("Exit code: {code}. {}", if detail.trim().is_empty() { "Required output is missing." } else { detail.trim() })));
+    }
+    value.map(str::to_owned)
+        .ok_or_else(|| failure("The Windows Docker CLI returned invalid UTF-8 output."))
+}
+
 #[tauri::command]
 async fn installer_setup_finish(app: tauri::AppHandle) -> Result<(), String> {
     if !installer_setup_mode() {
@@ -321,7 +341,14 @@ async fn installer_setup_finish(app: tauri::AppHandle) -> Result<(), String> {
         if !path_output.status.success() || path_output.stdout != b"verified" {
             return Err(format!("Windows docker command registration could not be verified: {} Setup is not complete.", String::from_utf8_lossy(&path_output.stderr).trim()));
         }
-        let checks: [&[&str]; 3] = [&["info", "--format", "{{.ID}}"], &["compose", "version", "--short"], &["buildx", "version"]];
+        // The first launcher prepares shared plugins before concurrent read-only checks.
+        let info = ["info", "--format", "{{.ID}}"];
+        let args: Vec<String> = info.iter().map(|argument| (*argument).into()).collect();
+        let identity = installer_cli_output(&info, process::execute(&cli, &args, None, std::time::Duration::from_secs(30), 64 * 1024))?;
+        if identity != engine.identity {
+            return Err("The Windows Docker CLI is connected to a different engine. Setup is not complete.".into());
+        }
+        let checks: [&[&str]; 2] = [&["compose", "version", "--short"], &["buildx", "version"]];
         let outputs = std::thread::scope(|scope| {
             let cli = &cli;
             checks.map(|arguments| scope.spawn(move || {
@@ -330,14 +357,7 @@ async fn installer_setup_finish(app: tauri::AppHandle) -> Result<(), String> {
             })).map(|worker| worker.join().unwrap_or_else(|_| Err("Windows Docker CLI verification worker failed.".into())))
         });
         for (arguments, output) in checks.into_iter().zip(outputs) {
-            let output = output?;
-            let value = std::str::from_utf8(&output.stdout).map_err(|_| "Windows Docker CLI returned invalid output.")?.trim();
-            if !output.status.success() || value.is_empty() {
-                return Err(format!("Windows Docker CLI verification failed: {}. Setup is not complete.", arguments.join(" ")));
-            }
-            if arguments[0] == "info" && value != engine.identity {
-                return Err("The Windows Docker CLI is connected to a different engine. Setup is not complete.".into());
-            }
+            installer_cli_output(arguments, output)?;
         }
         let windows_endpoint = cli_platform::endpoint()?;
         Ok(serde_json::json!({"verified":true,"windowsEndpoint":windows_endpoint}))

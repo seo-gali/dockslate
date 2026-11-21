@@ -19,7 +19,7 @@ impl Transport {
             let current = inspect("status")?;
             if current["state"] != "running"
                 || current["keeperVerified"] != true
-                || current.get("fingerprint") != Some(&self.fingerprint)
+                || !current.get("fingerprint").is_some_and(|value| crate::runtime::same_ownership_fingerprint(&self.fingerprint, value))
             {
                 return Err(
                     "The owned runtime stopped or its ownership changed. Refresh the connection."
