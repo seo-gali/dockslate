@@ -50,19 +50,13 @@
   "artifacts": [
     {
       "name": "dockslate.exe",
-      "path": "src-tauri/target/release/dockslate.exe",
-      "bytes": 5223424,
-      "sha256": "1CB2B04CDC2A8D9E0C20E0329F33AB8238F3F47CDC521FBAEDBD3A07E1692830",
-      "executed": true,
-      "executionMode": "Actual isolated native GUI and 18 engine event checks; user data preserved."
+      "bytes": 5349376,
+      "sha256": "699CF512ABBA55E25C22C47D1DAE1241EF4947B5B4650CA9823BDCAE790B9F04"
     },
     {
       "name": "docker.exe",
-      "path": "src-tauri/target/release/docker.exe",
       "bytes": 320000,
-      "sha256": "7F57284751503CCB11BE770D8F716F6C1BD60D8AD460959BC8BFFFE50614A932",
-      "executed": true,
-      "executionMode": "Six offline checks and actual isolated Compose/event fixture commands."
+      "sha256": "1CF4B068AED5140C348B78FA968EB1A3F71CFE5C781B955F259EA0F5BC4E5F1B"
     }
   ],
   "installerFilePresent": true,
@@ -259,28 +253,15 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.10",
-    "variant": "security-20261119",
-    "checkedAt": "2026-11-19T14:55:30.225Z",
-    "appAndCliBuildExit": 0,
+    "version": "0.1.11",
+    "observedAt": "2026-11-21T07:56:40.533Z",
+    "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
-    "priorSourceVerification": "docs/results/security-review-20261119.json",
-    "nativeGuiExecuted": true,
-    "installerExecuted": false,
-    "engineChanged": false,
-    "dependencyVersionsChanged": true,
-    "lockFilesChanged": true,
-    "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
-    "packagingStatus": "Approved unsigned security EXE/ZIP published; exact GitHub public downloads verified.",
-    "publicVersion": "0.1.10",
-    "published": true,
-    "previousRefactorDelivery": "docs/results/refactor-packages-20261116.json",
-    "deliveryDirectory": "downloads/local-security-20261119",
-    "existingEngineStatePreserved": true,
-    "isolatedEngineFixturesChanged": true,
-    "engineInstallationOrVersionChanged": false,
-    "releaseSourceCommit": "6fd88e41d31b3cb54d15b3edf56015ef097b025b"
+    "sourceScope": "Desktop migration, coexisting PATH registration and systemd readiness; package version-only lockfile changes",
+    "dependenciesChanged": false,
+    "nativeEngineDataChanged": false,
+    "fullDesktopMigrationVerified": false
   },
   "portableDelivery": {
     "observedAt": "2026-11-20T00:03:28.6533307+09:00",

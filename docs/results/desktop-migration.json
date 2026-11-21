@@ -1,0 +1,73 @@
+{
+  "observedAt": "2026-11-20T15:14:00.625Z",
+  "baseCommit": "5b7b7adeffab72c92b7b50716332c5f44704bba1",
+  "uncommittedSource": true,
+  "published": false,
+  "scope": [
+    "Docker Desktop Linux image, stopped-container and local-volume copy UI and backend",
+    "Coexisting Docker Desktop PATH registration",
+    "Bounded systemd readiness before owned runtime start/stop"
+  ],
+  "sourceSha256": {
+    "migration": "6ebdc1ad597be82cd445268ea2db3445d310f480dc99730352939a0b0bfcd825",
+    "panel": "e63197186eab6a382d9e9e4d0483374a6280afddfd8206f748c219d500ee45e5",
+    "readiness": "26ca5e12f5005529441b0000b7396534f95a8225cdef5b5c7a87b8be164a21ce"
+  },
+  "verification": {
+    "nodeTests": 16,
+    "rustTests": 18,
+    "windowsProcessChecks": 7,
+    "installerPathChecks": 11,
+    "powerShellParserFiles": 4,
+    "frontendProductionBuild": true,
+    "uiFixture": {
+      "koreanFlowChecks": 3,
+      "englishDialog": true,
+      "horizontalOverflow": false,
+      "pageErrors": 0,
+      "realDockerData": false
+    },
+    "actualVolumeCopy": {
+      "engine": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+      "cliSha256": "7f57284751503ccb11be770d8f716f6c1bd60d8ad460959bc8bfffe50614a932",
+      "fixturePrefix": "dockslate-migration-check-20261121",
+      "checks": [
+        "Image VOLUME paths do not allocate anonymous volumes",
+        "Stopped-container volume tar round trip preserves binary content, UID, GID and mode",
+        "Read-only source mount rejects writes",
+        "No fixture process or database was started",
+        "Original inventory restored; only labelled new fixtures removed"
+      ],
+      "volumesCreatedAndRemoved": 2,
+      "containersCreatedAndRemoved": 3,
+      "containersStarted": 0,
+      "existingInventoryRestored": true,
+      "cleanupErrors": []
+    }
+  },
+  "originalError": {
+    "reportedMachineAccount": "seo",
+    "wslVersion": "2.5.10.0",
+    "kernel": "6.6.87.2-1",
+    "userDiagnostic": {
+      "pid1": "systemd",
+      "privateSocketPresent": true,
+      "systemBusPresent": true,
+      "systemState": "running"
+    },
+    "systemdFailureCause": "Not confirmed. Startup ordering is a possible explanation; readiness checks added. No kernel update or remote-machine repair performed."
+  },
+  "deletedTrackedFiles": [],
+  "preserved": [
+    "Existing containers, states, images, volumes and other WSL distributions",
+    "Existing user and machine PATH",
+    "Current public 0.1.10 artifacts, release and signing/antivirus receipts"
+  ],
+  "unverified": [
+    "Full Docker Desktop to DockSlate transfer: Docker Desktop is absent on this development PC",
+    "Full native migration IPC job with actual source Desktop",
+    "Full new installer and upgrade/uninstall",
+    "WSL restart and actual cold-boot readiness on reported PC",
+    "Behavior under power loss, forced application termination and concurrent external engine changes"
+  ]
+}

@@ -15,6 +15,7 @@ use std::{
 
 const SCRIPT: &str = include_str!("../scripts/runtime-control.ps1");
 const SETUP: &str = include_str!("../scripts/runtime-setup.sh");
+const READY: &str = include_str!("../scripts/runtime-ready.sh");
 const OUTPUT_LIMIT: usize = 262_144;
 const APPROVAL_LIFETIME: Duration = Duration::from_secs(120);
 static STATE: OnceLock<Mutex<RuntimeState>> = OnceLock::new();
@@ -74,7 +75,7 @@ pub(crate) fn system_directory() -> Result<PathBuf, String> {
 }
 
 #[cfg(windows)]
-fn new_token() -> Result<String, String> {
+pub(crate) fn new_token() -> Result<String, String> {
     #[link(name = "bcrypt")]
     unsafe extern "system" {
         fn BCryptGenRandom(
@@ -91,7 +92,7 @@ fn new_token() -> Result<String, String> {
     Ok(bytes.iter().map(|byte| format!("{byte:02x}")).collect())
 }
 #[cfg(not(windows))]
-fn new_token() -> Result<String, String> {
+pub(crate) fn new_token() -> Result<String, String> {
     Err("Windows cryptographic approval is unavailable.".into())
 }
 
@@ -134,6 +135,7 @@ fn launch(request: Value) -> Result<RunningCommand, String> {
     ]);
     command.env("DOCKSLATE_RUNTIME_REQUEST", request.to_string());
     command.env("DOCKSLATE_RUNTIME_SETUP", SETUP.replace("\r\n", "\n"));
+    command.env("DOCKSLATE_RUNTIME_READY", READY.replace("\r\n", "\n"));
     command.env(
         "PSModulePath",
         program

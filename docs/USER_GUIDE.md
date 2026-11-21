@@ -12,6 +12,8 @@ Windows 11 x64·WSL 2.4.10+·WebView2가 필요하며 최초 엔진 설치에는
 
 Docker Desktop·Rancher Desktop의 기존 데이터는 자동으로 이관하지 않습니다. Compose 파일 편집·기존 프로젝트 교체·Kubernetes 배포는 지원 범위에 포함하지 않습니다.
 
+0.1.11에는 **설정 → 데이터 가져오기**가 추가되었습니다. Docker Desktop의 Linux 엔진을 켜고 서비스를 정상 중지한 뒤 이미지·컨테이너·볼륨을 선택해 검사·승인합니다. 원본을 보존하고 중지 상태의 복사본을 만듭니다. 같은 이름의 대상은 덮어쓰지 않습니다. [가져오기 범위와 순서](MIGRATION.md)를 확인하세요. 0.1.10 설치 파일에는 포함되지 않았습니다.
+
 설정의 **런타임**에서 실제 위치·상태를, **엔진 연결 정보**에서 엔진·API 버전을 확인합니다. Moby는 Docker의 오픈소스 기반입니다. 앱·Docker Engine·Microsoft WSL 커널 업데이트는 별개이며 현재 앱은 API 1.55를 상한으로 협상합니다.
 
 0.1.8의 **설정 → 자동 시작**에서 엔진 자동 시작과 Windows 로그인 시 DockSlate 창 열기를 각각 선택합니다. 기본값은 둘 다 꺼짐이며 다음 실행부터 적용됩니다. 엔진만 선택하면 로그인 때 창 없이 설치된 엔진을 시작하고, 직접 앱을 열 때도 엔진을 시작합니다. 창만 선택하면 엔진을 자동으로 켜지 않습니다. 컨테이너는 기존 재시작 정책을 따릅니다. 포터블을 옮기기 전에는 기존 위치에서 자동 시작을 끄고 새 위치에서 다시 설정하세요.
@@ -65,5 +67,7 @@ docker ps
 docker compose version
 docker buildx version
 ```
+
+기존 Docker Desktop의 PATH가 먼저이면 위 명령은 그쪽 엔진을 사용합니다. DockSlate는 PowerShell에서 `& "$env:LOCALAPPDATA\DockSlate\bin\docker.exe" ps`처럼 실제 설치 경로를 명시해 실행하세요. 시스템 PATH나 기존 Docker 설정을 자동으로 덮어쓰지 않습니다.
 
 현재 실행 파일은 미서명 개발판입니다. 배포할 때는 설치 EXE 또는 전체 ZIP을 사용하고 [서명·보안 상태](results/code-signing.md)를 확인하세요.

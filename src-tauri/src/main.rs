@@ -13,6 +13,7 @@ mod image_build;
 mod image_pull;
 mod image_removal;
 mod live_logs;
+mod migration;
 mod pipe;
 mod process;
 mod resources;
@@ -49,7 +50,7 @@ fn request_exit(app: &tauri::AppHandle, code: i32) {
         Some("An image download is running. Wait for it to finish before closing DockSlate.")
     } else if image_build::is_building() {
         Some("이미지 빌드가 진행 중입니다. 완료 후 앱을 종료할 수 있습니다.")
-    } else if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
+    } else if volumes::is_busy() || builds::is_busy() || compose::is_busy() || migration::is_busy() {
         Some("파일 전송 중입니다. 완료 후 앱을 종료할 수 있습니다.")
     } else if wsl::is_compacting() {
         Some("VHDX 압축이 진행 중이므로 앱을 종료할 수 없습니다.")
@@ -113,7 +114,7 @@ where
         if runtime::is_mutating() {
             return Err("엔진 설치 또는 상태 변경이 진행 중입니다".into());
         }
-        if volumes::is_busy() || builds::is_busy() || compose::is_busy() {
+        if volumes::is_busy() || builds::is_busy() || compose::is_busy() || migration::is_busy() {
             return Err("파일 전송 작업이 진행 중입니다. 완료 후 다시 시도하세요.".into());
         }
         if image_build::is_building() {
@@ -128,6 +129,15 @@ where
 async fn container_files(id: String, path: String) -> Result<Value, String> {
     read(move || container_tools::files(id, path)).await
 }
+
+#[tauri::command]
+async fn migration_inventory() -> Result<Value, String> { read(migration::inventory).await }
+#[tauri::command]
+async fn migration_preview(selection: migration::Selection) -> Result<Value, String> { read(move || migration::preview(selection)).await }
+#[tauri::command]
+async fn migration_execute(token: String, approved: bool) -> Result<Value, String> { mutate(move || migration::execute(token, approved)).await }
+#[tauri::command]
+async fn migration_status() -> Result<Value, String> { read(migration::status).await }
 #[tauri::command]
 async fn container_file_preview(id: String, path: String) -> Result<Value, String> {
     read(move || container_tools::file_preview(id, path)).await
@@ -300,26 +310,7 @@ async fn installer_setup_finish(app: tauri::AppHandle) -> Result<(), String> {
         if !cli.is_file() {
             return Err("The installed Windows Docker CLI is missing.".into());
         }
-        let path_check = r#"
-$ErrorActionPreference = 'Stop'
-[Console]::InputEncoding = [Text.UTF8Encoding]::new($false)
-[Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
-try {
-    $expected = [IO.Path]::GetFullPath([Console]::In.ReadToEnd())
-    $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
-    $env:Path = $env:Path + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
-    $commands = @(Get-Command docker -CommandType Application,ExternalScript -All -ErrorAction SilentlyContinue)
-    if ($commands.Count -eq 0) { throw 'A new terminal cannot find the Windows docker command.' }
-    $resolved = [IO.Path]::GetFullPath($commands[0].Path)
-    if (!$resolved.Equals($expected, [StringComparison]::OrdinalIgnoreCase)) {
-        throw ('A new terminal resolves docker to "' + $resolved + '" instead of the installed DockSlate CLI "' + $expected + '". Review the conflicting PATH entry and retry. Other Docker installations and PATH entries were preserved.')
-    }
-    [Console]::Write('verified')
-} catch {
-    [Console]::Error.Write($_.Exception.Message)
-    exit 1
-}
-"#;
+        let path_check = include_str!("../scripts/cli-registration.ps1");
         let path_output = process::execute(
             &runtime::system_directory()?.join("WindowsPowerShell/v1.0/powershell.exe"),
             &["-NoLogo".into(), "-NoProfile".into(), "-NonInteractive".into(), "-Command".into(), path_check.into()],
@@ -701,6 +692,7 @@ fn main() {
     tauri::Builder::default()
         .setup(tray::setup)
         .invoke_handler(tauri::generate_handler![
+            migration_inventory, migration_preview, migration_execute, migration_status,
  network_delete_preview, network_delete_execute, image_removal_preview, image_removal_execute, compose_pick_file, compose_preview, compose_build_start, compose_run_preview, compose_run_start, compose_job_status, compose_discard,
             volumes_list, volume_inspect, volume_create, volume_clone, volume_browse, volume_file_preview,
             volume_pick_archive, volume_export, volume_import_preview, volume_destructive_preview, volume_execute, volume_discard_preview, volume_job_status,

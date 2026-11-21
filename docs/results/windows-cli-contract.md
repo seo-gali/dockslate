@@ -4,6 +4,10 @@
 
 ## 실행과 프로필
 
+2026-11-20 PATH 공존 검사·systemd 준비 대기는 후속 수정 소스이며 현재 공개 0.1.10 EXE에는 아직 포함되지 않았다.
+
+- 설치 완료는 등록된 PATH에 설치한 `bin/docker.exe`가 존재하는지와 그 실행 파일의 엔진 ID·Compose·Buildx 출력을 확인한다. 기존 Docker Desktop의 시스템 PATH가 먼저인 경우에도 설치를 막거나 다른 제품의 PATH를 변경하지 않는다. 이 경우 일반 `docker` 명령은 기존 제품을 사용하므로 DockSlate CLI는 설치 폴더의 전체 경로로 실행한다.
+
 - `bin/docker.exe`는 같은 설치의 `libexec/docker.exe`를 실행한다. stdin·stdout·stderr와 종료 코드를 그대로 전달하며 셸 문자열을 만들지 않는다. 준비 실패는 종료 125다.
 - Compose와 Buildx는 공식 Windows 플러그인이다. 파일·환경 변수·빌드 context는 Windows에서 해석한다. 원본 Compose YAML과 Dockerfile을 재작성하지 않는다.
 - 프로필은 `%LOCALAPPDATA%\DockSlate\cli`다. 기존 `%USERPROFILE%\.docker`나 다른 제품의 설정·인증 정보를 읽거나 복사하지 않는다. launcher와 installer는 `config.json`을 만들거나 수정하지 않는다. 공식 CLI 자체의 로그인·설정 명령은 이 전용 프로필을 사용한다.
@@ -12,6 +16,8 @@
 - 도움말·클라이언트 버전·플러그인 버전은 엔진 중지 상태에서도 실행할 수 있어야 한다. CLI가 엔진을 자동 설치·시작하지 않는다.
 
 ## 엔진 연결
+
+WSL 시작·중지는 systemd manager가 실제 요청에 응답한 뒤 진행한다. 첫 부팅 직후 소켓이 아직 준비되지 않은 경우 최대 30초 동안 확인하며, 계속 실패하면 서비스를 조작하거나 배포판을 강제 종료하지 않고 오류를 반환한다. 이 검사는 앱에서 전달하므로 기존에 설치된 런타임에도 적용된다. 사용자 PC의 `Failed to connect to bus` 보고 후 조회에서는 PID 1과 두 소켓이 정상이고 상태가 `running`이었다. 부팅 시점의 일시적 오류 가능성이 있으며 원격 PC의 당시 상태는 확정하지 않는다.
 
 같은 설치의 `dockslate.exe --engine-proxy`가 GUI와 별도로 실행된다. pipe는 현재 사용자만 접근하며 다른 프로세스가 같은 이름을 점유하면 소유자와 실행 경로를 확인한다. 서버는 활성 요청에만 기존 엔진 소유권 lease를 유지하고, 검증된 WSL Unix socket의 `docker system dial-stdio`로 연결한다. 엔진 소유권·종류·ID 검증을 생략하지 않는다.
 

@@ -16,6 +16,7 @@ fn unapproved_operations_stop_before_system_changes() {
     approval_denied(docker::destructive_execute("invalid".into(), false, |_| {}));
     approval_denied(volumes::execute("invalid".into(), false));
     approval_denied(compose::run_start("invalid".into(), false));
+    approval_denied(crate::migration::execute("invalid".into(), false));
 }
 
 #[test]

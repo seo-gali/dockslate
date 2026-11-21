@@ -12,6 +12,8 @@ try{
  if($LASTEXITCODE -ne 0){throw 'Locked Rust source check failed.'}
  & cargo.exe test --locked $(if($Offline){'--offline'}) --manifest-path src-tauri/Cargo.toml security_tests -- --test-threads=1
  if($LASTEXITCODE -ne 0){throw 'Native security boundary checks failed.'}
+ & (Join-Path $checkRoot 'scripts\verify-installer-path.ps1')
+ if($LASTEXITCODE -ne 0){throw 'Installer PATH verification failed.'}
  $null=New-Item -ItemType Directory -Path $fixture
  $exe=Join-Path $fixture 'verify-process.exe'
  & rustc.exe --edition=2021 scripts/verify-process.rs -o $exe

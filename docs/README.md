@@ -12,6 +12,7 @@
 | [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) | 구현·조회·데이터·화면 규칙 |
 | [Node.js 예제](../examples/basic-web/README.md) | 앱에서 선택할 Dockerfile·Compose와 소스 |
 | [Windows CLI 계약](results/windows-cli-contract.md) | 현재 launcher·프로필·엔진 연결과 검증 경계 |
+| [Docker Desktop 데이터 가져오기](MIGRATION.md) | 후속 수정 소스의 이미지·컨테이너·볼륨 복사와 보존·미지원 범위 |
 | [독립 엔진 검사 절차](results/independent-engine-e2e-procedure.md) | 검증 스크립트의 실제 변경 범위·승인 조건 |
 | [작업 지침](../AGENTS.md) | 실행·승인·데이터 보존 경계 |
 

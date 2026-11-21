@@ -8,6 +8,7 @@ import type * as Runtime from './contracts/runtime';
 import type * as Files from './contracts/files';
 import type * as Terminal from './contracts/terminal';
 import type * as Wsl from './contracts/wsl';
+import type * as Migration from './contracts/migration';
 
 type Call<A, R> = { args: A; result: R };
 type Approved = { token: string; approved: boolean };
@@ -19,6 +20,10 @@ type DockerQuery = 'engine_status' | 'overview' | 'containers_list' | 'images_li
 type Snapshot<C extends CommandName> = { [K in C]: Envelope<CommandResult<K>> };
 
 export interface Commands {
+  migration_inventory: Call<undefined, Migration.Inventory>;
+  migration_preview: Call<{ selection: Migration.Selection }, Migration.Preview>;
+  migration_execute: Call<Approved, Migration.Job>;
+  migration_status: Call<undefined, Migration.Job | null>;
   engine_status: Call<undefined, Core.EngineStatus>;
   overview: Call<undefined, Core.OverviewData>;
   containers_list: Call<undefined, Core.Container[]>;

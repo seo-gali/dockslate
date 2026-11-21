@@ -179,6 +179,14 @@ function Invoke-FixedWsl([string[]]$arguments, [bool]$readOnly = $false, [string
     }
 }
 
+function Invoke-OwnedService([ValidateSet('start', 'stop')][string]$Action) {
+    $ready = [Environment]::GetEnvironmentVariable('DOCKSLATE_RUNTIME_READY')
+    if ([string]::IsNullOrWhiteSpace($ready)) { throw 'The fixed runtime readiness script is unavailable.' }
+    # Send the current readiness check so previously installed runtimes receive it too.
+    $script = $ready + "`nexec /usr/local/libexec/dockslate-$Action`n"
+    $null = Invoke-FixedWsl @('--distribution', $distribution, '--user', 'root', '--exec', '/bin/sh', '-s') $false $script
+}
+
 function Get-Registrations {
     $entries = [Collections.Generic.List[object]]::new()
     $registry = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Software\Microsoft\Windows\CurrentVersion\Lxss', $false)
@@ -453,7 +461,7 @@ try {
                 $null = Assert-OwnedRegistration (Read-OwnedJson 'ownership.json') @(Get-Registrations)
                 Set-Stage 'starting' 'Starting the newly installed Docker Engine, Buildx and Compose.'
                 $keeper = New-Keeper $marker
-                $null = Invoke-FixedWsl @('--distribution', $distribution, '--user', 'root', '--exec', '/usr/local/libexec/dockslate-start')
+                Invoke-OwnedService 'start'
                 if (!(Test-TrackedProcess $keeper $wsl) -or @((Get-Running)) -notcontains $distribution) { throw 'The newly installed Docker Engine did not reach its verified running state.' }
                 Set-Stage 'completed' 'Docker Engine is installed and running. Docker CLI, Buildx and Compose are installed in the owned runtime.'
             } else {
@@ -477,13 +485,13 @@ try {
                 Begin-Operation 'starting'
                 Set-Stage 'starting' 'Starting the owned keepalive and Docker Engine inside DockSlate only.'
                 $keeper = New-Keeper $marker
-                $null = Invoke-FixedWsl @('--distribution', $distribution, '--user', 'root', '--exec', '/usr/local/libexec/dockslate-start')
+                Invoke-OwnedService 'start'
                 if (!(Test-TrackedProcess $keeper $wsl) -or @((Get-Running)) -notcontains $distribution) { throw 'The DockSlate keepalive exited or the owned distribution is not running. Start is unverified.' }
                 Set-Stage 'completed' 'The owned DockSlate runtime is running and its Docker Unix socket answered the health check.'
             } else {
                 Begin-Operation 'stopping'
                 Set-Stage 'stopping' 'Stopping Docker services and running containers inside DockSlate only.'
-                $null = Invoke-FixedWsl @('--distribution', $distribution, '--user', 'root', '--exec', '/usr/local/libexec/dockslate-stop')
+                Invoke-OwnedService 'stop'
                 $null = Assert-OwnedRegistration (Read-OwnedJson 'ownership.json') @(Get-Registrations)
                 Set-Stage 'stopping' 'Terminating only the verified DockSlate distribution. Other WSL distributions remain running.'
                 $null = Invoke-FixedWsl @('--terminate', $distribution)

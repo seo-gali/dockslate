@@ -1,10 +1,12 @@
 ﻿$ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot '..\src-tauri\installer\user-path.ps1')
+. (Join-Path $PSScriptRoot '..\src-tauri\scripts\cli-registration.ps1')
 $options = [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames
 $scratch = 'Software\DockSlate\InstallerPathVerification\' + [guid]::NewGuid().ToString('N')
 $fixture = $null
 $checks = [Collections.Generic.List[string]]::new()
 $bin = 'C:\Program Files\DockSlate 한글\bin'
+$commandFixture = Join-Path ([IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\.analysis'))) ('cli-path-' + [guid]::NewGuid().ToString('N'))
 
 function Assert-Path([bool]$condition, [string]$message) {
     if (!$condition) { throw $message }
@@ -16,6 +18,29 @@ $beforeUser = if ($userKey) { $userKey.GetValue('Path', $null, $options) } else 
 $beforeMachine = $machineKey.GetValue('Path', $null, $options)
 $beforeUserKind = if ($userKey -and $userKey.GetValueNames() -contains 'Path') { $userKey.GetValueKind('Path') } else { $null }
 try {
+    $savedPath = $env:Path
+    try {
+        $owned = Join-Path $commandFixture 'DockSlate 한글\bin'
+        $foreign = Join-Path $commandFixture 'Docker\resources\bin'
+        $null = [IO.Directory]::CreateDirectory($owned)
+        $null = [IO.Directory]::CreateDirectory($foreign)
+        $expectedCli = Join-Path $owned 'docker.exe'
+        [IO.File]::WriteAllBytes($expectedCli, [byte[]]@())
+        [IO.File]::WriteAllBytes((Join-Path $foreign 'docker.exe'), [byte[]]@())
+        foreach ($path in @(($owned + ';' + $foreign), ($foreign + ';' + $owned))) {
+            $env:Path = $path
+            Assert-DockSlateCliRegistration $expectedCli
+        }
+        Assert-Path (@(Get-Command docker -CommandType Application -All)[0].Path -ceq (Join-Path $foreign 'docker.exe')) 'A conflicting Docker command was reordered.'
+        $checks.Add('CLI registration: both command orders accepted; existing Docker priority preserved')
+        foreach ($path in @($foreign, '')) {
+            $env:Path = $path
+            $rejected = $false
+            try { Assert-DockSlateCliRegistration $expectedCli } catch { $rejected = $true }
+            Assert-Path $rejected 'An unregistered DockSlate CLI was accepted.'
+        }
+        $checks.Add('CLI registration: foreign-only and missing command rejected')
+    } finally { $env:Path = $savedPath }
     $fixture = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($scratch)
     foreach ($case in @(
         @{name='1199-character expandable PATH'; length=1199; kind='ExpandString'},
@@ -116,6 +141,12 @@ try {
     Assert-Path ($machineKey.GetValue('Path', $null, $options) -ceq $beforeMachine) 'The real machine PATH changed.'
     [ordered]@{ passed=$true; checks=$checks.ToArray(); realUserPathUnchanged=$true; realMachinePathUnchanged=$true; engineChanged=$false } | ConvertTo-Json -Depth 4
 } finally {
+    if (Test-Path -LiteralPath $commandFixture) {
+        $target = [IO.Path]::GetFullPath($commandFixture)
+        if ([IO.Path]::GetDirectoryName($target) -cne [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\.analysis'))) { throw 'Invalid command fixture cleanup target.' }
+        if (@(Get-ChildItem -LiteralPath $target -Recurse -Force | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint }).Count) { throw 'The command fixture contains a reparse point.' }
+        Remove-Item -LiteralPath $target -Recurse -Force
+    }
     if ($fixture) { $fixture.Dispose(); [Microsoft.Win32.Registry]::CurrentUser.DeleteSubKeyTree($scratch, $false) }
     if ($userKey) { $userKey.Dispose() }
     $machineKey.Dispose()

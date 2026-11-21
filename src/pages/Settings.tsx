@@ -5,18 +5,19 @@ import { RuntimePanel, useDockSlateRuntime } from '../runtime';
 import { defaultAppearance, useAppearance } from '../appearance';
 import { t, setLanguage, useLanguage } from '../i18n';
 import { StartupPanel, type useStartupSettings } from '../startup';
+import MigrationPanel from '../MigrationPanel';
 
-export default function Settings(props: EngineProps & { runtime: ReturnType<typeof useDockSlateRuntime>; runtimeRequest?: number; startup: ReturnType<typeof useStartupSettings> }) {
+export default function Settings(props: EngineProps & { runtime: ReturnType<typeof useDockSlateRuntime>; runtimeRequest?: number; startup: ReturnType<typeof useStartupSettings>; onMigrationBusy: (value: boolean) => void }) {
   const engine = props.engine;
   const runtime = props.runtime;
   const { appearance, setAppearance } = useAppearance();
   const language = useLanguage();
   const [languageError, setLanguageError] = useState<string | null>(null);
-  const [tab, setTab] = useState<'appearance' | 'runtime' | 'startup' | 'connection'>('appearance');
+  const [tab, setTab] = useState<'appearance' | 'runtime' | 'startup' | 'connection' | 'migration'>('appearance');
   useEffect(() => { if (props.runtimeRequest) setTab('runtime'); }, [props.runtimeRequest]);
   return <>
     <PageHeader title={t("Settings")}></PageHeader>
-    <div className="page-tabs" role="tablist" aria-label={t('설정 보기')}>{(['appearance', 'runtime', 'startup', 'connection'] as const).map(value => <button key={value} role="tab" aria-selected={tab === value} className={tab === value ? 'active' : ''} onClick={() => setTab(value)}>{t({ appearance: '화면', runtime: '런타임', startup: '자동 시작', connection: '엔진 연결 정보' }[value])}</button>)}</div>
+    <div className="page-tabs" role="tablist" aria-label={t('설정 보기')}>{(['appearance', 'runtime', 'startup', 'connection', 'migration'] as const).map(value => <button key={value} role="tab" aria-selected={tab === value} className={tab === value ? 'active' : ''} onClick={() => setTab(value)}>{t({ appearance: '화면', runtime: '런타임', startup: '자동 시작', connection: '엔진 연결 정보', migration: '데이터 가져오기' }[value])}</button>)}</div>
     <div hidden={tab !== 'appearance'}><section className="settings-panel appearance-panel" aria-label={t("화면 설정")}>
       <h2>{t("화면")}</h2>
       <div className="appearance-row"><label htmlFor="display-language">{t("언어")}</label><select id="display-language" className="text-input language-select" value={language} onChange={event => { setLanguageError(null); void setLanguage(event.target.value === 'en' ? 'en' : 'ko').catch(() => setLanguageError(t('언어 파일을 불러오지 못했습니다. 다시 선택하세요.'))); }}><option value="ko">{t("한국어")}</option><option value="en">English</option></select></div>
@@ -26,6 +27,7 @@ export default function Settings(props: EngineProps & { runtime: ReturnType<type
     </section></div>
     <div hidden={tab !== 'runtime'}><RuntimePanel runtime={runtime} /></div>
     <div hidden={tab !== 'startup'}><StartupPanel settings={props.startup} runtime={runtime.query.data} busy={runtime.busy || !!props.mutationBlocked} /></div>
+    <MigrationPanel active={tab === 'migration'} connected={engine?.state === 'connected'} blocked={runtime.busy || !!props.mutationBlocked} onBusy={props.onMigrationBusy} />
     {props.engineError && <ErrorNotice message={props.engineError} onRetry={() => void props.reloadEngine()} />}
     <section hidden={tab !== 'connection'} className="settings-panel engine-details"><h2>{t("엔진 연결 정보")}</h2>
       <dl className="settings-properties">
