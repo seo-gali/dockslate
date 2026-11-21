@@ -1,0 +1,235 @@
+{
+  "version": "0.1.11",
+  "observedAt": "2026-11-21T13:02:17.699Z",
+  "published": false,
+  "files": [
+    {
+      "file": "DockSlate_0.1.11_x64-setup.exe",
+      "bytes": 41167731,
+      "sha256": "32D74A5FAC329D183965B66B358002683A14C919A4B8664651C91DAA616D375E"
+    },
+    {
+      "file": "DockSlate-0.1.11-windows-x64.zip",
+      "bytes": 54998141,
+      "sha256": "6CDCBBD2A442BA79251963EAEE7FB93B8732E83A12AF5C61B2AC33D123EC83F8"
+    },
+    {
+      "file": "DockSlate-0.1.11-third-party-licenses.zip",
+      "bytes": 5194697,
+      "sha256": "25D9FE40CCFE9ABCA0E1567A1B9C6CC7B4B58C200AE5668BCD96392D2B5AFCD0"
+    }
+  ],
+  "signing": {
+    "status": "NotSigned",
+    "certificateUnavailable": true,
+    "unsignedPrerelease": true
+  },
+  "build": {
+    "sourceCommit": "6d0f497153e3a029e9a62dc32345a14942e1e248",
+    "runId": 44882612411,
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/44882612411",
+    "conclusion": "success",
+    "inputSha256": "8CE6E49AEAE74F092382E6DECE44DFEFA40B82C883BD8332E49DAADC2DEBB634",
+    "artifact": {
+      "observedAt": "2026-11-21T17:03:34.3169578+09:00",
+      "runId": 44882612411,
+      "sourceCommit": "6d0f497153e3a029e9a62dc32345a14942e1e248",
+      "artifactId": 14698013833,
+      "githubDigest": "sha256:d162ef7db93349ddc5e29dd4fd2c534c80fbd87b5cf0bec0aa37c5f8c92b952f",
+      "githubDigestVerified": true,
+      "installerSha256": "32D74A5FAC329D183965B66B358002683A14C919A4B8664651C91DAA616D375E",
+      "installerBytes": 41167731,
+      "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-migration-20261121\\DockSlate_0.1.11_x64-setup.exe",
+      "installerExecuted": false,
+      "signature": "NotSigned"
+    }
+  },
+  "checks": {
+    "nodeTests": 16,
+    "rustSecurityTests": 18,
+    "windowsProcessChecks": 7,
+    "pathChecks": 11,
+    "offlineCliChecks": 6,
+    "package": {
+      "checkedAt": "2026-11-21T17:06:54.3240957+09:00",
+      "version": "0.1.11",
+      "variant": "migration-20261121",
+      "zipFilesVerified": 435,
+      "sharedPayloadFilesVerified": 431,
+      "packagedDocumentsVerified": 5,
+      "installerInspected": true,
+      "embeddedInstallerHelperMatches": true,
+      "binaryVersionsMatch": true,
+      "originalFilesPreserved": 3,
+      "installerExecuted": false,
+      "engineChanged": false,
+      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release011-installer-check-f6ae405a77a045728c192e562c3765a3",
+      "normalizedTextOrJsonFiles": [
+        "licenses\\inventory.json",
+        "licenses\\README.md",
+        "licenses\\THIRD_PARTY_NOTICES.md",
+        "examples\\basic-web\\.dockerignore",
+        "examples\\basic-web\\compose.yaml",
+        "examples\\basic-web\\Dockerfile",
+        "examples\\basic-web\\README.md",
+        "examples\\basic-web\\server.mjs",
+        "libexec\\manifest.json",
+        "guide.html"
+      ],
+      "signatureStatus": "NotSigned"
+    },
+    "nativeGui": {
+      "observedAt": "2026-11-21T08:06:28.092Z",
+      "appSha256": "699CF512ABBA55E25C22C47D1DAE1241EF4947B5B4650CA9823BDCAE790B9F04",
+      "checks": [
+        "Actual 0.1.11 native GUI connects to the owned Moby engine",
+        "Migration status IPC is registered and idle",
+        "Settings migration tab renders in the actual Windows executable",
+        "Actual native migration IPC rejects unapproved execution",
+        "Absent Docker Desktop is handled as an explicit source error"
+      ],
+      "rendererExceptions": 0,
+      "mutationsApproved": false,
+      "passed": true
+    },
+    "nativeQuitExit": 0,
+    "readOnlyEngineInventory": {
+      "passed": true,
+      "containers": 6,
+      "images": 5
+    },
+    "sourceCi": {
+      "runId": 44882612389,
+      "source": "success",
+      "windows": "success",
+      "dependencyReview": "skipped on push"
+    },
+    "previousFixtureVolumeRoundTrip": {
+      "engine": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+      "cliSha256": "7f57284751503ccb11be770d8f716f6c1bd60d8ad460959bc8bfffe50614a932",
+      "fixturePrefix": "dockslate-migration-check-20261121",
+      "checks": [
+        "Image VOLUME paths do not allocate anonymous volumes",
+        "Stopped-container volume tar round trip preserves binary content, UID, GID and mode",
+        "Read-only source mount rejects writes",
+        "No fixture process or database was started",
+        "Original inventory restored; only labelled new fixtures removed"
+      ],
+      "volumesCreatedAndRemoved": 2,
+      "containersCreatedAndRemoved": 3,
+      "containersStarted": 0,
+      "existingInventoryRestored": true,
+      "cleanupErrors": []
+    }
+  },
+  "virusTotal": {
+    "files": [
+      {
+        "file": "DockSlate_0.1.11_x64-setup.exe",
+        "sha256": "32d74a5fac329d183965b66b358002683a14c919a4b8664651c91daa616d375e",
+        "reportUrl": "https://www.virustotal.com/gui/file/32d74a5fac329d183965b66b358002683a14c919a4b8664651c91daa616d375e/detection",
+        "observedAt": "2026-11-21T13:02:17.685Z",
+        "analysisAt": "2026-11-21T08:08:18.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 68,
+        "undetected": 68,
+        "timeout": 2,
+        "unsupported": 4,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 68,
+          "harmless": 0,
+          "timeout": 2,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 4
+        }
+      },
+      {
+        "file": "DockSlate-0.1.11-windows-x64.zip",
+        "sha256": "6cdcbbd2a442ba79251963eaee7fb93b8732e83a12af5c61b2ac33d123ec83f8",
+        "reportUrl": "https://www.virustotal.com/gui/file/6cdcbbd2a442ba79251963eaee7fb93b8732e83a12af5c61b2ac33d123ec83f8/detection",
+        "observedAt": "2026-11-21T13:02:17.688Z",
+        "analysisAt": "2026-11-21T08:10:17.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 64,
+        "undetected": 64,
+        "timeout": 2,
+        "unsupported": 7,
+        "failure": 1,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 64,
+          "harmless": 0,
+          "timeout": 2,
+          "confirmed-timeout": 0,
+          "failure": 1,
+          "type-unsupported": 7
+        }
+      },
+      {
+        "file": "DockSlate.exe",
+        "sha256": "699cf512abba55e25c22c47d1dae1241ef4947b5b4650ca9823bdcae790b9f04",
+        "reportUrl": "https://www.virustotal.com/gui/file/699cf512abba55e25c22c47d1dae1241ef4947b5b4650ca9823bdcae790b9f04/detection",
+        "observedAt": "2026-11-21T13:02:17.696Z",
+        "analysisAt": "2026-11-21T08:01:36.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 71,
+        "undetected": 71,
+        "timeout": 0,
+        "unsupported": 3,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 71,
+          "harmless": 0,
+          "timeout": 0,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 3
+        }
+      },
+      {
+        "file": "bin/docker.exe",
+        "sha256": "1cf4b068aed5140c348b78fa968eb1a3f71cfe5c781b955f259ea0f5bc4e5f1b",
+        "reportUrl": "https://www.virustotal.com/gui/file/1cf4b068aed5140c348b78fa968eb1a3f71cfe5c781b955f259ea0f5bc4e5f1b/detection",
+        "observedAt": "2026-11-21T13:02:17.697Z",
+        "analysisAt": "2026-11-21T08:10:22.000Z",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 71,
+        "undetected": 71,
+        "timeout": 0,
+        "unsupported": 3,
+        "failure": 0,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 71,
+          "harmless": 0,
+          "timeout": 0,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 3
+        }
+      }
+    ],
+    "zipPublicUploadExplicitlyApproved": true,
+    "archiveInspectionLimit": "The multi-file ZIP is larger than the provider nested-file inspection limit. App and own CLI were checked separately; the ZIP verdict does not certify all nested files."
+  },
+  "userDataPreserved": true,
+  "kernelOrEngineUpdated": false,
+  "remaining": [
+    "Full Docker Desktop to DockSlate transfer is untested because Desktop is not installed on the verification PC",
+    "Full install/uninstall, cold WSL restart, login/reboot, rollback and crash recovery are not verified",
+    "Code signing certificate is unavailable",
+    "Upstream advisory matches from the prior security audit remain unresolved; no dependency versions changed in this release"
+  ]
+}

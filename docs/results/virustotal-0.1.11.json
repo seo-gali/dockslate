@@ -1,0 +1,102 @@
+{
+  "version": "0.1.11",
+  "files": [
+    {
+      "file": "DockSlate_0.1.11_x64-setup.exe",
+      "sha256": "32d74a5fac329d183965b66b358002683a14c919a4b8664651c91daa616d375e",
+      "reportUrl": "https://www.virustotal.com/gui/file/32d74a5fac329d183965b66b358002683a14c919a4b8664651c91daa616d375e/detection",
+      "observedAt": "2026-11-21T13:02:17.685Z",
+      "analysisAt": "2026-11-21T08:08:18.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 68,
+      "undetected": 68,
+      "timeout": 2,
+      "unsupported": 4,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 68,
+        "harmless": 0,
+        "timeout": 2,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 4
+      }
+    },
+    {
+      "file": "DockSlate-0.1.11-windows-x64.zip",
+      "sha256": "6cdcbbd2a442ba79251963eaee7fb93b8732e83a12af5c61b2ac33d123ec83f8",
+      "reportUrl": "https://www.virustotal.com/gui/file/6cdcbbd2a442ba79251963eaee7fb93b8732e83a12af5c61b2ac33d123ec83f8/detection",
+      "observedAt": "2026-11-21T13:02:17.688Z",
+      "analysisAt": "2026-11-21T08:10:17.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 64,
+      "undetected": 64,
+      "timeout": 2,
+      "unsupported": 7,
+      "failure": 1,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 64,
+        "harmless": 0,
+        "timeout": 2,
+        "confirmed-timeout": 0,
+        "failure": 1,
+        "type-unsupported": 7
+      }
+    },
+    {
+      "file": "DockSlate.exe",
+      "sha256": "699cf512abba55e25c22c47d1dae1241ef4947b5b4650ca9823bdcae790b9f04",
+      "reportUrl": "https://www.virustotal.com/gui/file/699cf512abba55e25c22c47d1dae1241ef4947b5b4650ca9823bdcae790b9f04/detection",
+      "observedAt": "2026-11-21T13:02:17.696Z",
+      "analysisAt": "2026-11-21T08:01:36.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 71,
+      "undetected": 71,
+      "timeout": 0,
+      "unsupported": 3,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 71,
+        "harmless": 0,
+        "timeout": 0,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 3
+      }
+    },
+    {
+      "file": "bin/docker.exe",
+      "sha256": "1cf4b068aed5140c348b78fa968eb1a3f71cfe5c781b955f259ea0f5bc4e5f1b",
+      "reportUrl": "https://www.virustotal.com/gui/file/1cf4b068aed5140c348b78fa968eb1a3f71cfe5c781b955f259ea0f5bc4e5f1b/detection",
+      "observedAt": "2026-11-21T13:02:17.697Z",
+      "analysisAt": "2026-11-21T08:10:22.000Z",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 71,
+      "undetected": 71,
+      "timeout": 0,
+      "unsupported": 3,
+      "failure": 0,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 71,
+        "harmless": 0,
+        "timeout": 0,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 3
+      }
+    }
+  ],
+  "archiveInspectionLimit": "The multi-file ZIP is larger than the provider nested-file inspection limit. App and own CLI were checked separately; the ZIP verdict does not certify all nested files."
+}
