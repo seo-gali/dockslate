@@ -10,7 +10,7 @@
     "hookFixtureExecuted": false,
     "frontendBuildExit": 0,
     "browserCompleted": true,
-    "installerBuildExit": null,
+    "installerBuildExit": 0,
     "hookCompilationExit": 0,
     "installerExecuted": false,
     "browserChecks": 27,
@@ -40,12 +40,12 @@
     "installerPathPreservationExit": 0,
     "installerPathPreservationChecks": 9,
     "correctedInstallerGuideChecks": 11,
-    "currentNativeChecks": 18,
+    "currentNativeChecks": 5,
     "dependencyVersionsChanged": true,
     "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "Actual isolated Docker event fixtures, preservation of all five stopped user containers and resources, renderer exceptions 0 and native tray quit exit 0. No installation, WSL restart or DB writes.",
-    "installerBuildScope": "Previous refactor installer excludes the current security source and dependency updates."
+    "currentNativeScope": "Actual 0.1.11 GUI, own Moby connection, migration tab, unapproved IPC denial and Desktop absence error. Read-only inventory: 6 containers, 5 images. Normal native tray exit 0; no engine state or user data changes.",
+    "installerBuildScope": "One-time pinned GitHub NSIS packaging of exact hash-verified local inputs; official artifact digest, payload and public downloads verified."
   },
   "artifacts": [
     {
@@ -172,18 +172,16 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "version": "0.1.10",
-    "variant": "security-20261120",
-    "file": {
-      "file": "DockSlate_0.1.10_x64-setup.exe",
-      "bytes": 41122883,
-      "sha256": "7283FB8DEA405A362578A993846E755C3F6E8450909C514BE0347F51BEAB765D"
-    },
-    "sourceCommit": "6fd88e41d31b3cb54d15b3edf56015ef097b025b",
-    "buildRun": 44553873193,
-    "signature": "NotSigned",
+    "version": "0.1.11",
+    "file": "DockSlate_0.1.11_x64-setup.exe",
+    "bytes": 41167731,
+    "sha256": "32D74A5FAC329D183965B66B358002683A14C919A4B8664651C91DAA616D375E",
+    "sourceCommit": "83b838fffee71b7d1c2164237a0c98340434d18f",
+    "github": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.11",
     "installerExecuted": false,
-    "publicDownloadVerified": true
+    "fullSetupVerified": false,
+    "sharedPayloadFilesVerified": 431,
+    "packagedDocumentsVerified": 5
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -264,35 +262,11 @@
     "fullDesktopMigrationVerified": false
   },
   "portableDelivery": {
-    "observedAt": "2026-11-20T00:03:28.6533307+09:00",
-    "version": "0.1.10",
-    "variant": "security-20261119",
-    "directory": "downloads/local-security-20261119",
-    "files": [
-      {
-        "file": "DockSlate-0.1.10-windows-x64.zip",
-        "bytes": 54943992,
-        "sha256": "8457ABB2D0E30FE73F58701D522939677AC414F0A85CB03EA725CB01A43B1145"
-      },
-      {
-        "file": "DockSlate-0.1.10-third-party-licenses.zip",
-        "bytes": 5194696,
-        "sha256": "285991B5CD4EE4C0B0E48CA91C199354C7C58A4CF7B4163864E5D1FEB6B2FB56"
-      }
-    ],
-    "fullVerification": {
-      "observedAt": "2026-11-20T00:03:28.6533307+09:00",
-      "portableFiles": 434,
-      "licenseFiles": 410,
-      "allZipFileSizesAndSha256Verified": true,
-      "candidateBinariesMatch": true,
-      "signature": "NotSigned",
-      "installerCreated": false,
-      "installerExecuted": false,
-      "engineChanged": false
-    },
-    "installerCreated": false,
-    "publicReleasePublished": false
+    "version": "0.1.11",
+    "file": "DockSlate-0.1.11-windows-x64.zip",
+    "bytes": 54998141,
+    "sha256": "6CDCBBD2A442BA79251963EAEE7FB93B8732E83A12AF5C61B2AC33D123EC83F8",
+    "filesVerified": 435
   },
   "previousInstallerDelivery": {
     "observedAt": "2026-10-31T05:33:10.237Z",

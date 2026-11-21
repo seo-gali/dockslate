@@ -1,7 +1,7 @@
 {
   "version": "0.1.11",
   "observedAt": "2026-11-21T13:02:17.699Z",
-  "published": false,
+  "published": true,
   "files": [
     {
       "file": "DockSlate_0.1.11_x64-setup.exe",
@@ -231,5 +231,12 @@
     "Full install/uninstall, cold WSL restart, login/reboot, rollback and crash recovery are not verified",
     "Code signing certificate is unavailable",
     "Upstream advisory matches from the prior security audit remain unresolved; no dependency versions changed in this release"
-  ]
+  ],
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.11",
+    "releaseId": 453697780,
+    "tag": "v0.1.11",
+    "sourceCommit": "83b838fffee71b7d1c2164237a0c98340434d18f",
+    "publisherRunId": 44907217735
+  }
 }
