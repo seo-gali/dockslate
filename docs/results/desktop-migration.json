@@ -73,9 +73,8 @@
   "followup": {
     "observedAt": "2026-11-22T11:14:34.435Z",
     "baseCommit": "dc890b67bd0eca83a18dbf5fc97484441503f91c",
-    "uncommittedSource": true,
-    "published": false,
-    "publicVersionUnchanged": "0.1.12",
+    "uncommittedSource": false,
+    "published": true,
     "sourceSha256": {
       "src-tauri/src/migration.rs": "9aae2ffc8e5f76b29c5c659aa7aec027cc786b153050438d836e826c60f00890",
       "src-tauri/src/migration/binds.rs": "5ffa08172b2202ce1b9717e068d1403113487a6eb1b3e9eb66ad51c91e17463d",
@@ -194,8 +193,7 @@
       "Failures may leave source services stopped; result lists require checking before restarting one side",
       "Start ordering does not implement Compose health/completion conditions or certify service health",
       "Privileged/devices/host namespaces/fixed IPs/Swarm and unsupported propagation still blocked",
-      "Existing 128-selection, 64-GiB-per-file and one-hour-per-copy limits retained",
-      "0.1.13 EXE/ZIP creation and Git upload in progress; new-file antivirus and signing not complete"
+      "Existing 128-selection, 64-GiB-per-file and one-hour-per-copy limits retained"
     ],
     "cleanup": {
       "observedAt": "2026-11-22T11:13:58.2922607Z",
@@ -208,6 +206,8 @@
       "existingDataChanged": false,
       "pendingDockerFixtureExecuted": false
     },
-    "version": "0.1.13"
+    "version": "0.1.13",
+    "release": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.13",
+    "currentPublicVersion": "0.1.13"
   }
 }

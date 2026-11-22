@@ -1,7 +1,7 @@
 {
   "version": "0.1.13",
   "observedAt": "2026-11-22T12:25:26.739Z",
-  "published": false,
+  "published": true,
   "status": "Built, verified and scanned; GitHub publication being completed",
   "files": [
     {
@@ -462,5 +462,12 @@
     "No code signing certificate; unsigned development build",
     "Full Docker Desktop transfer, reported production services and full install/uninstall/cold boot/rollback unverified",
     "Prior dependency advisory findings not remediated"
-  ]
+  ],
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.13",
+    "releaseId": 454435000,
+    "tag": "v0.1.13",
+    "sourceCommit": "7844ec0eff90c8b58c6021dfdd91901d177f38e8",
+    "publisherRunId": 45023869275
+  }
 }

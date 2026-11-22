@@ -172,12 +172,12 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "version": "0.1.12",
-    "file": "DockSlate_0.1.12_x64-setup.exe",
-    "bytes": 41170226,
-    "sha256": "7DCBA45906EB27F317A34926752BE217F10746A55A26EFAFE404BB9F55C37334",
-    "sourceCommit": "b73f841360205e66f5d39ff50ba304054c07d0d6",
-    "github": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.12",
+    "version": "0.1.13",
+    "file": "DockSlate_0.1.13_x64-setup.exe",
+    "bytes": 41187337,
+    "sha256": "5111310CD3DEACF12477D9D875A9C8499C12B4A6A5CA79A20E09459C975B0AB8",
+    "sourceCommit": "7844ec0eff90c8b58c6021dfdd91901d177f38e8",
+    "github": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.13",
     "installerExecuted": false,
     "fullSetupVerified": false,
     "sharedPayloadFilesVerified": 431,
@@ -268,10 +268,10 @@
     "fullSetupVerified": false
   },
   "portableDelivery": {
-    "version": "0.1.12",
-    "file": "DockSlate-0.1.12-windows-x64.zip",
-    "bytes": 54998782,
-    "sha256": "C2601CD9A4FCE4CE2093B1DA2D4054178F0B09D1F53F9C26FA713D70DC58C683",
+    "version": "0.1.13",
+    "file": "DockSlate-0.1.13-windows-x64.zip",
+    "bytes": 55028090,
+    "sha256": "D7A372A9CBDCE6B46944E830E87D0CCD682A4767359CF599C9798C08A16D8744",
     "filesVerified": 435
   },
   "previousInstallerDelivery": {
