@@ -1,0 +1,141 @@
+{
+  "version": "0.1.12",
+  "files": [
+    {
+      "file": "DockSlate_0.1.12_x64-setup.exe",
+      "sha256": "7DCBA45906EB27F317A34926752BE217F10746A55A26EFAFE404BB9F55C37334",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 55,
+      "undetected": 55,
+      "timeout": 12,
+      "failure": 3,
+      "unsupported": 4,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 55,
+        "harmless": 0,
+        "timeout": 12,
+        "confirmed-timeout": 0,
+        "failure": 3,
+        "type-unsupported": 4
+      },
+      "detectionVendors": [],
+      "findings": [],
+      "reportUrl": "https://www.virustotal.com/gui/file/7dcba45906eb27f317a34926752be217f10746a55a26efafe404bb9f55c37334/detection",
+      "observedAt": "2026-11-21T19:37:39.347Z",
+      "analysisAt": "2026-11-21T19:34:09.000Z",
+      "source": "https://www.virustotal.com/ui/files/7dcba45906eb27f317a34926752be217f10746a55a26efafe404bb9f55c37334",
+      "rawResponseSha256": "f74e8fb27e3ba2ae640fc267670539edb256a8e47b29dd387e8032733f34788a"
+    },
+    {
+      "file": "DockSlate-0.1.12-windows-x64.zip",
+      "sha256": "C2601CD9A4FCE4CE2093B1DA2D4054178F0B09D1F53F9C26FA713D70DC58C683",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 61,
+      "undetected": 61,
+      "timeout": 5,
+      "failure": 1,
+      "unsupported": 7,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 61,
+        "harmless": 0,
+        "timeout": 5,
+        "confirmed-timeout": 0,
+        "failure": 1,
+        "type-unsupported": 7
+      },
+      "detectionVendors": [],
+      "findings": [],
+      "reportUrl": "https://www.virustotal.com/gui/file/c2601cd9a4fce4ce2093b1da2d4054178f0b09d1f53f9c26fa713d70dc58c683/detection",
+      "observedAt": "2026-11-21T19:41:11.815Z",
+      "analysisAt": "2026-11-21T19:34:45.000Z",
+      "source": "https://www.virustotal.com/ui/files/c2601cd9a4fce4ce2093b1da2d4054178f0b09d1f53f9c26fa713d70dc58c683",
+      "rawResponseSha256": "9d296b8af221a01bf66fad82a9257d2ecabf008bb0655ec7894e420773b9a14e"
+    },
+    {
+      "file": "DockSlate.exe",
+      "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+      "completed": true,
+      "detections": 1,
+      "totalEngines": 71,
+      "undetected": 70,
+      "timeout": 0,
+      "failure": 0,
+      "unsupported": 3,
+      "categories": {
+        "malicious": 1,
+        "suspicious": 0,
+        "undetected": 70,
+        "harmless": 0,
+        "timeout": 0,
+        "confirmed-timeout": 0,
+        "failure": 0,
+        "type-unsupported": 3
+      },
+      "detectionVendors": [
+        "DeepInstinct"
+      ],
+      "findings": [
+        {
+          "engine": "DeepInstinct",
+          "category": "malicious",
+          "result": "MALICIOUS",
+          "reportUrl": "https://www.virustotal.com/gui/file/3b2feb8a2d9d741bf68d0244d8efdf0e5f91c1242f9eef186a368bd9f950c094/detection"
+        }
+      ],
+      "reportUrl": "https://www.virustotal.com/gui/file/3b2feb8a2d9d741bf68d0244d8efdf0e5f91c1242f9eef186a368bd9f950c094/detection",
+      "observedAt": "2026-11-21T19:37:39.337Z",
+      "analysisAt": "2026-11-21T19:33:22.000Z",
+      "source": "https://www.virustotal.com/ui/files/3b2feb8a2d9d741bf68d0244d8efdf0e5f91c1242f9eef186a368bd9f950c094",
+      "rawResponseSha256": "70395d44d94485ff6cc6020aacec7618b1c9474cc417456087a6e0f6ae8839c1"
+    },
+    {
+      "file": "bin/docker.exe",
+      "sha256": "2B97539DDDEDF395FA3262F5F7A985FF0F1096222D1319DAEC659B8881D354AD",
+      "completed": true,
+      "detections": 0,
+      "totalEngines": 69,
+      "undetected": 69,
+      "timeout": 1,
+      "failure": 1,
+      "unsupported": 3,
+      "categories": {
+        "malicious": 0,
+        "suspicious": 0,
+        "undetected": 69,
+        "harmless": 0,
+        "timeout": 1,
+        "confirmed-timeout": 0,
+        "failure": 1,
+        "type-unsupported": 3
+      },
+      "detectionVendors": [],
+      "findings": [],
+      "reportUrl": "https://www.virustotal.com/gui/file/2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad/detection",
+      "observedAt": "2026-11-21T19:41:11.823Z",
+      "analysisAt": "2026-11-21T19:35:03.000Z",
+      "source": "https://www.virustotal.com/ui/files/2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad",
+      "rawResponseSha256": "f22f45c0f205b11fe15869110c7c1c465aceb088b7cef6774ae7ed1a747b4136"
+    }
+  ],
+  "publicationApproval": {
+    "userApproved": true,
+    "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+    "detections": 1,
+    "vendor": "DeepInstinct",
+    "result": "MALICIOUS",
+    "falsePositiveConfirmed": false,
+    "scope": "Publish this exact unsigned 0.1.12 prerelease with the disclosed detection; user requested 배포해 and 계속 진행해 after reviewing the result."
+  },
+  "archiveInspectionLimit": "The large multi-file ZIP is not a full nested-file scan; own app and launcher were scanned separately.",
+  "recheck": {
+    "requested": true,
+    "initialReportPreserved": true,
+    "result": "Subsequent user-supplied screenshot still shows DeepInstinct MALICIOUS (1/65). Final normalized recheck JSON was unavailable after browser tools were removed and a public HTTPS refresh returned 429."
+  }
+}

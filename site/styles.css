@@ -52,6 +52,7 @@ summary { cursor: pointer; }
 .checksum button { margin-top: 10px; }
 .checksum button:hover, .terminal button:hover { color: var(--text); border-color: var(--accent); }
 .security-note { margin-top: 18px; color: var(--amber); font-size: 12px; }
+.security-note.has-detection { border-left: 3px solid var(--amber); padding-left: 12px; line-height: 1.8; }
 .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 .feature { padding: 22px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .feature h3 { font-size: 16px; }

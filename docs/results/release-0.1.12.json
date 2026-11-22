@@ -1,0 +1,387 @@
+{
+  "version": "0.1.12",
+  "observedAt": "2026-11-22T10:24:05.453Z",
+  "published": false,
+  "files": [
+    {
+      "file": "DockSlate_0.1.12_x64-setup.exe",
+      "bytes": 41170226,
+      "sha256": "7DCBA45906EB27F317A34926752BE217F10746A55A26EFAFE404BB9F55C37334"
+    },
+    {
+      "file": "DockSlate-0.1.12-windows-x64.zip",
+      "bytes": 54998782,
+      "sha256": "C2601CD9A4FCE4CE2093B1DA2D4054178F0B09D1F53F9C26FA713D70DC58C683"
+    },
+    {
+      "file": "DockSlate-0.1.12-third-party-licenses.zip",
+      "bytes": 5194694,
+      "sha256": "867F03ADD34B607D332991719E0A559819C024E0D9E2EECD8685D0FBE9AEF325"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+      "name": "dockslate.exe",
+      "bytes": 5352960
+    },
+    {
+      "sha256": "2B97539DDDEDF395FA3262F5F7A985FF0F1096222D1319DAEC659B8881D354AD",
+      "name": "docker.exe",
+      "bytes": 320000
+    }
+  ],
+  "signing": {
+    "status": "NotSigned",
+    "certificateUnavailable": true,
+    "unsignedPrerelease": true
+  },
+  "build": {
+    "sourceCommit": "60320b1b5a3a35d1fca070065da14286a87337bf",
+    "runId": 44940200408,
+    "url": "https://github.com/seo-gali/dockslate/actions/runs/44940200408",
+    "conclusion": "success",
+    "inputSha256": "4CDB61E327CFCBC9E3DFFBA582A6C5AB0E03DBB3A170DF39A0F78A066CF9639D",
+    "artifact": {
+      "observedAt": "2026-11-22T04:26:22.8470350+09:00",
+      "runId": 44940200408,
+      "sourceCommit": "60320b1b5a3a35d1fca070065da14286a87337bf",
+      "artifactId": 14721905208,
+      "githubDigest": "sha256:07a9bdc4f78612d911b0bc87e52f6569e9a90d1bb8c52eb2e6b59d5bba9cf631",
+      "githubDigestVerified": true,
+      "installerSha256": "7DCBA45906EB27F317A34926752BE217F10746A55A26EFAFE404BB9F55C37334",
+      "installerBytes": 41170226,
+      "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-cli-fix-20261122\\DockSlate_0.1.12_x64-setup.exe",
+      "installerExecuted": false,
+      "signature": "NotSigned"
+    }
+  },
+  "checks": {
+    "nodeTests": 17,
+    "rustSecurityTests": 20,
+    "pathChecks": 11,
+    "windowsProcessChecks": 7,
+    "offlineCliChecks": 6,
+    "package": {
+      "checkedAt": "2026-11-22T04:29:25.6948527+09:00",
+      "version": "0.1.12",
+      "variant": "cli-fix-20261122",
+      "zipFilesVerified": 435,
+      "sharedPayloadFilesVerified": 431,
+      "packagedDocumentsVerified": 5,
+      "installerInspected": true,
+      "embeddedInstallerHelperMatches": true,
+      "binaryVersionsMatch": true,
+      "originalFilesPreserved": 3,
+      "installerExecuted": false,
+      "engineChanged": false,
+      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release012-installer-check-e3b3c5dde3454f189695dd75cc01a2e3",
+      "normalizedTextOrJsonFiles": [
+        "licenses\\inventory.json",
+        "licenses\\README.md",
+        "licenses\\THIRD_PARTY_NOTICES.md",
+        "examples\\basic-web\\.dockerignore",
+        "examples\\basic-web\\compose.yaml",
+        "examples\\basic-web\\Dockerfile",
+        "examples\\basic-web\\README.md",
+        "examples\\basic-web\\server.mjs",
+        "libexec\\manifest.json",
+        "guide.html"
+      ],
+      "signatureStatus": "NotSigned"
+    },
+    "nativeGui": {
+      "observedAt": "2026-11-21T19:19:01.366Z",
+      "appSha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+      "checks": [
+        "Actual 0.1.12 native GUI connects to the owned Moby engine",
+        "Migration status IPC is registered and idle",
+        "Settings migration tab renders in the actual Windows executable",
+        "Actual native migration IPC rejects unapproved execution",
+        "Absent Docker Desktop is handled as an explicit source error"
+      ],
+      "rendererExceptions": 0,
+      "mutationsApproved": false,
+      "passed": true
+    },
+    "layout": {
+      "appSha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+      "layouts": [
+        {
+          "width": 1366,
+          "fontSize": 13,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 375.8125,
+          "panelRight": 1348.4000244140625,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 1152.800048828125,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1366,
+          "fontSize": 16,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 407.51251220703125,
+          "panelRight": 1348.4000244140625,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 1152.800048828125,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1280,
+          "fontSize": 13,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 375.8125,
+          "panelRight": 1262,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 1066.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1280,
+          "fontSize": 16,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 407.51251220703125,
+          "panelRight": 1262,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 1066.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 980,
+          "fontSize": 13,
+          "headerX": 214.8000030517578,
+          "paragraphX": 214.8000030517578,
+          "buttonX": 214.8000030517578,
+          "buttonRight": 377.8125,
+          "panelRight": 960,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 762.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 980,
+          "fontSize": 16,
+          "headerX": 214.8000030517578,
+          "paragraphX": 214.8000030517578,
+          "buttonX": 214.8000030517578,
+          "buttonRight": 409.51251220703125,
+          "panelRight": 960,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 762.4000244140625,
+          "horizontalOverflow": false
+        }
+      ],
+      "passed": true
+    },
+    "onlineCli": {
+      "appSha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+      "cliSha256": "2B97539DDDEDF395FA3262F5F7A985FF0F1096222D1319DAEC659B8881D354AD",
+      "checks": [
+        {
+          "args": [
+            "info",
+            "--format",
+            "{{.ID}}"
+          ],
+          "exit": 0,
+          "stdout": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "compose",
+            "version",
+            "--short"
+          ],
+          "exit": 0,
+          "stdout": "5.8.0",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "stdout": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f",
+          "stderr": ""
+        }
+      ],
+      "engineMutation": false,
+      "existingProfileUsed": false,
+      "passed": true
+    },
+    "nativeQuitExit": 0,
+    "sourceCi": {
+      "runId": 44940200302,
+      "source": "success",
+      "windows": "success",
+      "dependencyReview": "skipped on push"
+    }
+  },
+  "virusTotal": {
+    "files": [
+      {
+        "file": "DockSlate_0.1.12_x64-setup.exe",
+        "sha256": "7DCBA45906EB27F317A34926752BE217F10746A55A26EFAFE404BB9F55C37334",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 55,
+        "undetected": 55,
+        "timeout": 12,
+        "failure": 3,
+        "unsupported": 4,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 55,
+          "harmless": 0,
+          "timeout": 12,
+          "confirmed-timeout": 0,
+          "failure": 3,
+          "type-unsupported": 4
+        },
+        "detectionVendors": [],
+        "findings": [],
+        "reportUrl": "https://www.virustotal.com/gui/file/7dcba45906eb27f317a34926752be217f10746a55a26efafe404bb9f55c37334/detection",
+        "observedAt": "2026-11-21T19:37:39.347Z",
+        "analysisAt": "2026-11-21T19:34:09.000Z",
+        "source": "https://www.virustotal.com/ui/files/7dcba45906eb27f317a34926752be217f10746a55a26efafe404bb9f55c37334",
+        "rawResponseSha256": "f74e8fb27e3ba2ae640fc267670539edb256a8e47b29dd387e8032733f34788a"
+      },
+      {
+        "file": "DockSlate-0.1.12-windows-x64.zip",
+        "sha256": "C2601CD9A4FCE4CE2093B1DA2D4054178F0B09D1F53F9C26FA713D70DC58C683",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 61,
+        "undetected": 61,
+        "timeout": 5,
+        "failure": 1,
+        "unsupported": 7,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 61,
+          "harmless": 0,
+          "timeout": 5,
+          "confirmed-timeout": 0,
+          "failure": 1,
+          "type-unsupported": 7
+        },
+        "detectionVendors": [],
+        "findings": [],
+        "reportUrl": "https://www.virustotal.com/gui/file/c2601cd9a4fce4ce2093b1da2d4054178f0b09d1f53f9c26fa713d70dc58c683/detection",
+        "observedAt": "2026-11-21T19:41:11.815Z",
+        "analysisAt": "2026-11-21T19:34:45.000Z",
+        "source": "https://www.virustotal.com/ui/files/c2601cd9a4fce4ce2093b1da2d4054178f0b09d1f53f9c26fa713d70dc58c683",
+        "rawResponseSha256": "9d296b8af221a01bf66fad82a9257d2ecabf008bb0655ec7894e420773b9a14e"
+      },
+      {
+        "file": "DockSlate.exe",
+        "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+        "completed": true,
+        "detections": 1,
+        "totalEngines": 71,
+        "undetected": 70,
+        "timeout": 0,
+        "failure": 0,
+        "unsupported": 3,
+        "categories": {
+          "malicious": 1,
+          "suspicious": 0,
+          "undetected": 70,
+          "harmless": 0,
+          "timeout": 0,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 3
+        },
+        "detectionVendors": [
+          "DeepInstinct"
+        ],
+        "findings": [
+          {
+            "engine": "DeepInstinct",
+            "category": "malicious",
+            "result": "MALICIOUS",
+            "reportUrl": "https://www.virustotal.com/gui/file/3b2feb8a2d9d741bf68d0244d8efdf0e5f91c1242f9eef186a368bd9f950c094/detection"
+          }
+        ],
+        "reportUrl": "https://www.virustotal.com/gui/file/3b2feb8a2d9d741bf68d0244d8efdf0e5f91c1242f9eef186a368bd9f950c094/detection",
+        "observedAt": "2026-11-21T19:37:39.337Z",
+        "analysisAt": "2026-11-21T19:33:22.000Z",
+        "source": "https://www.virustotal.com/ui/files/3b2feb8a2d9d741bf68d0244d8efdf0e5f91c1242f9eef186a368bd9f950c094",
+        "rawResponseSha256": "70395d44d94485ff6cc6020aacec7618b1c9474cc417456087a6e0f6ae8839c1"
+      },
+      {
+        "file": "bin/docker.exe",
+        "sha256": "2B97539DDDEDF395FA3262F5F7A985FF0F1096222D1319DAEC659B8881D354AD",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 69,
+        "undetected": 69,
+        "timeout": 1,
+        "failure": 1,
+        "unsupported": 3,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 69,
+          "harmless": 0,
+          "timeout": 1,
+          "confirmed-timeout": 0,
+          "failure": 1,
+          "type-unsupported": 3
+        },
+        "detectionVendors": [],
+        "findings": [],
+        "reportUrl": "https://www.virustotal.com/gui/file/2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad/detection",
+        "observedAt": "2026-11-21T19:41:11.823Z",
+        "analysisAt": "2026-11-21T19:35:03.000Z",
+        "source": "https://www.virustotal.com/ui/files/2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad",
+        "rawResponseSha256": "f22f45c0f205b11fe15869110c7c1c465aceb088b7cef6774ae7ed1a747b4136"
+      }
+    ],
+    "publicationApproval": {
+      "userApproved": true,
+      "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094",
+      "detections": 1,
+      "vendor": "DeepInstinct",
+      "result": "MALICIOUS",
+      "falsePositiveConfirmed": false,
+      "scope": "Publish this exact unsigned 0.1.12 prerelease with the disclosed detection; user requested 배포해 and 계속 진행해 after reviewing the result."
+    },
+    "publicUploadOfFourFilesExplicitlyApproved": true,
+    "recheck": {
+      "requested": true,
+      "initialReportPreserved": true,
+      "result": "Subsequent user-supplied screenshot still shows DeepInstinct MALICIOUS (1/65). Final normalized recheck JSON was unavailable after browser tools were removed and a public HTTPS refresh returned 429."
+    },
+    "archiveInspectionLimit": "The large multi-file ZIP is not a full nested-file scan; own app and launcher were scanned separately."
+  },
+  "userDataPreserved": true,
+  "kernelOrEngineUpdated": false,
+  "dependenciesChanged": false,
+  "remaining": [
+    "DeepInstinct MALICIOUS finding remains unresolved; false positive not confirmed",
+    "Code signing certificate unavailable",
+    "Full Desktop transfer and remote-PC installation, uninstall, cold boot and rollback not verified",
+    "Prior dependency advisory findings were not remediated by this change"
+  ]
+}

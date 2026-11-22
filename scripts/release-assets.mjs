@@ -25,6 +25,16 @@ export function readPublishedRelease(root) {
       requireFact(scan?.completed === true && scan.detections === 0 && scan.totalEngines > 0, `Unresolved antivirus result: ${key}`);
     }
   }
+  for (const scan of receipt.virusTotal.files) {
+    requireFact(Number.isSafeInteger(scan.detections) && scan.detections >= 0, 'Invalid antivirus detection count.');
+    if (scan.detections === 0) continue;
+    const approval = receipt.virusTotal.publicationApproval;
+    requireFact(scan.file === 'DockSlate.exe' && scan.completed === true && scan.totalEngines > 0 &&
+      receipt.github.prerelease === true && approval?.userApproved === true &&
+      /^[A-F0-9]{64}$/.test(approval.sha256) && approval.sha256 === scan.sha256?.toUpperCase() &&
+      approval.detections === scan.detections && scan.detectionVendors?.length === 1 &&
+      approval.vendor === scan.detectionVendors[0], 'Unresolved antivirus result requires explicit approval for this exact app hash.');
+  }
   const sums = receipt.github.assets.find(entry => entry.name === 'SHA256SUMS.txt');
   requireFact(validAsset({ ...sums, file: sums?.name }), 'Published checksum receipt is missing.');
   requireFact(validAsset(release.notices) && release.notices.file === 'THIRD_PARTY_NOTICES.md' && /^[a-f0-9]{40}$/.test(release.notices.sourceCommit) && release.notices.sourceCommit === receipt.github.sourceCommit, 'Published notices must identify the reviewed source commit.');

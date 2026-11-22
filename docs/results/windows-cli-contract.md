@@ -11,7 +11,7 @@ PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아�
 - `bin/docker.exe`는 같은 설치의 `libexec/docker.exe`를 실행한다. stdin·stdout·stderr와 종료 코드를 그대로 전달하며 셸 문자열을 만들지 않는다. 준비 실패는 종료 125다.
 - Compose와 Buildx는 공식 Windows 플러그인이다. 파일·환경 변수·빌드 context는 Windows에서 해석한다. 원본 Compose YAML과 Dockerfile을 재작성하지 않는다.
 - 프로필은 `%LOCALAPPDATA%\DockSlate\cli`다. 기존 `%USERPROFILE%\.docker`나 다른 제품의 설정·인증 정보를 읽거나 복사하지 않는다. launcher와 installer는 `config.json`을 만들거나 수정하지 않는다. 공식 CLI 자체의 로그인·설정 명령은 이 전용 프로필을 사용한다.
-- 플러그인은 완성된 임시 파일을 교체 없는 Windows rename으로 게시한다. 같은 파일이 이미 있으면 재사용하고, 다른 파일이 있으면 보존하고 충돌로 중단한다. 프로필 경로의 reparse point를 거부하고 디렉터리 핸들을 유지한다. 이전 버전 플러그인의 자동 교체는 구현하지 않았다.
+- 플러그인은 완성된 임시 파일을 Windows rename으로 게시한다. 같은 파일이 있으면 재사용한다. 코드에 기록된 이전 공식 플러그인 해시와 일치할 때만 새 공식 파일로 원자 교체하며, 알 수 없는 다른 파일은 보존하고 충돌로 중단한다. 프로필 경로의 reparse point를 거부하고 디렉터리 핸들을 유지한다.
 - 기본 endpoint는 `npipe:////./pipe/dockslate_engine_<현재 사용자 SID>`다. inherited context·TLS·Buildx 선택 변수는 제거한다. 사용자가 명시한 CLI host·context 옵션은 공식 CLI가 처리한다. 직접 CLI 사용에는 Docker daemon 권한이 있으며 앱의 승인 팝업을 거치지 않는다.
 - 도움말·클라이언트 버전·플러그인 버전은 엔진 중지 상태에서도 실행할 수 있어야 한다. CLI가 엔진을 자동 설치·시작하지 않는다.
 
