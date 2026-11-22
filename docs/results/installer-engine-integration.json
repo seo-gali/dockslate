@@ -16,7 +16,7 @@
     "browserChecks": 27,
     "lockedDependencyFetchExit": 0,
     "lockFilesChanged": true,
-    "latestNativeFlowExecuted": true,
+    "latestNativeFlowExecuted": false,
     "powerShellParserFiles": 5,
     "powerShellParserErrors": 0,
     "offlineComponentGuardExit": 1,
@@ -50,13 +50,13 @@
   "artifacts": [
     {
       "name": "dockslate.exe",
-      "bytes": 5352960,
-      "sha256": "3B2FEB8A2D9D741BF68D0244D8EFDF0E5F91C1242F9EEF186A368BD9F950C094"
+      "bytes": 5421056,
+      "sha256": "C33A90694CB311B494F3506571485B246516A7A822586CF25CAF1E7270C31E63"
     },
     {
       "name": "docker.exe",
       "bytes": 320000,
-      "sha256": "2B97539DDDEDF395FA3262F5F7A985FF0F1096222D1319DAEC659B8881D354AD"
+      "sha256": "D5D3BAEEF0E96BE69BD2E3886160591E9621167878DC8880364A04E6FFA829B6"
     }
   ],
   "installerFilePresent": true,
@@ -251,14 +251,15 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.12",
-    "observedAt": "2026-11-21T19:17:54.337Z",
+    "version": "0.1.13",
+    "observedAt": "2026-11-22T12:17:24.533Z",
     "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
-    "sourceScope": "Windows runtime path identity, ordered shared CLI initialization and preserved diagnostics; package version-only lockfile changes",
+    "sourceScope": "Bind-file and folder copy, bulk selection, graceful source stop and original running-state migration; package version-only lockfile changes",
     "dependenciesChanged": false,
-    "nativeEngineDataChanged": false,
+    "existingUserDataChanged": false,
+    "isolatedEngineFixturesCreatedAndCleaned": true,
     "fullDesktopMigrationVerified": false
   },
   "portableDelivery": {

@@ -349,6 +349,13 @@ select option { color: var(--text); background: var(--surface); }
 .migration-content > .button { align-self: flex-start; }
 .migration-content > .settings-properties { padding: 0; }
 .migration-content .warning { color: var(--warning); }
+.migration-content fieldset { min-width: 0; margin: 0; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px; }
+.migration-content legend { padding: 0 4px; font-weight: 600; }
+.migration-options { display: flex; flex-direction: column; gap: 12px; }
+.migration-selection-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.migration-item { display: flex; margin-bottom: 8px; flex-wrap: wrap; overflow-wrap: anywhere; }
+.migration-item .mono { min-width: 0; }
+.migration-select-all { margin-bottom: 12px; font-weight: 600; }
 .runtime-diagnostics { color: var(--muted); font-size: 0.923077rem; line-height: 1.7; }
 .runtime-diagnostics summary { cursor: pointer; }
 .runtime-diagnostics p { overflow-wrap: anywhere; }

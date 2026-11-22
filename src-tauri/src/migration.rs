@@ -17,6 +17,8 @@ use std::{
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
 
+mod binds;
+
 const SOURCE: &str = "npipe:////./pipe/dockerDesktopLinuxEngine";
 const TTL: Duration = Duration::from_secs(120);
 const COPY_TIMEOUT: Duration = Duration::from_secs(3600);
@@ -24,12 +26,16 @@ static PLAN: Mutex<Option<Plan>> = Mutex::new(None);
 static JOB: Mutex<Option<Value>> = Mutex::new(None);
 static ACTIVE: AtomicBool = AtomicBool::new(false);
 
-#[derive(Clone, Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Clone, Default, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct Selection {
     images: Vec<String>,
     containers: Vec<String>,
     volumes: Vec<String>,
+    #[serde(default)]
+    stop_running: bool,
+    #[serde(default)]
+    start_after_import: bool,
 }
 struct Plan {
     token: String,
@@ -41,6 +47,8 @@ struct Plan {
     containers: Vec<Value>,
     volumes: Vec<Value>,
     networks: Vec<Value>,
+    reused_networks: Vec<String>,
+    binds: Vec<binds::Copy>,
     blocked: Vec<String>,
 }
 pub fn is_busy() -> bool {
@@ -195,15 +203,24 @@ pub fn inventory() -> Result<Value, String> {
 
 fn selection_valid(selection: &Selection) -> bool {
     let count = selection.images.len() + selection.containers.len() + selection.volumes.len();
+    let unique = |values: &[String]| {
+        let mut ids = values.to_vec();
+        ids.sort();
+        ids.dedup();
+        ids.len() == values.len()
+    };
     (1..=128).contains(&count)
+        && unique(&selection.images)
+        && unique(&selection.containers)
+        && unique(&selection.volumes)
         && selection.images.iter().all(|v| image_id(v))
         && selection.containers.iter().all(|v| id(v))
         && selection.volumes.iter().all(|v| name(v))
 }
 fn container_blocked(source: &Value) -> Option<&'static str> {
     let host = &source["HostConfig"];
-    if !["created", "exited"].contains(&text(&source["State"], "Status")) {
-        return Some("원본 컨테이너를 먼저 정상 중지하세요.");
+    if !["created", "exited", "running"].contains(&text(&source["State"], "Status")) {
+        return Some("일시 정지·재시작 중인 컨테이너는 실행 또는 중지 상태로 바꾼 뒤 이전하세요.");
     }
     if host["Privileged"] == true
         || host["AutoRemove"] == true
@@ -243,11 +260,13 @@ fn container_blocked(source: &Value) -> Option<&'static str> {
     {
         return Some("Swarm 컨테이너는 자동 이전할 수 없습니다.");
     }
-    if array(&source["Mounts"])
-        .iter()
-        .any(|v| v["Type"] != "volume" && v["Type"] != "tmpfs")
-    {
-        return Some("호스트·Windows·WSL 폴더 연결은 원본 경로를 확인해 직접 옮기세요.");
+    for mount in array(&source["Mounts"]) {
+        if !["volume", "tmpfs", "bind"].contains(&text(&mount, "Type")) {
+            return Some("이 종류의 파일 연결은 자동 이전할 수 없습니다.");
+        }
+        if mount["Type"] == "bind" && !binds::valid(&mount) {
+            return Some("폴더 연결 경로 또는 bind propagation을 지원하지 않습니다.");
+        }
     }
     if source["NetworkSettings"]["Networks"]
         .as_object()
@@ -260,7 +279,78 @@ fn container_blocked(source: &Value) -> Option<&'static str> {
     None
 }
 fn fingerprint(container: &Value) -> Value {
-    json!({"Id":container["Id"],"Name":container["Name"],"Image":container["Image"],"Config":container["Config"],"HostConfig":container["HostConfig"],"Mounts":container["Mounts"],"State":container["State"],"Networks":container["NetworkSettings"]["Networks"]})
+    let state = &container["State"];
+    json!({"Id":container["Id"],"Name":container["Name"],"Image":container["Image"],"Config":container["Config"],"HostConfig":container["HostConfig"],"Mounts":container["Mounts"],"State":{"Status":state["Status"],"StartedAt":state["StartedAt"],"FinishedAt":state["FinishedAt"]},"Networks":container["NetworkSettings"]["Networks"]})
+}
+fn stopped(value: &Value) -> bool {
+    ["created", "exited"].contains(&text(&value["State"], "Status"))
+}
+fn same_configuration(before: &Value, after: &Value) -> bool {
+    ["Id", "Name", "Image", "Config", "HostConfig", "Mounts"]
+        .iter()
+        .all(|key| before[*key] == after[*key])
+}
+fn start_order(containers: &[Value]) -> Result<Vec<String>, String> {
+    let mut pending: Vec<_> = containers.iter().filter(|v| !stopped(v)).collect();
+    let mut names = Vec::new();
+    while !pending.is_empty() {
+        let next=pending.iter().position(|value| {
+            let labels=&value["Config"]["Labels"];
+            !text(labels,"com.docker.compose.depends_on").split(',').filter(|v| !v.is_empty()).any(|entry| {
+                let service=entry.split(':').next().unwrap();
+                pending.iter().any(|dependency| text(&dependency["Config"]["Labels"],"com.docker.compose.project") == text(labels,"com.docker.compose.project") &&
+                    text(&dependency["Config"]["Labels"],"com.docker.compose.service") == service)
+            })
+        }).ok_or("Compose 실행 순서에 순환 참조가 있습니다. 자동 시작을 해제하고 이전 후 직접 시작하세요.")?;
+        names.push(
+            text(pending.remove(next), "Name")
+                .trim_start_matches('/')
+                .to_owned(),
+        );
+    }
+    Ok(names)
+}
+fn reusable_network(source: &Value, target: &Value) -> bool {
+    !text(&target["Labels"], "io.dockslate.migration").is_empty()
+        && [
+            "Name",
+            "Driver",
+            "Internal",
+            "Attachable",
+            "EnableIPv6",
+            "IPAM",
+            "Options",
+        ]
+        .iter()
+        .all(|key| source[*key] == target[*key])
+        && source["EnableIPv4"].as_bool().unwrap_or(true)
+            == target["EnableIPv4"].as_bool().unwrap_or(true)
+        && source["Labels"].as_object().cloned().unwrap_or_default()
+            == target["Labels"]
+                .as_object()
+                .cloned()
+                .unwrap_or_default()
+                .into_iter()
+                .filter(|(key, _)| key != "io.dockslate.migration")
+                .collect::<Map<_, _>>()
+}
+fn source_users() -> Result<Vec<Value>, String> {
+    let rows = lines("container", &["--all", "--no-trunc"])?;
+    let ids: Vec<_> = rows.iter().map(|v| text(v, "ID").to_owned()).collect();
+    if ids.is_empty() {
+        return Ok(vec![]);
+    }
+    if ids.len() > 4096 || ids.iter().any(|v| !id(v)) {
+        return Err("원본 컨테이너 목록이 너무 크거나 ID가 올바르지 않습니다.".into());
+    }
+    let mut args = vec!["container".into(), "inspect".into(), "--format".into(), r#"{"Id":{{json .Id}},"Name":{{json .Name}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}},"Mounts":{{json .Mounts}}}"#.into()];
+    args.extend(ids);
+    let output = command(SOURCE, &args, Duration::from_secs(30))?;
+    std::str::from_utf8(&output)
+        .map_err(|_| "원본 연결 상태의 인코딩이 올바르지 않습니다.")?
+        .lines()
+        .map(|v| serde_json::from_str(v).map_err(|_| "원본 연결 상태를 읽을 수 없습니다.".into()))
+        .collect()
 }
 fn volume_references(name: &str) -> Result<Vec<Value>, String> {
     let filter = format!("volume={name}");
@@ -320,6 +410,8 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         containers: vec![],
         volumes: vec![],
         networks: vec![],
+        reused_networks: vec![],
+        binds: vec![],
         blocked: vec![],
     };
     let mut image_ids = selection.images;
@@ -339,6 +431,20 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         if let Some(reason) = container_blocked(&container) {
             plan.blocked.push(format!("{container_name}: {reason}"));
         }
+        if !stopped(&container) && !plan.selection.stop_running {
+            plan.blocked.push(format!(
+                "{container_name}: 실행 중인 원본 정상 중지를 선택하세요."
+            ));
+        }
+        if !stopped(&container)
+            && ["SIGKILL", "KILL", "9"].contains(
+                &text(&container["Config"], "StopSignal")
+                    .to_ascii_uppercase()
+                    .as_str(),
+            )
+        {
+            plan.blocked.push(format!("{container_name}: 정상 종료 신호가 강제 종료로 설정되어 있습니다. 먼저 정상 중지하세요."));
+        }
         if target_containers
             .iter()
             .any(|v| strings(&v["Names"]).contains(&format!("/{container_name}")))
@@ -357,6 +463,12 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
             network_names.extend(networks.keys().cloned());
         }
         plan.containers.push(container);
+    }
+    plan.binds = binds::plan(&plan.containers, &plan.token)?;
+    if plan.selection.start_after_import {
+        if let Err(reason) = start_order(&plan.containers) {
+            plan.blocked.push(reason);
+        }
     }
     if !volume_names.is_empty() && image_ids.is_empty() {
         let images = lines("image", &["--no-trunc"])?;
@@ -406,6 +518,40 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         plan.images.push(image);
     }
     let target_volumes = target.json("GET", "/volumes")?;
+    let users = if !volume_names.is_empty() || !plan.binds.is_empty() {
+        source_users()?
+    } else {
+        vec![]
+    };
+    for user in &users {
+        if !stopped(user)
+            && !plan.containers.iter().any(|v| v["Id"] == user["Id"])
+            && array(&user["Mounts"]).iter().any(|mount| {
+                (mount["Type"] == "volume" && volume_names.iter().any(|v| mount["Name"] == *v))
+                    || (mount["Type"] == "bind"
+                        && plan
+                            .binds
+                            .iter()
+                            .any(|v| binds::overlaps(&v.source, text(mount, "Source"))))
+            })
+        {
+            plan.blocked.push(format!(
+                "{}: 같은 데이터를 사용하는 컨테이너도 함께 선택하거나 먼저 정상 중지하세요.",
+                text(user, "Name").trim_start_matches('/')
+            ));
+        }
+    }
+    for binding in &plan.binds {
+        if array(&target_volumes["Volumes"])
+            .iter()
+            .any(|v| v["Name"] == binding.volume)
+        {
+            plan.blocked.push(format!(
+                "{}: 복사할 폴더 볼륨 이름이 이미 있습니다.",
+                binding.volume
+            ));
+        }
+    }
     let volumes = inspect_many(SOURCE, "volume", &volume_names)?;
     for (value, volume) in volume_names.into_iter().zip(volumes) {
         if !name(&value) {
@@ -422,14 +568,6 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         {
             plan.blocked
                 .push(format!("{value}: DockSlate에 같은 볼륨 이름이 있습니다."));
-        }
-        if volume_references(&value)?
-            .iter()
-            .any(|v| !["created", "exited"].contains(&text(&v["State"], "Status")))
-        {
-            plan.blocked.push(format!(
-                "{value}: 이 볼륨을 쓰는 모든 컨테이너를 먼저 정상 중지하세요."
-            ));
         }
         plan.volumes.push(volume);
     }
@@ -456,10 +594,12 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
                 "{value}: 일반 local bridge 네트워크만 자동 이전할 수 있습니다."
             ));
         }
-        if target_networks.iter().any(|v| v["Name"] == value) {
-            plan.blocked.push(format!(
-                "{value}: DockSlate에 같은 네트워크 이름이 있습니다."
-            ));
+        if let Some(existing) = target_networks.iter().find(|v| v["Name"] == value) {
+            if reusable_network(&network, existing) {
+                plan.reused_networks.push(value.clone());
+            } else {
+                plan.blocked.push(format!("{value}: DockSlate에 설정이 다르거나 이전 이력을 확인할 수 없는 같은 네트워크가 있습니다."));
+            }
         }
         plan.networks.push(network);
     }
@@ -470,7 +610,11 @@ fn public_plan(plan: &Plan) -> Value {
     json!({"token":plan.token,"expiresAt":now()+TTL.as_millis() as u64,"eligible":plan.blocked.is_empty(),"blockedReasons":plan.blocked,
         "sourceEngine":plan.source,"targetEngine":plan.target,"images":plan.images.iter().map(|v| text(v,"Id")).collect::<Vec<_>>(),
         "containers":plan.containers.iter().map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),
-        "volumes":plan.volumes.iter().map(|v| text(v,"Name")).collect::<Vec<_>>(),"networks":plan.networks.iter().map(|v| text(v,"Name")).collect::<Vec<_>>()})
+        "volumes":plan.volumes.iter().map(|v| text(v,"Name")).collect::<Vec<_>>(),"networks":plan.networks.iter().map(|v| text(v,"Name")).collect::<Vec<_>>(),
+        "stopContainers":plan.containers.iter().filter(|v| !stopped(v)).map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),
+        "startContainers":if plan.selection.start_after_import { start_order(&plan.containers).unwrap_or_default() } else { vec![] },
+        "binds":plan.binds.iter().map(|v| json!({"source":v.source,"volume":v.volume})).collect::<Vec<_>>(),
+        "dockerSocketContainers":plan.containers.iter().filter(|v| array(&v["Mounts"]).iter().any(binds::socket)).map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),"reusedNetworks":plan.reused_networks})
 }
 pub fn preview(selection: Selection) -> Result<Value, String> {
     if is_busy() {
@@ -510,7 +654,7 @@ pub fn status() -> Result<Value, String> {
 }
 
 fn snapshot(plan: &Plan) -> Value {
-    json!({"source":plan.source,"target":plan.target,"images":plan.images,"containers":plan.containers.iter().map(fingerprint).collect::<Vec<_>>(),"volumes":plan.volumes,"networks":plan.networks})
+    json!({"source":plan.source,"target":plan.target,"images":plan.images,"containers":plan.containers.iter().map(fingerprint).collect::<Vec<_>>(),"volumes":plan.volumes,"networks":plan.networks,"binds":plan.binds,"reusedNetworks":plan.reused_networks})
 }
 pub fn execute(token: String, approved: bool) -> Result<Value, String> {
     if !approved {
@@ -532,7 +676,7 @@ pub fn execute(token: String, approved: bool) -> Result<Value, String> {
     ACTIVE
         .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
         .map_err(|_| "다른 가져오기가 진행 중입니다.")?;
-    let initial = json!({"id":plan.token,"state":"running","message":"선택한 데이터를 복사하고 있습니다.","completed":[],"warnings":[]});
+    let initial = json!({"id":plan.token,"state":"running","message":"선택한 데이터를 복사하고 있습니다.","completed":[],"warnings":[],"stoppedSources":[],"startedTargets":[]});
     match JOB.lock() {
         Ok(mut job) => *job = Some(initial.clone()),
         Err(_) => {
@@ -541,7 +685,7 @@ pub fn execute(token: String, approved: bool) -> Result<Value, String> {
         }
     }
     thread::spawn(move || {
-        let result = transfer(&plan, &target);
+        let result = transfer(rechecked, &target);
         if let Ok(mut state) = JOB.lock() {
             if let Some(job) = state.as_mut() {
                 job["state"] = json!(if result.is_ok() {
@@ -550,9 +694,9 @@ pub fn execute(token: String, approved: bool) -> Result<Value, String> {
                     "failed"
                 });
                 job["message"] = json!(if result.is_ok() {
-                    "복사가 끝났습니다. 중지된 복사본의 데이터와 설정을 확인한 뒤 직접 시작하세요. Docker Desktop은 아직 제거하지 마세요."
+                    "복사가 끝났습니다. 대상의 데이터와 실행 상태를 확인하세요. Docker Desktop은 확인을 마치기 전까지 제거하지 마세요."
                 } else {
-                    "복사가 중단되었습니다. 완료 목록의 복사본은 보존했습니다. 원본은 삭제하지 않았습니다."
+                    "이전이 중단되었습니다. 복사본과 원본 데이터는 보존했습니다. 중지한 원본·시작한 복사본 목록을 확인하고 한쪽만 실행하세요."
                 });
                 if let Err(error) = result {
                     job["error"] = json!(error);
@@ -704,6 +848,85 @@ fn same_engines(plan: &Plan, target: &Client) -> Result<(), String> {
     }
     Ok(())
 }
+fn record_state(key: &str, name: &str) {
+    if let Ok(mut state) = JOB.lock() {
+        if let Some(items) = state.as_mut().and_then(|job| job[key].as_array_mut()) {
+            if !items.iter().any(|v| v == name) {
+                items.push(json!(name));
+            }
+        }
+    }
+}
+fn stop_sources(plan: &mut Plan, target: &Client) -> Result<(), String> {
+    same_engines(plan, target)?;
+    let ids: Vec<_> = plan
+        .containers
+        .iter()
+        .map(|v| text(v, "Id").to_owned())
+        .collect();
+    let before = inspect_many(SOURCE, "container", &ids)?;
+    if before.iter().map(fingerprint).collect::<Vec<_>>()
+        != plan.containers.iter().map(fingerprint).collect::<Vec<_>>()
+    {
+        return Err("원본 컨테이너가 변경되어 중지하지 않았습니다. 다시 검사하세요.".into());
+    }
+    let running: Vec<_> = before.iter().filter(|v| !stopped(v)).collect();
+    if running.is_empty() {
+        return Ok(());
+    }
+    if !plan.selection.stop_running {
+        return Err("실행 중인 원본 정상 중지를 승인하지 않았습니다.".into());
+    }
+    update(
+        "선택한 원본 컨테이너의 정상 종료를 기다리고 있습니다. 강제 종료하지 않습니다.".into(),
+        None,
+        false,
+    );
+    let mut args = vec!["container".into(), "stop".into(), "--timeout=-1".into()];
+    args.extend(running.iter().map(|v| text(v, "Id").to_owned()));
+    // A client timeout does not send SIGKILL to containers; leave the source data intact.
+    let result = command(SOURCE, &args, Duration::from_secs(180));
+    let after = inspect_many(SOURCE, "container", &ids)?;
+    for (previous, current) in before.iter().zip(&after) {
+        if !stopped(previous) && stopped(current) {
+            record_state(
+                "stoppedSources",
+                text(current, "Name").trim_start_matches('/'),
+            );
+        }
+        if !same_configuration(previous, current) || !stopped(current) {
+            return Err("원본의 정상 종료를 확인하지 못했거나 설정이 변경되었습니다. 강제 종료하지 않았으며 컨테이너·볼륨 데이터 복사는 시작하지 않았습니다. 중지한 원본 목록을 확인하세요.".into());
+        }
+    }
+    result.map_err(|_| "정상 종료 대기 중 오류 또는 3분 제한에 도달했습니다. 강제 종료하지 않았습니다. 원본 상태를 확인하고 다시 검사하세요.".to_owned())?;
+    plan.containers = after;
+    Ok(())
+}
+fn create_owned_volume(
+    target: &Client,
+    volume_name: &str,
+    labels: &Value,
+    token: &str,
+) -> Result<(), String> {
+    if array(&target.json("GET", "/volumes")?["Volumes"])
+        .iter()
+        .any(|v| v["Name"] == volume_name)
+    {
+        return Err(format!("{volume_name}: 대상 볼륨이 이미 있습니다."));
+    }
+    let body = json!({"Name":volume_name,"Driver":"local","Labels":owned_labels(labels,token)});
+    let created: Value = serde_json::from_slice(&target.transport.create_volume(
+        &target.api,
+        &serde_json::to_vec(&body).unwrap(),
+        Duration::from_secs(30),
+        1024 * 1024,
+    )?)
+    .map_err(|_| "대상 볼륨 생성 결과를 읽지 못했습니다.")?;
+    if created["Labels"]["io.dockslate.migration"] != token {
+        return Err("대상 볼륨 소유권이 다릅니다. 파일을 쓰지 않았습니다.".into());
+    }
+    Ok(())
+}
 fn owned_labels(labels: &Value, token: &str) -> Value {
     let mut labels = labels.as_object().cloned().unwrap_or_default();
     labels.insert("io.dockslate.migration".into(), json!(token));
@@ -744,6 +967,7 @@ fn helper_args(
             || path == "/"
             || path.contains(',')
             || path == "/__dockslate_transfer"
+            || path.starts_with("/__dockslate_transfer/")
         {
             return Err("복사 도구 이미지의 기본 볼륨 경로를 지원하지 않습니다.".into());
         }
@@ -807,7 +1031,12 @@ fn remove_helper(
     )?;
     Ok(())
 }
-fn configuration(source: &Value, rootfs_image: &str, token: &str) -> Result<Value, String> {
+fn configuration(
+    source: &Value,
+    rootfs_image: &str,
+    token: &str,
+    bindings: &[binds::Copy],
+) -> Result<Value, String> {
     if let Some(reason) = container_blocked(source) {
         return Err(reason.into());
     }
@@ -826,7 +1055,30 @@ fn configuration(source: &Value, rootfs_image: &str, token: &str) -> Result<Valu
         .into_iter()
         .filter(|v| v["Type"] == "tmpfs")
         .collect();
-    mounts.extend(array(&source["Mounts"]).iter().filter(|v| v["Type"] == "volume").map(|v| json!({"Type":"volume","Source":v["Name"],"Target":v["Destination"],"ReadOnly":v["RW"]==false,"VolumeOptions":{"NoCopy":true}})));
+    for mount in array(&source["Mounts"])
+        .iter()
+        .filter(|v| v["Type"] == "volume")
+    {
+        let mut options = json!({"NoCopy":true});
+        if let Some(previous) = array(&source["HostConfig"]["Mounts"])
+            .iter()
+            .find(|v| v["Type"] == "volume" && v["Target"] == mount["Destination"])
+        {
+            if let Some(subpath) = previous["VolumeOptions"]["Subpath"]
+                .as_str()
+                .filter(|v| !v.is_empty())
+            {
+                options["Subpath"] = json!(subpath);
+            }
+        }
+        mounts.push(json!({"Type":"volume","Source":mount["Name"],"Target":mount["Destination"],"ReadOnly":mount["RW"]==false,"VolumeOptions":options}));
+    }
+    for mount in array(&source["Mounts"])
+        .iter()
+        .filter(|v| v["Type"] == "bind")
+    {
+        mounts.push(binds::mount(mount, bindings)?);
+    }
     host["Mounts"] = json!(mounts);
     body.insert("HostConfig".into(), host);
     let mut endpoints = Map::new();
@@ -854,7 +1106,8 @@ fn configuration(source: &Value, rootfs_image: &str, token: &str) -> Result<Valu
     );
     Ok(json!(body))
 }
-fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
+fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
+    let plan = &mut current;
     let destination = cli_platform::endpoint()?;
     let mut workspace = Workspace::new(&plan.token)?;
     for image in &plan.images {
@@ -907,6 +1160,15 @@ fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
             false,
         );
     }
+    let start_names = if plan.selection.start_after_import {
+        start_order(&plan.containers)?
+    } else {
+        vec![]
+    };
+    stop_sources(plan, target)?;
+    for binding in &plan.binds {
+        binds::copy(plan, target, binding, &destination, &mut workspace)?;
+    }
     for volume in &plan.volumes {
         same_engines(plan, target)?;
         let volume_name = text(volume, "Name");
@@ -924,7 +1186,7 @@ fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
         let (path, archive) = workspace.archive()?;
         let source_helper = create_helper(SOURCE, volume_name, image, &plan.token, true)?;
         let mut target_helper = None;
-        let result = (|| {
+        let result: Result<(), String> = (|| {
             copy_file(
                 SOURCE,
                 &[
@@ -944,23 +1206,7 @@ fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
             {
                 return Err("볼륨 복사 중 원본 컨테이너 상태가 변경되었습니다.".into());
             }
-            if array(&target.json("GET", "/volumes")?["Volumes"])
-                .iter()
-                .any(|v| v["Name"] == volume_name)
-            {
-                return Err(format!("{volume_name}: 대상 볼륨이 이미 있습니다."));
-            }
-            let body = json!({"Name":volume_name,"Driver":"local","Labels":owned_labels(&volume["Labels"],&plan.token)});
-            let created: Value = serde_json::from_slice(&target.transport.create_volume(
-                &target.api,
-                &serde_json::to_vec(&body).unwrap(),
-                Duration::from_secs(30),
-                1024 * 1024,
-            )?)
-            .map_err(|_| "대상 볼륨 생성 결과를 읽지 못했습니다.")?;
-            if created["Labels"]["io.dockslate.migration"] != plan.token {
-                return Err("대상 볼륨 소유권이 다릅니다. 파일을 쓰지 않았습니다.".into());
-            }
+            create_owned_volume(target, volume_name, &volume["Labels"], &plan.token)?;
             update(
                 "새 볼륨에 데이터를 복사하고 있습니다.".into(),
                 Some(format!("새 볼륨 {volume_name} (복사 중)")),
@@ -1005,7 +1251,21 @@ fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
     for network in &plan.networks {
         same_engines(plan, target)?;
         let network_name = text(network, "Name");
-        let body = json!({"Name":network_name,"Driver":"bridge","CheckDuplicate":true,"Internal":network["Internal"],"Attachable":network["Attachable"],"EnableIPv6":network["EnableIPv6"],"IPAM":network["IPAM"],"Options":network["Options"],"Labels":owned_labels(&network["Labels"],&plan.token)});
+        if plan.reused_networks.iter().any(|v| v == network_name) {
+            let networks = array(&target.json("GET", "/networks")?);
+            if !networks.iter().any(|v| reusable_network(network, v)) {
+                return Err(format!(
+                    "{network_name}: 재사용할 네트워크 설정이 변경되었습니다."
+                ));
+            }
+            update(
+                "기존에 이전한 네트워크를 사용합니다.".into(),
+                Some(format!("기존 네트워크 {network_name}")),
+                false,
+            );
+            continue;
+        }
+        let body = json!({"Name":network_name,"Driver":"bridge","CheckDuplicate":true,"Internal":network["Internal"],"Attachable":network["Attachable"],"EnableIPv4":network["EnableIPv4"].as_bool().unwrap_or(true),"EnableIPv6":network["EnableIPv6"],"IPAM":network["IPAM"],"Options":network["Options"],"Labels":owned_labels(&network["Labels"],&plan.token)});
         target
             .transport
             .create_network(
@@ -1065,7 +1325,7 @@ fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
             Some(format!("컨테이너 파일 이미지 {rootfs}")),
             false,
         );
-        let body = configuration(source, rootfs, &plan.token)?;
+        let body = configuration(source, rootfs, &plan.token, &plan.binds)?;
         let created: Value = serde_json::from_slice(&target.transport.create_container(&target.api,container_name,&serde_json::to_vec(&body).unwrap(),Duration::from_secs(30),1024*1024).map_err(|_| format!("{container_name}: 컨테이너 생성에 실패했습니다. 복사한 이미지·볼륨은 보존했습니다."))?).map_err(|_| "컨테이너 생성 결과를 읽지 못했습니다.")?;
         if !id(text(&created, "Id")) {
             return Err("대상 컨테이너 생성 결과를 확인하지 못했습니다.".into());
@@ -1080,6 +1340,58 @@ fn transfer(plan: &Plan, target: &Client) -> Result<(), String> {
         );
         drop(archive);
         workspace.remove(&path)?;
+    }
+    if !start_names.is_empty() {
+        let ids: Vec<_> = plan
+            .containers
+            .iter()
+            .map(|v| text(v, "Id").to_owned())
+            .collect();
+        let originals = inspect_many(SOURCE, "container", &ids)?;
+        if originals.iter().map(fingerprint).collect::<Vec<_>>()
+            != plan.containers.iter().map(fingerprint).collect::<Vec<_>>()
+        {
+            return Err("원본 상태가 복사 후 변경되어 복사본을 시작하지 않았습니다. 양쪽 컨테이너 상태를 확인하세요.".into());
+        }
+    }
+    let mut start_errors = Vec::new();
+    for container_name in start_names {
+        same_engines(plan, target)?;
+        let output = command(
+            &destination,
+            &["container".into(), "inspect".into(), container_name.clone()],
+            Duration::from_secs(30),
+        )?;
+        let rows: Vec<Value> =
+            serde_json::from_slice(&output).map_err(|_| "복사본 설정을 확인할 수 없습니다.")?;
+        let value = rows.first().ok_or("복사본이 없습니다.")?;
+        if value["Config"]["Labels"]["io.dockslate.migration"] != plan.token {
+            return Err("복사본의 소유권이 변경되었습니다. 시작하지 않았습니다.".into());
+        }
+        match command(
+            &destination,
+            &["container".into(), "start".into(), text(value, "Id").into()],
+            Duration::from_secs(60),
+        ) {
+            Ok(_) => {
+                record_state("startedTargets", &container_name);
+                if inspect(&destination, "container", text(value, "Id"))?["State"]["Running"]
+                    == true
+                {
+                    update(
+                        "원래 실행 중이던 복사본을 시작했습니다.".into(),
+                        Some(format!("시작 {container_name}")),
+                        false,
+                    );
+                } else {
+                    start_errors.push(container_name);
+                }
+            }
+            Err(_) => start_errors.push(container_name),
+        }
+    }
+    if !start_errors.is_empty() {
+        return Err(format!("데이터 복사는 완료했지만 컨테이너 시작에 실패했습니다: {}. 포트·호스트 IP 충돌과 해당 컨테이너 로그를 확인하세요. 원본은 중지 상태로 보존했습니다.",start_errors.join(", ")));
     }
     Ok(())
 }
@@ -1100,8 +1412,12 @@ mod security_tests {
             images: vec![format!("sha256:{}", "b".repeat(64))],
             containers: vec![],
             volumes: vec![],
+            ..Selection::default()
         };
         assert!(selection_valid(&selection));
+        selection.images.push(selection.images[0].clone());
+        assert!(!selection_valid(&selection));
+        selection.images.pop();
         selection.volumes = vec!["-option".into()];
         assert!(!selection_valid(&selection));
         selection.volumes = vec!["../file".into()];
@@ -1129,10 +1445,18 @@ mod security_tests {
         }
     }
     #[test]
-    fn migration_rejects_live_containers_binds_devices_and_fixed_ips() {
+    fn migration_running_and_file_binds_can_be_reviewed() {
+        let mut container = source();
+        container["State"]["Status"] = json!("running");
+        assert!(container_blocked(&container).is_none());
+        container["Mounts"] = json!([{"Type":"bind","Source":"/host_mnt/c/config/nginx.conf","Destination":"/etc/nginx/nginx.conf","RW":false,"Propagation":"rprivate"}]);
+        assert!(container_blocked(&container).is_none());
+    }
+    #[test]
+    fn migration_rejects_paused_containers_invalid_binds_devices_and_fixed_ips() {
         assert!(container_blocked(&source()).is_none());
         for (path, value) in [
-            ("/State/Status", json!("running")),
+            ("/State/Status", json!("paused")),
             ("/HostConfig/Privileged", json!(true)),
             ("/HostConfig/DeviceRequests", json!([{"Driver":"nvidia"}])),
             (
@@ -1156,8 +1480,8 @@ mod security_tests {
     }
     #[test]
     fn migration_preserves_configuration_and_prevents_volume_seeding() {
-        let source = source();
-        let body = configuration(&source, "sha256:new-snapshot", "job").unwrap();
+        let mut source = source();
+        let body = configuration(&source, "sha256:new-snapshot", "job", &[]).unwrap();
         assert_eq!(body["Env"], source["Config"]["Env"]);
         assert_eq!(body["Entrypoint"], source["Config"]["Entrypoint"]);
         assert_eq!(
@@ -1177,6 +1501,62 @@ mod security_tests {
             body["NetworkingConfig"]["EndpointsConfig"]["demo_default"]["Aliases"],
             json!(["database"])
         );
+        source["HostConfig"]["Mounts"] = json!([{"Type":"volume","Source":"database","Target":"/data","VolumeOptions":{"Subpath":"postgres","NoCopy":false}}]);
+        let body = configuration(&source, "sha256:new-snapshot", "job", &[]).unwrap();
+        assert_eq!(
+            body["HostConfig"]["Mounts"][0]["VolumeOptions"],
+            json!({"Subpath":"postgres","NoCopy":true})
+        );
+    }
+    #[test]
+    fn migration_tracks_stop_start_intent_without_health_log_churn() {
+        let mut before = source();
+        before["State"]["Status"] = json!("running");
+        let mut after = before.clone();
+        after["State"]["Health"] = json!({"Status":"healthy","Log":["changing"]});
+        assert_eq!(fingerprint(&before), fingerprint(&after));
+        after["State"]["Status"] = json!("exited");
+        after["State"]["FinishedAt"] = json!("now");
+        assert!(same_configuration(&before, &after));
+        assert!(stopped(&after));
+        assert_ne!(fingerprint(&before), fingerprint(&after));
+        after["HostConfig"]["RestartPolicy"] = json!({"Name":"always"});
+        assert!(!same_configuration(&before, &after));
+        let old: Selection =
+            serde_json::from_value(json!({"images":[],"containers":[],"volumes":[]})).unwrap();
+        assert!(!old.stop_running && !old.start_after_import);
+        let options: Selection=serde_json::from_value(json!({"images":[],"containers":[],"volumes":[],"stopRunning":true,"startAfterImport":true})).unwrap();
+        assert!(options.stop_running && options.start_after_import);
+    }
+    #[test]
+    fn migration_reuses_only_identical_previously_imported_networks() {
+        let source = json!({"Name":"demo","Driver":"bridge","Internal":false,"Attachable":false,"EnableIPv6":false,"IPAM":{"Driver":"default"},"Options":{},"Labels":{"com.docker.compose.project":"demo"}});
+        let mut target = source.clone();
+        assert!(!reusable_network(&source, &target));
+        target["Labels"]["io.dockslate.migration"] = json!("previous-copy");
+        assert!(reusable_network(&source, &target));
+        target["EnableIPv4"] = json!(false);
+        assert!(!reusable_network(&source, &target));
+        target["EnableIPv4"] = json!(true);
+        target["IPAM"]["Driver"] = json!("other");
+        assert!(!reusable_network(&source, &target));
+    }
+    #[test]
+    fn migration_starts_dependencies_before_consumers_and_detects_cycles() {
+        let container = |service: &str, depends: &str| json!({"Name":format!("/{service}"),"State":{"Status":"running"},"Config":{"Labels":{"com.docker.compose.project":"demo","com.docker.compose.service":service,"com.docker.compose.depends_on":depends}}});
+        let values = vec![
+            container("web", "db:service_healthy:false"),
+            container("db", ""),
+        ];
+        assert_eq!(start_order(&values).unwrap(), vec!["db", "web"]);
+        assert!(start_order(&[
+            container("web", "db:service_started:false"),
+            container("db", "web:service_started:false")
+        ])
+        .is_err());
+        let mut exited = container("worker", "");
+        exited["State"]["Status"] = json!("exited");
+        assert_eq!(start_order(&[exited]).unwrap(), Vec::<String>::new());
     }
     #[test]
     fn migration_helpers_are_never_started_and_source_mount_is_read_only() {
@@ -1201,6 +1581,7 @@ mod security_tests {
                 images: vec![],
                 containers: vec![],
                 volumes: vec![],
+                ..Selection::default()
             },
             source: "desktop".into(),
             target: "owned".into(),
@@ -1208,6 +1589,8 @@ mod security_tests {
             containers: vec![container.clone()],
             volumes: vec![],
             networks: vec![],
+            reused_networks: vec![],
+            binds: vec![],
             blocked: vec![],
         };
         let public = public_plan(&plan).to_string();
@@ -1227,6 +1610,7 @@ mod security_tests {
                 images: vec![],
                 containers: vec![],
                 volumes: vec![],
+                ..Selection::default()
             },
             source: "desktop".into(),
             target: "owned".into(),
@@ -1234,6 +1618,8 @@ mod security_tests {
             containers: vec![],
             volumes: vec![],
             networks: vec![],
+            reused_networks: vec![],
+            binds: vec![],
             blocked: vec![],
         });
         assert!(execute("token".into(), true).unwrap_err().contains("만료"));

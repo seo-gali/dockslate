@@ -69,5 +69,145 @@
     "Full new installer and upgrade/uninstall",
     "WSL restart and actual cold-boot readiness on reported PC",
     "Behavior under power loss, forced application termination and concurrent external engine changes"
-  ]
+  ],
+  "followup": {
+    "observedAt": "2026-11-22T11:14:34.435Z",
+    "baseCommit": "dc890b67bd0eca83a18dbf5fc97484441503f91c",
+    "uncommittedSource": true,
+    "published": false,
+    "publicVersionUnchanged": "0.1.12",
+    "sourceSha256": {
+      "src-tauri/src/migration.rs": "9aae2ffc8e5f76b29c5c659aa7aec027cc786b153050438d836e826c60f00890",
+      "src-tauri/src/migration/binds.rs": "5ffa08172b2202ce1b9717e068d1403113487a6eb1b3e9eb66ad51c91e17463d",
+      "src/MigrationPanel.tsx": "4bc8e9f96f455ae60d3b1f4068348ac09b313be0de00988da13e471015e0f0a2",
+      "src/ipc/contracts/migration.ts": "871e0245dd809a58e5b329ede83841ec1aa88dc8d60b00131e423e917fcfe66e",
+      "src/locales.en.ts": "77a286ad50607351cfb84fb74176b2ccdfaa06c7e7651fbc789f509b80230f60",
+      "src/styles.css": "6fbb6f1bfe96931f3b3400ebc900f835f18bb11f285df759443d59ba3adbe509",
+      "scripts/verify-migration-bind.mjs": "00fe7716bb72b0a2f013e75853dc4dad3afc810030e931439a6b89cb94354525"
+    },
+    "changes": [
+      "Global and per-kind selection; shared image IDs deduplicated",
+      "Explicit stopRunning and startAfterImport approval intent; old callers default false",
+      "Graceful stop of selected sources only, daemon timeout -1 and client deadline 180 seconds; no SIGKILL",
+      "Bind directories and single files copied through read-only stopped helpers into new local volumes/subpaths; shared and nested paths reuse one copy",
+      "Recognized Docker socket mounts point to the owned engine with authority disclosed",
+      "All copies created before restarting originally running containers; Compose dependency label ordering; source state and target running state checked",
+      "Previously imported matching networks reused; other container/volume conflicts never overwritten",
+      "Stopped source and started target names preserved on failure; partial copies retained; no automatic source restart"
+    ],
+    "verification": {
+      "regressionBeforeChange": {
+        "filter": "migration_running_and_file_binds_can_be_reviewed",
+        "exit": 1,
+        "reason": "Running source was rejected by container_blocked"
+      },
+      "npmCheck": {
+        "command": "npm run check",
+        "exit": 0,
+        "nodeTests": 17
+      },
+      "rustSecurity": {
+        "command": "cargo test --locked --offline --manifest-path src-tauri/Cargo.toml security_tests -- --test-threads=1",
+        "exit": 0,
+        "tests": 28,
+        "isolatedLocalAppData": true
+      },
+      "rustCheck": {
+        "command": "cargo check --locked --offline --manifest-path src-tauri/Cargo.toml",
+        "exit": 0
+      },
+      "frontendBuild": {
+        "command": "npm run build",
+        "exit": 0,
+        "modules": 85
+      },
+      "uiFixture": {
+        "checks": 6,
+        "passed": true,
+        "scope": "Actual React component rendered in Chrome; isolated in-memory backend fixture only, no native or Docker operations",
+        "actualDockerOperations": false
+      },
+      "bindEngineFixture": {
+        "script": "scripts/verify-migration-bind.mjs",
+        "executed": true,
+        "approvalPending": false,
+        "volumesCreatedAndRemoved": 2,
+        "containersCreatedAndRemoved": 4,
+        "processesStarted": 2,
+        "observedAt": "2026-11-22T12:08:21.865Z",
+        "scope": "Owned engine only; real bind/subpath/graceful-stop primitives, not a full Docker Desktop transfer",
+        "engine": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+        "cliSha256": "2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad",
+        "checks": [
+          "Live fixture exits through its TERM handler without SIGKILL",
+          "Stopped bind directory and single file copy preserve contents, UID/GID and mode through volume subpaths",
+          "Restored single-file mount remains read-only",
+          "Only new labelled fixtures removed; previous inventory and states unchanged"
+        ],
+        "passed": true,
+        "cleanupErrors": [],
+        "existingInventoryAndStatesPreserved": true
+      },
+      "wholeDesktopTransfer": {
+        "executed": false,
+        "reason": "Docker Desktop is not installed on the verification PC"
+      },
+      "initialBindFixtureFailure": {
+        "observedAt": "2026-11-22T12:05:58.612Z",
+        "scope": "Owned engine only; real bind/subpath/graceful-stop primitives, not a full Docker Desktop transfer",
+        "engine": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+        "cliSha256": "2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad",
+        "checks": [
+          "Only new labelled fixtures removed; previous inventory and states unchanged"
+        ],
+        "passed": false,
+        "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n130 !== 0\n",
+        "cleanupErrors": []
+      }
+    },
+    "decisions": {
+      "outsideRepository": true,
+      "file": "DockSlate-migration-followup-decisions.html",
+      "sha256": "cf49b539320d38d9d1a2a7120714397c653b15d58d6227471a11274fe6fb8254",
+      "choices": 14,
+      "redItems": 4,
+      "oneScreenVerified": true,
+      "window": "1280x720"
+    },
+    "preserved": [
+      "All existing user containers, DBs, images, volumes, runtime and other WSL distributions",
+      "Frozen 0.1.12 public assets, signing and VirusTotal records",
+      "Dependency versions and lock files"
+    ],
+    "deletedTrackedFiles": [],
+    "removedObsoleteBehavior": [
+      "Blanket rejection of running containers and all bind mounts",
+      "Manual-stop-only and stopped-copy-only descriptions in the current source guide"
+    ],
+    "documentCorrections": [
+      "Published 0.1.12 behavior remains distinguished from the new unshipped source",
+      "Current guide and menu map now include new selection, stop/start and bind-copy behavior; historical inspection results preserved"
+    ],
+    "limitations": [
+      "Full two-engine Docker Desktop transfer and the reported production services are unverified",
+      "Copied host folders no longer synchronize with the original host paths",
+      "Failures may leave source services stopped; result lists require checking before restarting one side",
+      "Start ordering does not implement Compose health/completion conditions or certify service health",
+      "Privileged/devices/host namespaces/fixed IPs/Swarm and unsupported propagation still blocked",
+      "Existing 128-selection, 64-GiB-per-file and one-hour-per-copy limits retained",
+      "0.1.13 EXE/ZIP creation and Git upload in progress; new-file antivirus and signing not complete"
+    ],
+    "cleanup": {
+      "observedAt": "2026-11-22T11:13:58.2922607Z",
+      "profilesRemoved": [
+        "migration-followup-decisions-browser-biDU6y",
+        "migration-followup-decisions-browser-ItkihA",
+        "migration-ui-check\\profile-H7hXLx",
+        "migration-ui-check\\profile-U3x3If"
+      ],
+      "existingDataChanged": false,
+      "pendingDockerFixtureExecuted": false
+    },
+    "version": "0.1.13"
+  }
 }
