@@ -1,0 +1,338 @@
+{
+  "version": "0.1.13",
+  "observedAt": "2026-11-22T12:25:26.739Z",
+  "published": false,
+  "status": "Built and verified; Git upload requested; antivirus not yet performed",
+  "files": [
+    {
+      "file": "DockSlate_0.1.13_x64-setup.exe",
+      "bytes": 41187337,
+      "sha256": "5111310CD3DEACF12477D9D875A9C8499C12B4A6A5CA79A20E09459C975B0AB8"
+    },
+    {
+      "file": "DockSlate-0.1.13-windows-x64.zip",
+      "bytes": 55028090,
+      "sha256": "D7A372A9CBDCE6B46944E830E87D0CCD682A4767359CF599C9798C08A16D8744"
+    },
+    {
+      "file": "DockSlate-0.1.13-third-party-licenses.zip",
+      "bytes": 5194698,
+      "sha256": "42783CBEF56A9AEE18D77CC07FE646AD145575A844629557476D95E15D7E35D2"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "C33A90694CB311B494F3506571485B246516A7A822586CF25CAF1E7270C31E63",
+      "name": "dockslate.exe",
+      "bytes": 5421056
+    },
+    {
+      "sha256": "D5D3BAEEF0E96BE69BD2E3886160591E9621167878DC8880364A04E6FFA829B6",
+      "name": "docker.exe",
+      "bytes": 320000
+    }
+  ],
+  "build": {
+    "sourceCommit": "8ac724743f47225e76c4a64aa5d7e305c92aca6a",
+    "installerRunId": 45021706342,
+    "inputSha256": "23AAD7F1F2B26BF7773309CD7EDCF79E3EF2AD8380BF0E93CC9DA403DDB5B20E",
+    "installerDownload": {
+      "observedAt": "2026-11-22T21:24:58.6137319+09:00",
+      "runId": 45021706342,
+      "sourceCommit": "8ac724743f47225e76c4a64aa5d7e305c92aca6a",
+      "artifactId": 14753873298,
+      "githubDigest": "sha256:287e809d35597f0ceaeda1daf226567e5f939124f52a2f86d5429a1aabf053bb",
+      "githubDigestVerified": true,
+      "installerSha256": "5111310CD3DEACF12477D9D875A9C8499C12B4A6A5CA79A20E09459C975B0AB8",
+      "installerBytes": 41187337,
+      "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-migration-full-20261122\\DockSlate_0.1.13_x64-setup.exe",
+      "installerExecuted": false,
+      "signature": "NotSigned"
+    },
+    "localNsisFailure": "Existing user-path.ps1 file read error; one attempt; no protection settings changed"
+  },
+  "signing": {
+    "status": "NotSigned",
+    "certificateUnavailable": true
+  },
+  "virusTotal": {
+    "status": "not_scanned",
+    "previousVersionResultsReused": false
+  },
+  "checks": {
+    "node": 17,
+    "rust": 28,
+    "path": 11,
+    "process": 7,
+    "frontendBuildExit": 0,
+    "releaseBuildExit": 0,
+    "offlineCli": {
+      "observedAt": "2026-11-22T12:20:38.123Z",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.8.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f"
+        },
+        {
+          "name": "previous official plugins upgraded to exact new payloads",
+          "passed": true
+        },
+        {
+          "name": "unknown plugin preserved and execution blocked",
+          "passed": true
+        }
+      ],
+      "engineChanged": false,
+      "existingUserProfileUsed": false
+    },
+    "onlineCli": {
+      "appSha256": "C33A90694CB311B494F3506571485B246516A7A822586CF25CAF1E7270C31E63",
+      "cliSha256": "D5D3BAEEF0E96BE69BD2E3886160591E9621167878DC8880364A04E6FFA829B6",
+      "checks": [
+        {
+          "args": [
+            "info",
+            "--format",
+            "{{.ID}}"
+          ],
+          "exit": 0,
+          "stdout": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "compose",
+            "version",
+            "--short"
+          ],
+          "exit": 0,
+          "stdout": "5.8.0",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "stdout": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f",
+          "stderr": ""
+        }
+      ],
+      "engineMutation": false,
+      "existingProfileUsed": false,
+      "passed": true
+    },
+    "nativeGui": {
+      "observedAt": "2026-11-22T12:19:54.073Z",
+      "appSha256": "C33A90694CB311B494F3506571485B246516A7A822586CF25CAF1E7270C31E63",
+      "checks": [
+        "Actual 0.1.13 native GUI connects to the owned Moby engine",
+        "Migration status IPC is registered and idle",
+        "Settings migration tab renders in the actual Windows executable",
+        "Actual native migration IPC rejects unapproved execution",
+        "Absent Docker Desktop is handled as an explicit source error"
+      ],
+      "rendererExceptions": 0,
+      "mutationsApproved": false,
+      "passed": true
+    },
+    "nativeLayout": {
+      "appSha256": "C33A90694CB311B494F3506571485B246516A7A822586CF25CAF1E7270C31E63",
+      "layouts": [
+        {
+          "width": 1366,
+          "fontSize": 13,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 375.8125,
+          "panelRight": 1348.4000244140625,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 1152.800048828125,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1366,
+          "fontSize": 16,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 407.51251220703125,
+          "panelRight": 1348.4000244140625,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 1152.800048828125,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1280,
+          "fontSize": 13,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 375.8125,
+          "panelRight": 1262,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 1066.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1280,
+          "fontSize": 16,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 407.51251220703125,
+          "panelRight": 1262,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 1066.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 980,
+          "fontSize": 13,
+          "headerX": 214.8000030517578,
+          "paragraphX": 214.8000030517578,
+          "buttonX": 214.8000030517578,
+          "buttonRight": 377.8125,
+          "panelRight": 960,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 762.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 980,
+          "fontSize": 16,
+          "headerX": 214.8000030517578,
+          "paragraphX": 214.8000030517578,
+          "buttonX": 214.8000030517578,
+          "buttonRight": 409.51251220703125,
+          "panelRight": 960,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 762.4000244140625,
+          "horizontalOverflow": false
+        }
+      ],
+      "passed": true
+    },
+    "nativeQuitExit": 0,
+    "nativeQuitStderr": "Chrome_WidgetWin_0 unregister diagnostic 1412 after normal exit; renderer exception count was zero",
+    "uiFixture": {
+      "observedAt": "2026-11-22T11:12:41.778Z",
+      "scope": "Actual React component rendered in Chrome; isolated in-memory backend fixture only, no native or Docker operations",
+      "checks": 6,
+      "passed": true,
+      "profile": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\migration-ui-check\\profile-H7hXLx",
+      "screenshot": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\migration-ui-check\\screen.png"
+    },
+    "bindPrimitive": {
+      "observedAt": "2026-11-22T12:08:21.865Z",
+      "scope": "Owned engine only; real bind/subpath/graceful-stop primitives, not a full Docker Desktop transfer",
+      "engine": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+      "cliSha256": "2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad",
+      "checks": [
+        "Live fixture exits through its TERM handler without SIGKILL",
+        "Stopped bind directory and single file copy preserve contents, UID/GID and mode through volume subpaths",
+        "Restored single-file mount remains read-only",
+        "Only new labelled fixtures removed; previous inventory and states unchanged"
+      ],
+      "passed": true,
+      "cleanupErrors": []
+    },
+    "initialFixtureSignalMismatch": {
+      "observedAt": "2026-11-22T12:05:58.612Z",
+      "scope": "Owned engine only; real bind/subpath/graceful-stop primitives, not a full Docker Desktop transfer",
+      "engine": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+      "cliSha256": "2b97539dddedf395fa3262f5f7a985ff0f1096222d1319daec659b8881d354ad",
+      "checks": [
+        "Only new labelled fixtures removed; previous inventory and states unchanged"
+      ],
+      "passed": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n130 !== 0\n",
+      "cleanupErrors": []
+    },
+    "package": {
+      "observedAt": "2026-11-22T21:18:10.8325536+09:00",
+      "portableFiles": 435,
+      "licenseFiles": 410,
+      "allZipFileSizesAndSha256Verified": true,
+      "candidateBinariesMatch": true,
+      "signature": "NotSigned",
+      "installerCreated": false,
+      "installerExecuted": false,
+      "engineChanged": false
+    },
+    "installer": {
+      "checkedAt": "2026-11-22T21:25:26.3875813+09:00",
+      "version": "0.1.13",
+      "variant": "migration-20261121",
+      "zipFilesVerified": 435,
+      "sharedPayloadFilesVerified": 431,
+      "packagedDocumentsVerified": 5,
+      "installerInspected": true,
+      "embeddedInstallerHelperMatches": true,
+      "binaryVersionsMatch": true,
+      "originalFilesPreserved": 3,
+      "installerExecuted": false,
+      "engineChanged": false,
+      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release013-installer-check-f831e2e728ae43808125cffa3ce5e6d8",
+      "normalizedTextOrJsonFiles": [
+        "licenses\\inventory.json",
+        "licenses\\README.md",
+        "licenses\\THIRD_PARTY_NOTICES.md",
+        "examples\\basic-web\\.dockerignore",
+        "examples\\basic-web\\compose.yaml",
+        "examples\\basic-web\\Dockerfile",
+        "examples\\basic-web\\README.md",
+        "examples\\basic-web\\server.mjs",
+        "libexec\\manifest.json",
+        "guide.html"
+      ],
+      "signatureStatus": "NotSigned"
+    }
+  },
+  "existingUserDataPreserved": true,
+  "fullDesktopTransferVerified": false,
+  "fullInstallUninstallColdBootRollbackVerified": false,
+  "dependencyVersionsChanged": false,
+  "kernelOrEngineUpdated": false,
+  "remaining": [
+    "New-file public antivirus scan not performed",
+    "No code signing certificate; unsigned development build",
+    "Full Docker Desktop transfer, reported production services and full install/uninstall/cold boot/rollback unverified",
+    "Prior dependency advisory findings not remediated"
+  ]
+}

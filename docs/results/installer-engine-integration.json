@@ -16,7 +16,7 @@
     "browserChecks": 27,
     "lockedDependencyFetchExit": 0,
     "lockFilesChanged": true,
-    "latestNativeFlowExecuted": false,
+    "latestNativeFlowExecuted": true,
     "powerShellParserFiles": 5,
     "powerShellParserErrors": 0,
     "offlineComponentGuardExit": 1,
@@ -260,7 +260,12 @@
     "dependenciesChanged": false,
     "existingUserDataChanged": false,
     "isolatedEngineFixturesCreatedAndCleaned": true,
-    "fullDesktopMigrationVerified": false
+    "fullDesktopMigrationVerified": false,
+    "nativeChecks": 5,
+    "layoutCases": 6,
+    "bindPrimitiveChecks": 4,
+    "nativeQuitExit": 0,
+    "fullSetupVerified": false
   },
   "portableDelivery": {
     "version": "0.1.12",
