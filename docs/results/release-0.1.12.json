@@ -75,7 +75,7 @@
       "originalFilesPreserved": 3,
       "installerExecuted": false,
       "engineChanged": false,
-      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release012-installer-check-e3b3c5dde3454f189695dd75cc01a2e3",
+      "extractDirectory": null,
       "normalizedTextOrJsonFiles": [
         "licenses\\inventory.json",
         "licenses\\README.md",
@@ -88,7 +88,8 @@
         "libexec\\manifest.json",
         "guide.html"
       ],
-      "signatureStatus": "NotSigned"
+      "signatureStatus": "NotSigned",
+      "extractionCleaned": true
     },
     "nativeGui": {
       "observedAt": "2026-11-21T19:19:01.366Z",
@@ -229,6 +230,13 @@
     "nativeQuitExit": 0,
     "sourceCi": {
       "runId": 44940200302,
+      "source": "success",
+      "windows": "success",
+      "dependencyReview": "skipped on push"
+    },
+    "publicationSourceCi": {
+      "runId": 45012647333,
+      "sourceCommit": "8aca049dba0942e42af383f85227930dbd50a96c",
       "source": "success",
       "windows": "success",
       "dependencyReview": "skipped on push"
@@ -390,5 +398,219 @@
     "tag": "v0.1.12",
     "sourceCommit": "b73f841360205e66f5d39ff50ba304054c07d0d6",
     "publisherRunId": 45012363213
+  },
+  "websitePublished": true,
+  "websiteVerification": {
+    "htmlSha256": "D890E43B8AD4C63EFF8C1A79F9C8F603987E1987D2EA2D2B4992BB21C284DA46",
+    "observedAt": "2026-11-22T10:31:14.292Z",
+    "url": "https://seo-gali.github.io/dockslate/",
+    "status": 200,
+    "version": "0.1.12",
+    "downloadLinksVerified": 3,
+    "publicGithubFilesPreviouslyHashed": 4,
+    "staticFiles": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "bytes": 8122,
+        "sha256": "47C09EA21EBCE1A799C1EF87AA26C5E4DF45D0156011399879BA84271CD4A73E",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "bytes": 1667,
+        "sha256": "6175863061971231A7E2C8C0502E031EB9DAFB2C5004928C190959B2AB740831",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "bytes": 5726,
+        "sha256": "9C906A7D2BD82E58B789FE05D9A0C3EC39820E3C6269926260C513312D1B5C8C",
+        "matchesDeployedGitBlob": true
+      }
+    ],
+    "checksumMatches": true,
+    "legacyLegalRoutes": [
+      {
+        "path": "downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.11-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.11-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous011HashVerified": false
+      }
+    ],
+    "firstVerifiedDeployment": {
+      "runId": 45012647335,
+      "sourceCommit": "8aca049dba0942e42af383f85227930dbd50a96c",
+      "conclusion": "success"
+    },
+    "deployed": true
+  },
+  "cleanup": {
+    "observedAt": "2026-11-22T10:30:23.6006533Z",
+    "removed": [
+      {
+        "path": ".analysis/release012-check-14b90d5f8a9b4e95bf87cb02abcbf1b0",
+        "files": 0,
+        "bytes": null
+      },
+      {
+        "path": ".analysis/release012-expected-package",
+        "files": 5,
+        "bytes": 62074
+      },
+      {
+        "path": ".analysis/release012-processed-package",
+        "files": 5,
+        "bytes": 65599
+      },
+      {
+        "path": ".analysis/release012-installer-check-e3b3c5dde3454f189695dd75cc01a2e3",
+        "files": 444,
+        "bytes": 154762554
+      },
+      {
+        "path": ".analysis/release012-installer-artifact.zip",
+        "files": 1,
+        "bytes": 41162465
+      },
+      {
+        "path": ".analysis/release012-native/profile",
+        "files": 174,
+        "bytes": 5732218
+      },
+      {
+        "path": ".analysis/release012-native/appdata",
+        "files": 2,
+        "bytes": 105036840
+      },
+      {
+        "path": ".analysis/release012-ui-native/profile",
+        "files": 162,
+        "bytes": 4634917
+      },
+      {
+        "path": ".analysis/release012-ui-native/appdata",
+        "files": 2,
+        "bytes": 105036840
+      }
+    ],
+    "canonicalAssetsVerified": 3,
+    "publicFilesVerified": 4,
+    "candidateProcesses": 0,
+    "installedAppAndEngineUntouched": true,
+    "retained": [
+      "Authoritative frozen candidate and canonical release files",
+      "Screenshots, small reports, original investigation artifacts",
+      "Previous public versions and license archives"
+    ]
+  },
+  "decisions": {
+    "outsideRepository": true,
+    "file": "DockSlate-0.1.12-decisions.html",
+    "sha256": "147bf2dfa1278b14f5a33e7695dc4be3a4388f651ec4d9b823c9d909a87ca8a7",
+    "decisions": 15,
+    "redItems": 4,
+    "window": "1280x720",
+    "oneScreenVerified": true
+  },
+  "completionAudit": {
+    "observedAt": "2026-11-22T10:33:49.433Z",
+    "exactPublicBytesUnchanged": true,
+    "detectionDisclosed": true,
+    "temporaryWorkflowsRemoved": true,
+    "oldReleasesPreserved": true,
+    "sourceDocsUpdated": true,
+    "remainingUnverified": [
+      "DeepInstinct MALICIOUS finding remains unresolved; false positive not confirmed",
+      "Code signing certificate unavailable",
+      "Full Desktop transfer and remote-PC installation, uninstall, cold boot and rollback not verified",
+      "Prior dependency advisory findings were not remediated by this change"
+    ]
   }
 }
