@@ -1,8 +1,8 @@
 {
   "version": "0.1.13",
-  "observedAt": "2026-11-22T12:25:26.739Z",
+  "observedAt": "2026-11-22T13:04:02.370Z",
   "published": true,
-  "status": "Built, verified and scanned; GitHub publication being completed",
+  "status": "Unsigned 0.1.13 prerelease and website published; exact downloads verified; temporary packaging and verification copies removed.",
   "files": [
     {
       "file": "DockSlate_0.1.13_x64-setup.exe",
@@ -469,5 +469,256 @@
     "tag": "v0.1.13",
     "sourceCommit": "7844ec0eff90c8b58c6021dfdd91901d177f38e8",
     "publisherRunId": 45023869275
+  },
+  "websitePublished": true,
+  "websiteVerification": {
+    "htmlSha256": "CDBDBF7F704BD51E3E20EC61AD58B4C0FC53116B8357BB1AFC751BDD6C17CCEB",
+    "observedAt": "2026-11-22T12:55:43.351Z",
+    "url": "https://seo-gali.github.io/dockslate/",
+    "status": 200,
+    "version": "0.1.13",
+    "downloadLinksVerified": 3,
+    "publicGithubFilesPreviouslyHashed": 4,
+    "staticFiles": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "bytes": 8122,
+        "sha256": "47C09EA21EBCE1A799C1EF87AA26C5E4DF45D0156011399879BA84271CD4A73E",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "bytes": 1667,
+        "sha256": "6175863061971231A7E2C8C0502E031EB9DAFB2C5004928C190959B2AB740831",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "bytes": 5726,
+        "sha256": "9C906A7D2BD82E58B789FE05D9A0C3EC39820E3C6269926260C513312D1B5C8C",
+        "matchesDeployedGitBlob": true
+      }
+    ],
+    "checksumMatches": true,
+    "legacyLegalRoutes": [
+      {
+        "path": "downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.11-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.11-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.12-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.12-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous012HashVerified": false
+      }
+    ],
+    "firstVerifiedDeployment": {
+      "runId": 45024493249,
+      "sourceCommit": "00f62cbbfbaf43d8516e79d500312e290042a2a3",
+      "conclusion": "success"
+    },
+    "deployed": true
+  },
+  "cleanup": {
+    "completedAt": "2026-11-22T13:02:49.8411315Z",
+    "removedTargets": 9,
+    "removedFiles": 1479,
+    "removedBytes": 472372393,
+    "removed": [
+      {
+        "path": ".analysis/release013-installer-check-f831e2e728ae43808125cffa3ce5e6d8",
+        "files": 444,
+        "bytes": 154835507
+      },
+      {
+        "path": ".analysis/release013-installer-artifact.zip",
+        "files": 1,
+        "bytes": 41179577
+      },
+      {
+        "path": ".analysis/release013-processed-package",
+        "files": 5,
+        "bytes": 70449
+      },
+      {
+        "path": ".analysis/release013-check-56b547d956f34f06bec28643028ecb69",
+        "files": 3,
+        "bytes": 4077
+      },
+      {
+        "path": ".analysis/release013-check-b2fdc94273f04183a62f2a98975eba61",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "path": ".analysis/release013-ui-native/profile",
+        "files": 162,
+        "bytes": 4582020
+      },
+      {
+        "path": ".analysis/release013-ui-native/appdata",
+        "files": 2,
+        "bytes": 105036840
+      },
+      {
+        "path": ".analysis/release013-decisions-browser-2Wqmaf",
+        "files": 174,
+        "bytes": 9960480
+      },
+      {
+        "path": ".analysis/vt013-browser-cebbb262fa424a71a496eaeed21ef192",
+        "files": 688,
+        "bytes": 156703443
+      }
+    ],
+    "temporaryGitFilesRemoved": [
+      ".github/workflows/release013-installer.yml",
+      ".github/release013-installer-input.zip",
+      ".github/workflows/publish013-release.yml",
+      ".github/workflows/finalize013-release.yml"
+    ],
+    "existingOpenAppsPreserved": 1,
+    "canonicalDownloadsAndPortableDirectoryPreserved": true,
+    "engineOrUserDataChanged": false
+  },
+  "decisions": {
+    "file": "DockSlate-0.1.13-decisions.html",
+    "outsideRepository": true,
+    "sha256": "424e8fe461fd17dff5337d8b11dca55128abf1b70ccc8adee7827134f241ebb2",
+    "decisions": 14,
+    "redItems": 4,
+    "viewport": "1280x720",
+    "actualViewportHeight": 624,
+    "fitsScreen": true
+  },
+  "completionAudit": {
+    "observedAt": "2026-11-22T13:04:02.370Z",
+    "compiledSourceUnchanged": true,
+    "githubDownloadsVerified": 4,
+    "virusTotalExactFiles": 4,
+    "websiteAndStaticFilesVerified": true,
+    "legacyLegalRoutesVerified": 20,
+    "stalePublicationStatusCorrected": true,
+    "temporaryFilesRemoved": true,
+    "fullDesktopOrProductionMigrationClaimed": false,
+    "fullInstallUninstallColdBootRollbackClaimed": false,
+    "existingDependencyAdvisoriesRemain": true,
+    "finalDocumentationChecks": {
+      "docs": {
+        "files": 83,
+        "links": 553,
+        "anchors": 17,
+        "missing": 0,
+        "exit": 0
+      },
+      "workflowPins": {
+        "files": 2,
+        "references": 11,
+        "selfChecks": 25,
+        "errors": 0,
+        "exit": 0
+      },
+      "secretPatterns": {
+        "checkedFiles": 477,
+        "findings": 0,
+        "historyScanned": false,
+        "valuesPrinted": false,
+        "exit": 0
+      },
+      "gitDiffCheckExit": 0
+    }
   }
 }
