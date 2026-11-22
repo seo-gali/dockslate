@@ -1,6 +1,6 @@
 # 문서 안내
 
-현재 공개 배포본은 **0.1.11 미서명 개발판**이다. 최초 0.1.10 설치판의 Microsoft 탐지 원인은 미확정이다. 후속 구조 개편 EXE와 보안 수정 소스는 서로 다른 대상이며 각 파일의 해시·검사 범위를 구분한다. 날짜·버전만 같다고 과거 결과를 새 파일에 적용하지 않는다.
+현재 공개 배포본은 **0.1.12 미서명 개발판**. 포함된 앱의 DeepInstinct 탐지 1건은 오탐 여부 미확인 상태이며, 이를 고지한 개발판 공개를 사용자가 승인했다이다. 최초 0.1.10 설치판의 Microsoft 탐지 원인은 미확정이다. 후속 구조 개편 EXE와 보안 수정 소스는 서로 다른 대상이며 각 파일의 해시·검사 범위를 구분한다. 날짜·버전만 같다고 과거 결과를 새 파일에 적용하지 않는다.
 
 ## 현재 안내와 개발 기준
 
@@ -20,6 +20,7 @@
 
 | 문서 | 읽는 범위 |
 | --- | --- |
+| [0.1.12 공개 배포](results/public-distribution-0.1.12.md) · [제작·검사](results/release-0.1.12.md) | 경로·CLI 초기화·가져오기 정렬 수정, 앱 탐지 1건·미서명 고지 및 정확한 공개 파일 대조 |
 | [0.1.11 공개 배포](results/public-distribution-0.1.11.md) · [제작·검사](results/release-0.1.11.md) | 데이터 가져오기·설치/시작 수정, 정확한 EXE·ZIP·SHA-256·백신과 남은 실제 이전 검사 |
 | [0.1.10 보안 개발판 공개](results/public-distribution-0.1.10.md) | 정확한 새 배포 파일·SHA-256·백신·실제 엔진 검사와 미서명 공개 승인 |
 | [요청·검증 현황](REQUEST_STATUS.md) · [배포 전 점검](results/production-readiness.md) | 구현·실행 확인·미검증의 현재 요약 |
@@ -53,4 +54,4 @@
 
 [IObit 제출 초안](results/iobit-access-review-draft.md)은 미전송 문서이며 제출 승인이나 원래 경고의 원인 확정이 아니다. [라이선스 자료](../licenses/README.md)는 원문·소스·고지 목록을 관리한다.
 
-[개발판 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.10이다. 공개 0.1.9의 고지는 해당 Release에 포함된 파일을 기준으로 확인한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.
+[개발판 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.12이다. 과거 버전의 고지는 해당 Release에 포함된 파일을 기준으로 확인한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.

@@ -4,7 +4,7 @@
 
 ## 실행과 프로필
 
-PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아래 설치 완료 검사 수정은 0.1.11 이후 소스 변경이며 공개 EXE에는 아직 포함되지 않았다.
+PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아래 설치 완료 검사 수정은 공개 0.1.12 EXE·ZIP에 포함됐다.
 
 - 설치 완료는 등록된 PATH에 설치한 `bin/docker.exe`가 존재하는지와 그 실행 파일의 엔진 ID·Compose·Buildx 출력을 확인한다. 기존 Docker Desktop의 시스템 PATH가 먼저인 경우에도 설치를 막거나 다른 제품의 PATH를 변경하지 않는다. 이 경우 일반 `docker` 명령은 기존 제품을 사용하므로 DockSlate CLI는 설치 폴더의 전체 경로로 실행한다.
 
@@ -23,7 +23,7 @@ PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아�
 
 CLI 실패 안내에 실제 표준 오류·종료 코드를 포함하고 제어 문자를 걸러 최대 2,000자로 제한했다. 종료 코드가 0이어도 필수 출력이 없으면 완료 처리하지 않는다. Windows 경로 회귀 검사는 기존 코드에서 실패함을 확인한 뒤 수정했다. C·D·Z 드라이브, 한글·공백·대소문자·접두사·경로 구분자와 다른 신원 거절을 검사한다.
 
-2026-11-22 소스 검증: `npm run check`(Node 16개·IPC 계약·TypeScript·문서·workflow·패턴 시크릿 검사), `scripts/check-windows.ps1 -Offline`(Rust check·보안 20개·PATH 11개·프로세스 7개)은 모두 종료 0이었다. Windows 검사는 격리 AppData를 사용했으며 테스트용 레지스트리 키만 생성·정리했다. 샌드박스에서 AppData·테스트 키 접근이 거부된 초기 실행은 통과로 합산하지 않는다. 이 PC와 보고된 PC의 경로·실행 상태를 읽었으며 WSL 재시작·등록 변경·기존 데이터 조작은 하지 않았다. 공개 0.1.11 설치판과 원격 PC의 전체 설치 완료 재검증은 남아 있다.
+2026-11-22 소스 검증: `npm run check`(Node 16개·IPC 계약·TypeScript·문서·workflow·패턴 시크릿 검사), `scripts/check-windows.ps1 -Offline`(Rust check·보안 20개·PATH 11개·프로세스 7개)은 모두 종료 0이었다. Windows 검사는 격리 AppData를 사용했으며 테스트용 레지스트리 키만 생성·정리했다. 샌드박스에서 AppData·테스트 키 접근이 거부된 초기 실행은 통과로 합산하지 않는다. 이 PC와 보고된 PC의 경로·실행 상태를 읽었으며 WSL 재시작·등록 변경·기존 데이터 조작은 하지 않았다. 이후 0.1.12의 공개 파일 대조·실제 GUI·CLI 검사는 [제작 기록](release-0.1.12.md)에 추가했다. 원격 PC의 전체 설치 완료 재검증은 남아 있다.
 
 버전 표기 변경 전(0.1.11)의 수정 코드 후보: `cargo build --locked --offline --release --manifest-path src-tauri/Cargo.toml --bin dockslate` 종료 0. 5,168,640 bytes·SHA-256 `BAC2EC1082A04DB846A711058131AAFCEBDFCF9193C3B99E4A5F0CD90B0670FE`의 로컬 후보에서 기존 실행 중인 소유 엔진의 `info --format {{.ID}}`, Compose 5.8.0, Buildx 0.39.0 실제 조회 3개가 종료 0이었다. 후보용 AppData와 broker만 사용했으며 엔진·기존 프로필을 변경하지 않았다. 이 해시는 공개 0.1.11 배포물이나 다음 버전의 해시로 사용하지 않는다.
 

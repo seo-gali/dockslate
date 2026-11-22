@@ -1,7 +1,7 @@
 {
   "version": "0.1.12",
   "observedAt": "2026-11-22T10:24:05.453Z",
-  "published": false,
+  "published": true,
   "files": [
     {
       "file": "DockSlate_0.1.12_x64-setup.exe",
@@ -383,5 +383,12 @@
     "Code signing certificate unavailable",
     "Full Desktop transfer and remote-PC installation, uninstall, cold boot and rollback not verified",
     "Prior dependency advisory findings were not remediated by this change"
-  ]
+  ],
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.12",
+    "releaseId": 454364327,
+    "tag": "v0.1.12",
+    "sourceCommit": "b73f841360205e66f5d39ff50ba304054c07d0d6",
+    "publisherRunId": 45012363213
+  }
 }

@@ -44,8 +44,8 @@
     "dependencyVersionsChanged": true,
     "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
     "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-    "currentNativeScope": "Actual 0.1.11 GUI, own Moby connection, migration tab, unapproved IPC denial and Desktop absence error. Read-only inventory: 6 containers, 5 images. Normal native tray exit 0; no engine state or user data changes.",
-    "installerBuildScope": "One-time pinned GitHub NSIS packaging of exact hash-verified local inputs; official artifact digest, payload and public downloads verified."
+    "currentNativeScope": "Exact 0.1.12 app: own Moby connection, migration tab, unapproved IPC denial and Desktop absence error; 6 layout cases, 3 CLI queries. Native tray exit 0. Existing engine/user data unchanged. Full migration and installation not verified.",
+    "installerBuildScope": "Pinned one-time GitHub NSIS packaging; exact inputs, official artifact digest, payload and four public downloads verified. Unsigned; DeepInstinct app detection 1 unresolved, explicitly approved for prerelease."
   },
   "artifacts": [
     {
@@ -172,12 +172,12 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "version": "0.1.11",
-    "file": "DockSlate_0.1.11_x64-setup.exe",
-    "bytes": 41167731,
-    "sha256": "32D74A5FAC329D183965B66B358002683A14C919A4B8664651C91DAA616D375E",
-    "sourceCommit": "83b838fffee71b7d1c2164237a0c98340434d18f",
-    "github": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.11",
+    "version": "0.1.12",
+    "file": "DockSlate_0.1.12_x64-setup.exe",
+    "bytes": 41170226,
+    "sha256": "7DCBA45906EB27F317A34926752BE217F10746A55A26EFAFE404BB9F55C37334",
+    "sourceCommit": "b73f841360205e66f5d39ff50ba304054c07d0d6",
+    "github": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.12",
     "installerExecuted": false,
     "fullSetupVerified": false,
     "sharedPayloadFilesVerified": 431,
@@ -262,10 +262,10 @@
     "fullDesktopMigrationVerified": false
   },
   "portableDelivery": {
-    "version": "0.1.11",
-    "file": "DockSlate-0.1.11-windows-x64.zip",
-    "bytes": 54998141,
-    "sha256": "6CDCBBD2A442BA79251963EAEE7FB93B8732E83A12AF5C61B2AC33D123EC83F8",
+    "version": "0.1.12",
+    "file": "DockSlate-0.1.12-windows-x64.zip",
+    "bytes": 54998782,
+    "sha256": "C2601CD9A4FCE4CE2093B1DA2D4054178F0B09D1F53F9C26FA713D70DC58C683",
     "filesVerified": 435
   },
   "previousInstallerDelivery": {
