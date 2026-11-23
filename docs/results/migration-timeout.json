@@ -133,5 +133,14 @@
     "normalStopSeconds": 180,
     "copySeconds": 3600,
     "copyFileBytes": 68719476736
+  },
+  "packagingFollowup": {
+    "version": "0.1.14",
+    "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
+    "installerVerified": true,
+    "releaseReceipt": "release-0.1.14.json",
+    "publicDownloadVersion": "0.1.13",
+    "newVirusTotalSubmission": false,
+    "installerAndZipCompleted": true
   }
 }

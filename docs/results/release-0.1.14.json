@@ -1,10 +1,15 @@
 {
   "version": "0.1.14",
-  "observedAt": "2026-11-23T13:15:56.572Z",
+  "observedAt": "2026-11-23T13:27:02.921Z",
   "published": false,
-  "status": "App, CLI, portable ZIP and notices verified; approved one-time GitHub installer packaging pending.",
+  "status": "Local 0.1.14 installer, portable ZIP and notices completed and verified; source pushed; public downloads remain 0.1.13.",
   "outputDirectory": "downloads/local-timeout-20261123",
   "files": [
+    {
+      "file": "DockSlate_0.1.14_x64-setup.exe",
+      "bytes": 41185627,
+      "sha256": "D721348660753ABA24A844ABF368350CEC54223B32F3823DFE79EA3BAAA6B53F"
+    },
     {
       "file": "DockSlate-0.1.14-windows-x64.zip",
       "bytes": 55032221,
@@ -29,11 +34,28 @@
     }
   ],
   "build": {
-    "sourceCommit": null,
+    "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
     "inputSha256": "006A57E311FA4696685C8B8F6174407D9F2CBAB29AD375E2B5ECFCD08CAC81EE",
     "inputBytes": 2402132,
     "localNsisFailure": "File opening failure for src-tauri/installer/user-path.ps1; one normal-user attempt; no AV or ACL changes",
-    "remotePackagingApproved": true
+    "remotePackagingApproved": true,
+    "installerRunId": 45182304147,
+    "sourceCiRunId": 45182303934,
+    "sourceCheckJob": "success",
+    "windowsCiJob": "success",
+    "installerDownload": {
+      "observedAt": "2026-11-23T13:23:25.0712238Z",
+      "runId": 45182304147,
+      "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
+      "artifactId": 14822656254,
+      "githubDigest": "sha256:902d9e6063499b2a9d134b3d8b15e6ad4ccdeecc744314ab853af6f6c1f165bd",
+      "githubDigestVerified": true,
+      "installerSha256": "D721348660753ABA24A844ABF368350CEC54223B32F3823DFE79EA3BAAA6B53F",
+      "installerBytes": 41185627,
+      "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-timeout-20261123\\DockSlate_0.1.14_x64-setup.exe",
+      "installerExecuted": false,
+      "signature": "NotSigned"
+    }
   },
   "checks": {
     "sourceCheckExit": 0,
@@ -237,7 +259,77 @@
       "passed": true
     },
     "nativeQuitExit": 0,
-    "nativeQuitStderr": "After exit 0, WebView reported Chrome_WidgetWin_0 unregister error 1412; renderer checks had no exceptions."
+    "nativeQuitStderr": "After exit 0, WebView reported Chrome_WidgetWin_0 unregister error 1412; renderer checks had no exceptions.",
+    "installer": {
+      "checkedAt": "2026-11-23T22:23:54.2417884+09:00",
+      "version": "0.1.14",
+      "variant": "query-timeout-20261123",
+      "zipFilesVerified": 435,
+      "sharedPayloadFilesVerified": 431,
+      "packagedDocumentsVerified": 5,
+      "installerInspected": true,
+      "embeddedInstallerHelperMatches": true,
+      "binaryVersionsMatch": true,
+      "originalFilesPreserved": 3,
+      "installerExecuted": false,
+      "engineChanged": false,
+      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release014-installer-check-51de01b7e131408e9a476cb3e7959ed4",
+      "normalizedTextOrJsonFiles": [
+        "licenses\\inventory.json",
+        "licenses\\README.md",
+        "licenses\\THIRD_PARTY_NOTICES.md",
+        "examples\\basic-web\\.dockerignore",
+        "examples\\basic-web\\compose.yaml",
+        "examples\\basic-web\\Dockerfile",
+        "examples\\basic-web\\README.md",
+        "examples\\basic-web\\server.mjs",
+        "libexec\\manifest.json",
+        "guide.html"
+      ],
+      "signatureStatus": "NotSigned"
+    },
+    "sourceCi": {
+      "runId": 45182303934,
+      "jobs": [
+        {
+          "name": "check",
+          "conclusion": "success"
+        },
+        {
+          "name": "windows",
+          "conclusion": "success"
+        },
+        {
+          "name": "dependency-review",
+          "conclusion": "skipped"
+        }
+      ]
+    },
+    "website": {
+      "observedAt": "2026-11-23T13:25:34.046Z",
+      "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
+      "pagesRunId": 45182303924,
+      "downloadVersion": "0.1.13",
+      "new014DownloadsPublished": false,
+      "contentUpdated": true,
+      "checks": [
+        {
+          "file": "index.html",
+          "url": "https://seo-gali.github.io/dockslate/",
+          "status": 200,
+          "bytes": 12488,
+          "sha256": "b616e4b796c29253a79be4d55d888a5c9b6f9e69b8719a23fa1d3bd72d108c39"
+        },
+        {
+          "file": "guide.html",
+          "url": "https://seo-gali.github.io/dockslate/guide.html",
+          "status": 200,
+          "bytes": 6855,
+          "sha256": "0869b54d1f287b341813bc3a1af209f3a18ec136eedb5f20315768ad5bb448e3"
+        }
+      ],
+      "passed": true
+    }
   },
   "signing": {
     "status": "NotSigned",
@@ -253,9 +345,79 @@
   "fullDesktopMigrationVerified": false,
   "fullInstallUninstallColdBootRollbackVerified": false,
   "remaining": [
-    "Complete installer packaging and payload verification",
     "Unsigned development build; no new antivirus submission",
     "Actual user-PC Desktop timeout and full two-engine transfer unverified",
-    "Public download remains 0.1.13"
-  ]
+    "Full installer execution, upgrade/uninstall/cold boot/rollback not performed",
+    "Public GitHub Release and download version remain 0.1.13"
+  ],
+  "installerVerified": true,
+  "packagedDocumentsAreBuildTimeSnapshots": true,
+  "cleanup": {
+    "observedAt": "2026-11-23T13:29:10.9363726Z",
+    "temporaryTargets": 7,
+    "removedFiles": 791,
+    "removedBytes": 212005369,
+    "previous013FilesVerified": 3,
+    "delivery014FilesVerified": 3,
+    "temporaryWorkflowAndInputRemoved": true,
+    "removed": [
+      {
+        "path": ".analysis/release014-installer-check-51de01b7e131408e9a476cb3e7959ed4",
+        "files": 444,
+        "bytes": 154846414
+      },
+      {
+        "path": ".analysis/release014-installer-artifact.zip",
+        "files": 1,
+        "bytes": 41177862
+      },
+      {
+        "path": ".analysis/release014-processed-package",
+        "files": 5,
+        "bytes": 77160
+      },
+      {
+        "path": ".analysis/release014-check-appdata",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "path": ".analysis/release014-ui-native/profile",
+        "files": 166,
+        "bytes": 5943956
+      },
+      {
+        "path": ".analysis/release014-ui-native/appdata",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "path": ".analysis/release014-decisions-browser-g7KUVa",
+        "files": 175,
+        "bytes": 9959977
+      }
+    ],
+    "engineOrUserDataChanged": false
+  },
+  "decisions": {
+    "file": "DockSlate-0.1.14-decisions.html",
+    "outsideRepository": true,
+    "sha256": "a8d7768af6babd53f288d739fb34cb42c1fec63602d0cfa09c55b8ff687930b1",
+    "redItems": 2,
+    "decisions": 10,
+    "viewport": "1280x720",
+    "fitsScreen": true
+  },
+  "completionAudit": {
+    "observedAt": "2026-11-23T13:30:04.742Z",
+    "compiledSourceUnchangedSinceBuild": true,
+    "installerAndZipExactPayloadVerified": true,
+    "allThreePeFilesNotSigned": true,
+    "sourceAndWindowsCiPassed": true,
+    "dependencyReviewSkippedOnPush": true,
+    "public013DownloadsPreserved": true,
+    "previousVirusTotalResultsNotReused": true,
+    "installerNotExecuted": true,
+    "temporaryFilesCleaned": true
+  }
 }

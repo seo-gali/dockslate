@@ -863,6 +863,14 @@
       "windowsProcess": 7,
       "afterApprovalAdjustmentRustTestsRerun": true,
       "desktopUserScenarioVerified": false
+    },
+    "packagingFollowup": {
+      "version": "0.1.14",
+      "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
+      "sourcePushed": true,
+      "siteGuideUpdated": true,
+      "publicDownloadVersion": "0.1.13",
+      "packagedDocumentsAreBuildTimeSnapshots": true
     }
   }
 }
