@@ -1,0 +1,137 @@
+{
+  "observedAt": "2026-11-23T11:00:57.232Z",
+  "baseCommit": "0feb08958a8fe7667f15bb2d9c10981e7595494e",
+  "publishedVersion": "0.1.13",
+  "includedInPublishedFiles": false,
+  "scope": "Docker Desktop inventory and migration preview; source CLI setup and safe stage-specific command diagnostics.",
+  "changes": [
+    "Fixed Desktop endpoint and migration core commands bypass unrelated DockSlate proxy and Compose/Buildx preparation",
+    "Existing explicit endpoint and isolated CLI profile retained; owned-engine and plugin commands keep preparation",
+    "Process failures identify engine, allowlisted command/action and timeout without container IDs, environment values or raw daemon output",
+    "Desktop read-only info/list/inspect timeout increased from 30 to 120 seconds; owned reads and mutation/copy limits retained",
+    "Approval TTL starts when the completed preview is generated, so inspection time does not consume the displayed 120-second window"
+  ],
+  "sourceFiles": [
+    {
+      "file": "src-tauri/src/bin/docker.rs",
+      "sha256": "6fa185a360f539012ab9139e24c18515c299e3fe15af7ab4b540d6f13ef6dcae"
+    },
+    {
+      "file": "src-tauri/src/cli_platform.rs",
+      "sha256": "10fc1c3db213412985e13c634829511c531c78ad90d5b6ca66468ea0b8f8b140"
+    },
+    {
+      "file": "src-tauri/src/migration.rs",
+      "sha256": "9da08a1af9f3a56334705743fa51d70c3951e79a49e20daf8d28db0d9009423a"
+    }
+  ],
+  "checks": {
+    "beforeRegression": {
+      "command": "cargo test --locked --offline --manifest-path src-tauri/Cargo.toml --bin docker desktop_source_query -- --test-threads=1",
+      "exit": 1,
+      "expectedFailure": true
+    },
+    "windows": {
+      "command": "scripts/check-windows.ps1 -Offline",
+      "isolatedAppData": true,
+      "exit": 0,
+      "rustSecurity": 30,
+      "path": 11,
+      "windowsProcess": 7,
+      "realUserAndMachinePathUnchanged": true
+    },
+    "debugCliBuild": {
+      "command": "cargo build --locked --offline --manifest-path src-tauri/Cargo.toml --bin docker",
+      "exit": 0
+    },
+    "nativeCliFixture": {
+      "checks": 4,
+      "passed": true,
+      "launcherSha256": "33B3AA25A655327B1DF97FBF6463CE0E7C27128C13FC8471714BAB65EA743830",
+      "nativeVersion": "29.10.0",
+      "nativeSha256": "ef32a3d23b23502963bdad2f18c47c1eb31ac2f69ad8624cecd35d66dba9202e",
+      "results": [
+        {
+          "name": "before",
+          "exit": 125,
+          "elapsedMs": 64
+        },
+        {
+          "name": "after",
+          "exit": 1,
+          "elapsedMs": 254
+        },
+        {
+          "name": "owned",
+          "exit": 125,
+          "elapsedMs": 60
+        },
+        {
+          "name": "plugin",
+          "exit": 125,
+          "elapsedMs": 49
+        }
+      ],
+      "scope": "No app or plugins installed in the isolated fixture; core source query must reach the explicit Desktop endpoint without owned setup. Other commands must retain setup requirements.",
+      "desktopEndpointAvailable": false
+    },
+    "sourceCheck": {
+      "command": "npm run check",
+      "exit": 0,
+      "nodeTests": 17,
+      "ipcContracts": 89,
+      "nativeCommands": 92
+    },
+    "frontendBuild": {
+      "command": "npm run build",
+      "exit": 0,
+      "modules": 85
+    },
+    "siteBuild": {
+      "command": "npm run build:site",
+      "exit": 0,
+      "version": "0.1.13",
+      "downloadsVerified": 3,
+      "legacyLicenseArchives": 10,
+      "deployed": false
+    },
+    "timeoutAndApprovalFollowup": {
+      "observedAt": "2026-11-23T11:00:57.232Z",
+      "beforeLimitDiagnosticExit": 1,
+      "beforeApprovalWindowExit": 1,
+      "beforeFailuresExpected": true,
+      "finalRustSecurityTests": 30,
+      "finalRustTestExit": 0,
+      "windowsCheckAfterLimitChangeExit": 0,
+      "windowsPath": 11,
+      "windowsProcess": 7,
+      "afterApprovalAdjustmentRustTestsRerun": true,
+      "desktopUserScenarioVerified": false
+    }
+  },
+  "initialEnvironmentFailures": [
+    "Default AppData was unavailable to two archive fixture tests in the sandbox; rerun with isolated AppData passed all 30 Rust checks",
+    "Installer PATH fixture registry write was denied in the sandbox; complete isolated Windows suite rerun in allowed execution passed"
+  ],
+  "remaining": [
+    "Original user-PC timeout was not reproduced; the exact delayed stage before this diagnostic change remains unknown",
+    "Docker Desktop is absent locally; cross-engine inventory, full migration and production services not verified",
+    "No new release EXE or ZIP, version bump, signing, antivirus upload, push or deployment in this task"
+  ],
+  "engineOrUserDataChanged": false,
+  "cleanup": {
+    "temporaryDirectories": 6,
+    "files": 358,
+    "bytes": 163144621,
+    "engineOrUserDataChanged": false
+  },
+  "limits": {
+    "sourceQuerySecondsBefore": 30,
+    "sourceQuerySeconds": 120,
+    "ownedQuerySeconds": 30,
+    "approvalSecondsAfterPreview": 120,
+    "normalStopSeconds": 180,
+    "copySeconds": 3600,
+    "copyFileBytes": 68719476736
+  }
+}

@@ -6,9 +6,9 @@
 
 웹사이트 원본은 `site/`에 두며, 빌드 결과는 Git에서 제외하는 `site-dist/` 한 곳에 생성합니다. 저장소 루트에는 웹사이트 파일을 생성하지 않습니다.
 
-게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 작업의 원격 전환·게시 여부는 [요청 현황](REQUEST_STATUS.md)에 기록합니다.
+게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.13의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.13.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
 
-사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 또는 탐지가 남은 버전은 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다.
+사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 버전·메타데이터 불일치·완료되지 않은 검사를 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다. 설치 EXE·ZIP은 정확한 해시의 완료된 탐지 0건 결과가 필요합니다. 내부 앱 탐지가 있는 예외는 정확한 앱 해시·탐지 업체·개수에 대한 사용자 승인과 prerelease를 기록한 경우만 허용합니다. 이 예외는 0.1.12 기록에 해당하며 현재 0.1.13의 네 파일은 모두 탐지 0건입니다.
 
 | 원본 | 출력·역할 |
 | --- | --- |
@@ -32,13 +32,13 @@ npm run build:site
 
 릴리스 명세의 EXE·포터블·고지 소스 ZIP을 크기·SHA-256으로 검증하고 공개판 고정 커밋의 `SHA256SUMS.txt`와 대조한 뒤 `site-dist/`를 만듭니다. 로컬 파일이 없으면 고정 Git 객체를 읽고, 그 객체도 없으면 해당 공개 GitHub Release에서 다운로드해 검증합니다. 이미 있는 로컬 파일이 다르면 실패하며 다른 사본으로 숨기지 않습니다. 지문표가 다르면 기존 출력 교체 전에 실패합니다. `site-dist/index.html`을 브라우저로 열어 확인합니다. 로컬 빌드는 게시·파일 업로드를 하지 않습니다. Git 객체가 없는 환경에서는 공개 파일 다운로드가 필요하며 검증용 임시 파일은 작업 후 삭제합니다.
 
-사이트 빌드는 0.1.3~0.1.8 고지 ZIP을 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 12개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
+사이트 빌드는 현재 0.1.3~0.1.12 고지 ZIP 10개를 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 20개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
 
-현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.9)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.9.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
+현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.13)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.13.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
 
 설치 EXE는 `scripts/build-installer.ps1`, 포터블은 `npm run package:local`로 별도 생성합니다. Pages workflow는 앱 설치 파일을 빌드하지 않습니다. `site-dist/`에는 공개 웹 파일과 다운로드만 포함하며 앱 소스·검증 자료·로컬 영상은 게시하지 않습니다.
 
-실행 파일은 미서명 개발 버전이며 과거 보안 경고의 원인은 미확인입니다. [서명 상태](results/code-signing.md) · [패키지 고지 검증](results/license-delivery.json)
+실행 파일은 미서명 개발 버전입니다. 새 파일의 검사 결과와 과거 경고 조사는 각 버전·해시의 기록으로 구분합니다. [서명 상태](results/code-signing.md) · [패키지 고지 검증](results/license-delivery.json)
 
 ## 검색 색인
 
@@ -53,6 +53,6 @@ npm run build:site
 
 [로컬 사이트 검사](results/pages-e2e.json)는 파일·HTTP 렌더링, 안내서, 키보드·모바일, SEO와 다운로드를 확인합니다. [안내서 검사](results/guide-delivery-e2e.json)는 사이트 원본·사이트 출력·앱 출력의 독립 HTML을 확인합니다. 두 기록의 실행 날짜와 공개 배포 검사 여부를 구분하세요.
 
-[0.1.6 공개 다운로드](results/public-release-0.1.6.json)와 [공개 SEO](results/pages-seo.json)는 검사 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
+[0.1.13 공개 파일·사이트 검사](results/public-distribution-0.1.13.json)는 공개 파일 4개·다운로드 링크·정적 자산·옛 고지 주소 20개를 확인했습니다. [0.1.6 공개 다운로드](results/public-release-0.1.6.json)와 [공개 SEO](results/pages-seo.json)는 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
 
 [사이트 화면](assets/site-desktop.png) · [모바일](assets/site-mobile.png) · [404](assets/site-404-mobile.png) · [안내서](assets/guide-desktop.png)

@@ -227,9 +227,28 @@ mod security_tests {
     fn plugin_hash_matches_standard_sha256_vector() {
         assert_eq!(super::sha256(b"abc").unwrap(),"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
     }
+
+    #[test]
+    fn desktop_source_query_does_not_prepare_the_owned_engine() {
+        let args = ["--host", "npipe:////./pipe/dockerDesktopLinuxEngine", "info", "--format", "{{json .}}"].map(std::ffi::OsString::from);
+        assert!(super::local_command(&args), "Desktop source queries must not start or wait for the DockSlate proxy");
+        let owned = ["--host", "npipe:////./pipe/dockslate_engine_test", "info"].map(std::ffi::OsString::from);
+        assert!(!super::local_command(&owned));
+        let misplaced = ["info", "--host", "npipe:////./pipe/dockerDesktopLinuxEngine"].map(std::ffi::OsString::from);
+        assert!(!super::local_command(&misplaced));
+        let plugin = ["--host", "npipe:////./pipe/dockerDesktopLinuxEngine", "compose", "version"].map(std::ffi::OsString::from);
+        assert!(!super::desktop_source_command(&plugin));
+    }
+}
+
+fn desktop_source_command(arguments: &[OsString]) -> bool {
+    arguments.first().is_some_and(|value| value == "--host")
+        && arguments.get(1).is_some_and(|value| value == cli_platform::DESKTOP_SOURCE)
+        && arguments.get(2).and_then(|value| value.to_str()).is_some_and(|value| ["info", "container", "image", "volume", "network"].contains(&value))
 }
 
 fn local_command(arguments: &[OsString]) -> bool {
+    if desktop_source_command(arguments) { return true; }
     let mut index = 0;
     while let Some(value) = arguments.get(index).and_then(|a| a.to_str()) {
         match value {
@@ -267,13 +286,16 @@ fn run() -> Result<i32, String> {
     let native = root.join("libexec/docker.exe");
     drop(plain_file(&native)?);
     let (config, _profile_guards) = profile()?;
-    for name in ["docker-compose.exe", "docker-buildx.exe"] {
-        install_plugin(
-            &root.join("libexec/cli-plugins").join(name),
-            &config.join("cli-plugins").join(name),
-        )?;
-    }
     let arguments: Vec<OsString> = std::env::args_os().skip(1).collect();
+    // Desktop migration uses core commands and never needs the owned proxy or plugins.
+    if !desktop_source_command(&arguments) {
+        for name in ["docker-compose.exe", "docker-buildx.exe"] {
+            install_plugin(
+                &root.join("libexec/cli-plugins").join(name),
+                &config.join("cli-plugins").join(name),
+            )?;
+        }
+    }
     if !local_command(&arguments) {
         cli_platform::ensure_proxy(&root.join("dockslate.exe"))?;
     }

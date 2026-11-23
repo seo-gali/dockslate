@@ -1,0 +1,261 @@
+{
+  "version": "0.1.14",
+  "observedAt": "2026-11-23T13:15:56.572Z",
+  "published": false,
+  "status": "App, CLI, portable ZIP and notices verified; approved one-time GitHub installer packaging pending.",
+  "outputDirectory": "downloads/local-timeout-20261123",
+  "files": [
+    {
+      "file": "DockSlate-0.1.14-windows-x64.zip",
+      "bytes": 55032221,
+      "sha256": "01EEFB5456A2368363734FC7F8F802E468A66031486A8BC765116060DBACEC53"
+    },
+    {
+      "file": "DockSlate-0.1.14-third-party-licenses.zip",
+      "bytes": 5194697,
+      "sha256": "FC7B6456E539E0DAD30D1D3A9626CB54D2697822D10C1CAD7EE835FC06213FE1"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "93F1AC024656D70B2AACB656A99E3E3D110BB03F9CD4CD1D47346ABAA7636351",
+      "name": "dockslate.exe",
+      "bytes": 5423104
+    },
+    {
+      "sha256": "63BFAECB498889545A1D6D8B3FECD12FB8FF02937A64948336126A14941983CB",
+      "name": "docker.exe",
+      "bytes": 320512
+    }
+  ],
+  "build": {
+    "sourceCommit": null,
+    "inputSha256": "006A57E311FA4696685C8B8F6174407D9F2CBAB29AD375E2B5ECFCD08CAC81EE",
+    "inputBytes": 2402132,
+    "localNsisFailure": "File opening failure for src-tauri/installer/user-path.ps1; one normal-user attempt; no AV or ACL changes",
+    "remotePackagingApproved": true
+  },
+  "checks": {
+    "sourceCheckExit": 0,
+    "node": 17,
+    "rust": 30,
+    "path": 11,
+    "process": 7,
+    "frontendBuildExit": 0,
+    "releaseBuildExit": 0,
+    "package": {
+      "observedAt": "2026-11-23T22:13:43.4203274+09:00",
+      "portableFiles": 435,
+      "licenseFiles": 410,
+      "allZipFileSizesAndSha256Verified": true,
+      "candidateBinariesMatch": true,
+      "signature": "NotSigned",
+      "installerCreated": false,
+      "installerExecuted": false,
+      "engineChanged": false
+    },
+    "offlineCli": {
+      "observedAt": "2026-11-23T13:13:32.399Z",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.8.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f"
+        },
+        {
+          "name": "previous official plugins upgraded to exact new payloads",
+          "passed": true
+        },
+        {
+          "name": "unknown plugin preserved and execution blocked",
+          "passed": true
+        }
+      ],
+      "engineChanged": false,
+      "existingUserProfileUsed": false
+    },
+    "onlineCli": {
+      "appSha256": "93F1AC024656D70B2AACB656A99E3E3D110BB03F9CD4CD1D47346ABAA7636351",
+      "cliSha256": "63BFAECB498889545A1D6D8B3FECD12FB8FF02937A64948336126A14941983CB",
+      "checks": [
+        {
+          "args": [
+            "info",
+            "--format",
+            "{{.ID}}"
+          ],
+          "exit": 0,
+          "stdout": "f67c8aad-6a74-49b1-9c44-4c2ac08a63ec",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "compose",
+            "version",
+            "--short"
+          ],
+          "exit": 0,
+          "stdout": "5.8.0",
+          "stderr": ""
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "stdout": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f",
+          "stderr": ""
+        }
+      ],
+      "engineMutation": false,
+      "existingProfileUsed": false,
+      "passed": true
+    },
+    "nativeGui": {
+      "observedAt": "2026-11-23T13:15:10.577Z",
+      "appSha256": "93F1AC024656D70B2AACB656A99E3E3D110BB03F9CD4CD1D47346ABAA7636351",
+      "checks": [
+        "Actual 0.1.14 native GUI connects to the owned Moby engine",
+        "Migration status IPC is registered and idle",
+        "Settings migration tab renders in the actual Windows executable",
+        "Actual native migration IPC rejects unapproved execution",
+        "Absent Docker Desktop is handled as an explicit source error"
+      ],
+      "rendererExceptions": 0,
+      "mutationsApproved": false,
+      "passed": true
+    },
+    "nativeLayout": {
+      "appSha256": "93F1AC024656D70B2AACB656A99E3E3D110BB03F9CD4CD1D47346ABAA7636351",
+      "layouts": [
+        {
+          "width": 1366,
+          "fontSize": 13,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 375.8125,
+          "panelRight": 1348.4000244140625,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 1152.800048828125,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1366,
+          "fontSize": 16,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 407.51251220703125,
+          "panelRight": 1348.4000244140625,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 1152.800048828125,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1280,
+          "fontSize": 13,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 375.8125,
+          "panelRight": 1262,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 1066.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 1280,
+          "fontSize": 16,
+          "headerX": 212.8000030517578,
+          "paragraphX": 212.8000030517578,
+          "buttonX": 212.8000030517578,
+          "buttonRight": 407.51251220703125,
+          "panelRight": 1262,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 1066.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 980,
+          "fontSize": 13,
+          "headerX": 214.8000030517578,
+          "paragraphX": 214.8000030517578,
+          "buttonX": 214.8000030517578,
+          "buttonRight": 377.8125,
+          "panelRight": 960,
+          "bodyPadding": "18px",
+          "buttonWidth": 163.0124969482422,
+          "bodyWidth": 762.4000244140625,
+          "horizontalOverflow": false
+        },
+        {
+          "width": 980,
+          "fontSize": 16,
+          "headerX": 214.8000030517578,
+          "paragraphX": 214.8000030517578,
+          "buttonX": 214.8000030517578,
+          "buttonRight": 409.51251220703125,
+          "panelRight": 960,
+          "bodyPadding": "18px",
+          "buttonWidth": 194.71250915527344,
+          "bodyWidth": 762.4000244140625,
+          "horizontalOverflow": false
+        }
+      ],
+      "passed": true
+    },
+    "nativeQuitExit": 0,
+    "nativeQuitStderr": "After exit 0, WebView reported Chrome_WidgetWin_0 unregister error 1412; renderer checks had no exceptions."
+  },
+  "signing": {
+    "status": "NotSigned",
+    "certificateUnavailable": true
+  },
+  "virusTotal": {
+    "status": "not_submitted",
+    "previousVersionResultsReused": false
+  },
+  "existingUserDataPreserved": true,
+  "dependenciesChanged": false,
+  "kernelOrEngineUpdated": false,
+  "fullDesktopMigrationVerified": false,
+  "fullInstallUninstallColdBootRollbackVerified": false,
+  "remaining": [
+    "Complete installer packaging and payload verification",
+    "Unsigned development build; no new antivirus submission",
+    "Actual user-PC Desktop timeout and full two-engine transfer unverified",
+    "Public download remains 0.1.13"
+  ]
+}

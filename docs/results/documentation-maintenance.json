@@ -694,5 +694,175 @@
       "removedDirectories": 7,
       "scope": "Only this task browser profiles and verified browser-download copies; source downloads retained"
     }
+  },
+  "codeAlignedRefresh20261123": {
+    "observedAt": "2026-11-23T11:02:19.161Z",
+    "baseCommit": "0feb08958a8fe7667f15bb2d9c10981e7595494e",
+    "publishedVersion": "0.1.13",
+    "markdownInspected": 83,
+    "htmlSourcesInspected": [
+      "site/index.html",
+      "site/guide.html"
+    ],
+    "changedMarkdown": [
+      "README.md",
+      "docs/ARCHITECTURE_REVIEW.md",
+      "docs/CODING_STANDARDS.md",
+      "docs/DESIGN.md",
+      "docs/DEVELOPMENT.md",
+      "docs/MIGRATION.md",
+      "docs/PAGES.md",
+      "docs/README.md",
+      "docs/REQUEST_STATUS.md",
+      "docs/USER_GUIDE.md",
+      "docs/results/agents-instructions-review.md",
+      "docs/results/architecture-refactor.md",
+      "docs/results/code-signing.md",
+      "docs/results/cve-2026-98432-wsl.md",
+      "docs/results/installation-correction.md",
+      "docs/results/installer-upgrade.md",
+      "docs/results/maintenance-review.md",
+      "docs/results/production-readiness.md",
+      "docs/results/security-review-20261119.md",
+      "docs/results/startup-bulk-feedback.md",
+      "docs/results/tray-background.md",
+      "docs/results/windows-cli-contract.md"
+    ],
+    "changedHtml": [
+      "site/guide.html",
+      "site/index.html"
+    ],
+    "scope": "Current user/developer/architecture/Pages/CLI documentation and dated clarification of historical records, plus the requested migration source timeout fix.",
+    "corrections": [
+      "Current migration selection, stop/start defaults, bind snapshots and conflicts replace the old always-stopped-copy description",
+      "Current five Settings tabs, tray and independent startup options",
+      "Pages 0.1.13, 10 legacy legal archives / 20 URLs and exact-hash app detection approval exception match implementation",
+      "CI source/security/PATH/history checks and separate scheduled advisory review match workflows",
+      "Architecture identifies current IPC/query/transport/migration responsibilities and keeps original audit metrics dated",
+      "Installation hook and later packaging are distinguished from unverified full upgrade/removal",
+      "Online documentation and unpublished timeout changes are distinguished from frozen released EXE/ZIP snapshots",
+      "Desktop queries allow 120 seconds; completed preview starts a fresh 120-second approval window"
+    ],
+    "checks": {
+      "documentation": {
+        "files": 83,
+        "checkedLinks": 573,
+        "checkedAnchors": 18,
+        "missing": [],
+        "missingAnchors": [],
+        "exit": 0
+      },
+      "sourceCheck": {
+        "command": "npm run check",
+        "exit": 0,
+        "nodeTests": 17,
+        "ipcContracts": 89,
+        "nativeCommands": 92
+      },
+      "windows": {
+        "command": "scripts/check-windows.ps1 -Offline",
+        "isolatedAppData": true,
+        "exit": 0,
+        "rustSecurity": 30,
+        "path": 11,
+        "windowsProcess": 7,
+        "realUserAndMachinePathUnchanged": true
+      },
+      "frontendBuild": {
+        "command": "npm run build",
+        "exit": 0,
+        "modules": 85
+      },
+      "siteBuild": {
+        "command": "npm run build:site",
+        "exit": 0,
+        "version": "0.1.13",
+        "downloadsVerified": 3,
+        "legacyLicenseArchives": 10,
+        "deployed": false
+      },
+      "staticBrowser": {
+        "checks": 4,
+        "rendererExceptions": 0,
+        "guideCopiesMatch": true,
+        "passed": true
+      },
+      "nativeCliFixture": {
+        "checks": 4,
+        "passed": true,
+        "launcherSha256": "33B3AA25A655327B1DF97FBF6463CE0E7C27128C13FC8471714BAB65EA743830",
+        "nativeVersion": "29.10.0",
+        "nativeSha256": "ef32a3d23b23502963bdad2f18c47c1eb31ac2f69ad8624cecd35d66dba9202e",
+        "results": [
+          {
+            "name": "before",
+            "exit": 125,
+            "elapsedMs": 64
+          },
+          {
+            "name": "after",
+            "exit": 1,
+            "elapsedMs": 254
+          },
+          {
+            "name": "owned",
+            "exit": 125,
+            "elapsedMs": 60
+          },
+          {
+            "name": "plugin",
+            "exit": 125,
+            "elapsedMs": 49
+          }
+        ],
+        "scope": "No app or plugins installed in the isolated fixture; core source query must reach the explicit Desktop endpoint without owned setup. Other commands must retain setup requirements.",
+        "desktopEndpointAvailable": false
+      },
+      "gitDiffCheckExit": 0
+    },
+    "cleanup": {
+      "temporaryDirectories": 6,
+      "files": 358,
+      "bytes": 163144621,
+      "engineOrUserDataChanged": false
+    },
+    "decisions": {
+      "file": "DockSlate-docs-timeout-decisions.html",
+      "outsideRepository": true,
+      "sha256": "805debdde83d619dd2e7f111026d092ab2cf712acd7a1e50d1fab92e753b4f94",
+      "redItems": 2,
+      "decisions": 8,
+      "viewport": "1280x720",
+      "fitsScreen": true
+    },
+    "preserved": [
+      "Historical release/scan hashes and raw observations",
+      "Versioned legal notices and source archives",
+      "Published 0.1.13 files, metadata, version and dependency locks",
+      "User engines, distributions, containers, volumes, CLI profile and PATH"
+    ],
+    "filesDeletedFromGit": [],
+    "applicationReleaseRebuilt": false,
+    "debugCliBuilt": true,
+    "pushed": false,
+    "published": false,
+    "limitations": [
+      "Original user-PC timeout was not reproduced; the exact delayed stage before this diagnostic change remains unknown",
+      "Docker Desktop is absent locally; cross-engine inventory, full migration and production services not verified",
+      "No new release EXE or ZIP, version bump, signing, antivirus upload, push or deployment in this task"
+    ],
+    "timeoutLimitFollowup": {
+      "observedAt": "2026-11-23T11:00:57.232Z",
+      "beforeLimitDiagnosticExit": 1,
+      "beforeApprovalWindowExit": 1,
+      "beforeFailuresExpected": true,
+      "finalRustSecurityTests": 30,
+      "finalRustTestExit": 0,
+      "windowsCheckAfterLimitChangeExit": 0,
+      "windowsPath": 11,
+      "windowsProcess": 7,
+      "afterApprovalAdjustmentRustTestsRerun": true,
+      "desktopUserScenarioVerified": false
+    }
   }
 }

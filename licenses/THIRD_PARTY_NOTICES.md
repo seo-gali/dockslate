@@ -1,6 +1,6 @@
 # 타사 라이선스·저작권 고지
 
-DockSlate 0.1.13 · Windows x64
+DockSlate 0.1.14 · Windows x64
 
 Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/8af9fe3a36bab3e039862a2ab1cef1880c9b4d03/LICENSE) 오픈소스로 엔진 사용료가 없습니다. Docker Desktop 구독은 필요하지 않습니다. 각 의존성·Docker Hub·컨테이너 이미지·외부 서비스에는 별도 조건이 적용됩니다. 이 고지가 DockSlate 자체 코드나 모든 구성 요소에 Apache-2.0을 부여하는 것은 아닙니다.
 
@@ -15,7 +15,7 @@ Moby 기반 Docker Engine은 [Apache-2.0](https://github.com/moby/moby/blob/8af9
 | `sources/` | MPL 대상 Rust·Go 의존성과 NSIS의 버전별 원본 소스 |
 | `README.md` | 범위·원문 출처·소스 이용 안내 |
 
-**[고지·소스 전체 ZIP 다운로드](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.13-third-party-licenses.zip)**
+**[고지·소스 전체 ZIP 다운로드](https://seo-gali.github.io/dockslate/downloads/DockSlate-0.1.14-third-party-licenses.zip)**
 
 웹의 버전별 고지는 과거 배포 스냅샷입니다. 미공개 보안 수정 후보의 정확한 구성은 동봉 `inventory.json`과 원문·소스가 기준이며, 새 고지 ZIP은 해당 로컬 포터블 ZIP과 함께 제공합니다.
 

@@ -19,7 +19,8 @@ use std::{
 
 mod binds;
 
-const SOURCE: &str = "npipe:////./pipe/dockerDesktopLinuxEngine";
+const SOURCE: &str = cli_platform::DESKTOP_SOURCE;
+const SOURCE_QUERY_TIMEOUT: Duration = Duration::from_secs(120);
 const TTL: Duration = Duration::from_secs(120);
 const COPY_TIMEOUT: Duration = Duration::from_secs(3600);
 static PLAN: Mutex<Option<Plan>> = Mutex::new(None);
@@ -113,18 +114,29 @@ fn cli() -> Result<PathBuf, String> {
 fn command(host: &str, args: &[String], timeout: Duration) -> Result<Vec<u8>, String> {
     let mut arguments = vec!["--host".into(), host.into()];
     arguments.extend_from_slice(args);
-    let output = process::execute(&cli()?, &arguments, None, timeout, 16 * 1024 * 1024)?;
+    let output = process::execute(&cli()?, &arguments, None, timeout, 16 * 1024 * 1024)
+        .map_err(|error| command_error(host, args, timeout, &error))?;
     if !output.status.success() {
         // CLI inspection errors can contain configuration values; do not return raw output.
-        return Err(format!("Docker {} 명령이 실패했습니다 (종료 {}). Docker Desktop Linux 엔진과 연결 상태를 확인하세요.", args.first().map(String::as_str).unwrap_or(""), output.status.code().unwrap_or(-1)));
+        return Err(command_error(host, args, timeout, &format!("명령이 실패했습니다 (종료 {}). 엔진 연결 상태를 확인하세요.", output.status.code().unwrap_or(-1))));
     }
     Ok(output.stdout)
+}
+fn command_error(host: &str, args: &[String], timeout: Duration, error: &str) -> String {
+    let engine = if host == SOURCE { "Docker Desktop" } else { "DockSlate" };
+    let operation = args.first().filter(|value| ["info","container","image","volume","network"].contains(&value.as_str())).map(String::as_str).unwrap_or("Docker");
+    let action = args.get(1).filter(|value| ["ls","inspect","create","stop","rm","save","load","tag","start","import"].contains(&value.as_str())).map(String::as_str).unwrap_or("");
+    if error == "명령 응답 시간이 초과되었습니다" {
+        format!("{engine} · {operation} {action}: 명령 응답 시간이 초과되었습니다 ({}초). 엔진의 실행 상태를 확인한 뒤 다시 조회하세요. 진행 중인 이전은 중지한 원본과 일부 복사본을 먼저 확인하세요.", timeout.as_secs())
+    } else {
+        format!("{engine} · {operation} {action}: {error}")
+    }
 }
 fn query(host: &str, args: &[&str]) -> Result<Value, String> {
     serde_json::from_slice(&command(
         host,
         &args.iter().map(|v| (*v).into()).collect::<Vec<_>>(),
-        Duration::from_secs(30),
+        if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { Duration::from_secs(30) },
     )?)
     .map_err(|_| "Docker 응답을 읽을 수 없습니다.".into())
 }
@@ -147,7 +159,7 @@ fn inspect_many(host: &str, kind: &str, values: &[String]) -> Result<Vec<Value>,
     }
     let mut args = vec![kind.into(), "inspect".into()];
     args.extend_from_slice(values);
-    let rows: Vec<Value> = serde_json::from_slice(&command(host, &args, Duration::from_secs(30))?)
+    let rows: Vec<Value> = serde_json::from_slice(&command(host, &args, if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { Duration::from_secs(30) })?)
         .map_err(|_| "Docker 검사 응답이 배열이 아닙니다.")?;
     if rows.len() != values.len() {
         return Err("Docker 검사 대상이 달라졌습니다. 다시 검사하세요.".into());
@@ -158,7 +170,7 @@ fn lines(kind: &str, extra: &[&str]) -> Result<Vec<Value>, String> {
     let mut args = vec![kind.into(), "ls".into()];
     args.extend(extra.iter().map(|v| (*v).into()));
     args.extend(["--format".into(), "{{json .}}".into()]);
-    let output = command(SOURCE, &args, Duration::from_secs(30))?;
+    let output = command(SOURCE, &args, SOURCE_QUERY_TIMEOUT)?;
     std::str::from_utf8(&output)
         .map_err(|_| "Docker 목록의 인코딩이 올바르지 않습니다.")?
         .lines()
@@ -345,7 +357,7 @@ fn source_users() -> Result<Vec<Value>, String> {
     }
     let mut args = vec!["container".into(), "inspect".into(), "--format".into(), r#"{"Id":{{json .Id}},"Name":{{json .Name}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}},"Mounts":{{json .Mounts}}}"#.into()];
     args.extend(ids);
-    let output = command(SOURCE, &args, Duration::from_secs(30))?;
+    let output = command(SOURCE, &args, SOURCE_QUERY_TIMEOUT)?;
     std::str::from_utf8(&output)
         .map_err(|_| "원본 연결 상태의 인코딩이 올바르지 않습니다.")?
         .lines()
@@ -366,7 +378,7 @@ fn volume_references(name: &str) -> Result<Vec<Value>, String> {
             "--format".into(),
             "{{.ID}}".into(),
         ],
-        Duration::from_secs(30),
+        SOURCE_QUERY_TIMEOUT,
     )?;
     let ids: Vec<String> = std::str::from_utf8(&output)
         .map_err(|_| "볼륨 참조 응답이 올바르지 않습니다.")?
@@ -383,7 +395,7 @@ fn volume_references(name: &str) -> Result<Vec<Value>, String> {
     // Volume users only need state metadata; do not read unselected containers' environments.
     let mut args = vec!["container".into(), "inspect".into(), "--format".into(), r#"{"Id":{{json .Id}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}}}"#.into()];
     args.extend(ids);
-    let output = command(SOURCE, &args, Duration::from_secs(30))?;
+    let output = command(SOURCE, &args, SOURCE_QUERY_TIMEOUT)?;
     std::str::from_utf8(&output)
         .map_err(|_| "볼륨 참조 상태를 읽을 수 없습니다.")?
         .lines()
@@ -606,7 +618,8 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
     plan.created = Instant::now();
     Ok(plan)
 }
-fn public_plan(plan: &Plan) -> Value {
+fn public_plan(plan: &mut Plan) -> Value {
+    plan.created = Instant::now();
     json!({"token":plan.token,"expiresAt":now()+TTL.as_millis() as u64,"eligible":plan.blocked.is_empty(),"blockedReasons":plan.blocked,
         "sourceEngine":plan.source,"targetEngine":plan.target,"images":plan.images.iter().map(|v| text(v,"Id")).collect::<Vec<_>>(),
         "containers":plan.containers.iter().map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),
@@ -620,8 +633,8 @@ pub fn preview(selection: Selection) -> Result<Value, String> {
     if is_busy() {
         return Err("데이터 가져오기가 진행 중입니다.".into());
     }
-    let plan = make_plan(selection, runtime::new_token()?, &docker::connected()?)?;
-    let value = public_plan(&plan);
+    let mut plan = make_plan(selection, runtime::new_token()?, &docker::connected()?)?;
+    let value = public_plan(&mut plan);
     *PLAN
         .lock()
         .map_err(|_| "가져오기 승인 정보를 보관할 수 없습니다.")? = if plan.blocked.is_empty() {
@@ -1399,6 +1412,20 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
 #[cfg(test)]
 mod security_tests {
     use super::*;
+
+    #[test]
+    fn migration_timeout_identifies_engine_and_step_without_configuration_values() {
+        let args = ["container", "inspect", "fixture-secret-value"].map(str::to_owned);
+        let source = command_error(SOURCE, &args, SOURCE_QUERY_TIMEOUT, "명령 응답 시간이 초과되었습니다");
+        assert!(source.contains("Docker Desktop · container inspect"));
+        assert!(source.contains("120초"));
+        assert!(!source.contains("fixture-secret-value"));
+        let target = command_error("owned", &args, Duration::from_secs(30), "명령 응답 시간이 초과되었습니다");
+        assert!(target.contains("DockSlate · container inspect"));
+        let unknown = ["fixture-secret-value", "private-argument"].map(str::to_owned);
+        let safe = command_error(SOURCE, &unknown, Duration::from_secs(30), "명령 응답 시간이 초과되었습니다");
+        assert!(!safe.contains("fixture-secret-value") && !safe.contains("private-argument"));
+    }
     fn source() -> Value {
         json!({"Id":"a".repeat(64),"Name":"/database","Image":format!("sha256:{}","b".repeat(64)),"State":{"Status":"exited","StartedAt":"before"},
             "Config":{"Env":["DB_PASSWORD=fixture-only"],"Cmd":["server"],"Entrypoint":["/entrypoint"],"Labels":{"com.docker.compose.project":"demo"}},
@@ -1574,9 +1601,9 @@ mod security_tests {
     #[test]
     fn migration_public_preview_never_returns_environment_values() {
         let mut container = source();
-        let plan = Plan {
+        let mut plan = Plan {
             token: "token".into(),
-            created: Instant::now(),
+            created: Instant::now() - TTL,
             selection: Selection {
                 images: vec![],
                 containers: vec![],
@@ -1593,7 +1620,8 @@ mod security_tests {
             binds: vec![],
             blocked: vec![],
         };
-        let public = public_plan(&plan).to_string();
+        let public = public_plan(&mut plan).to_string();
+        assert!(plan.created.elapsed() < TTL, "Inspection time must not consume the displayed approval window");
         assert!(public.contains("database"));
         assert!(!public.contains("fixture-only"));
         assert!(!public.contains("DB_PASSWORD"));

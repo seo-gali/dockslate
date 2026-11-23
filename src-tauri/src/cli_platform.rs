@@ -1,5 +1,7 @@
 use std::path::Path;
 
+pub(crate) const DESKTOP_SOURCE: &str = "npipe:////./pipe/dockerDesktopLinuxEngine";
+
 #[cfg(windows)]
 pub(crate) mod native {
     use std::{

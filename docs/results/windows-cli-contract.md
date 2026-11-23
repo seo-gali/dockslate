@@ -1,6 +1,6 @@
 # Windows Docker CLI
 
-현재 소스의 Windows CLI 연결 계약이다. 공식 Docker CLI·Compose·Buildx의 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
+현재 소스의 Windows CLI 연결 계약이다. 공개 0.1.13의 실행 파일은 제작 당시 스냅샷이며 Desktop 조회 후속 수정을 반영하는 0.1.14 제작본과 구분한다. 공식 Docker CLI·Compose·Buildx의 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
 
 ## 실행과 프로필
 
@@ -13,6 +13,7 @@ PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아�
 - 프로필은 `%LOCALAPPDATA%\DockSlate\cli`다. 기존 `%USERPROFILE%\.docker`나 다른 제품의 설정·인증 정보를 읽거나 복사하지 않는다. launcher와 installer는 `config.json`을 만들거나 수정하지 않는다. 공식 CLI 자체의 로그인·설정 명령은 이 전용 프로필을 사용한다.
 - 플러그인은 완성된 임시 파일을 Windows rename으로 게시한다. 같은 파일이 있으면 재사용한다. 코드에 기록된 이전 공식 플러그인 해시와 일치할 때만 새 공식 파일로 원자 교체하며, 알 수 없는 다른 파일은 보존하고 충돌로 중단한다. 프로필 경로의 reparse point를 거부하고 디렉터리 핸들을 유지한다.
 - 기본 endpoint는 `npipe:////./pipe/dockslate_engine_<현재 사용자 SID>`다. inherited context·TLS·Buildx 선택 변수는 제거한다. 사용자가 명시한 CLI host·context 옵션은 공식 CLI가 처리한다. 직접 CLI 사용에는 Docker daemon 권한이 있으며 앱의 승인 팝업을 거치지 않는다.
+- 후속 소스에서 Docker Desktop 주소를 명시한 이전용 기본 명령은 전용 엔진 프록시와 Compose·Buildx 파일 준비를 생략한다. 명시한 Desktop endpoint·전용 프로필은 유지하며, DockSlate 대상 명령과 플러그인 명령은 기존 준비·소유권 검사를 유지한다. [조회 수정 검사](migration-timeout.json).
 - 도움말·클라이언트 버전·플러그인 버전은 엔진 중지 상태에서도 실행할 수 있어야 한다. CLI가 엔진을 자동 설치·시작하지 않는다.
 
 ## 엔진 연결
@@ -23,7 +24,7 @@ PATH 공존 검사·systemd 준비 대기는 공개 0.1.11에 포함됐다. 아�
 
 CLI 실패 안내에 실제 표준 오류·종료 코드를 포함하고 제어 문자를 걸러 최대 2,000자로 제한했다. 종료 코드가 0이어도 필수 출력이 없으면 완료 처리하지 않는다. Windows 경로 회귀 검사는 기존 코드에서 실패함을 확인한 뒤 수정했다. C·D·Z 드라이브, 한글·공백·대소문자·접두사·경로 구분자와 다른 신원 거절을 검사한다.
 
-2026-11-22 소스 검증: `npm run check`(Node 16개·IPC 계약·TypeScript·문서·workflow·패턴 시크릿 검사), `scripts/check-windows.ps1 -Offline`(Rust check·보안 20개·PATH 11개·프로세스 7개)은 모두 종료 0이었다. Windows 검사는 격리 AppData를 사용했으며 테스트용 레지스트리 키만 생성·정리했다. 샌드박스에서 AppData·테스트 키 접근이 거부된 초기 실행은 통과로 합산하지 않는다. 이 PC와 보고된 PC의 경로·실행 상태를 읽었으며 WSL 재시작·등록 변경·기존 데이터 조작은 하지 않았다. 이후 0.1.12의 공개 파일 대조·실제 GUI·CLI 검사는 [제작 기록](release-0.1.12.md)에 추가했다. 원격 PC의 전체 설치 완료 재검증은 남아 있다.
+0.1.12 수정 당시(2026-11-22) 소스 검증: `npm run check`(Node 16개·IPC 계약·TypeScript·문서·workflow·패턴 시크릿 검사), `scripts/check-windows.ps1 -Offline`(Rust check·보안 20개·PATH 11개·프로세스 7개)은 모두 종료 0이었다. Windows 검사는 격리 AppData를 사용했으며 테스트용 레지스트리 키만 생성·정리했다. 샌드박스에서 AppData·테스트 키 접근이 거부된 초기 실행은 통과로 합산하지 않는다. 이 PC와 보고된 PC의 경로·실행 상태를 읽었으며 WSL 재시작·등록 변경·기존 데이터 조작은 하지 않았다. 이후 0.1.12의 공개 파일 대조·실제 GUI·CLI 검사는 [제작 기록](release-0.1.12.md)에 추가했다. 원격 PC의 전체 설치 완료 재검증은 남아 있다.
 
 버전 표기 변경 전(0.1.11)의 수정 코드 후보: `cargo build --locked --offline --release --manifest-path src-tauri/Cargo.toml --bin dockslate` 종료 0. 5,168,640 bytes·SHA-256 `BAC2EC1082A04DB846A711058131AAFCEBDFCF9193C3B99E4A5F0CD90B0670FE`의 로컬 후보에서 기존 실행 중인 소유 엔진의 `info --format {{.ID}}`, Compose 5.8.0, Buildx 0.39.0 실제 조회 3개가 종료 0이었다. 후보용 AppData와 broker만 사용했으며 엔진·기존 프로필을 변경하지 않았다. 이 해시는 공개 0.1.11 배포물이나 다음 버전의 해시로 사용하지 않는다.
 
