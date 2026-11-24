@@ -417,7 +417,8 @@
       "category": "Excuse",
       "action": "delete-and-open-issue",
       "reason": "검사 도구가 tray-icon 비공개 창 클래스·메시지 6002에 의존하며 버전 변경 시 실제 정상 트레이를 실패로 판정할 수 있다.",
-      "issue": "docs/issues/tray-probe-private-messages.md"
+      "issue": "docs/issues/tray-probe-private-messages.md",
+      "issueUrl": "https://github.com/seo-gali/dockslate/issues/2"
     },
     {
       "number": 22,
@@ -867,7 +868,7 @@
       "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
     }
   ],
-  "issueStatus": "Repository issue recorded; GitHub issue publication not performed without an authenticated issue tool.",
+  "issueStatus": "GitHub issue #2 open; exact public body hash verified.",
   "verification": [
     {
       "check": "Exact reconstruction from original Git snapshot",
@@ -887,8 +888,8 @@
     {
       "check": "Skill frontmatter/name/description/placeholders and repository paths",
       "passed": true,
-      "method": "Independent Node validation of this two-field plain-scalar frontmatter; official Python validator unavailable without PyYAML",
-      "officialValidatorPassed": false
+      "method": "Independent Node check followed by official quick_validate.py with isolated hash-verified PyYAML 6.0.4",
+      "officialValidatorPassed": true
     },
     {
       "command": "node scripts/check-comments.mjs",
@@ -962,6 +963,34 @@
         "projectDependenciesChanged": false,
         "globalPythonChanged": false
       }
+    },
+    {
+      "command": "One-time GitHub issue job and public issue body verification",
+      "exitCode": 0,
+      "run": 45403106867,
+      "issue": 2,
+      "sha256": "43b29121f5fec19223d82d065da389c9f717ab831af59dd18134c81ace368b6b",
+      "temporaryFilesRemoved": 3
+    },
+    {
+      "command": "node --test isolated clean-checkout/scripts/tests/comment-policy.test.mjs",
+      "exitCode": 0,
+      "tests": 11,
+      "result": "Ignored .analysis directory initially absent; fixture prepares its own parent"
+    },
+    {
+      "command": "npm run check after fixture correction and temporary workflow cleanup",
+      "exitCode": 0,
+      "nodeTests": 28
+    },
+    {
+      "command": "Updated outside-repository decisions page",
+      "exitCode": 0,
+      "width": 1280,
+      "height": 720,
+      "choices": 12,
+      "redItems": 0,
+      "unresolvedChoices": 0
     }
   ],
   "modifiedSourceFiles": 32,
@@ -995,31 +1024,57 @@
       "check": "Decision-page browser preview",
       "exitCode": 1,
       "correction": "Sandboxed CDP connection failed, then a normal-permission run detected vertical overflow; reduced spacing/font size and verified 1280x720 with no overflow"
+    },
+    {
+      "check": "First remote Linux npm run check",
+      "exitCode": 1,
+      "correction": "Reproduced ENOENT in a checkout with no .analysis directory; create the parent before mkdtemp; same isolated 11 tests and full 28 tests passed",
+      "reproducedLocally": true
     }
   ],
   "decisionsPage": {
     "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-comment-review-decisions.html",
-    "sha256": "c76da7649fe30629bb92c79ada1bb730fca13103eceaebc266d8b3e4b5e2e116",
+    "sha256": "31ad16fa844349d3262691e6a1e7dc1307829bb1a373f48c5644adffdecfe457",
     "width": 1280,
     "height": 720,
     "choices": 12,
-    "redItems": 2,
+    "redItems": 0,
     "oneScreen": true
   },
   "delivery": {
     "localChanges": true,
-    "committed": false,
-    "pushed": false,
+    "committed": true,
+    "pushed": true,
     "newApplicationRelease": false,
-    "githubIssuePublished": false,
+    "githubIssuePublished": true,
     "repositoryIssue": "docs/issues/tray-probe-private-messages.md",
-    "existing014ArtifactHashesUnchanged": true
+    "existing014ArtifactHashesUnchanged": true,
+    "sourceCommit": "c5d8fc8318034bc5d97ef46e6cf68e50300893b8"
   },
-  "completedAt": "2026-11-24T13:17:55.423Z",
+  "completedAt": "2026-11-24T13:30:50.145Z",
   "followup": {
     "authorizedAt": "2026-11-24",
     "officialSkillValidatorPassed": true,
-    "githubIssue": "pending one-time workflow",
-    "temporaryWorkflow": ".github/workflows/comment-review-issue.yml"
+    "githubIssue": {
+      "number": 2,
+      "url": "https://github.com/seo-gali/dockslate/issues/2",
+      "bodySha256": "43b29121f5fec19223d82d065da389c9f717ab831af59dd18134c81ace368b6b",
+      "workflowRun": 45403106867,
+      "workflowConclusion": "success"
+    },
+    "temporaryWorkflow": ".github/workflows/comment-review-issue.yml",
+    "temporaryWorkflowRemovedFromWorkingTree": true,
+    "pages": {
+      "run": 45403106760,
+      "conclusion": "success",
+      "publicDownloadVersion": "0.1.13"
+    },
+    "initialSourceCI": {
+      "run": 45403106821,
+      "check": "failure",
+      "reason": "New CLI fixture omitted the ignored .analysis parent on fresh checkouts",
+      "latestStatusUrl": "https://github.com/seo-gali/dockslate/actions/workflows/workflow-pins.yml?query=branch%3Amain",
+      "windows": "success"
+    }
   }
 }

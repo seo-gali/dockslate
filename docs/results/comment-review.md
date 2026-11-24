@@ -19,12 +19,14 @@
 
 새 주석·주석 교체·복제·다른 파일 이동은 실패하고 삭제만 기준선에 반영되는지 CLI fixture로 확인한다. 문자열·정규식·JSX·Rust raw string·PowerShell SQL·here-string·셸 here-document·HTML 내 스크립트·CSS·TOML multiline string은 별도 사례로 검사한다. 현재 남은 8개 지시문은 `scripts/comment-baseline.json`에 고정했다.
 
+첫 원격 소스 검사의 Linux job이 실패했고, `.analysis`가 없는 빈 체크아웃에서 새 CLI fixture의 `mkdtemp`가 ENOENT로 실패하는 것을 재현했다. 부모 임시 폴더를 먼저 생성하도록 보완해 같은 빈 체크아웃의 11개 검사와 전체 Node 28개가 통과했다. 수정·임시 파일 정리 후의 원격 상태는 [main 소스 CI](https://github.com/seo-gali/dockslate/actions/workflows/workflow-pins.yml?query=branch%3Amain)에서 커밋별로 확인한다. [Pages 배포](https://github.com/seo-gali/dockslate/actions/runs/45403106760)는 성공했다.
+
 ## 범위와 제한
 
 법적 원문·타사 코드·Git 무시 생성물·문서 예제는 그대로 둔다. 코드 문자열에 들어 있는 생성 스크립트의 shebang도 데이터이므로 바깥 주석 삭제 대상이 아니다. 검사기는 저장소에서 사용하는 언어를 대상으로 하며 새 언어를 도입할 때 지원을 추가해야 한다.
 
-트레이 검사 도구의 비공개 메시지 의존은 구현을 바꾸지 않고 열린 이슈로 기록했다. GitHub 등록은 후속 승인으로 진행한다. `.agents/skills/delete-comment/SKILL.md`를 생성했고 이름·frontmatter·설명·미완성 자리표시자·참조 경로를 검사했다. `skill-creator`의 `quick_validate.py`는 처음에 PyYAML 부재로 실패했으나, 후속 승인으로 공식 PyYAML 6.0.4 wheel의 SHA-256을 확인하고 `.analysis/`에만 격리 설치한 뒤 **Skill is valid! / 종료 0**을 확인했다. 프로젝트 의존성·잠금 파일·전역 Python은 변경하지 않았다.
+트레이 검사 도구의 비공개 메시지 의존은 구현을 바꾸지 않고 [GitHub 이슈 #2](https://github.com/seo-gali/dockslate/issues/2)로 등록했다. 준비한 본문과 공개 본문의 SHA-256이 일치했고 [일회성 등록 job](https://github.com/seo-gali/dockslate/actions/runs/45403106867)이 성공했다. 임시 workflow·입력·스크립트 3개는 제거했다. 로컬 인증값은 읽지 않았다. `.agents/skills/delete-comment/SKILL.md`의 공식 `quick_validate.py`는 처음에 PyYAML 부재로 실패했으나, 후속 승인으로 공식 PyYAML 6.0.4 wheel의 SHA-256을 확인하고 `.analysis/`에만 격리 설치한 뒤 **Skill is valid! / 종료 0**을 확인했다. 프로젝트 의존성·잠금 파일·전역 Python은 변경하지 않았다.
 
-이번 변경은 로컬 소스 정리다. 앞서 완성한 0.1.14 EXE·ZIP·제작 영수증과 공개 0.1.13 파일은 다시 포장하거나 게시하지 않았다. 기존의 “주석은 짧고 직접적인 명사형” 규칙은 이번 사용자 요청과 충돌해 [코딩 기준](../CODING_STANDARDS.md)·[작업 지침](../../AGENTS.md)을 [주석 정책](../COMMENT_POLICY.md)에 맞췄다.
+이번 변경은 소스·문서 정리이며 `c5d8fc8`을 main에 커밋·푸시했다. 앞서 완성한 0.1.14 EXE·ZIP·제작 영수증과 공개 0.1.13 파일은 다시 포장하거나 게시하지 않았다. 기존의 “주석은 짧고 직접적인 명사형” 규칙은 이번 사용자 요청과 충돌해 [코딩 기준](../CODING_STANDARDS.md)·[작업 지침](../../AGENTS.md)을 [주석 정책](../COMMENT_POLICY.md)에 맞췄다.
 
 Ponytail 스킬의 이유 주석·shortcut 주석 권고도 이번 사용자의 주석 금지 요청을 우선해 적용하지 않았다. 전역 스킬 파일은 변경하지 않았다.

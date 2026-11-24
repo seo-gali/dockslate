@@ -70,6 +70,7 @@ test('scope preserves legal documents and generated artifacts through Git exclus
 
 test('CLI ratchet shrinks its baseline and refuses to bless additions', () => {
   const root = fileURLToPath(new URL('../../', import.meta.url));
+  fs.mkdirSync(path.join(root, '.analysis'), { recursive: true });
   const directory = fs.mkdtempSync(path.join(root, '.analysis/comment-cli-test-'));
   const run = args => spawnSync(process.execPath, [path.join(directory, 'scripts/check-comments.mjs'), ...args], { cwd: directory, encoding: 'utf8', timeout: 30000, windowsHide: true });
   try {
