@@ -10,6 +10,7 @@
 | [구조 점검과 확장 설계](ARCHITECTURE_REVIEW.md) · [수정 검증](results/architecture-refactor.md) | 최초 감사와 후속 책임 분리·검사·패키징 수정, 적용 범위와 남은 설계 |
 | [개발·빌드](DEVELOPMENT.md) · [Pages](PAGES.md) | 소스 구성·빌드·정적 사이트 생성 |
 | [코딩 기준](CODING_STANDARDS.md) · [UI 기준](DESIGN.md) | 구현·조회·데이터·화면 규칙 |
+| [설계 결정](adr/README.md) · [주석 정책](COMMENT_POLICY.md) · [주석별 검토](results/comment-review.json) | 코드에서 옮긴 이유와 주석 추가 방지 검사 |
 | [Node.js 예제](../examples/basic-web/README.md) | 앱에서 선택할 Dockerfile·Compose와 소스 |
 | [Windows CLI 계약](results/windows-cli-contract.md) | 현재 launcher·프로필·엔진 연결과 검증 경계 |
 | [Docker Desktop 데이터 가져오기](MIGRATION.md) | 현재 이미지·컨테이너·볼륨·파일/폴더 복사 절차와 보존·미지원 범위 |

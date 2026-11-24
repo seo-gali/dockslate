@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
-// Static ASAR member extraction
 const [input, output] = process.argv.slice(2);
 if (!input || !output) throw new Error('Usage: node read-asar.mjs INPUT_ASAR NEW_OUTPUT');
 const source = path.resolve(input);

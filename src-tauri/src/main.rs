@@ -341,7 +341,6 @@ async fn installer_setup_finish(app: tauri::AppHandle) -> Result<(), String> {
         if !path_output.status.success() || path_output.stdout != b"verified" {
             return Err(format!("Windows docker command registration could not be verified: {} Setup is not complete.", String::from_utf8_lossy(&path_output.stderr).trim()));
         }
-        // The first launcher prepares shared plugins before concurrent read-only checks.
         let info = ["info", "--format", "{{.ID}}"];
         let args: Vec<String> = info.iter().map(|argument| (*argument).into()).collect();
         let identity = installer_cli_output(&info, process::execute(&cli, &args, None, std::time::Duration::from_secs(30), 64 * 1024))?;

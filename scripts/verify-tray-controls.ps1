@@ -41,8 +41,6 @@ $trayId=[TrayNativeCheck]::RegisteredId($trayWindow)
 if(!$trayId){throw 'Candidate tray icon is not registered with Windows Shell.'}
 if($Action -eq 'status'){@{alive=$true;visible=[TrayNativeCheck]::IsWindowVisible($window);shellIconRegistered=$true}|ConvertTo-Json;exit}
 if($Action -eq 'hide'){[void][TrayNativeCheck]::PostMessage($window,0x10,[IntPtr]::Zero,[IntPtr]::Zero);Start-Sleep -Milliseconds 300;if($process.HasExited -or [TrayNativeCheck]::IsWindowVisible($window)){throw 'Close did not hide the live candidate.'};@{hidden=$true;alive=$true}|ConvertTo-Json;exit}
-# shortcut: tray-icon 0.25.1 message IDs; review this probe when tray-icon changes.
-# MN_GETHMENU: https://learn.microsoft.com/windows/win32/winmsg/mn-gethmenu
 $buttonMessage=if($Action -eq 'left'){0x202}else{0x205}
 if(![TrayNativeCheck]::PostMessage($trayWindow,6002,[IntPtr]$trayId,[IntPtr]$buttonMessage)){throw 'Native tray notification failed.'}
 if($Action -eq 'left'){Start-Sleep -Milliseconds 300;if(![TrayNativeCheck]::IsWindowVisible($window)){throw 'Tray notification did not restore the window.'};@{restored=$true;inputMode='owned Windows tray notification'}|ConvertTo-Json;exit}

@@ -56,7 +56,6 @@ fn append(root: &Path, status: u16) -> io::Result<()> {
     if !metadata.is_file() { return Err(io::ErrorKind::InvalidInput.into()); }
     let timestamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs();
     let line = format!("{{\"time\":{timestamp},\"event\":\"pipe_request_rejected\",\"status\":{status}}}\n");
-    // shortcut: Retains the latest 64 KiB; export the log for longer incident history.
     if metadata.len() + line.len() as u64 > LIMIT { file.set_len(0)?; }
     else { use std::io::{Seek, SeekFrom}; file.seek(SeekFrom::End(0))?; }
     file.write_all(line.as_bytes())

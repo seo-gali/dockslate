@@ -68,7 +68,6 @@ for (const key of ['installer', 'zip', 'licenses']) {
   fs.copyFileSync(path.join(staging, file), path.join(output, 'downloads', file));
 }
 fs.copyFileSync(path.join(staging, 'SHA256SUMS.txt'), path.join(output, 'downloads/SHA256SUMS.txt'));
-// 이전 패키지의 고지 URL 유지
 const legacyDownloads = path.join(root, 'docs/downloads');
 fs.mkdirSync(path.join(output, 'docs/downloads'), { recursive: true });
 fs.copyFileSync(path.join(legacyDownloads, notices), path.join(output, 'docs/downloads', notices));

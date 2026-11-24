@@ -26,7 +26,6 @@ function Update-DockSlateUserPath {
         if ($matches.Count -gt 0) { return }
         $result = if ($original.Length -eq 0) { $Bin } else { $original + ';' + $Bin }
         if ($result.Length -ge 32767) { throw 'Adding DockSlate would exceed the Windows PATH limit. PATH was preserved.' }
-        # Record ownership before writing so an interrupted install can still remove only its entry.
         $InstallerKey.SetValue('PathEntry', $Bin, [Microsoft.Win32.RegistryValueKind]::String)
         $InstallerKey.SetValue('PathAdded', 1, [Microsoft.Win32.RegistryValueKind]::DWord)
         $InstallerKey.SetValue('PathWasPresent', [int]$present, [Microsoft.Win32.RegistryValueKind]::DWord)

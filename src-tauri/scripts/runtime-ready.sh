@@ -5,7 +5,6 @@ export PATH
 [ "$(id -u)" = 0 ] || { echo 'Runtime readiness verification requires root.' >&2; exit 1; }
 [ "$(cat /etc/dockslate/schema)" = 1 ] || { echo 'The owned runtime schema could not be verified.' >&2; exit 1; }
 
-# WSL can accept exec before the systemd manager socket answers requests.
 deadline=$(($(date +%s) + 30))
 while :; do
     remaining=$((deadline - $(date +%s)))

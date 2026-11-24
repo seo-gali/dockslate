@@ -1136,7 +1136,6 @@ pub fn containers_metrics(ids: Vec<String>) -> Result<Value, String> {
     let samples = match containers {
         Err(reason) => ids.iter().map(|id| unavailable_stats(id, &reason)).collect::<Vec<_>>(),
         Ok(containers) => {
-            // 하위 8비트는 요청 인덱스, 상위 8비트는 조회에 필요한 실행 상태
             let mut work: [u16; 256] = std::array::from_fn(|index| index as u16);
             for container in &containers {
                 let id = text(container, "Id");

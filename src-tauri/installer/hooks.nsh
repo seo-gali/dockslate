@@ -1,4 +1,3 @@
-; https://v2.tauri.app/distribute/windows-installer/#extending-the-installer
 !include "LogicLib.nsh"
 !include "WinMessages.nsh"
 !include "x64.nsh"
@@ -32,7 +31,6 @@ Function DockSlateRestoreInstallLocation
     ${If} $1 == '$\"$0\uninstall.exe$\"'
       IfFileExists "$0\uninstall.exe" 0 restore_install_location_done
       IfFileExists "$0\dockslate.exe" 0 restore_install_location_done
-      ; Restore the directory before Tauri builds the old uninstaller's _?= argument.
       ClearErrors
       WriteRegStr HKCU "Software\DockSlate\DockSlate" "" $0
       ${IfNot} ${Errors}
@@ -150,7 +148,6 @@ Function ${PREFIX}DockSlateUpdateUserPath
     DetailPrint "Processing Windows command and startup registration ($DockSlatePathMode)..."
   ${EndIf}
   System::Call 'kernel32::GetTickCount() i.r2'
-  ; Keep the complete registry value in .NET, outside NSIS's fixed-size strings.
   nsExec::ExecToStack /TIMEOUT=30000 `"$0" -NoLogo -NoProfile -NonInteractive -Command "& ([scriptblock]::Create([IO.File]::ReadAllText($$env:DOCKSLATE_PATH_SCRIPT)))"`
   Pop $DockSlatePathExit
   Pop $1
@@ -195,7 +192,6 @@ Function ${PREFIX}DockSlateNotifyEnvironment
   ${If} $4 <> 0
     System::Call 'user32::SendMessageTimeoutW(p r4, i ${WM_SETTINGCHANGE}, p 0, w "Environment", i 0x22, i 750, *p .r5) p.r5'
   ${EndIf}
-  ; shortcut: stop waiting at 2 s; use a background sender if every window must be notified.
   System::Call 'user32::GetTopWindow(p 0) p.r0'
 notify_next:
   StrCmp $0 0 notify_done

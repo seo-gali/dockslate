@@ -33,7 +33,7 @@ export async function setLanguage(value: Language): Promise<void> {
   const request = ++selection;
   if (value === 'en') await loadEnglish();
   if (request !== selection) return;
-  try { window.localStorage.setItem(storageKey, value); } catch { /* Storage unavailable */ }
+  try { window.localStorage.setItem(storageKey, value); } catch {}
   if (language === value) return;
   language = value;
   document.documentElement.lang = value;

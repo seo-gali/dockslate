@@ -182,7 +182,6 @@ function Invoke-FixedWsl([string[]]$arguments, [bool]$readOnly = $false, [string
 function Invoke-OwnedService([ValidateSet('start', 'stop')][string]$Action) {
     $ready = [Environment]::GetEnvironmentVariable('DOCKSLATE_RUNTIME_READY')
     if ([string]::IsNullOrWhiteSpace($ready)) { throw 'The fixed runtime readiness script is unavailable.' }
-    # Send the current readiness check so previously installed runtimes receive it too.
     $script = $ready + "`nexec /usr/local/libexec/dockslate-$Action`n"
     $null = Invoke-FixedWsl @('--distribution', $distribution, '--user', 'root', '--exec', '/bin/sh', '-s') $false $script
 }

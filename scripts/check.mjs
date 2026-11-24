@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const tests = fs.readdirSync(new URL('./tests/', import.meta.url)).filter(file => file.endsWith('.test.mjs')).map(file => 'scripts/tests/' + file);
 for (const args of [
+  ['scripts/check-comments.mjs'],
   ['scripts/check-workflow-pins.mjs'],
   ['scripts/check-ipc.mjs'],
   ['scripts/check-secrets.mjs'],

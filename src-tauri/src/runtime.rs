@@ -399,7 +399,6 @@ fn begin(
             thread::sleep(Duration::from_millis(200));
         }
     });
-    // Mutation tracking without timeout termination.
     let deadline = Instant::now() + Duration::from_secs(1);
     loop {
         let operation = poll_operation()?.ok_or("The runtime operation has no tracked result.")?;
@@ -489,7 +488,6 @@ pub fn stop(approved: bool) -> Result<Value, String> {
     change_state("stop", "running", "stopping", approved)
 }
 
-// Operation-scoped ownership lease.
 pub(crate) struct ReadGuard {
     #[cfg(windows)]
     lease: native_guard::Lease,

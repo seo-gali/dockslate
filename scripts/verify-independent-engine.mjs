@@ -153,7 +153,6 @@ const hostDocker = async (kind, value) => {
       break;
     default: throw new Error('Unsupported host fixture operation');
   }
-  // 배포판·바이너리·소켓 고정
   const result = await execFileAsync(wslExecutable, ['--distribution', 'DockSlate', '--user', 'root', '--exec', '/usr/bin/docker', '--host', 'unix:///var/run/docker.sock', ...arguments_], { windowsHide: true, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 });
   await assertOwnedEngine();
   return result.stdout.trim();

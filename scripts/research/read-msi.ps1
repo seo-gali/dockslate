@@ -9,7 +9,6 @@ $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
 if (Test-Path -LiteralPath $OutputDirectory) { throw 'Output directory must be new' }
 New-Item -ItemType Directory -Path $OutputDirectory | Out-Null
 
-# Read-only MSI database access
 Add-Type -TypeDefinition @'
 using System;
 using System.IO;

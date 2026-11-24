@@ -12,7 +12,6 @@ use tauri::Emitter;
 const EVENT: &str = "docker-engine-events";
 static SESSION: OnceLock<Mutex<Option<Arc<Session>>>> = OnceLock::new();
 
-// 원본 속성 대신 변경 종류만 전달하며 재연결 때 현재 목록으로 동기화
 const FOLLOW: &str = r#"
 import http.client, json, os, socket, sys, threading, time, urllib.parse
 

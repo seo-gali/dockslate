@@ -35,7 +35,7 @@ function createController({ storageKey, columns }: Options) {
         return bounded(index, width);
       });
     }
-  } catch { /* Optional local preference */ }
+  } catch {}
 
   let table: HTMLTableElement | null = null;
   let drag: Drag | null = null;
@@ -94,7 +94,7 @@ function createController({ storageKey, columns }: Options) {
   };
   const persist = () => {
     try { localStorage.setItem(storageKey, JSON.stringify({ version: 1, widths: Object.fromEntries(specs.map((column, index) => [column.id, widths[index]])) })); }
-    catch { /* Optional local preference */ }
+    catch {}
   };
   const cancelFrame = () => {
     if (frame !== null) cancelAnimationFrame(frame);
@@ -219,7 +219,7 @@ function createController({ storageKey, columns }: Options) {
       window.addEventListener('keydown', escape);
       window.addEventListener('blur', cancel);
       element.addEventListener('lostpointercapture', cancel);
-      try { element.setPointerCapture(event.pointerId); } catch { /* Window listeners retain drag control */ }
+      try { element.setPointerCapture(event.pointerId); } catch {}
     },
     keyDown: (id: string, event: KeyboardEvent<HTMLSpanElement>) => {
       const index = indexOf(id), step = event.shiftKey ? 50 : 10;

@@ -42,7 +42,6 @@ fn main() {
     for mode in ["spawn","spawn-exit"] {
         let ready=root.join("ready");let finished=root.join("finished");let _=fs::remove_file(&ready);let _=fs::remove_file(&finished);
         let (result,ms)=run(&root,mode,None,4096,Duration::from_secs(1));assert!(result.is_err());assert!(ready.exists());assert!(ms<1750,"Inherited pipe exceeded deadline: {ms}");
-        // The helper must cancel its I/O without killing a persistent descendant.
         let until=Instant::now()+Duration::from_secs(4);while !finished.exists(){assert!(Instant::now()<until,"Owned descendant was terminated");thread::sleep(Duration::from_millis(10));}
         elapsed.push(ms);
     }

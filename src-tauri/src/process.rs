@@ -132,7 +132,6 @@ pub fn execute_observed(
             None => thread::sleep(Duration::from_millis(20)),
         }
     };
-    // Drain within the same deadline; descendants may retain inherited pipe handles.
     while !stdout.is_finished() || !stderr.is_finished() || input_writer.as_ref().is_some_and(|writer| !writer.is_finished()) {
         if overflow.load(Ordering::Acquire) || started.elapsed() >= timeout {
             failure = Some(if overflow.load(Ordering::Acquire) {
@@ -153,7 +152,6 @@ pub fn execute_observed(
             fn CancelIoEx(file: *mut std::ffi::c_void, overlapped: *mut std::ffi::c_void) -> i32;
         }
         while !stdout.is_finished() || !stderr.is_finished() || input_writer.as_ref().is_some_and(|writer| !writer.is_finished()) {
-            // Owned duplicates pin the file objects while their workers finish.
             for handle in [Some(stdout_cancel.as_raw_handle()), Some(stderr_cancel.as_raw_handle()), stdin_cancel.as_ref().map(AsRawHandle::as_raw_handle)].into_iter().flatten() {
                 unsafe { CancelIoEx(handle, std::ptr::null_mut()); }
             }

@@ -1,0 +1,1025 @@
+{
+  "date": "2026-11-24",
+  "baseCommit": "c439a2e14748a769b24d0c70f9cc487358126cda",
+  "scope": {
+    "files": 214,
+    "definition": "First-party tracked/nonignored code/config; excludes docs, licenses, downloads and Git-ignored generated files."
+  },
+  "counts": {
+    "Tautology": 6,
+    "Excuse": 1,
+    "Stale": 1,
+    "Decision Record": 54
+  },
+  "originalCommentTokens": 62,
+  "remainingDirectives": 8,
+  "deletedCommentTokens": 54,
+  "trimmedDirectiveExplanations": 6,
+  "removedPhysicalLines": 38,
+  "allCommentsEstimate": {
+    "commentBearingLines": 62,
+    "removableWholeLines": 46,
+    "inlineOnlyLines": 16,
+    "unsafeAdditionalLines": 8,
+    "note": "46 whole lines would disappear only if functional shebang/type-test directives were also removed. Safe removal is 38 lines; inline comment removal does not remove its code line. ADR/lint/test additions are separate."
+  },
+  "changes": [
+    {
+      "file": ".github/workflows/pages.yml",
+      "removedPhysicalLines": 0,
+      "modified": true
+    },
+    {
+      "file": ".github/workflows/workflow-pins.yml",
+      "removedPhysicalLines": 0,
+      "modified": true
+    },
+    {
+      "file": "scripts/build-site.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/check-workflow-pins.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/package-docs.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/research/read-asar.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/research/read-msi.ps1",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/tests/runtime-ready.test.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/verify-engine-restart.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/verify-independent-engine.mjs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/verify-process.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "scripts/verify-tray-controls.ps1",
+      "removedPhysicalLines": 2,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/installer/hooks.nsh",
+      "removedPhysicalLines": 4,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/installer/user-path.ps1",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/scripts/runtime-control.ps1",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/scripts/runtime-ready.sh",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/scripts/runtime-setup.sh",
+      "removedPhysicalLines": 0,
+      "modified": false
+    },
+    {
+      "file": "src-tauri/src/bin/docker.rs",
+      "removedPhysicalLines": 2,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/cli_platform.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/docker.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/engine_events.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/live_logs.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/main.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/migration.rs",
+      "removedPhysicalLines": 4,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/pipe.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/process.rs",
+      "removedPhysicalLines": 2,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/runtime.rs",
+      "removedPhysicalLines": 2,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/security.rs",
+      "removedPhysicalLines": 1,
+      "modified": true
+    },
+    {
+      "file": "src-tauri/src/transport.rs",
+      "removedPhysicalLines": 2,
+      "modified": true
+    },
+    {
+      "file": "src/ResizableColumns.tsx",
+      "removedPhysicalLines": 0,
+      "modified": true
+    },
+    {
+      "file": "src/appearance.ts",
+      "removedPhysicalLines": 0,
+      "modified": true
+    },
+    {
+      "file": "src/i18n.ts",
+      "removedPhysicalLines": 0,
+      "modified": true
+    },
+    {
+      "file": "src/ipc/commands.check.ts",
+      "removedPhysicalLines": 1,
+      "modified": true
+    }
+  ],
+  "entries": [
+    {
+      "number": 1,
+      "file": ".github/workflows/pages.yml",
+      "line": 30,
+      "text": "# v6",
+      "fingerprint": "b44012e6f57885335dcde29eabee45578a9c7b6d3ade5e602af6282522a9c677",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6의 실행 참조는 - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 2,
+      "file": ".github/workflows/pages.yml",
+      "line": 40,
+      "text": "# v6",
+      "fingerprint": "b44012e6f57885335dcde29eabee45578a9c7b6d3ade5e602af6282522a9c677",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6의 실행 참조는 - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 3,
+      "file": ".github/workflows/pages.yml",
+      "line": 43,
+      "text": "# v6",
+      "fingerprint": "b44012e6f57885335dcde29eabee45578a9c7b6d3ade5e602af6282522a9c677",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6의 실행 참조는 - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 4,
+      "file": ".github/workflows/pages.yml",
+      "line": 47,
+      "text": "# v4",
+      "fingerprint": "78c6cd3d6ac44fe0c31cf8e3bff7b93e878ac87c21c18c09b7063d9f6d14255f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v4의 실행 참조는 - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 5,
+      "file": ".github/workflows/pages.yml",
+      "line": 63,
+      "text": "# v4",
+      "fingerprint": "f16aef74e39c91634fa67e58af0f0329d92deff3542e7227ed074dd99c310f2e",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v4의 실행 참조는 uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 6,
+      "file": ".github/workflows/workflow-pins.yml",
+      "line": 20,
+      "text": "# v6",
+      "fingerprint": "757464a6e44311a54c8d562383d4b4b69856c2b6d5deb614ee365300f6c9ff86",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6의 실행 참조는 - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 7,
+      "file": ".github/workflows/workflow-pins.yml",
+      "line": 24,
+      "text": "# v6.5.0",
+      "fingerprint": "2a00c5f9fe044a889e76b4cc607b8cf801f4b4a4ae3eb62656ab45d44cdd926f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6.5.0의 실행 참조는 - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 8,
+      "file": ".github/workflows/workflow-pins.yml",
+      "line": 36,
+      "text": "# v6",
+      "fingerprint": "757464a6e44311a54c8d562383d4b4b69856c2b6d5deb614ee365300f6c9ff86",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6의 실행 참조는 - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 9,
+      "file": ".github/workflows/workflow-pins.yml",
+      "line": 39,
+      "text": "# v6.5.0",
+      "fingerprint": "2a00c5f9fe044a889e76b4cc607b8cf801f4b4a4ae3eb62656ab45d44cdd926f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6.5.0의 실행 참조는 - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 10,
+      "file": ".github/workflows/workflow-pins.yml",
+      "line": 50,
+      "text": "# v6",
+      "fingerprint": "757464a6e44311a54c8d562383d4b4b69856c2b6d5deb614ee365300f6c9ff86",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6의 실행 참조는 - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 11,
+      "file": ".github/workflows/workflow-pins.yml",
+      "line": 53,
+      "text": "# v6.5.0",
+      "fingerprint": "2a00c5f9fe044a889e76b4cc607b8cf801f4b4a4ae3eb62656ab45d44cdd926f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "기존 버전 표기 v6.5.0의 실행 참조는 - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 이다. 실행 시 전체 SHA 고정을 유지한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 12,
+      "file": "scripts/build-site.mjs",
+      "line": 71,
+      "text": "// 이전 패키지의 고지 URL 유지",
+      "fingerprint": "fce3e98aa1ecedc16ef136f126d64317fa748196b2d6a4e3b1a4be4ec824d628",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "이전 패키지가 참조하는 고지 URL을 계속 제공한다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 13,
+      "file": "scripts/check-workflow-pins.mjs",
+      "line": 11,
+      "text": "// Quotes/comments and run/description blocks are data, not action references.",
+      "fingerprint": "e18c6a65ef52ad94e35386d8e29faec6e6b1e2fbe7353b98999eac3438c94f6f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "문자열·설명·run 블록을 액션 uses 참조로 오인하지 않는다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 14,
+      "file": "scripts/package-docs.mjs",
+      "line": 23,
+      "text": "// The caller supplies a fresh directory; stale documents must never enter a package.",
+      "fingerprint": "618be87b44e56886365e2077584025ce1db802483a72a72bf21a1a1f98745d8b",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "빈 출력 디렉터리만 받아 오래된 문서가 배포본에 섞이는 것을 막는다.",
+      "adr": "docs/adr/0005-packaging-and-workflow-pins.md"
+    },
+    {
+      "number": 15,
+      "file": "scripts/research/read-asar.mjs",
+      "line": 5,
+      "text": "// Static ASAR member extraction",
+      "fingerprint": "35b259465b361d3a320d733486604b0456eadad839cb8625ae2cf127c316f111",
+      "category": "Tautology",
+      "action": "delete",
+      "reason": "바로 옆 이름·명령·상태 구조가 이미 표현하는 요약이다."
+    },
+    {
+      "number": 16,
+      "file": "scripts/research/read-msi.ps1",
+      "line": 12,
+      "text": "# Read-only MSI database access",
+      "fingerprint": "93df9a67b921e7d165e7b171f554142c11a0a696a10b60dfecc4ed25ce85240b",
+      "category": "Tautology",
+      "action": "delete",
+      "reason": "바로 옆 이름·명령·상태 구조가 이미 표현하는 요약이다."
+    },
+    {
+      "number": 17,
+      "file": "scripts/tests/runtime-ready.test.mjs",
+      "line": 11,
+      "text": "// Only command stubs run: no WSL process, service, registry or runtime is touched.",
+      "fingerprint": "4bea9c8723baf824ce77f27f322eb014246ffff3a7ab0e6a8cd3d3800bf1e7b7",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "WSL 준비 검사는 명령 스텁만 사용하며 실제 WSL·서비스·레지스트리를 변경하지 않는다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 18,
+      "file": "scripts/verify-engine-restart.mjs",
+      "line": 14,
+      "text": "// Docker 기본 네트워크는 daemon 재시작 시 재생성되므로 사용자 네트워크만 ID까지 비교",
+      "fingerprint": "62ae35b9c493612a7f787b8c56a8ec3cd8bf22cbcdef10a784d81165d2c326c4",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "daemon이 재생성하는 기본 네트워크는 ID 비교에서 제외하고 사용자 네트워크 ID는 비교한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 19,
+      "file": "scripts/verify-independent-engine.mjs",
+      "line": 156,
+      "text": "// 배포판·바이너리·소켓 고정",
+      "fingerprint": "410b84fc953694015ccc19b639e5dbfd9afd67fe57dd2d5766f219b3825727f9",
+      "category": "Tautology",
+      "action": "delete",
+      "reason": "바로 옆 이름·명령·상태 구조가 이미 표현하는 요약이다."
+    },
+    {
+      "number": 20,
+      "file": "scripts/verify-process.rs",
+      "line": 45,
+      "text": "// The helper must cancel its I/O without killing a persistent descendant.",
+      "fingerprint": "c523c92984fe680c299867fff3e9ddbae086bc8957ab7e4ce8ed32753072f2c4",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "입출력 취소는 살아 있어야 할 후손 프로세스를 종료하지 않는다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 21,
+      "file": "scripts/verify-tray-controls.ps1",
+      "line": 44,
+      "text": "# shortcut: tray-icon 0.25.1 message IDs; review this probe when tray-icon changes.",
+      "fingerprint": "def6f5154b58a2cb86a0fd67129a3ccc468eed571e475dbd4360665565bce76d",
+      "category": "Excuse",
+      "action": "delete-and-open-issue",
+      "reason": "검사 도구가 tray-icon 비공개 창 클래스·메시지 6002에 의존하며 버전 변경 시 실제 정상 트레이를 실패로 판정할 수 있다.",
+      "issue": "docs/issues/tray-probe-private-messages.md"
+    },
+    {
+      "number": 22,
+      "file": "scripts/verify-tray-controls.ps1",
+      "line": 45,
+      "text": "# MN_GETHMENU: https://learn.microsoft.com/windows/win32/winmsg/mn-gethmenu",
+      "fingerprint": "10e05a90fd18477a21b027e1f524f473fa01e70058df6e3818220e1b221b54f8",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "네이티브 메뉴 핸들 조회는 공개 Windows MN_GETHMENU 메시지 0x1E1을 사용한다. 이 결정은 비공개 tray-icon 메시지 의존의 해결을 의미하지 않는다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 23,
+      "file": "src-tauri/installer/hooks.nsh",
+      "line": 1,
+      "text": "; https://v2.tauri.app/distribute/windows-installer/#extending-the-installer",
+      "fingerprint": "031e0830b5997cec887a5b5514b93ae3518c3bf21ac08b244573cb914e425f2a",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "설치 확장 진입점은 Tauri NSIS hook 계약에 따른다. 원래 참고 주소는 https://v2.tauri.app/distribute/windows-installer/#extending-the-installer 이다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 24,
+      "file": "src-tauri/installer/hooks.nsh",
+      "line": 35,
+      "text": "; Restore the directory before Tauri builds the old uninstaller's _?= argument.",
+      "fingerprint": "37720bd67e03bbb93ba6f89e46d820dc3cb5d62965430d3b43026f7e40a21376",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "Tauri가 구버전 제거기의 _?= 인수를 만들기 전에 설치 디렉터리를 복원한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 25,
+      "file": "src-tauri/installer/hooks.nsh",
+      "line": 153,
+      "text": "; Keep the complete registry value in .NET, outside NSIS's fixed-size strings.",
+      "fingerprint": "7dfd95968cc4c9a6ae5e72f952b39dcc63c645723892dea809ab3a604f01854f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "전체 PATH 레지스트리 값은 NSIS 고정 길이 문자열 대신 .NET에서 처리한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 26,
+      "file": "src-tauri/installer/hooks.nsh",
+      "line": 198,
+      "text": "; shortcut: stop waiting at 2 s; use a background sender if every window must be notified.",
+      "fingerprint": "e989c9e41247a51072d9fb5678eb1528769a65f5f9833fa9bb58386e390efeaf",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "PATH 변경 알림 대기는 2초로 제한한다. 모든 창의 알림 수신을 보장하는 방식은 현재 계약이 아니며, 필요해지면 별도 프로세스를 검토한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 27,
+      "file": "src-tauri/installer/user-path.ps1",
+      "line": 29,
+      "text": "# Record ownership before writing so an interrupted install can still remove only its entry.",
+      "fingerprint": "eff2dedc166e7be1a04899d659e320572144c9620a1dc2ee135a2a25a7b35699",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "PATH를 쓰기 전에 소유한 항목을 기록해 중단된 설치도 자기 항목만 제거할 수 있게 한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 28,
+      "file": "src-tauri/scripts/runtime-control.ps1",
+      "line": 185,
+      "text": "# Send the current readiness check so previously installed runtimes receive it too.",
+      "fingerprint": "57c27355951996523aa06900d73b5e42bc330ba6722346e3248945eaf3a4ad0b",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "새 준비 검사를 이미 설치된 게스트에도 전달한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 29,
+      "file": "src-tauri/scripts/runtime-ready.sh",
+      "line": 1,
+      "text": "#!/bin/sh",
+      "fingerprint": "1e56945aaf0b055961f67aa907fd63d84a62af1de3f2df2b01398f04e3f2211f",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "셸 진입점의 /bin/sh shebang은 실행 지시문으로 보존한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 30,
+      "file": "src-tauri/scripts/runtime-ready.sh",
+      "line": 8,
+      "text": "# WSL can accept exec before the systemd manager socket answers requests.",
+      "fingerprint": "97a8f56b3d452c3bbda132673021d43805ed60fefa3252d01c7df37e915db90a",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "WSL exec가 성공해도 systemd 관리자 소켓은 아직 응답하지 않을 수 있어 준비 상태를 별도로 확인한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 31,
+      "file": "src-tauri/scripts/runtime-setup.sh",
+      "line": 1,
+      "text": "#!/bin/sh",
+      "fingerprint": "b41b74641317e1b048f57ade90678666052134238a8835619a0faa63344261b1",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "런타임 설치 스크립트의 /bin/sh shebang은 실행 지시문으로 보존한다.",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "number": 32,
+      "file": "src-tauri/src/bin/docker.rs",
+      "line": 154,
+      "text": "// Windows SHA-256 pseudo-handle, available since Windows 10.",
+      "fingerprint": "dcae7a18aaac36a727889bab5ff5fa7fdeddd534f11db419a66619c561990273",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "Windows SHA-256 pseudo-handle을 사용한다. 대상 Windows 11은 이 Windows 10 이상 API를 제공한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 33,
+      "file": "src-tauri/src/bin/docker.rs",
+      "line": 290,
+      "text": "// Desktop migration uses core commands and never needs the owned proxy or plugins.",
+      "fingerprint": "b99c54c1d80f07e91be79a8cd652b9d13411b42143efc65578c2bf7014c13f27",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "명시된 Desktop 원본의 core 명령에는 DockSlate 소유 프록시·플러그인 준비를 실행하지 않는다. 소유 엔진과 플러그인 명령의 검증은 유지한다.",
+      "adr": "docs/adr/0002-desktop-migration-boundaries.md"
+    },
+    {
+      "number": 34,
+      "file": "src-tauri/src/cli_platform.rs",
+      "line": 241,
+      "text": "// The broker must not keep the caller's redirected pipes open.",
+      "fingerprint": "18678a1dcfa61b1bf0491e8a6b977594cb476258faed008c45b7c65d4f49fde6",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "백그라운드 broker는 호출자의 리다이렉트 파이프를 붙잡지 않도록 표준 핸들을 분리한다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 35,
+      "file": "src-tauri/src/docker.rs",
+      "line": 1139,
+      "text": "// 하위 8비트는 요청 인덱스, 상위 8비트는 조회에 필요한 실행 상태",
+      "fingerprint": "756a4c0ee99bce8f91a4340996ebcdfc5408884f8a5105fdc4c67063d95ed751",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "통계 조회 작업 값의 하위 8비트는 요청 인덱스, 상위 8비트는 실행 상태로 사용한다. 인코딩·디코딩과 요청 수 제한을 함께 유지한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 36,
+      "file": "src-tauri/src/engine_events.rs",
+      "line": 15,
+      "text": "// 원본 속성 대신 변경 종류만 전달하며 재연결 때 현재 목록으로 동기화",
+      "fingerprint": "3511a8dd472b5ead33e9156f94787e227221675a47cbd664e2edc371c3b6cfe8",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "원본 이벤트 속성 대신 변경 종류만 보내고 재연결 때 현재 목록으로 동기화한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 37,
+      "file": "src-tauri/src/live_logs.rs",
+      "line": 24,
+      "text": "// 고정 소켓의 읽기 전용 스트림과 표준 입력 종료 감지",
+      "fingerprint": "d11d1179cdcacc769079ed747261651057e41f3dc26c9f7e3495f272d8666d00",
+      "category": "Tautology",
+      "action": "delete",
+      "reason": "바로 옆 이름·명령·상태 구조가 이미 표현하는 요약이다."
+    },
+    {
+      "number": 38,
+      "file": "src-tauri/src/main.rs",
+      "line": 344,
+      "text": "// The first launcher prepares shared plugins before concurrent read-only checks.",
+      "fingerprint": "72ecc491f107af35b4a5c01d1df1ca96e4216d2cb2dc2434669ad7592a84675d",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "첫 CLI 검사가 공유 플러그인을 준비한 뒤 나머지 읽기 전용 검사를 병렬 실행한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 39,
+      "file": "src-tauri/src/migration.rs",
+      "line": 120,
+      "text": "// CLI inspection errors can contain configuration values; do not return raw output.",
+      "fingerprint": "b6737e7c3c5afa92f1131a111245d070173dfd73e23f53b0041a6016a8c85bd0",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "CLI inspect 실패의 원시 출력에는 설정값이 들어갈 수 있어 안전한 명령·단계·상태만 반환한다.",
+      "adr": "docs/adr/0002-desktop-migration-boundaries.md"
+    },
+    {
+      "number": 40,
+      "file": "src-tauri/src/migration.rs",
+      "line": 395,
+      "text": "// Volume users only need state metadata; do not read unselected containers' environments.",
+      "fingerprint": "af037f2192602e976f12d93f50675293ca58814f555da40ab3a83c10e5c4684a",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "볼륨 사용자 확인은 상태 메타데이터만 읽고 선택하지 않은 컨테이너의 환경 변수를 읽지 않는다.",
+      "adr": "docs/adr/0002-desktop-migration-boundaries.md"
+    },
+    {
+      "number": 41,
+      "file": "src-tauri/src/migration.rs",
+      "line": 900,
+      "text": "// A client timeout does not send SIGKILL to containers; leave the source data intact.",
+      "fingerprint": "b3552ed37346d6d34eeba2c9e3487afd8a3f768cd7631b8b7511ac1c78dfc6e4",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "정상 중지 요청의 클라이언트 시간 초과는 컨테이너에 SIGKILL을 보내는 것으로 바꾸지 않는다. 원본 데이터를 보존하고 실패를 보고한다.",
+      "adr": "docs/adr/0002-desktop-migration-boundaries.md"
+    },
+    {
+      "number": 42,
+      "file": "src-tauri/src/migration.rs",
+      "line": 977,
+      "text": "// Override image-declared VOLUME paths so helper creation does not allocate anonymous volumes.",
+      "fingerprint": "44c4fe17488380116e70e9e0da9b9257aca60e22dc7dfeba6984a86d4beff397",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "볼륨 복사 helper는 이미지의 VOLUME 경로를 덮어써 불필요한 익명 볼륨을 만들지 않는다.",
+      "adr": "docs/adr/0002-desktop-migration-boundaries.md"
+    },
+    {
+      "number": 43,
+      "file": "src-tauri/src/pipe.rs",
+      "line": 1197,
+      "text": "// Keep one instance owned while replacing the listener.",
+      "fingerprint": "fa8357de7bc01651885205424f8cf62489011ba6bd0917528c99c7c48304ac5b",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "다음 listener를 만들 때 기존 pipe instance를 유지해 이름 소유권이 비는 구간을 만들지 않는다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 44,
+      "file": "src-tauri/src/process.rs",
+      "line": 135,
+      "text": "// Drain within the same deadline; descendants may retain inherited pipe handles.",
+      "fingerprint": "53e8b5e9596298ef4e2c69b49de7067c8a35cdb15cea5bc7ee661c0cbe49e2e7",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "후손이 상속한 pipe를 열어 둬도 호출이 무한정 기다리지 않도록 출력 읽기에도 같은 마감 시간을 적용한다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 45,
+      "file": "src-tauri/src/process.rs",
+      "line": 156,
+      "text": "// Owned duplicates pin the file objects while their workers finish.",
+      "fingerprint": "f1385883a99bc2d32415ce31bfbb979a825c84ba9de53c9d33a12e3b005bfc24",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "취소 중인 작업자의 file object가 먼저 사라지지 않도록 소유한 중복 핸들을 유지한다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 46,
+      "file": "src-tauri/src/runtime.rs",
+      "line": 402,
+      "text": "// Mutation tracking without timeout termination.",
+      "fingerprint": "705376762155241c95af5699292147d5dff6b9bd34fad48f6d98e059b3003343",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "변경 작업은 상태를 추적하되 조회 시간 제한만으로 강제 종료하지 않는다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 47,
+      "file": "src-tauri/src/runtime.rs",
+      "line": 492,
+      "text": "// Operation-scoped ownership lease.",
+      "fingerprint": "9886e6b60c1b8f48c7e2e2d981797243edc868a705cac73fac9b03ad8d59fe8a",
+      "category": "Tautology",
+      "action": "delete",
+      "reason": "바로 옆 이름·명령·상태 구조가 이미 표현하는 요약이다."
+    },
+    {
+      "number": 48,
+      "file": "src-tauri/src/security.rs",
+      "line": 59,
+      "text": "// shortcut: Retains the latest 64 KiB; export the log for longer incident history.",
+      "fingerprint": "ba3dc0dc8ef96b825504cf96bee4042db770f2250304e52c2e67252ac39866ef",
+      "category": "Stale",
+      "action": "delete",
+      "reason": "한도 초과 시 파일 전체를 비우는 구현을 최신 64 KiB를 계속 유지하는 방식처럼 표현한다. 현재 set_len(0)과 맞지 않는다."
+    },
+    {
+      "number": 49,
+      "file": "src-tauri/src/transport.rs",
+      "line": 325,
+      "text": "// Guest session identity and bounded process lifetime.",
+      "fingerprint": "c0595f8432e87ed372a13336332875cefc04c0f0e04e841c9e9587101e52340b",
+      "category": "Tautology",
+      "action": "delete",
+      "reason": "바로 옆 이름·명령·상태 구조가 이미 표현하는 요약이다."
+    },
+    {
+      "number": 50,
+      "file": "src-tauri/src/transport.rs",
+      "line": 377,
+      "text": "// PID reuse check before each process-group signal.",
+      "fingerprint": "c27f6b91982cdfcf04dc15584722bd4cac3b6201c86f0ca0b9dda6741f88765c",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "프로세스 그룹에 신호를 보내기 전에 시작 시각을 비교해 재사용된 PID를 다른 작업으로 오인하지 않는다.",
+      "adr": "docs/adr/0001-process-and-pipe-lifetimes.md"
+    },
+    {
+      "number": 51,
+      "file": "src/ResizableColumns.tsx",
+      "line": 38,
+      "text": "/* Optional local preference */",
+      "fingerprint": "33855f862ce451e4497d4fa0fdccc8bd00099cc9d8663e56e2ad2662f52b696f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "열 너비 복원이 실패하면 기본 너비를 사용한다. 선택적인 로컬 설정 실패가 표 사용을 막지 않는다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 52,
+      "file": "src/ResizableColumns.tsx",
+      "line": 97,
+      "text": "/* Optional local preference */",
+      "fingerprint": "33855f862ce451e4497d4fa0fdccc8bd00099cc9d8663e56e2ad2662f52b696f",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "열 너비 저장 실패는 현재 화면 조작을 중단하지 않는다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 53,
+      "file": "src/ResizableColumns.tsx",
+      "line": 222,
+      "text": "/* Window listeners retain drag control */",
+      "fingerprint": "cf3d946810af6af390ea5d9736e8be7210b969ae7ec68a17f9432632e0c7e113",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "포인터 캡처가 실패해도 이미 등록한 window listener로 드래그 종료·취소를 처리한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 54,
+      "file": "src/appearance.ts",
+      "line": 26,
+      "text": "/* 저장소 사용 불가 */",
+      "fingerprint": "59ac8b697d06e4c8930dde9d275ba4e6ba6ee42ea0874ced3d6556c2df9a8895",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "로컬 설정 저장이 거부돼도 현재 테마·글꼴 크기는 적용한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 55,
+      "file": "src/i18n.ts",
+      "line": 36,
+      "text": "/* Storage unavailable */",
+      "fingerprint": "4d0793f214b0d2f1ec5a91474179328736fdc3fa3226bd092fb7e413818b0b79",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "로컬 설정 저장이 거부돼도 현재 세션의 언어 전환을 적용한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 56,
+      "file": "src/ipc/commands.check.ts",
+      "line": 4,
+      "text": "// Compile these contracts without sending IPC or loading a native backend.",
+      "fingerprint": "67b2db2c4dd428603fe808d1afd05dc55a79414e0419367c7bc3ccda52037bc2",
+      "category": "Decision Record",
+      "action": "move-to-adr",
+      "reason": "IPC 음성 타입 검사 함수는 컴파일만 하고 호출하지 않아 네이티브 백엔드나 실제 변경 요청을 실행하지 않는다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 57,
+      "file": "src/ipc/commands.check.ts",
+      "line": 9,
+      "text": "// @ts-expect-error Unknown command names must fail before runtime.",
+      "fingerprint": "1a9d4b6bf562d0b5f279b010bee41b677114816b362c41077b1bb824c792d484",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "오타 명령명은 컴파일 오류여야 한다. @ts-expect-error는 오류가 사라져도 실패하는 실행성 검사 지시문으로 보존한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 58,
+      "file": "src/ipc/commands.check.ts",
+      "line": 11,
+      "text": "// @ts-expect-error An approved mutation still requires its token.",
+      "fingerprint": "e7aacf3e7852aaca1a4c9941ede09ade241d6b04ffe091b1174443e6f1a633b3",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "approved 값만 있고 승인 토큰이 없는 변경 요청은 타입 검사에서 거부해야 한다. 지시문은 보존한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 59,
+      "file": "src/ipc/commands.check.ts",
+      "line": 13,
+      "text": "// @ts-expect-error IDs use strings across the IPC boundary.",
+      "fingerprint": "1ef75f95a3b5db2c9804ffa1947103fabcafc9d793d2e4c2cc64b547e72bcafe",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "IPC ID는 문자열이며 숫자 ID는 타입 검사에서 거부해야 한다. 지시문은 보존한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 60,
+      "file": "src/ipc/commands.check.ts",
+      "line": 15,
+      "text": "// @ts-expect-error Required arguments cannot be omitted.",
+      "fingerprint": "bd0eeed882f616ce1e802de797e5ea80040ef0bf73ce275cc463c9c783f31e12",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "필수 인수를 생략한 image_search는 타입 검사에서 거부해야 한다. 지시문은 보존한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 61,
+      "file": "src/ipc/commands.check.ts",
+      "line": 17,
+      "text": "// @ts-expect-error The command chooses its return type, not the caller.",
+      "fingerprint": "af831b1e63909f72514fb6aa62e4a258d49a6554b09fb61db43cc5ae76123e20",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "반환 타입은 명령 계약이 정하며 호출자가 다른 타입으로 바꿀 수 없다. 지시문은 보존한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "number": 62,
+      "file": "src/ipc/commands.check.ts",
+      "line": 21,
+      "text": "// @ts-expect-error A snapshot field retains the corresponding command's result type.",
+      "fingerprint": "a0478ac883bfafa108069c955fded5065579b5ae019dac99cbb53f4b307a4a78",
+      "category": "Decision Record",
+      "action": "move-explanation-keep-directive",
+      "reason": "snapshot 필드는 해당 명령의 결과 타입을 유지해야 한다. 지시문은 보존한다.",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    }
+  ],
+  "issueStatus": "Repository issue recorded; GitHub issue publication not performed without an authenticated issue tool.",
+  "verification": [
+    {
+      "check": "Exact reconstruction from original Git snapshot",
+      "passed": true,
+      "reviewedFiles": 33,
+      "modifiedSourceFiles": 32,
+      "comments": 62,
+      "nonCommentExecutableChanges": 0
+    },
+    {
+      "check": "Remaining inventory",
+      "passed": true,
+      "files": 214,
+      "directives": 8,
+      "humanExplanatoryComments": 0
+    },
+    {
+      "check": "Skill frontmatter/name/description/placeholders and repository paths",
+      "passed": true,
+      "method": "Independent Node validation of this two-field plain-scalar frontmatter; official Python validator unavailable without PyYAML",
+      "officialValidatorPassed": false
+    },
+    {
+      "command": "node scripts/check-comments.mjs",
+      "exitCode": 0,
+      "result": "214 first-party code/config files; 8 functional directives; no new comments"
+    },
+    {
+      "command": "node scripts/check-comments.mjs --ratchet",
+      "exitCode": 0,
+      "result": "Baseline remains 8; fixture proves additions rejected without rewriting baseline and deletions shrink it"
+    },
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "nodeTests": 28,
+      "commentPolicyTests": 11,
+      "workflowSelfChecks": 25,
+      "typeScript": true,
+      "ipc": true,
+      "secrets": {
+        "findings": 0,
+        "valuesPrinted": false
+      }
+    },
+    {
+      "command": "node scripts/check-docs.mjs",
+      "exitCode": 0,
+      "documents": 94,
+      "links": 617,
+      "anchors": 18,
+      "missing": 0
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "result": "TypeScript and Vite frontend build; no EXE/ZIP repackaging"
+    },
+    {
+      "command": "powershell -NoProfile -File scripts/check-windows.ps1 -Offline",
+      "exitCode": 0,
+      "rustSecurityTests": 30,
+      "installerPathChecks": 11,
+      "processChecks": 7,
+      "engineChanged": false
+    },
+    {
+      "command": "PowerShell Language.Parser.ParseFile on changed PS1 scripts",
+      "exitCode": 0,
+      "files": 4,
+      "parseErrors": 0
+    },
+    {
+      "command": "git -c core.safecrlf=false diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node .analysis/check-comment-decisions.mjs",
+      "exitCode": 0,
+      "result": "12 choices, first 2 red, fits 1280x720; screenshot inspected; three temporary own-browser profiles removed after normal exit"
+    },
+    {
+      "command": "skill-creator/scripts/quick_validate.py .agents/skills/delete-comment",
+      "exitCode": 0,
+      "result": "Skill is valid!",
+      "dependency": {
+        "name": "PyYAML",
+        "version": "6.0.4",
+        "sha256": "0a3a351f04dc124f9357512bdb80ac37cd1750cf1371da33e7cbb96d80ac865f",
+        "isolation": ".analysis/comment-skill-python",
+        "officialHashSource": "https://pypi.org/pypi/PyYAML/json",
+        "projectDependenciesChanged": false,
+        "globalPythonChanged": false
+      }
+    }
+  ],
+  "modifiedSourceFiles": 32,
+  "failuresAndCorrections": [
+    {
+      "check": "Initial policy check against empty baseline",
+      "exitCode": 1,
+      "expected": true,
+      "result": "All 62 original comments rejected before cleanup; post-cleanup inventory passes"
+    },
+    {
+      "check": "TOML multiline/adjacent-hash regression",
+      "exitCode": 1,
+      "expected": true,
+      "correction": "Preserve multiline quote state and recognize adjacent TOML hash comments; same test passed afterward"
+    },
+    {
+      "check": "Initial Windows output capture",
+      "exitCode": 1,
+      "correction": "PowerShell redirection treated normal Cargo stderr as an error. Reran the existing script without redirection; complete suite exit 0"
+    },
+    {
+      "check": "Official skill-creator quick_validate.py",
+      "exitCode": 1,
+      "unresolved": false,
+      "reason": "ModuleNotFoundError: yaml (PyYAML not installed)",
+      "alternative": "Independent frontmatter/name/description/placeholders/path validation passed; no dependency installed",
+      "correction": "User approved remaining work; official wheel hash checked, installed only to .analysis, official validator exit 0."
+    },
+    {
+      "check": "Decision-page browser preview",
+      "exitCode": 1,
+      "correction": "Sandboxed CDP connection failed, then a normal-permission run detected vertical overflow; reduced spacing/font size and verified 1280x720 with no overflow"
+    }
+  ],
+  "decisionsPage": {
+    "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-comment-review-decisions.html",
+    "sha256": "c76da7649fe30629bb92c79ada1bb730fca13103eceaebc266d8b3e4b5e2e116",
+    "width": 1280,
+    "height": 720,
+    "choices": 12,
+    "redItems": 2,
+    "oneScreen": true
+  },
+  "delivery": {
+    "localChanges": true,
+    "committed": false,
+    "pushed": false,
+    "newApplicationRelease": false,
+    "githubIssuePublished": false,
+    "repositoryIssue": "docs/issues/tray-probe-private-messages.md",
+    "existing014ArtifactHashesUnchanged": true
+  },
+  "completedAt": "2026-11-24T13:17:55.423Z",
+  "followup": {
+    "authorizedAt": "2026-11-24",
+    "officialSkillValidatorPassed": true,
+    "githubIssue": "pending one-time workflow",
+    "temporaryWorkflow": ".github/workflows/comment-review-issue.yml"
+  }
+}

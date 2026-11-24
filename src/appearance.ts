@@ -23,7 +23,7 @@ export function useAppearance() {
   const [appearance, setAppearance] = useState(readAppearance);
   useEffect(() => {
     applyAppearance(appearance);
-    try { localStorage.setItem(key, JSON.stringify(appearance)); } catch { /* 저장소 사용 불가 */ }
+    try { localStorage.setItem(key, JSON.stringify(appearance)); } catch {}
   }, [appearance]);
   return { appearance, setAppearance };
 }

@@ -238,7 +238,6 @@ pub(crate) mod native {
                 let mut startup: StartupInfo = unsafe { std::mem::zeroed() };
                 startup.size = std::mem::size_of::<StartupInfo>() as u32;
                 let mut process: ProcessInfo = unsafe { std::mem::zeroed() };
-                // The broker must not keep the caller's redirected pipes open.
                 if unsafe {
                     CreateProcessW(
                         wide(application).as_ptr(),

@@ -151,7 +151,6 @@ fn sha256(bytes: &[u8]) -> Result<String, String> {
     }
     let length = u32::try_from(bytes.len()).map_err(|_| "Plugin exceeds hash input limit")?;
     let mut digest = [0u8;32];
-    // Windows SHA-256 pseudo-handle, available since Windows 10.
     if unsafe { BCryptHash(0x41usize as *mut c_void, std::ptr::null(), 0, bytes.as_ptr(), length, digest.as_mut_ptr(), 32) } < 0 {
         return Err("Cannot verify the previous Docker plugin".into());
     }
@@ -287,7 +286,6 @@ fn run() -> Result<i32, String> {
     drop(plain_file(&native)?);
     let (config, _profile_guards) = profile()?;
     let arguments: Vec<OsString> = std::env::args_os().skip(1).collect();
-    // Desktop migration uses core commands and never needs the owned proxy or plugins.
     if !desktop_source_command(&arguments) {
         for name in ["docker-compose.exe", "docker-buildx.exe"] {
             install_plugin(

@@ -11,7 +11,6 @@ const release=JSON.parse(fs.readFileSync('site/release.json','utf8'));
 const cli=path.resolve(`downloads/DockSlate-${release.version}-windows-x64/bin/docker.exe`);
 const docker=async args=>(await execute(cli,args,{encoding:'utf8',windowsHide:true,timeout:90000,maxBuffer:256*1024})).stdout.trim();
 const lines=text=>text.split(/\r?\n/).filter(Boolean).sort();
-// Docker 기본 네트워크는 daemon 재시작 시 재생성되므로 사용자 네트워크만 ID까지 비교
 const inventory=async()=>({containers:lines(await docker(['ps','-a','--no-trunc','--format','{{.ID}} {{.Names}} {{.State}}'])),images:lines(await docker(['image','ls','-q','--no-trunc'])),volumes:lines(await docker(['volume','ls','-q'])),networks:lines(await docker(['network','ls','--no-trunc','--format','{{.Name}} {{.ID}} {{.Driver}} {{.Scope}}'])).map(line=>{const fields=line.split(' ');if(['bridge','host','none'].includes(fields[0]))fields[1]='<daemon-managed>';return fields.join(' ');})});
 const c=await connectNative(session.portFile),checks=[];
 const check=(name,evidence={})=>{checks.push({name,passed:true,...evidence});console.log(name);};

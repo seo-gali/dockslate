@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "1e56945aaf0b055961f67aa907fd63d84a62af1de3f2df2b01398f04e3f2211f",
+      "count": 1,
+      "file": "src-tauri/scripts/runtime-ready.sh",
+      "reason": "POSIX shell entrypoint",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "id": "b41b74641317e1b048f57ade90678666052134238a8835619a0faa63344261b1",
+      "count": 1,
+      "file": "src-tauri/scripts/runtime-setup.sh",
+      "reason": "POSIX shell entrypoint",
+      "adr": "docs/adr/0003-installer-and-runtime-readiness.md"
+    },
+    {
+      "id": "e91ba2b62ec9ac02d0fe22c26c77bbbf02e6d96c025db2c581d5115505b23fe1",
+      "count": 1,
+      "file": "src/ipc/commands.check.ts",
+      "reason": "TypeScript negative contract assertion",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "id": "8d018638fbe9edc519908f5a08f08893f766462ae126eee4ed7dfe7e2dc8d43e",
+      "count": 1,
+      "file": "src/ipc/commands.check.ts",
+      "reason": "TypeScript negative contract assertion",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "id": "6f970e8fbf1699a34ac8713b395b8a0db72413c100f715b3af3314d688798e33",
+      "count": 1,
+      "file": "src/ipc/commands.check.ts",
+      "reason": "TypeScript negative contract assertion",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "id": "3b89c1a2cbce467b41de4498c4e0a8085e0801ed5497de13ede826bcba748a57",
+      "count": 1,
+      "file": "src/ipc/commands.check.ts",
+      "reason": "TypeScript negative contract assertion",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "id": "ce62912f641bb05f1c0ef45c8fefa10c8d7e53513fdc2df7a511ad9451322f32",
+      "count": 1,
+      "file": "src/ipc/commands.check.ts",
+      "reason": "TypeScript negative contract assertion",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    },
+    {
+      "id": "5fe86a111b0cf3a7559bbca429ee179c4cdaa94dfd429fea79226bdda861845b",
+      "count": 1,
+      "file": "src/ipc/commands.check.ts",
+      "reason": "TypeScript negative contract assertion",
+      "adr": "docs/adr/0004-query-ui-and-verification-contracts.md"
+    }
+  ]
+}

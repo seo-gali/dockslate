@@ -10,6 +10,7 @@ npm ci
 | 작업 | 명령 |
 | --- | --- |
 | 엔진 비접촉 검사 | `npm run check` |
+| 주석 추가 방지 검사 | `node scripts/check-comments.mjs` |
 | Windows 소스·프로세스 검사 | `npm run check:windows -- -Offline` |
 | 앱 빌드 | `.\scripts\desktop.ps1 -Mode build` |
 | CLI 빌드 | `.\scripts\build-cli.ps1` |
@@ -61,6 +62,6 @@ npm ci
 
 ## 검사 경계
 
-`npm run check`는 workflow SHA, IPC 명령 등록, 값 비노출 시크릿 패턴 검사, 문서 링크, 엄격한 TypeScript와 Node 내장 검사를 실행합니다. `npm run check:windows -- -Offline`는 잠긴 Rust check·보안 검사, 격리 레지스트리의 PATH 검사, 실제 Windows 입출력·시간 제한 검사를 실행합니다. 사용자·시스템 PATH나 엔진을 변경하지 않습니다. CI는 npm 검사·Git 이력 패턴 검사·프런트엔드 빌드·Windows 검사를 실행합니다. 의존성 권고 검사는 주간·수동 job으로 분리합니다. 이 CI는 엔진 설치·시작·변경·설치 파일 제작·배포를 수행하지 않습니다. 네이티브 GUI 검사는 실제 WebView 포트 파일이 필요하고, 변경을 수행하는 E2E는 지정한 fixture 승인을 별도로 받습니다.
+`npm run check`는 주석 ratchet, workflow SHA, IPC 명령 등록, 값 비노출 시크릿 패턴 검사, 문서 링크, 엄격한 TypeScript와 Node 내장 검사를 실행합니다. `npm run check:windows -- -Offline`는 잠긴 Rust check·보안 검사, 격리 레지스트리의 PATH 검사, 실제 Windows 입출력·시간 제한 검사를 실행합니다. 사용자·시스템 PATH나 엔진을 변경하지 않습니다. CI는 npm 검사·Git 이력 패턴 검사·프런트엔드 빌드·Windows 검사를 실행합니다. 의존성 권고 검사는 주간·수동 job으로 분리합니다. 이 CI는 엔진 설치·시작·변경·설치 파일 제작·배포를 수행하지 않습니다. 네이티브 GUI 검사는 실제 WebView 포트 파일이 필요하고, 변경을 수행하는 E2E는 지정한 fixture 승인을 별도로 받습니다.
 
 `src/api.ts`는 호환 진입점이며 명령별 타입은 `src/ipc/`, 공유 조회 수명은 `src/queries.ts`에 있습니다. Rust `runtime.rs`는 소유권과 수명, `transport.rs`는 기존 연결의 전송을 담당합니다. 전송 분리 후에도 소유권 lease·승인 토큰·작업 잠금을 유지합니다.

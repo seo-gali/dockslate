@@ -20,7 +20,6 @@ export function copyPackageDocs(root, destination) {
     });
     return { file, text };
   });
-  // The caller supplies a fresh directory; stale documents must never enter a package.
   fs.mkdirSync(destination);
   for (const { file, text } of sources) {
     const output = path.join(destination, file);

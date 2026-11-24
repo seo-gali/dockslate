@@ -117,7 +117,6 @@ fn command(host: &str, args: &[String], timeout: Duration) -> Result<Vec<u8>, St
     let output = process::execute(&cli()?, &arguments, None, timeout, 16 * 1024 * 1024)
         .map_err(|error| command_error(host, args, timeout, &error))?;
     if !output.status.success() {
-        // CLI inspection errors can contain configuration values; do not return raw output.
         return Err(command_error(host, args, timeout, &format!("명령이 실패했습니다 (종료 {}). 엔진 연결 상태를 확인하세요.", output.status.code().unwrap_or(-1))));
     }
     Ok(output.stdout)
@@ -392,7 +391,6 @@ fn volume_references(name: &str) -> Result<Vec<Value>, String> {
     if ids.is_empty() {
         return Ok(vec![]);
     }
-    // Volume users only need state metadata; do not read unselected containers' environments.
     let mut args = vec!["container".into(), "inspect".into(), "--format".into(), r#"{"Id":{{json .Id}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}}}"#.into()];
     args.extend(ids);
     let output = command(SOURCE, &args, SOURCE_QUERY_TIMEOUT)?;
@@ -897,7 +895,6 @@ fn stop_sources(plan: &mut Plan, target: &Client) -> Result<(), String> {
     );
     let mut args = vec!["container".into(), "stop".into(), "--timeout=-1".into()];
     args.extend(running.iter().map(|v| text(v, "Id").to_owned()));
-    // A client timeout does not send SIGKILL to containers; leave the source data intact.
     let result = command(SOURCE, &args, Duration::from_secs(180));
     let after = inspect_many(SOURCE, "container", &ids)?;
     for (previous, current) in before.iter().zip(&after) {
@@ -974,7 +971,6 @@ fn helper_args(
         "--entrypoint".into(),
         "/__dockslate_copy_only".into(),
     ];
-    // Override image-declared VOLUME paths so helper creation does not allocate anonymous volumes.
     for (path, _) in image["Config"]["Volumes"].as_object().into_iter().flatten() {
         if !path.starts_with('/')
             || path == "/"

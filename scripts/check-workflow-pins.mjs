@@ -8,7 +8,6 @@ const pinned=reference=>/^[-\w.]+\/[-\w.]+(?:\/[-\w./]+)?@[a-f\d]{40}$/i.test(re
   || /^docker:\/\/[-\w.:/]+@sha256:[a-f\d]{64}$/i.test(reference)
   || (reference.startsWith('./')&&/^\.\/[-\w./]+$/.test(reference)&&!reference.slice(2).split('/').includes('..'));
 
-// Quotes/comments and run/description blocks are data, not action references.
 function lineParts(line){
   let quote='',code='',plain='';
   for(let i=0;i<line.length;i++){

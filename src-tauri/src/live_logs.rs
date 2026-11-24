@@ -21,7 +21,6 @@ const MAX_EVENT: usize = 32 * 1024;
 const FLUSH_INTERVAL: Duration = Duration::from_millis(75);
 static SESSIONS: OnceLock<Mutex<HashMap<String, Arc<Session>>>> = OnceLock::new();
 
-// 고정 소켓의 읽기 전용 스트림과 표준 입력 종료 감지
 const FOLLOW: &str = r#"
 import http.client, os, socket, sys, threading
 

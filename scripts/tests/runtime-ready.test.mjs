@@ -8,7 +8,6 @@ const shell = process.platform === 'win32' ? path.join(process.env.ProgramFiles 
 const ready = fs.readFileSync(new URL('../../src-tauri/scripts/runtime-ready.sh', import.meta.url), 'utf8').replaceAll('\r\n', '\n');
 
 function run({ failures = 0, pid1 = 'systemd', uid = 0, schema = 1, timeout = false } = {}) {
-  // Only command stubs run: no WSL process, service, registry or runtime is touched.
   const script = `
 id() { printf '%s\\n' '${uid}'; }
 cat() { case "$1" in /etc/dockslate/schema) printf '%s\\n' '${schema}';; /proc/1/comm) printf '%s\\n' '${pid1}';; *) return 99;; esac; }

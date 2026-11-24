@@ -1194,7 +1194,6 @@ mod windows {
                 return Ok(());
             }
             idle = Instant::now();
-            // Keep one instance owned while replacing the listener.
             let next = listener(false, &security)?;
             let accepted = std::mem::replace(&mut listener_pipe, next);
             workers.push(thread::spawn(move || connection(accepted)));

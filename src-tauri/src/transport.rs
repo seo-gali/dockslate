@@ -322,7 +322,6 @@ impl Transport {
 
     pub(crate) fn spawn_dial_stdio(&self) -> Result<Child, String> {
         self.verify_tool_start()?;
-        // Guest session identity and bounded process lifetime.
         const RELAY: &str = r#"read -r stat < /proc/$$/stat || exit 125
 stat="${stat##*) }"
 set -- $stat
@@ -374,7 +373,6 @@ exec /usr/bin/timeout --foreground --signal=TERM --kill-after=5s 86400s /usr/bin
             return Err("Invalid Docker proxy guest session".into());
         }
         self.verify_tool_session()?;
-        // PID reuse check before each process-group signal.
         const STOP: &str = r#"pid=$1; expected=$2
 check() {
   read -r stat < "/proc/$pid/stat" 2>/dev/null || return 1
