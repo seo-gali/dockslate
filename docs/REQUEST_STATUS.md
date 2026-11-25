@@ -1,10 +1,10 @@
 # 사용자 요청 체크리스트
 
-갱신: 2026-11-23. 공개 파일은 **0.1.13 미서명 개발판**이며, 아래 조회 시간 초과 수정을 반영한 0.1.14 설치 EXE·ZIP을 제작·검증했다. 공개 사이트의 기존 파일과 구분한다. 예전 검사 수치·성공·미검증은 해당 버전의 기록으로 읽는다.
+공개 파일은 **0.1.14 미서명 개발판**이며, 아래 조회 시간 초과 수정을 포함한다. 앱·ZIP의 DeepInstinct 탐지 각 1건을 사용자 승인에 따라 고지한다. 오탐 여부는 미확인이며 공개 파일·검사 시각은 [공개 기록](results/public-distribution-0.1.14.json)이 기준이다. 예전 검사 수치·성공·미검증은 해당 버전의 기록으로 읽는다.
 
 ## 현재 소스 후속 수정
 
-Docker Desktop 목록·이전 대상 조회에서 전용 DockSlate 프록시와 Compose·Buildx 파일 준비를 불필요하게 반복하던 경로를 제거했다. 실패 안내는 엔진·명령 단계·제한 시간을 구분하며 민감한 인수·응답 원문은 표시하지 않는다. Docker Desktop 원본 조회는 명령당 30초에서 120초로 늘리고, 승인 유효 시간은 검사 완료 뒤부터 120초로 계산한다. 원본 중지·복사 제한과 엔진 ID·승인·데이터 보존 검사는 유지한다. [수정·회귀 검사](results/migration-timeout.json)는 공개 0.1.13 검사와 구분한다. 실제 사용자 PC의 당시 시간 초과 원인 전체와 Docker Desktop 두 엔진 이전은 미확인이다.
+Docker Desktop 목록·이전 대상 조회에서 전용 DockSlate 프록시와 Compose·Buildx 파일 준비를 불필요하게 반복하던 경로를 제거했다. 실패 안내는 엔진·명령 단계·제한 시간을 구분하며 민감한 인수·응답 원문은 표시하지 않는다. Docker Desktop 원본 조회는 명령당 30초에서 120초로 늘리고, 승인 유효 시간은 검사 완료 뒤부터 120초로 계산한다. 원본 중지·복사 제한과 엔진 ID·승인·데이터 보존 검사는 유지한다. [수정·회귀 검사](results/migration-timeout.json)는 공개 0.1.14에 포함된다. 실제 사용자 PC의 당시 시간 초과 원인 전체와 Docker Desktop 두 엔진 이전은 미확인이다.
 
 ## 현재 기능
 
@@ -161,12 +161,12 @@ Compose 가져오기 제한: 1~16개 서비스, 프로젝트 내부 상대 컨�
 
 ## 근거
 
-- [현재 공개 0.1.13 제작·검사](results/release-0.1.13.md)
+- [현재 공개 0.1.14 제작·검사](results/release-0.1.14.md)
 - [이전 프런트엔드·성능 검증](results/refinement-verification.md)
 - [이전 확장 기능 검증](results/workbench-verification.md)
 - [독립 엔진 검증](results/standalone-runtime-verification.md)
 - [보안 경고 조사](results/browsing-data-alert.md)
-- [현재 공개 파일 해시](results/public-distribution-0.1.13.json) · [변경 가능한 로컬 제작 명세](results/installer-engine-integration.json)
+- [현재 공개 파일 해시](results/public-distribution-0.1.14.json) · [변경 가능한 로컬 제작 명세](results/installer-engine-integration.json)
 - [이전 EXE 해시](results/refinement-build.json)
 - [file://·다운로드 실제 검사](results/guide-delivery-e2e.json)
 

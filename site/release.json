@@ -1,24 +1,24 @@
 {
-  "version": "0.1.13",
+  "version": "0.1.14",
   "notices": {
     "file": "THIRD_PARTY_NOTICES.md",
-    "sourceCommit": "7844ec0eff90c8b58c6021dfdd91901d177f38e8",
+    "sourceCommit": "003520b0ee33402b0633331c2f51e6579695fb17",
     "bytes": 3844,
-    "sha256": "BB3CCBECBAB3B45722160872D649A50D3F26DBF7DC2B026AD25B6A45BF3F7BAC"
+    "sha256": "A8DF9FA12832B5B7CE07CF3A7CE4479E64BEFC2CCD3107D75EEB6F5326F5B469"
   },
   "installer": {
-    "file": "DockSlate_0.1.13_x64-setup.exe",
-    "bytes": 41187337,
-    "sha256": "5111310CD3DEACF12477D9D875A9C8499C12B4A6A5CA79A20E09459C975B0AB8"
+    "file": "DockSlate_0.1.14_x64-setup.exe",
+    "bytes": 41185627,
+    "sha256": "D721348660753ABA24A844ABF368350CEC54223B32F3823DFE79EA3BAAA6B53F"
   },
   "zip": {
-    "file": "DockSlate-0.1.13-windows-x64.zip",
-    "bytes": 55028090,
-    "sha256": "D7A372A9CBDCE6B46944E830E87D0CCD682A4767359CF599C9798C08A16D8744"
+    "file": "DockSlate-0.1.14-windows-x64.zip",
+    "bytes": 55032221,
+    "sha256": "01EEFB5456A2368363734FC7F8F802E468A66031486A8BC765116060DBACEC53"
   },
   "licenses": {
-    "file": "DockSlate-0.1.13-third-party-licenses.zip",
-    "bytes": 5194698,
-    "sha256": "42783CBEF56A9AEE18D77CC07FE646AD145575A844629557476D95E15D7E35D2"
+    "file": "DockSlate-0.1.14-third-party-licenses.zip",
+    "bytes": 5194697,
+    "sha256": "FC7B6456E539E0DAD30D1D3A9626CB54D2697822D10C1CAD7EE835FC06213FE1"
   }
 }
