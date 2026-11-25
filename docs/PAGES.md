@@ -53,6 +53,6 @@ npm run build:site
 
 [로컬 사이트 검사](results/pages-e2e.json)는 파일·HTTP 렌더링, 안내서, 키보드·모바일, SEO와 다운로드를 확인합니다. [안내서 검사](results/guide-delivery-e2e.json)는 사이트 원본·사이트 출력·앱 출력의 독립 HTML을 확인합니다. 두 기록의 실행 날짜와 공개 배포 검사 여부를 구분하세요.
 
-[0.1.13 공개 파일·사이트 검사](results/public-distribution-0.1.13.json)는 공개 파일 4개·다운로드 링크·정적 자산·옛 고지 주소 20개를 확인했습니다. [0.1.6 공개 다운로드](results/public-release-0.1.6.json)와 [공개 SEO](results/pages-seo.json)는 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
+[0.1.14 공개 파일·사이트 검사](results/public-distribution-0.1.14.json)는 공개 파일 4개·다운로드 링크·앱/ZIP 두 탐지 고지·정적 자산·옛 고지 주소 22개를 확인했습니다. [0.1.13 검사](results/public-distribution-0.1.13.json)·[0.1.6 공개 다운로드](results/public-release-0.1.6.json)·[공개 SEO](results/pages-seo.json)는 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
 
 [사이트 화면](assets/site-desktop.png) · [모바일](assets/site-mobile.png) · [404](assets/site-404-mobile.png) · [안내서](assets/guide-desktop.png)
