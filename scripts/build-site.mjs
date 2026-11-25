@@ -11,12 +11,12 @@ const siteUrl = 'https://seo-gali.github.io/dockslate/';
 const releasesUrl = 'https://github.com/seo-gali/dockslate/releases/';
 const assetUrl = releasesUrl + 'download/v' + release.version + '/';
 const values = { VERSION: release.version, SITE_URL: siteUrl, RELEASE_URL: releasesUrl + 'tag/v' + release.version };
-const flagged = published.receipt.virusTotal.files.find(scan => scan.detections > 0);
+const flagged = published.receipt.virusTotal.files.filter(scan => scan.detections > 0);
 values.SECURITY_NOTE = '미서명 개발 버전';
 values.SECURITY_ALERT_CLASS = '';
-if (flagged) {
+if (flagged.length) {
   const escape = value => value.replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  values.SECURITY_NOTE += ` · ${escape(flagged.detectionVendors[0])}: DockSlate.exe 탐지 ${flagged.detections}건 · 오탐 여부 미확인. <a href="https://www.virustotal.com/gui/file/${flagged.sha256.toLowerCase()}/detection">앱 EXE 검사 결과</a>`;
+  values.SECURITY_NOTE += ' · ' + flagged.map(scan => `${escape(scan.detectionVendors[0])}: ${scan.file === release.zip.file ? '포터블 ZIP' : '앱 EXE'} 탐지 ${scan.detections}건 · <a href="https://www.virustotal.com/gui/file/${scan.sha256.toLowerCase()}/detection">검사 결과</a>`).join(' · ') + ' · 오탐 여부 미확인.';
   values.SECURITY_ALERT_CLASS = 'has-detection';
 }
 let verifiedDownloads = 0;

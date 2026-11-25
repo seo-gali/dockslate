@@ -66,6 +66,30 @@ test('an inner app detection requires a matching explicit approval and prereleas
   assert.throws(() => readPublishedRelease(f.root), /antivirus/);
 });
 
+test('portable detection requires exact approval while installer detections remain blocked', t => {
+  const f = fixture(t);
+  const scan = f.receipt.virusTotal.files[1];
+  Object.assign(scan, {file:f.release.zip.file,detections:1,detectionVendors:['DeepInstinct']});
+  f.receipt.github.prerelease = true;
+  f.save(); assert.throws(() => readPublishedRelease(f.root), /antivirus|approval/);
+  const approval = {userApproved:true,sha256:scan.sha256,detections:1,vendor:'DeepInstinct'};
+  f.receipt.virusTotal.publicationApprovals = [approval]; f.save();
+  assert.doesNotThrow(() => readPublishedRelease(f.root));
+  for (const change of [{userApproved:false},{sha256:'B'.repeat(64)},{detections:2},{vendor:'Other'}]) {
+    f.receipt.virusTotal.publicationApprovals = [{...approval,...change}]; f.save();
+    assert.throws(() => readPublishedRelease(f.root), /antivirus|approval/);
+  }
+  f.receipt.virusTotal.publicationApprovals = [approval];
+  f.receipt.github.prerelease = false; f.save();
+  assert.throws(() => readPublishedRelease(f.root), /antivirus|approval/);
+  f.receipt.github.prerelease = true; scan.detectionVendors.push('Other'); f.save();
+  assert.throws(() => readPublishedRelease(f.root), /antivirus|approval/);
+  scan.detectionVendors = ['DeepInstinct'];
+  f.receipt.virusTotal.files[0].detections = 1;
+  f.receipt.virusTotal.publicationApprovals.push({...approval,sha256:f.release.installer.sha256}); f.save();
+  assert.throws(() => readPublishedRelease(f.root), /antivirus/);
+});
+
 test('tampered and oversized local assets fail without falling back to older bytes', async t => {
   const f = fixture(t), published = readPublishedRelease(f.root);
   const file = path.join(f.root, 'downloads/setup.exe');

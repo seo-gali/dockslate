@@ -13,6 +13,12 @@ export function readPublishedRelease(root) {
   requireFact(/^\d+\.\d+\.\d+$/.test(release.version), 'Invalid public release version.');
   const receipt = read(path.join(root, `docs/results/public-distribution-${release.version}.json`));
   requireFact(receipt.published === true && receipt.version === release.version && receipt.github?.tag === `v${release.version}`, 'Only an already published release may be used by the website.');
+  const approvals = [...(receipt.virusTotal?.publicationApprovals ?? []), ...(receipt.virusTotal?.publicationApproval ? [receipt.virusTotal.publicationApproval] : [])];
+  const approvedDetection = scan => scan && (scan.file === 'DockSlate.exe' || (scan.file === release.zip.file && scan.sha256 === release.zip.sha256)) &&
+    scan.completed === true && scan.totalEngines > 0 && receipt.github.prerelease === true &&
+    approvals.some(approval => approval?.userApproved === true && /^[A-F0-9]{64}$/.test(approval.sha256) &&
+      approval.sha256 === scan.sha256?.toUpperCase() && approval.detections === scan.detections &&
+      scan.detectionVendors?.length === 1 && approval.vendor === scan.detectionVendors[0]);
   for (const key of ['installer', 'zip', 'licenses']) {
     const asset = release[key];
     requireFact(validAsset(asset), `Invalid release metadata: ${key}`);
@@ -22,18 +28,13 @@ export function readPublishedRelease(root) {
     }
     if (key !== 'licenses') {
       const scan = receipt.virusTotal?.files?.find(entry => entry.sha256?.toUpperCase() === asset.sha256);
-      requireFact(scan?.completed === true && scan.detections === 0 && scan.totalEngines > 0, `Unresolved antivirus result: ${key}`);
+      requireFact(scan?.completed === true && scan.totalEngines > 0 && (scan.detections === 0 || (key === 'zip' && approvedDetection(scan))), `Unresolved antivirus result: ${key}`);
     }
   }
   for (const scan of receipt.virusTotal.files) {
     requireFact(Number.isSafeInteger(scan.detections) && scan.detections >= 0, 'Invalid antivirus detection count.');
     if (scan.detections === 0) continue;
-    const approval = receipt.virusTotal.publicationApproval;
-    requireFact(scan.file === 'DockSlate.exe' && scan.completed === true && scan.totalEngines > 0 &&
-      receipt.github.prerelease === true && approval?.userApproved === true &&
-      /^[A-F0-9]{64}$/.test(approval.sha256) && approval.sha256 === scan.sha256?.toUpperCase() &&
-      approval.detections === scan.detections && scan.detectionVendors?.length === 1 &&
-      approval.vendor === scan.detectionVendors[0], 'Unresolved antivirus result requires explicit approval for this exact app hash.');
+    requireFact(approvedDetection(scan), 'Unresolved antivirus result requires explicit approval for this exact file hash.');
   }
   const sums = receipt.github.assets.find(entry => entry.name === 'SHA256SUMS.txt');
   requireFact(validAsset({ ...sums, file: sums?.name }), 'Published checksum receipt is missing.');

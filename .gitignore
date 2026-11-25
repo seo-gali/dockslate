@@ -26,3 +26,7 @@ src-tauri/gen/
 !/downloads/DockSlate_0.1.10_x64-setup.exe
 !/downloads/DockSlate-0.1.10-windows-x64.zip
 !/downloads/DockSlate-0.1.10-third-party-licenses.zip
+
+!/downloads/DockSlate_0.1.14_x64-setup.exe
+!/downloads/DockSlate-0.1.14-windows-x64.zip
+!/downloads/DockSlate-0.1.14-third-party-licenses.zip
