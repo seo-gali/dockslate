@@ -12,6 +12,18 @@
     {
       "path": "docs/releases/v0.1.15.md",
       "sha256": "FAD311630378DD355C70C983E41F28B3CFA5B5F35BBED9AD4220708EAE2D1203"
+    },
+    {
+      "path": "downloads/DockSlate_0.1.15_x64-setup.exe",
+      "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9"
+    },
+    {
+      "path": "downloads/DockSlate-0.1.15-windows-x64.zip",
+      "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909"
+    },
+    {
+      "path": "downloads/DockSlate-0.1.15-third-party-licenses.zip",
+      "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745"
     }
   ]
 }
