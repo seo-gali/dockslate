@@ -2,7 +2,7 @@
   "observedAt": "2026-11-26T11:47:46.377Z",
   "scope": "0.1.15 build and exact package verification; actual installation and migration are separate",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
-  "completed": false,
+  "completed": true,
   "checks": {
     "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
@@ -14,10 +14,12 @@
     "latestNativeFlowExecuted": false,
     "componentFixtureChecks": 9,
     "offlineCliChecks": 6,
-    "installerBuildExit": null,
+    "installerBuildExit": 0,
     "installerExecuted": false,
     "dependencyVersionsChanged": false,
-    "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15"
+    "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15",
+    "remoteInstallerBuildExit": 0,
+    "readOnlyNativeExecuted": true
   },
   "artifacts": [
     {
@@ -31,12 +33,12 @@
       "sha256": "3EB9CBCC658312CC721FC1C31498FDD0A12FBC8D976A95D52539E4F035E4069D"
     }
   ],
-  "installerFilePresent": false,
+  "installerFilePresent": true,
   "blocker": null,
   "remaining": [
-    "Installer and portable verification in progress",
-    "Unsigned; fresh VirusTotal results pending",
-    "Actual Desktop migration, full setup/uninstall/boot/rollback not performed"
+    "Unsigned development build; no signing certificate",
+    "Actual Desktop full migration, installation/upgrade/uninstall, cold boot and rollback not performed",
+    "Fresh VirusTotal reports and public publication pending"
   ],
   "protectionEvidence": {
     "record": "2026-10-19 22:16:01.350  [17364:9700]action:PDPEngTips|process:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Bin\\makensis.exe|file:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Contrib\\Graphics\\Wizard\\win.bmp|remember:1",
@@ -144,17 +146,21 @@
     "securitySettingsChanged": false
   },
   "installerDelivery": {
-    "observedAt": "2026-11-23T13:23:25.0712238Z",
-    "runId": 45182304147,
-    "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
-    "artifactId": 14822656254,
-    "githubDigest": "sha256:902d9e6063499b2a9d134b3d8b15e6ad4ccdeecc744314ab853af6f6c1f165bd",
+    "version": "0.1.15",
+    "observedAt": "2026-11-26T11:55:22.6838129Z",
+    "runId": 45814179184,
+    "sourceCommit": "9fd842f10dd4d2256750847e163e24c590d6805b",
+    "artifactId": 15115275324,
+    "githubDigest": "sha256:8d41f8fd5bb2396a8fc09d6b5575679e3e044ea2ae476ab66d6ce3f7d0801d04",
     "githubDigestVerified": true,
-    "installerSha256": "D721348660753ABA24A844ABF368350CEC54223B32F3823DFE79EA3BAAA6B53F",
-    "installerBytes": 41185627,
-    "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-timeout-20261123\\DockSlate_0.1.14_x64-setup.exe",
+    "installerSha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9",
+    "installerBytes": 41026459,
+    "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-release015-20261126\\DockSlate_0.1.15_x64-setup.exe",
     "installerExecuted": false,
-    "signature": "NotSigned"
+    "signature": "NotSigned",
+    "embeddedApplicationAndLauncherMatch": true,
+    "sharedPayloadFilesVerified": 431,
+    "packagedDocumentsVerified": 5
   },
   "installerPathRegressionReport": "docs/results/installer-path-e2e.json",
   "tableUiBuild": {
@@ -251,16 +257,17 @@
     "zipFilesVerified": 435
   },
   "previousInstallerDelivery": {
-    "version": "0.1.13",
-    "file": "DockSlate_0.1.13_x64-setup.exe",
-    "bytes": 41187337,
-    "sha256": "5111310CD3DEACF12477D9D875A9C8499C12B4A6A5CA79A20E09459C975B0AB8",
-    "sourceCommit": "7844ec0eff90c8b58c6021dfdd91901d177f38e8",
-    "github": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.13",
+    "observedAt": "2026-11-23T13:23:25.0712238Z",
+    "runId": 45182304147,
+    "sourceCommit": "eb30c7f2985863fc209dff99813501bc9ccb8189",
+    "artifactId": 14822656254,
+    "githubDigest": "sha256:902d9e6063499b2a9d134b3d8b15e6ad4ccdeecc744314ab853af6f6c1f165bd",
+    "githubDigestVerified": true,
+    "installerSha256": "D721348660753ABA24A844ABF368350CEC54223B32F3823DFE79EA3BAAA6B53F",
+    "installerBytes": 41185627,
+    "target": "D:\\01_Programming\\08_AI\\REA\\dockslate\\downloads\\local-timeout-20261123\\DockSlate_0.1.14_x64-setup.exe",
     "installerExecuted": false,
-    "fullSetupVerified": false,
-    "sharedPayloadFilesVerified": 431,
-    "packagedDocumentsVerified": 5
+    "signature": "NotSigned"
   },
   "previousPortableDelivery": {
     "version": "0.1.13",
