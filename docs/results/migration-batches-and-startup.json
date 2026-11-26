@@ -1,0 +1,168 @@
+{
+  "observedAt": "2026-11-26T10:41:30.191Z",
+  "baseCommit": "a1680102e562b85a18ca4d79821e58116af3622f",
+  "scope": "Unpublished source changes after frozen public 0.1.14 assets",
+  "checks": [
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "nodeTests": 32,
+      "ipcContracts": 90,
+      "nativeCommands": 93
+    },
+    {
+      "command": "npm run check:windows -- -Offline",
+      "exitCode": 0,
+      "rustSecurityTests": 36,
+      "installerPathFixtures": 11,
+      "processChecks": 7,
+      "realUserPathUnchanged": true,
+      "realMachinePathUnchanged": true,
+      "engineChanged": false
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "node .analysis/check-migration-batches-ui.mjs",
+      "exitCode": 0,
+      "componentChecks": [
+        "Background inventory progress and retry clear stale errors",
+        "Project and global selection deduplicate shared resources",
+        "Approved transfer removes completed items without deleting sources",
+        "Image exclusion re-inspects remaining images and displays all tags",
+        "Container exclusion obtains and executes only the replacement approval token",
+        "App-launch default, opt-out, Windows login selection and translation",
+        "Browser context menu is replaced by restricted text editing actions",
+        "Container selection enables and disables auto-start; CPU units are explicit",
+        "Actual App starts the owned engine once by default and respects opt-out and blocked ownership"
+      ],
+      "rendererExceptions": [],
+      "scope": "Real React components with explicit in-memory IPC fixtures; no Docker or registry mutations",
+      "stagesWithoutHorizontalOverflow": [
+        "projects",
+        "startup",
+        "containers"
+      ]
+    },
+    {
+      "command": "cargo test --locked --offline --manifest-path src-tauri/Cargo.toml security_tests -- --test-threads=1",
+      "exitCode": 0,
+      "rustSecurityTests": 37,
+      "localAppData": "isolated project fixture directory"
+    },
+    {
+      "command": "cargo build --locked --offline --release --manifest-path src-tauri/Cargo.toml --bin dockslate",
+      "exitCode": 0,
+      "profile": "optimized",
+      "artifact": "src-tauri/target/release/dockslate.exe",
+      "bytes": 5298688,
+      "sha256": "fdd090c91d8fed32459c29b9c4801cc9c088bb82fe2eb96c6052c74d1f6035ee",
+      "installer": false,
+      "published": false
+    }
+  ],
+  "limitations": [
+    "No actual Docker Desktop two-engine migration on this PC",
+    "No existing user containers, images or volumes changed",
+    "No real-engine multi-tag deletion or container restart-policy update executed",
+    "Windows login and PC reboot behavior not exercised",
+    "New installer EXE and portable ZIP are not published; frozen public 0.1.14 files preserved",
+    "Legacy imports without a completion receipt are not hidden by name alone"
+  ],
+  "selfAudit": [
+    "Removed obsolete multiple-tag rejection and translation; all approved references use non-force deletion",
+    "Aligned old auto-start defaults and 128-item documentation with current source while preserving public 0.1.14 history",
+    "Finished read-job payloads are removed after delivery instead of retained as a global result cache",
+    "Actual 4096-selection boundary is checked in addition to duplicate and path rejection",
+    "Selection exclusion obtains a replacement backend approval; no excluded IDs execute"
+  ],
+  "deletedTrackedFiles": [],
+  "removed": [
+    "Unconditional multiple-tag rejection",
+    "Obsolete multiple-tag rejection translation",
+    "Browser refresh/save/print/back/share context menu",
+    "Stale previous job errors on retry"
+  ],
+  "browserFixtureCleanup": {
+    "profiles": 6,
+    "files": 1120,
+    "bytes": 63792977,
+    "scope": "Only owned verification browser profiles; screenshots, result records and personal profiles preserved"
+  },
+  "decisions": {
+    "width": 1280,
+    "height": 720,
+    "scrollWidth": 1280,
+    "scrollHeight": 720,
+    "cards": 12,
+    "red": 3,
+    "redFirst": true,
+    "passed": true,
+    "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-migration-startup-decisions.html",
+    "sha256": "17c9733635c737f2e8c3201f4dc14a8c72d98d1b44ed14742c7159705f6a7503",
+    "profile": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\migration-decisions-profile-4aKilX",
+    "pid": 20972
+  },
+  "changedFiles": [
+    "docs/CODING_STANDARDS.md",
+    "docs/DESIGN.md",
+    "docs/MIGRATION.md",
+    "docs/REQUEST_STATUS.md",
+    "docs/USER_GUIDE.md",
+    "docs/adr/README.md",
+    "src-tauri/src/docker.rs",
+    "src-tauri/src/image_removal.rs",
+    "src-tauri/src/main.rs",
+    "src-tauri/src/migration.rs",
+    "src-tauri/src/transport.rs",
+    "src/App.tsx",
+    "src/ContainerUsage.tsx",
+    "src/ImageRemovalDialog.tsx",
+    "src/MigrationPanel.tsx",
+    "src/actions.tsx",
+    "src/ipc/commands.ts",
+    "src/ipc/contracts/core.ts",
+    "src/ipc/contracts/images.ts",
+    "src/ipc/contracts/migration.ts",
+    "src/ipc/contracts/runtime.ts",
+    "src/locales.en.ts",
+    "src/main.tsx",
+    "src/pages/Containers.tsx",
+    "src/startup.tsx",
+    "docs/adr/0006-migration-progress-and-image-references.md",
+    "docs/results/migration-batches-and-startup.json",
+    "scripts/tests/migration-selection.test.mjs",
+    "scripts/tests/startup-preference.test.mjs",
+    "src-tauri/src/migration/batch.rs",
+    "src-tauri/src/migration/receipts.rs",
+    "src/context-menu.ts",
+    "src/migration-selection.ts",
+    "src/startup-preference.ts"
+  ],
+  "frozenPublicAssets": [
+    {
+      "name": "DockSlate_0.1.14_x64-setup.exe",
+      "sha256": "D721348660753ABA24A844ABF368350CEC54223B32F3823DFE79EA3BAAA6B53F",
+      "preserved": true
+    },
+    {
+      "name": "DockSlate-0.1.14-windows-x64.zip",
+      "sha256": "01EEFB5456A2368363734FC7F8F802E468A66031486A8BC765116060DBACEC53",
+      "preserved": true
+    },
+    {
+      "name": "DockSlate-0.1.14-third-party-licenses.zip",
+      "sha256": "FC7B6456E539E0DAD30D1D3A9626CB54D2697822D10C1CAD7EE835FC06213FE1",
+      "preserved": true
+    }
+  ],
+  "packageVersionChanged": false,
+  "dependenciesChanged": false,
+  "lockFilesChanged": false,
+  "committed": false,
+  "pushed": false,
+  "published": false,
+  "completedAt": "2026-11-26T10:44:34.237Z"
+}

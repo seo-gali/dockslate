@@ -38,10 +38,24 @@ static MUTATION: Mutex<()> = Mutex::new(());
 static EXIT_PENDING: AtomicBool = AtomicBool::new(false);
 static INSTALLER_SETUP: AtomicBool = AtomicBool::new(false);
 static AUTO_START_ALLOWED: AtomicBool = AtomicBool::new(true);
+static ENGINE_FROM_LOGIN: AtomicBool = AtomicBool::new(false);
 
 #[tauri::command]
 fn desktop_tray_language(app: tauri::AppHandle, language: String) -> Result<(), String> {
     tray::set_language(&app, &language)
+}
+
+#[tauri::command]
+fn desktop_edit_menu(window: tauri::WebviewWindow, editable: bool) -> Result<(), String> {
+    use tauri::menu::{Menu, PredefinedMenuItem};
+    let copy = PredefinedMenuItem::copy(&window, None).map_err(|error| error.to_string())?;
+    let select_all = PredefinedMenuItem::select_all(&window, None).map_err(|error| error.to_string())?;
+    let menu = if editable {
+        let cut = PredefinedMenuItem::cut(&window, None).map_err(|error| error.to_string())?;
+        let paste = PredefinedMenuItem::paste(&window, None).map_err(|error| error.to_string())?;
+        Menu::with_items(&window, &[&cut, &copy, &paste, &select_all])
+    } else { Menu::with_items(&window, &[&copy, &select_all]) }.map_err(|error| error.to_string())?;
+    window.popup_menu(&menu).map_err(|error| error.to_string())
 }
 
 fn request_exit(app: &tauri::AppHandle, code: i32) {
@@ -75,6 +89,7 @@ async fn startup_settings() -> Result<Value, String> {
     read(|| {
         let mut value = startup::settings()?;
         value["autoStartAllowed"] = Value::Bool(AUTO_START_ALLOWED.load(Ordering::Acquire));
+        value["engineFromLogin"] = Value::Bool(ENGINE_FROM_LOGIN.load(Ordering::Acquire));
         Ok(value)
     }).await
 }
@@ -84,6 +99,7 @@ async fn startup_set(start_engine: bool, start_app: bool) -> Result<Value, Strin
     mutate(move || {
         let mut value = startup::set(start_engine, start_app)?;
         value["autoStartAllowed"] = Value::Bool(AUTO_START_ALLOWED.load(Ordering::Acquire));
+        value["engineFromLogin"] = Value::Bool(ENGINE_FROM_LOGIN.load(Ordering::Acquire));
         Ok(value)
     }).await
 }
@@ -670,7 +686,7 @@ fn main() {
         let mode = arguments.next().unwrap_or_default();
         if arguments.next().is_some() { std::process::exit(2); }
         match startup::from_login(&mode) {
-            Ok(true) => (),
+            Ok(true) => ENGINE_FROM_LOGIN.store(mode == "both", Ordering::Release),
             Ok(false) => return,
             Err(error) => { eprintln!("DockSlate startup: {error}"); std::process::exit(1); }
         }
@@ -765,7 +781,7 @@ fn main() {
             runtime_stop,
             desktop_restart_elevated,
             desktop_open_windows_features,
-            desktop_tray_language
+            desktop_tray_language, desktop_edit_menu
         ])
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {

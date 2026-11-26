@@ -1,0 +1,115 @@
+{
+  "version": "0.1.15",
+  "observedAt": "2026-11-26T11:47:46.391Z",
+  "published": false,
+  "status": "Verified app and CLI built; installer and portable packaging in progress",
+  "outputDirectory": "downloads/local-release015-20261126",
+  "artifacts": [
+    {
+      "name": "dockslate.exe",
+      "bytes": 5298688,
+      "sha256": "19B8E47588FF3164ED3C1CC95E42788BF365FDCC0E0E3E1AF26E6CD2339AEAE0"
+    },
+    {
+      "name": "docker.exe",
+      "bytes": 320512,
+      "sha256": "3EB9CBCC658312CC721FC1C31498FDD0A12FBC8D976A95D52539E4F035E4069D"
+    }
+  ],
+  "checks": {
+    "windowsReleaseBuildExit": 0,
+    "frontendBuildExit": 0,
+    "rustCheckExit": 0,
+    "nodeTests": 32,
+    "rustSecurityTests": 37,
+    "installerPathChecks": 11,
+    "windowsProcessChecks": 7,
+    "latestNativeFlowExecuted": false,
+    "componentFixtureChecks": 9,
+    "offlineCliChecks": 6,
+    "installerBuildExit": null,
+    "installerExecuted": false,
+    "dependencyVersionsChanged": false,
+    "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15",
+    "package": {
+      "observedAt": "2026-11-26T20:48:51.9615548+09:00",
+      "portableFiles": 435,
+      "licenseFiles": 410,
+      "allZipFileSizesAndSha256Verified": true,
+      "candidateBinariesMatch": true,
+      "signature": "NotSigned",
+      "installerCreated": false,
+      "installerExecuted": false,
+      "engineChanged": false
+    },
+    "readOnlyNative": {
+      "exitCode": 0,
+      "reportExists": true,
+      "engineChanged": false,
+      "engine": "connected",
+      "containers": 6,
+      "unapprovedStartRejected": true,
+      "unapprovedDeleteRejected": true
+    },
+    "offlineCli": {
+      "observedAt": "2026-11-26T11:42:55.329Z",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.8.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f"
+        },
+        {
+          "name": "previous official plugins upgraded to exact new payloads",
+          "passed": true
+        },
+        {
+          "name": "unknown plugin preserved and execution blocked",
+          "passed": true
+        }
+      ],
+      "engineChanged": false,
+      "existingUserProfileUsed": false
+    }
+  },
+  "build": {
+    "baseCommit": "a1680102e562b85a18ca4d79821e58116af3622f",
+    "sourceCommit": null,
+    "inputSha256": "FFB9B16288B306B7F05865EE13C62DC313B6FDF433EF4E1B2B25C91F6EAD8D21",
+    "inputBytes": 2247625,
+    "localNsisFailure": "NSIS failed opening src-tauri/installer/user-path.ps1; one normal-user attempt; no protection or ACL changes",
+    "remotePackagingApproved": true
+  },
+  "remaining": [
+    "Installer and portable verification in progress",
+    "Unsigned; fresh VirusTotal results pending",
+    "Actual Desktop migration, full setup/uninstall/boot/rollback not performed"
+  ],
+  "packagedDocumentsAreBuildTimeSnapshots": true
+}

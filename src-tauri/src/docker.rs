@@ -35,6 +35,7 @@ struct Preview {
     kind: String,
     ids: Vec<String>,
     image_ids: Vec<String>,
+    images: Vec<Value>,
     cache_ids: Vec<String>,
     expires: u64,
     identity: String,
@@ -563,7 +564,7 @@ fn container_action_with_client(client: &Client, id: &str, action: &str, current
 
 pub fn containers_action(ids: Vec<String>, action: String) -> Result<Value, String> {
     if ids.is_empty() || ids.len() > 256 || ids.iter().any(|id| !container_id(id))
-        || !["start", "stop", "restart"].contains(&action.as_str()) {
+        || !["start", "stop", "restart", "autostart-enable", "autostart-disable"].contains(&action.as_str()) {
         return Err("시작·중지·재시작할 컨테이너 ID를 1~256개 지정하세요.".into());
     }
     let mut order: [u8; 256] = std::array::from_fn(|index| index as u8);
@@ -589,6 +590,15 @@ pub fn containers_action(ids: Vec<String>, action: String) -> Result<Value, Stri
                     let container = &containers[container_order[position]];
                     let name = container["Names"].as_array().and_then(|names| names.first()).and_then(Value::as_str).unwrap_or(id).trim_start_matches('/');
                     let current_state = text(container,"State");
+                    if let Some(policy) = autostart_policy(&action) {
+                        crate::resources::EngineBinding::capture(&client).verify(&client)?;
+                        client.transport.set_restart_policy(&client.api, id, policy)?;
+                        let inspected = client.json("GET", &format!("/containers/{id}/json"))?;
+                        if inspected["Id"] != *id || inspected["HostConfig"]["RestartPolicy"]["Name"] != policy {
+                            return Err("컨테이너 자동 시작 설정을 확인하지 못했습니다. 다시 조회하세요.".into());
+                        }
+                        return Ok(json!({"id":id,"name":name,"outcome":"completed","restartPolicy":policy}));
+                    }
                     let active = ["running","paused","restarting"].contains(&current_state);
                     if (action == "start" && active) || (action != "start" && !active) {
                         return Ok(json!({"id":id,"name":name,"outcome":"skipped","state":current_state}));
@@ -609,6 +619,25 @@ pub fn containers_action(ids: Vec<String>, action: String) -> Result<Value, Stri
     });
     let results: Vec<_> = results.into_iter().take(ids.len()).enumerate().map(|(index,result)| result.into_inner().unwrap_or_else(|| json!({"id":ids[index],"name":ids[index],"outcome":"failed","error":"컨테이너 작업 결과를 확인할 수 없습니다."}))).collect();
     Ok(json!({"results":results}))
+}
+
+fn autostart_policy(action: &str) -> Option<&'static str> {
+    match action { "autostart-enable" => Some("always"), "autostart-disable" => Some("no"), _ => None }
+}
+
+#[cfg(test)]
+mod startup_security_tests {
+    use super::*;
+    #[test]
+    fn autostart_and_deletion_are_explicit_and_reject_unknown_states() {
+        assert_eq!(autostart_policy("autostart-enable"), Some("always"));
+        assert_eq!(autostart_policy("autostart-disable"), Some("no"));
+        assert_eq!(autostart_policy("start"), None);
+        assert_eq!(autostart_policy("arbitrary"), None);
+        let containers = vec![json!({"Id":"stopped","State":"exited"}),json!({"Id":"active","State":"running"}),json!({"Id":"unknown"})];
+        assert!(container_deletion_error(&containers, "stopped").is_none());
+        for id in ["active","unknown","missing"] { assert!(container_deletion_error(&containers,id).is_some()); }
+    }
 }
 
 #[derive(Deserialize)]
@@ -1618,6 +1647,13 @@ fn request_ids(
     }
     Ok(result)
 }
+fn container_deletion_error(containers: &[Value], id: &str) -> Option<&'static str> {
+    match containers.iter().find(|c| text(c, "Id") == id) {
+        None => Some("Selected container no longer exists"),
+        Some(container) if !["created", "exited", "dead"].contains(&text(container, "State")) => Some("Container deletion blocked: container must be stopped; running, paused and restarting containers are excluded"),
+        _ => None,
+    }
+}
 fn validate_selection(client: &Client, preview: &Preview) -> Result<Option<u64>, String> {
     let info = client.json("GET", "/info")?;
     if text(&info, "ID") != client.identity {
@@ -1630,15 +1666,17 @@ fn validate_selection(client: &Client, preview: &Preview) -> Result<Option<u64>,
         None
     };
     for id in &preview.ids {
-        let c = containers
-            .iter()
-            .find(|c| text(c, "Id") == id)
-            .ok_or("Selected container no longer exists")?;
-        if !["created", "exited", "dead"].contains(&text(c, "State")) {
-            return Err("Container deletion blocked: container must be stopped; running, paused and restarting containers are excluded".into());
+        if let Some(error) = container_deletion_error(&containers, id) {
+            return Err(error.into());
         }
     }
     if !preview.image_ids.is_empty() || !preview.cache_ids.is_empty() {
+        for image in &preview.images {
+            let id = text(image, "Id");
+            if preview.image_ids.iter().any(|value| value == id) && crate::image_removal::inspect_image(client, id)? != *image {
+                return Err("Image metadata or tags changed; create a new approval preview".into());
+            }
+        }
         let usage = summarize_usage(client, &client.usage()?, &containers);
         for (ids, key) in [
             (&preview.image_ids, "images"),
@@ -1718,6 +1756,7 @@ pub fn destructive_preview(request: Value) -> Result<Value, String> {
         _ => return Err("Unsupported or empty destructive selection".into()),
     }
     let client = connected()?;
+    let images = image_ids.iter().map(|id| crate::image_removal::inspect_image(&client, id)).collect::<Result<Vec<_>, _>>()?;
     let preview = Preview {
         kind: kind.into(),
         ids: if kind == "container_delete" {
@@ -1726,12 +1765,20 @@ pub fn destructive_preview(request: Value) -> Result<Value, String> {
             Vec::new()
         },
         image_ids,
+        images,
         cache_ids,
         expires: now_ms() + 120000,
         identity: client.identity.clone(),
         context: client.context.clone(),
         owner: client.owner.clone(),
     };
+    if kind == "container_delete" {
+        let containers = client.containers()?;
+        let blocked: Vec<_> = preview.ids.iter().filter_map(|id| container_deletion_error(&containers, id).map(|error| json!({"id":id,"error":error}))).collect();
+        if !blocked.is_empty() {
+            return Ok(json!({"token":null,"kind":kind,"targets":preview.ids,"blocked":blocked,"impact":[],"recoverable":false,"expiresAt":preview.expires,"estimatedBytes":null}));
+        }
+    }
     let estimated = validate_selection(&client, &preview)?;
     let targets = preview
         .ids
@@ -1822,10 +1869,8 @@ pub fn destructive_execute(token: String, approved: bool, progress: impl Fn(Valu
             ..preview.clone()
         };
         let result = validate_selection(&client, &selected).and_then(|_| {
-            client.json(
-                "DELETE",
-                &format!("/images/{}?force=0&noprune=1", encode(id)),
-            )
+            let image = preview.images.iter().find(|image| text(image, "Id") == id).ok_or("Approved image metadata is unavailable")?;
+            crate::image_removal::delete_unreferenced(&client, image)
         });
         match result {
             Ok(_) => deleted.push(id.clone()),

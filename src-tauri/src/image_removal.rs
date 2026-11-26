@@ -22,7 +22,7 @@ struct ImageApproval {
 fn image_id(id: &str) -> bool {
     id.strip_prefix("sha256:").is_some_and(object_id)
 }
-fn inspect_image(client: &Client, id: &str) -> Result<Value, String> {
+pub(crate) fn inspect_image(client: &Client, id: &str) -> Result<Value, String> {
     if !image_id(id) {
         return Err("Invalid image ID".into());
     }
@@ -45,6 +45,7 @@ fn inspect_image(client: &Client, id: &str) -> Result<Value, String> {
     }
     if let Some(object) = image.as_object_mut() {
         object.remove("Containers");
+        object.remove("Metadata");
     }
     Ok(image)
 }
@@ -147,6 +148,52 @@ fn validate(
     Ok(())
 }
 
+fn remove_references(
+    approved: &Value,
+    mut inspect: impl FnMut() -> Result<Option<Value>, String>,
+    mut delete: impl FnMut(&str) -> Result<(), String>,
+) -> Result<(), String> {
+    let mut previous = approved.clone();
+    loop {
+        let Some(current) = inspect()? else { return Ok(()); };
+        let mut expected = previous.clone();
+        for key in ["RepoTags", "RepoDigests"] {
+            if current[key].as_array().is_none_or(|references| references.iter().any(|reference| !previous[key].as_array().is_some_and(|allowed| allowed.contains(reference)))) {
+                return Err("Image references changed; create a new approval preview".into());
+            }
+            expected[key] = current[key].clone();
+        }
+        if current != expected {
+            return Err("Image metadata changed; create a new approval preview".into());
+        }
+        let reference = current["RepoTags"].as_array().and_then(|values| values.first())
+            .or_else(|| current["RepoDigests"].as_array().and_then(|values| values.first()))
+            .and_then(Value::as_str).unwrap_or_else(|| current["Id"].as_str().unwrap_or("")).to_owned();
+        delete(&reference)?;
+        previous = current;
+        for key in ["RepoTags", "RepoDigests"] {
+            previous[key].as_array_mut().unwrap().retain(|value| value.as_str() != Some(reference.as_str()));
+        }
+        if reference == approved["Id"].as_str().unwrap_or("") {
+            return if inspect()?.is_none() { Ok(()) } else { Err("Image was not removed; refresh the image list".into()) };
+        }
+    }
+}
+
+pub(crate) fn delete_unreferenced(client: &Client, image: &Value) -> Result<(), String> {
+    let id = image["Id"].as_str().ok_or("Image identity is unavailable")?;
+    let engine = EngineBinding::capture(client);
+    remove_references(image, || {
+        engine.verify(client)?;
+        if !referencing_containers(client, id)?.is_empty() {
+            return Err("Image is referenced by an existing container; create a new approval preview".into());
+        }
+        let images = client.json("GET", "/images/json?all=1")?;
+        if !images.as_array().ok_or("Image inventory is unavailable")?.iter().any(|value| value["Id"].as_str() == Some(id)) { return Ok(None); }
+        inspect_image(client, id).map(Some)
+    }, |reference| client.json("DELETE", &format!("/images/{}?force=0&noprune=1", encode(reference))).map(|_| ()))
+}
+
 pub fn preview(id: String, delete_referencing_containers: bool) -> Result<Value, String> {
     if !image_id(&id) { return Err("Invalid image ID".into()); }
     let client = docker::connected()?;
@@ -166,12 +213,6 @@ pub fn preview(id: String, delete_referencing_containers: bool) -> Result<Value,
     {
         blocked_reasons.push("Image deletion blocked: every referencing container must be verified as created, exited or dead; running, paused, restarting and unknown containers are excluded");
     }
-    if image["RepoTags"]
-        .as_array()
-        .is_some_and(|tags| tags.len() > 1)
-    {
-        blocked_reasons.push("This image has multiple tags. Deletion by image ID requires force for multiple tags, which DockSlate does not allow");
-    }
     let eligible = blocked_reasons.is_empty();
     let token = if eligible {
         Some(approval_token()?)
@@ -187,7 +228,7 @@ pub fn preview(id: String, delete_referencing_containers: bool) -> Result<Value,
     let response = json!({
         "token":token,"kind":"image_delete","targets":targets,
         "eligible":eligible,"blockedReasons":blocked_reasons,
-        "image":{"id":id,"tags":image["RepoTags"],"size":image["Size"]},
+        "image":{"id":id,"tags":image["RepoTags"],"digests":image["RepoDigests"],"size":image["Size"]},
         "containers":visible_containers,"deleteReferencingContainers":delete_referencing_containers,
         "impact":["Only the exact listed stopped containers and selected image are approved for deletion. Running, paused and restarting containers are blocked.","Container writable layers and configuration will be irreversibly removed. All named and anonymous volumes are retained.","The selected image tags, metadata and unreferenced layers may be removed. Parent images are retained. Downloading the image again requires its source registry.","This is a sequence of Docker operations. A later failure can leave already deleted containers removed while the image is retained."],
         "recoverable":false,"expiresAt":token.as_ref().map(|_|now_ms()+APPROVAL_TTL.as_millis() as u64),"estimatedBytes":null
@@ -265,12 +306,8 @@ pub fn execute(token: String, approved: bool) -> Result<Value, String> {
         }
     }
     if failed.is_empty() {
-        let result = validate(&client, &approval, &remaining).and_then(|_| {
-            client.json(
-                "DELETE",
-                &format!("/images/{}?force=0&noprune=1", encode(&approval.id)),
-            )
-        });
+        let result = validate(&client, &approval, &remaining)
+            .and_then(|_| delete_unreferenced(&client, &approval.image));
         match result {
             Ok(_) => deleted.push(approval.id.clone()),
             Err(error) => failed.push(json!({"id":approval.id,"error":error})),
@@ -285,4 +322,55 @@ pub fn execute(token: String, approved: bool) -> Result<Value, String> {
         "message":format!("Image deletion: {} deleted, {} failed",deleted.len(),failed.len()),
         "deleted":deleted,"failed":failed,"remaining":skipped,"volumesRetained":true
     }))
+}
+
+#[cfg(test)]
+mod security_tests {
+    use super::*;
+    use std::cell::RefCell;
+
+    #[test]
+    fn multiple_tags_are_removed_without_force_and_new_tags_block() {
+        let image = json!({"Id":"sha256:test","RepoTags":["gitlab/gitlab-ce:18.11.2-ce.0","gitlab/gitlab-ce:latest"],"RepoDigests":["gitlab/gitlab-ce@sha256:digest"],"Os":"linux"});
+        let state = RefCell::new(Some(image.clone()));
+        let mut deleted = Vec::new();
+        remove_references(&image, || Ok(state.borrow().clone()), |reference| {
+            deleted.push(reference.to_owned());
+            let mut current = state.borrow_mut();
+            current.as_mut().unwrap()["RepoTags"].as_array_mut().unwrap().retain(|tag| tag.as_str() != Some(reference));
+            if current.as_ref().unwrap()["RepoTags"].as_array().unwrap().is_empty() { *current = None; }
+            Ok(())
+        }).unwrap();
+        assert_eq!(deleted, ["gitlab/gitlab-ce:18.11.2-ce.0", "gitlab/gitlab-ce:latest"]);
+        let mut changed = image.clone();
+        changed["RepoTags"].as_array_mut().unwrap().push(json!("gitlab/gitlab-ce:new"));
+        assert!(remove_references(&image, || Ok(Some(changed.clone())), |_| panic!("Changed tags must block deletion")).is_err());
+        assert!(remove_references(&image, || Ok(Some(image.clone())), |_| Err("Referenced by a container".into())).is_err());
+    }
+
+    #[test]
+    fn digest_only_and_dangling_images_use_exact_references_and_stop_on_partial_changes() {
+        for references in [vec!["repo@sha256:first", "other@sha256:second"], vec![]] {
+            let image = json!({"Id":"sha256:test","RepoTags":[],"RepoDigests":references,"Os":"linux"});
+            let state = RefCell::new(Some(image.clone()));
+            let mut removed = vec![];
+            remove_references(&image, || Ok(state.borrow().clone()), |reference| {
+                removed.push(reference.to_owned());
+                let mut current = state.borrow_mut();
+                if reference == "sha256:test" { *current = None; }
+                else { current.as_mut().unwrap()["RepoDigests"].as_array_mut().unwrap().retain(|value| value.as_str() != Some(reference)); }
+                Ok(())
+            }).unwrap();
+            assert_eq!(removed.last().map(String::as_str), Some("sha256:test"));
+        }
+        let image = json!({"Id":"sha256:test","RepoTags":["repo:first","repo:second"],"RepoDigests":[],"Os":"linux"});
+        let state = RefCell::new(image.clone());
+        let mut calls = 0;
+        assert!(remove_references(&image, || Ok(Some(state.borrow().clone())), |_| {
+            calls += 1;
+            state.borrow_mut()["RepoTags"] = json!(["repo:second","repo:unexpected"]);
+            Ok(())
+        }).is_err());
+        assert_eq!(calls, 1);
+    }
 }

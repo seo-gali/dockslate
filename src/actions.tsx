@@ -61,7 +61,7 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
   };
 
   const execute = async () => {
-    if (!preview || !acknowledged || validating || execution.current) return;
+    if (!preview?.token || !acknowledged || validating || execution.current) return;
     if (preview.expiresAt <= Date.now()) { setError(t("승인 정보가 만료되었습니다. 대상을 다시 검사하세요.")); setPreview(null); setAcknowledged(false); return; }
     execution.current = true;
     setExecuting(true);
@@ -93,8 +93,19 @@ export function useDestructiveAction(onComplete: (result: DestructiveResult) => 
   };
 
   const title = request?.kind === 'container_delete' ? t("컨테이너 삭제 확인") : request?.kind === 'image_delete' ? t("이미지 삭제 확인") : t("선택한 데이터 정리 확인");
-  const displayTargets = preview?.targets.map(target => targets.find(label => label.endsWith(` · ${target}`)) ?? target) ?? targets;
-  const dialog = request && <ConfirmDialog title={title} label={request.kind === 'cleanup' ? t("선택한 데이터 정리") : t("삭제 실행")} busy={executing} progress={{ label: t(progress?.phase === 'deleting' ? '선택한 대상 삭제 중…' : '대상 상태 재확인 중…'), completed: progress?.completed, total: progress?.total, detail: progress?.target }} ready={!!preview && !validating} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={cancel} onConfirm={() => void execute()}><ul className="dialog-target-list">{displayTargets.map((target, index) => <li key={`${target}-${index}`}>{target}</li>)}</ul>{validating && <p className="loading-line" role="status">{t("대상과 현재 참조 상태를 검사하고 있습니다. 검사 후에 승인할 수 있습니다.")}</p>}{preview && <>{preview.impact.map(impactText).filter(Boolean).map((impact, index) => <p key={index}>{impact}</p>)}{preview.estimatedBytes !== null && <p>{t("Docker 정리 가능 추정치:") + " "}<strong>{formatBytes(preview.estimatedBytes)}</strong></p>}<p>{t("승인 정보 만료:") + " "}{new Date(preview.expiresAt).toLocaleTimeString(getLocale())}</p></>}<p className="danger">{t("선택한 대상만 삭제하며 볼륨은 유지합니다. 삭제한 데이터는 복구할 수 없습니다.")}</p>{!validating && !preview && <button className="button small" disabled={executing} onClick={() => void validate(request)}>{t("대상 다시 검사")}</button>}</ConfirmDialog>;
+  const targetIds = preview?.targets ?? [...(request?.ids ?? []), ...(request?.imageIds ?? []), ...(request?.buildCacheIds ?? [])];
+  const exclude = (id: string) => {
+    if (!request || executing || validating) return;
+    const next = { ...request };
+    for (const key of ['ids', 'imageIds', 'buildCacheIds'] as const) {
+      if (next[key]) next[key] = next[key].filter(value => value !== id);
+    }
+    if (![...(next.ids ?? []), ...(next.imageIds ?? []), ...(next.buildCacheIds ?? [])].length) { cancel(); return; }
+    setRequest(next);
+    setTargets(current => current.filter(label => label !== id && !label.endsWith(` · ${id}`)));
+    void validate(next);
+  };
+  const dialog = request && <ConfirmDialog title={title} label={request.kind === 'cleanup' ? t("선택한 데이터 정리") : t("삭제 실행")} busy={executing} progress={{ label: t(progress?.phase === 'deleting' ? '선택한 대상 삭제 중…' : '대상 상태 재확인 중…'), completed: progress?.completed, total: progress?.total, detail: progress?.target }} ready={!!preview?.token && !validating} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={cancel} onConfirm={() => void execute()}><ul className="dialog-target-list">{targetIds.map(id => <li key={id}>{targets.find(label => label === id || label.endsWith(` · ${id}`)) ?? id}{preview?.blocked?.filter(item => item.id === id).map(item => <p className="danger" key={id}>{failureText(item.error)}</p>)}<button className="button small" disabled={validating || executing} onClick={() => exclude(id)}>{t("삭제 대상에서 제외")}</button></li>)}</ul>{validating && <p className="loading-line" role="status">{t("대상과 현재 참조 상태를 검사하고 있습니다. 검사 후에 승인할 수 있습니다.")}</p>}{preview && <>{preview.impact.map(impactText).filter(Boolean).map((impact, index) => <p key={index}>{impact}</p>)}{preview.estimatedBytes !== null && <p>{t("Docker 정리 가능 추정치:") + " "}<strong>{formatBytes(preview.estimatedBytes)}</strong></p>}<p>{t("승인 정보 만료:") + " "}{new Date(preview.expiresAt).toLocaleTimeString(getLocale())}</p></>}<p className="danger">{t("선택한 대상만 삭제하며 볼륨은 유지합니다. 삭제한 데이터는 복구할 수 없습니다.")}</p>{!validating && !preview && <button className="button small" disabled={executing} onClick={() => void validate(request)}>{t("대상 다시 검사")}</button>}</ConfirmDialog>;
   return { busy: executing || request !== null, prepare, dialog, operation, setOperation };
 }
 

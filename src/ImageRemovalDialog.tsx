@@ -1,4 +1,4 @@
-import { useEffect,useRef,useState } from 'react';
+import { useEffect,useMemo,useRef,useState } from 'react';
 import { backend,refreshDashboardAfterMutation,type DockerImage } from './api';
 import { ConfirmDialog,StatusBadge,errorMessage } from './components';
 import { t } from "./i18n";
@@ -13,7 +13,6 @@ interface CheckedImage { image: DockerImage; preview: ImagePreview | null; error
 function reasonText(reason: string): string {
   if (reason.startsWith('This image is referenced by existing containers.')) return t("참조 컨테이너가 있습니다. 아래 옵션을 선택하면 중지된 참조 컨테이너를 삭제 대상에 포함해 다시 검사합니다.");
   if (reason.startsWith('Image deletion blocked: every referencing container')) return t("실행 중, 일시 정지, 재시작 또는 상태가 확인되지 않은 참조 컨테이너가 있어 삭제할 수 없습니다. 컨테이너 상태를 직접 변경한 뒤 다시 검사하세요.");
-  if (reason.startsWith('This image has multiple tags.')) return t("여러 태그가 연결된 이미지입니다. 강제 삭제가 필요한 상태이므로 DockSlate에서 삭제할 수 없습니다.");
   return reason;
 }
 
@@ -21,8 +20,10 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
   images: DockerImage[]; onClose: () => void; onComplete: (result: ImageRemovalResult) => void;
   onBusy?: (busy: boolean) => void;
 }) {
+  const [excluded, setExcluded] = useState<string[]>([]);
+  const selectedImages = useMemo(() => images.filter(image => !excluded.includes(image.id)), [images, excluded]);
   const [cascade, setCascade] = useState(false);
-  const [checked, setChecked] = useState<CheckedImage[]>(() => images.map(image => ({ image, preview: null, error: null })));
+  const [checked, setChecked] = useState<CheckedImage[]>(() => selectedImages.map(image => ({ image, preview: null, error: null })));
   const [validating, setValidating] = useState(true);
   const [executing, setExecuting] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
@@ -38,29 +39,29 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
     const current = ++generation.current;
     let cancelled = false;
     setValidating(true); setAcknowledged(false); setError(null);
-    setChecked(images.map(image => ({ image, preview: null, error: null })));
-    if (images.length > 100) {
+    setChecked(selectedImages.map(image => ({ image, preview: null, error: null })));
+    if (selectedImages.length > 100) {
       setError('이미지는 한 번에 최대 100개까지 선택할 수 있습니다.'); setValidating(false);
       return () => { cancelled = true; };
     }
     const inspect = async () => {
-      const results: CheckedImage[] = images.map(image => ({ image, preview: null, error: null }));
+      const results: CheckedImage[] = selectedImages.map(image => ({ image, preview: null, error: null }));
       let next = 0;
       const worker = async () => {
-        while (next < images.length && !cancelled) {
+        while (next < selectedImages.length && !cancelled) {
           const index = next++;
-          try { results[index].preview = await backend('image_removal_preview', { id: images[index].id, deleteReferencingContainers: cascade }); }
+          try { results[index].preview = await backend('image_removal_preview', { id: selectedImages[index].id, deleteReferencingContainers: cascade }); }
           catch (failure) { results[index].error = errorMessage(failure); }
           if (!cancelled && generation.current === current) setChecked(results.map(result => ({ ...result })));
         }
       };
-      await Promise.all(Array.from({ length: Math.min(3, images.length) }, worker));
+      await Promise.all(Array.from({ length: Math.min(3, selectedImages.length) }, worker));
       if (!cancelled && generation.current === current) setValidating(false);
     };
     void inspect();
     return () => { cancelled = true; };
-  }, [cascade, revision, images]);
-  const ready = images.length > 0 && checked.length === images.length && !validating && checked.every(result => result.preview?.eligible && !!result.preview.token && !result.error);
+  }, [cascade, revision, selectedImages]);
+  const ready = selectedImages.length > 0 && checked.length === selectedImages.length && !validating && checked.every(result => result.preview?.eligible && !!result.preview.token && !result.error);
   const execute = async () => {
     if (!ready || !acknowledged || inFlight.current) return;
     if (checked.some(result => !result.preview?.expiresAt || result.preview.expiresAt <= Date.now())) { setError('승인 정보가 만료되었습니다. 대상을 다시 검사하세요.'); setAcknowledged(false); return; }
@@ -90,11 +91,11 @@ export default function ImageRemovalDialog({ images, onClose, onComplete, onBusy
     callbacks.current.onClose();
   };
   return <ConfirmDialog title={t("이미지 삭제 확인")} label="선택한 대상 삭제" busy={executing} progress={{ label: t('이미지 삭제 중…'), completed: progress.completed, total: checked.length, detail: progress.detail }} ready={ready} error={error} acknowledged={acknowledged} onAcknowledge={setAcknowledged} onCancel={() => { if (!inFlight.current) callbacks.current.onClose(); }} onConfirm={() => void execute()}>
-    <p>{t("선택한 이미지") + " "}{images.length}{t("개와 현재 참조 컨테이너를 검사합니다.")}</p>
+    <p>{t("선택한 이미지") + " "}{selectedImages.length}{t("개와 현재 참조 컨테이너를 검사합니다.")}</p>
     <label className="checkbox-control" style={{ margin: '14px 0' }}><input type="checkbox" checked={cascade} disabled={executing || validating} onChange={event => { setCascade(event.target.checked); setAcknowledged(false); }} />{t("참조 컨테이너도 함께 삭제")}</label>
     <p className="usage-note">{t("이 옵션은 처음에는 선택되지 않습니다. 선택하면 현재 중지된 참조 컨테이너를 삭제 대상에 포함합니다. 실행 중인 컨테이너는 자동으로 중지하지 않습니다.")}</p>
-    {validating && <p className="loading-line" role="status">{t("이미지와 컨테이너의 실제 상태를 검사하고 있습니다. (")}{checked.filter(result => result.preview || result.error).length}/{images.length})</p>}
-    <div className="image-removal-grid">{checked.map(result => <section key={result.image.id} className="image-removal-item" aria-label={`${result.image.tags[0] ?? result.image.id} 삭제 대상`}><div className="dialog-target">{(result.preview?.image.tags ?? result.image.tags).join(', ') || '<untagged>'}<small className="selectable">{result.image.id}</small></div>{result.preview && <><StatusBadge tone={result.preview.eligible ? 'warning' : 'danger'}>{result.preview.eligible ? t("삭제 가능") : t("삭제 차단")}</StatusBadge>{result.preview.containers.length ? <><p>{cascade ? t("함께 삭제할 참조 컨테이너") : t("이미지를 참조하는 컨테이너")}</p><ul className="dialog-target-list">{result.preview.containers.map(container => <li key={container.id}><strong>{container.name}</strong> · {container.state}<small className="mono selectable">{container.id}</small></li>)}</ul></> : <p className="usage-note">{t("참조하는 컨테이너가 없습니다.")}</p>}{result.preview.blockedReasons.map(reason => <p className="danger" key={reason}>{reasonText(reason)}</p>)}{result.preview.expiresAt && <p className="usage-note">{t("승인 만료:") + " "}{new Date(result.preview.expiresAt).toLocaleTimeString()}</p>}</>}{result.error && <p className="danger" role="alert">{t("대상 검사 실패:") + " "}{result.error}</p>}</section>)}</div>
+    {validating && <p className="loading-line" role="status">{t("이미지와 컨테이너의 실제 상태를 검사하고 있습니다. (")}{checked.filter(result => result.preview || result.error).length}/{selectedImages.length})</p>}
+    <div className="image-removal-grid">{checked.map(result => <section key={result.image.id} className="image-removal-item" aria-label={`${result.image.tags[0] ?? result.image.id} 삭제 대상`}><div className="dialog-target">{(result.preview?.image.tags ?? result.image.tags).join(', ') || '<untagged>'}<small className="selectable">{result.image.id}</small></div><button className="button small" disabled={executing || validating} onClick={() => { setAcknowledged(false); setExcluded(current => [...current, result.image.id]); }}>{t("삭제 대상에서 제외")}</button>{!!result.preview?.image.digests?.length && <ul className="dialog-target-list">{result.preview.image.digests.map(digest => <li className="mono" key={digest}>{digest}</li>)}</ul>}{result.preview && <><StatusBadge tone={result.preview.eligible ? 'warning' : 'danger'}>{result.preview.eligible ? t("삭제 가능") : t("삭제 차단")}</StatusBadge>{result.preview.containers.length ? <><p>{cascade ? t("함께 삭제할 참조 컨테이너") : t("이미지를 참조하는 컨테이너")}</p><ul className="dialog-target-list">{result.preview.containers.map(container => <li key={container.id}><strong>{container.name}</strong> · {container.state}<small className="mono selectable">{container.id}</small></li>)}</ul></> : <p className="usage-note">{t("참조하는 컨테이너가 없습니다.")}</p>}{result.preview.blockedReasons.map(reason => <p className="danger" key={reason}>{reasonText(reason)}</p>)}{result.preview.expiresAt && <p className="usage-note">{t("승인 만료:") + " "}{new Date(result.preview.expiresAt).toLocaleTimeString()}</p>}</>}{result.error && <p className="danger" role="alert">{t("대상 검사 실패:") + " "}{result.error}</p>}</section>)}</div>
     <p className="danger">{t("컨테이너를 함께 삭제하면 쓰기 가능한 레이어의 파일과 컨테이너 설정이 영구 삭제됩니다. 이름 있는 볼륨과 익명 볼륨은 모두 유지합니다.")}</p>
     <p>{t("선택한 이미지의 태그, 메타데이터와 참조되지 않는 레이어를 삭제합니다. 다시 다운로드하려면 원본 레지스트리에 접근할 수 있어야 합니다.")}</p>
     <p>{t("삭제는 순서대로 실행합니다. 도중에 실패하면 이미 삭제된 대상은 복구되지 않으며 나머지 삭제를 중단합니다.")}</p>

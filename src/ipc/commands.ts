@@ -20,8 +20,8 @@ type DockerQuery = 'engine_status' | 'overview' | 'containers_list' | 'images_li
 type Snapshot<C extends CommandName> = { [K in C]: Envelope<CommandResult<K>> };
 
 export interface Commands {
-  migration_inventory: Call<undefined, Migration.Inventory>;
-  migration_preview: Call<{ selection: Migration.Selection }, Migration.Preview>;
+  migration_inventory: Call<undefined, Migration.Job>;
+  migration_preview: Call<{ selection: Migration.Selection }, Migration.Job>;
   migration_execute: Call<Approved, Migration.Job>;
   migration_status: Call<undefined, Migration.Job | null>;
   engine_status: Call<undefined, Core.EngineStatus>;
@@ -36,6 +36,7 @@ export interface Commands {
   installer_setup_mode: Call<undefined, boolean>;
   installer_setup_finish: Call<undefined, unknown>;
   desktop_tray_language: Call<{ language: 'ko' | 'en' }, unknown>;
+  desktop_edit_menu: Call<{ editable: boolean }, unknown>;
   dashboard_snapshot: Call<undefined, Snapshot<DockerQuery | 'runtime_status' | 'wsl_inventory' | 'installer_setup_mode'>>;
   docker_events_snapshot: Call<undefined, Snapshot<DockerQuery>>;
   engine_events_start: Call<{ streamId: string; engineId: string }, unknown>;

@@ -1,45 +1,42 @@
 {
-  "observedAt": "2026-11-23T13:12:27.862Z",
-  "scope": "Local 0.1.14 app/CLI and installer/portable packaging; full installation and public publication are separate.",
+  "observedAt": "2026-11-26T11:47:46.377Z",
+  "scope": "0.1.15 build and exact package verification; actual installation and migration are separate",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
-  "completed": true,
+  "completed": false,
   "checks": {
     "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
-    "nodeTests": 17,
-    "rustSecurityTests": 30,
+    "nodeTests": 32,
+    "rustSecurityTests": 37,
     "installerPathChecks": 11,
     "windowsProcessChecks": 7,
-    "latestNativeFlowExecuted": true,
-    "installerBuildExit": 0,
+    "latestNativeFlowExecuted": false,
+    "componentFixtureChecks": 9,
+    "offlineCliChecks": 6,
+    "installerBuildExit": null,
     "installerExecuted": false,
     "dependencyVersionsChanged": false,
-    "lockChangeScope": "Only DockSlate own package version 0.1.13 to 0.1.14; dependency graph unchanged",
-    "currentNativeChecks": 5,
-    "currentNativeScope": "Exact 0.1.14 app read-only Moby connection, migration tab/denial/absent source, six layout cases and three CLI queries. No engine state changes; full Desktop migration and installation unverified.",
-    "remoteInstallerBuildExit": 0,
-    "installerBuildScope": "Exact 0.1.14 frozen inputs packaged once on GitHub; official artifact digest, 431 shared files and five documents verified. Local installer not executed."
+    "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15"
   },
   "artifacts": [
     {
       "name": "dockslate.exe",
-      "bytes": 5423104,
-      "sha256": "93F1AC024656D70B2AACB656A99E3E3D110BB03F9CD4CD1D47346ABAA7636351"
+      "bytes": 5298688,
+      "sha256": "19B8E47588FF3164ED3C1CC95E42788BF365FDCC0E0E3E1AF26E6CD2339AEAE0"
     },
     {
       "name": "docker.exe",
       "bytes": 320512,
-      "sha256": "63BFAECB498889545A1D6D8B3FECD12FB8FF02937A64948336126A14941983CB"
+      "sha256": "3EB9CBCC658312CC721FC1C31498FDD0A12FBC8D976A95D52539E4F035E4069D"
     }
   ],
-  "installerFilePresent": true,
+  "installerFilePresent": false,
   "blocker": null,
   "remaining": [
-    "Unsigned development build; no new antivirus submission",
-    "Actual user-PC Desktop timeout and full two-engine transfer unverified",
-    "Full installer execution, upgrade/uninstall/cold boot/rollback not performed",
-    "Public GitHub Release and download version remain 0.1.13"
+    "Installer and portable verification in progress",
+    "Unsigned; fresh VirusTotal results pending",
+    "Actual Desktop migration, full setup/uninstall/boot/rollback not performed"
   ],
   "protectionEvidence": {
     "record": "2026-10-19 22:16:01.350  [17364:9700]action:PDPEngTips|process:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Bin\\makensis.exe|file:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Contrib\\Graphics\\Wizard\\win.bmp|remember:1",
@@ -227,22 +224,14 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.14",
-    "observedAt": "2026-11-23T13:12:27.864Z",
-    "windowsReleaseBuildExit": 0,
+    "version": "0.1.15",
     "frontendBuildExit": 0,
+    "windowsReleaseBuildExit": 0,
     "rustCheckExit": 0,
-    "sourceScope": "Desktop source queries allow 120 seconds, approvals start after inspection, unnecessary source proxy/plugin setup removed, current documentation packaged.",
     "dependenciesChanged": false,
     "existingUserDataChanged": false,
-    "isolatedFilesystemTestsPassed": true,
     "engineMutationPerformed": false,
-    "fullDesktopMigrationVerified": false,
-    "nativeChecks": 5,
-    "layoutCases": 6,
-    "nativeQuitExit": 0,
-    "installerVerified": true,
-    "fullSetupVerified": false
+    "fullDesktopMigrationVerified": false
   },
   "portableDelivery": {
     "version": "0.1.14",
@@ -280,7 +269,7 @@
     "sha256": "D7A372A9CBDCE6B46944E830E87D0CCD682A4767359CF599C9798C08A16D8744",
     "filesVerified": 435
   },
-  "version": "0.1.14",
+  "version": "0.1.15",
   "deletedOutputs": [
     "downloads/DockSlate_0.1.4_x64-setup.exe",
     "downloads/DockSlate-0.1.4-windows-x64.zip",
@@ -626,50 +615,24 @@
     }
   },
   "previousChecks": {
-    "observedBeforeVersion": "0.1.14",
+    "version": "0.1.14",
     "checks": {
-      "nativeInstallerSetupExecuted": false,
       "windowsReleaseBuildExit": 0,
-      "rustCheckExit": 0,
-      "hookFixtureExecuted": false,
       "frontendBuildExit": 0,
-      "browserCompleted": true,
-      "installerBuildExit": 0,
-      "hookCompilationExit": 0,
-      "installerExecuted": false,
-      "browserChecks": 27,
-      "lockedDependencyFetchExit": 0,
-      "lockFilesChanged": true,
+      "rustCheckExit": 0,
+      "nodeTests": 17,
+      "rustSecurityTests": 30,
+      "installerPathChecks": 11,
+      "windowsProcessChecks": 7,
       "latestNativeFlowExecuted": true,
-      "powerShellParserFiles": 5,
-      "powerShellParserErrors": 0,
-      "offlineComponentGuardExit": 1,
-      "offlineComponentGuardExpectedFailure": true,
-      "browserScope": "0.1.6 local Chrome file/HTTP site and root publishing output; no native backend. Public verification is separate.",
-      "componentPreparationExit": 0,
-      "portablePackagingExit": 0,
-      "offlineNativeCliChecks": 6,
-      "offlineNativeCliExit": 0,
-      "nativeCliIntegrationExit": 1,
-      "nativeCliCommands": 34,
-      "nativeCliCommandsPassed": 32,
-      "nativeCliCommandsFailed": 2,
-      "logFollowCancellationPassed": true,
-      "originalResourcesPreserved": true,
-      "guideDeliveryExit": 0,
-      "guideDeliveryChecks": 7,
-      "portableInternalFilesVerified": 401,
-      "engineRestoredStopped": true,
-      "remoteInstallerBuildExit": 0,
-      "installerPathPreservationExit": 0,
-      "installerPathPreservationChecks": 9,
-      "correctedInstallerGuideChecks": 11,
+      "installerBuildExit": 0,
+      "installerExecuted": false,
+      "dependencyVersionsChanged": false,
+      "lockChangeScope": "Only DockSlate own package version 0.1.13 to 0.1.14; dependency graph unchanged",
       "currentNativeChecks": 5,
-      "dependencyVersionsChanged": true,
-      "lockChangeScope": "Tokio 1.53.2 to 1.53.3 only",
-      "guideDeliveryScope": "Guide files unchanged; earlier browser session no longer running, current guide browser checks not rerun.",
-      "currentNativeScope": "Exact 0.1.12 app: own Moby connection, migration tab, unapproved IPC denial and Desktop absence error; 6 layout cases, 3 CLI queries. Native tray exit 0. Existing engine/user data unchanged. Full migration and installation not verified.",
-      "installerBuildScope": "Pinned one-time GitHub NSIS packaging; exact inputs, official artifact digest, payload and four public downloads verified. Unsigned; DeepInstinct app detection 1 unresolved, explicitly approved for prerelease."
+      "currentNativeScope": "Exact 0.1.14 app read-only Moby connection, migration tab/denial/absent source, six layout cases and three CLI queries. No engine state changes; full Desktop migration and installation unverified.",
+      "remoteInstallerBuildExit": 0,
+      "installerBuildScope": "Exact 0.1.14 frozen inputs packaged once on GitHub; official artifact digest, 431 shared files and five documents verified. Local installer not executed."
     }
   }
 }

@@ -26,7 +26,7 @@ export interface ImageBuildStatus {
 
 export interface ImagePreview {
   token: string | null; eligible: boolean; blockedReasons: string[]; expiresAt: number | null;
-  image: { id: string; tags: string[]; size: number | null };
+  image: { id: string; tags: string[]; digests: string[]; size: number | null };
   containers: { id: string; name: string; state: string }[];
   deleteReferencingContainers: boolean;
 }

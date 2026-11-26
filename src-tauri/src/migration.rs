@@ -10,7 +10,7 @@ use std::{
     path::{Path, PathBuf},
     process::{Command, Stdio},
     sync::{
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicU8, Ordering},
         Mutex,
     },
     thread,
@@ -18,6 +18,8 @@ use std::{
 };
 
 mod binds;
+mod batch;
+mod receipts;
 
 const SOURCE: &str = cli_platform::DESKTOP_SOURCE;
 const SOURCE_QUERY_TIMEOUT: Duration = Duration::from_secs(120);
@@ -25,7 +27,9 @@ const TTL: Duration = Duration::from_secs(120);
 const COPY_TIMEOUT: Duration = Duration::from_secs(3600);
 static PLAN: Mutex<Option<Plan>> = Mutex::new(None);
 static JOB: Mutex<Option<Value>> = Mutex::new(None);
-static ACTIVE: AtomicBool = AtomicBool::new(false);
+static OPERATION: AtomicU8 = AtomicU8::new(0);
+const READING: u8 = 1;
+const COPYING: u8 = 2;
 
 #[derive(Clone, Default, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
@@ -49,11 +53,12 @@ struct Plan {
     volumes: Vec<Value>,
     networks: Vec<Value>,
     reused_networks: Vec<String>,
+    reused_volumes: Vec<String>,
     binds: Vec<binds::Copy>,
     blocked: Vec<String>,
 }
 pub fn is_busy() -> bool {
-    ACTIVE.load(Ordering::Acquire)
+    OPERATION.load(Ordering::Acquire) == COPYING
 }
 fn now() -> u64 {
     SystemTime::now()
@@ -112,12 +117,19 @@ fn cli() -> Result<PathBuf, String> {
     Ok(path)
 }
 fn command(host: &str, args: &[String], timeout: Duration) -> Result<Vec<u8>, String> {
+    command_result(host, args, timeout).map_err(batch::ReadError::message)
+}
+fn command_result(host: &str, args: &[String], timeout: Duration) -> Result<Vec<u8>, batch::ReadError> {
     let mut arguments = vec!["--host".into(), host.into()];
     arguments.extend_from_slice(args);
-    let output = process::execute(&cli()?, &arguments, None, timeout, 16 * 1024 * 1024)
-        .map_err(|error| command_error(host, args, timeout, &error))?;
+    let output = process::execute(&cli().map_err(batch::ReadError::Other)?, &arguments, None, timeout, 16 * 1024 * 1024)
+        .map_err(|error| {
+            let message = command_error(host, args, timeout, &error);
+            if error == "명령 응답 시간이 초과되었습니다" { batch::ReadError::Timeout(message) }
+            else { batch::ReadError::Other(message) }
+        })?;
     if !output.status.success() {
-        return Err(command_error(host, args, timeout, &format!("명령이 실패했습니다 (종료 {}). 엔진 연결 상태를 확인하세요.", output.status.code().unwrap_or(-1))));
+        return Err(batch::ReadError::Other(command_error(host, args, timeout, &format!("명령이 실패했습니다 (종료 {}). 엔진 연결 상태를 확인하세요.", output.status.code().unwrap_or(-1)))));
     }
     Ok(output.stdout)
 }
@@ -143,6 +155,9 @@ fn inspect(host: &str, kind: &str, value: &str) -> Result<Value, String> {
     Ok(inspect_many(host, kind, &[value.into()])?.remove(0))
 }
 fn inspect_many(host: &str, kind: &str, values: &[String]) -> Result<Vec<Value>, String> {
+    inspect_projected(host, kind, values, None)
+}
+fn inspect_projected(host: &str, kind: &str, values: &[String], projection: Option<&str>) -> Result<Vec<Value>, String> {
     if values.is_empty() {
         return Ok(vec![]);
     }
@@ -156,14 +171,22 @@ fn inspect_many(host: &str, kind: &str, values: &[String]) -> Result<Vec<Value>,
     {
         return Err("Docker 검사 종류·ID·이름이 올바르지 않습니다.".into());
     }
-    let mut args = vec![kind.into(), "inspect".into()];
-    args.extend_from_slice(values);
-    let rows: Vec<Value> = serde_json::from_slice(&command(host, &args, if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { Duration::from_secs(30) })?)
-        .map_err(|_| "Docker 검사 응답이 배열이 아닙니다.")?;
-    if rows.len() != values.len() {
-        return Err("Docker 검사 대상이 달라졌습니다. 다시 검사하세요.".into());
-    }
-    Ok(rows)
+    let mut completed = 0;
+    batch::inspect(values, |chunk| {
+        let mut args = vec![kind.into(), "inspect".into()];
+        if let Some(format) = projection { args.extend(["--format".into(), format.into()]); }
+        args.extend_from_slice(chunk);
+        let output = command_result(host, &args, if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { Duration::from_secs(30) })?;
+        let rows: Vec<Value> = if projection.is_some() {
+            std::str::from_utf8(&output).map_err(|_| batch::ReadError::Other("Docker 검사 응답 인코딩이 올바르지 않습니다.".into()))?
+                .lines().filter(|line| !line.trim().is_empty()).map(serde_json::from_str)
+                .collect::<Result<_, _>>().map_err(|_| batch::ReadError::Other("Docker 검사 응답을 읽을 수 없습니다.".into()))?
+        } else {
+            serde_json::from_slice(&output).map_err(|_| batch::ReadError::Other("Docker 검사 응답이 배열이 아닙니다.".into()))?
+        };
+        if rows.len() == chunk.len() { completed += rows.len(); inspection_progress(kind, completed, values.len()); }
+        Ok(rows)
+    })
 }
 fn lines(kind: &str, extra: &[&str]) -> Result<Vec<Value>, String> {
     let mut args = vec![kind.into(), "ls".into()];
@@ -179,6 +202,13 @@ fn lines(kind: &str, extra: &[&str]) -> Result<Vec<Value>, String> {
         })
         .collect()
 }
+fn inspection_progress(kind: &str, completed: usize, total: usize) {
+    if let Ok(mut state) = JOB.lock() {
+        if let Some(job) = state.as_mut().filter(|job| job["state"] == "running") {
+            job["progress"] = json!({"phase":kind,"completed":completed,"total":total});
+        }
+    }
+}
 fn source_identity() -> Result<String, String> {
     let info = query(SOURCE, &["info", "--format", "{{json .}}"])?;
     if info["OSType"] != "linux"
@@ -191,25 +221,42 @@ fn source_identity() -> Result<String, String> {
     }
     Ok(text(&info, "ID").into())
 }
-pub fn inventory() -> Result<Value, String> {
-    let target = docker::connected()?;
+fn target_client() -> Result<Client, String> {
+    update("DockSlate 엔진 연결을 확인하고 있습니다.".into(), None, false);
+    docker::connected().map_err(|error| format!("DockSlate 엔진 연결 확인: {error}"))
+}
+fn read_inventory() -> Result<Value, String> {
+    let target = target_client()?;
+    update("Docker Desktop 엔진을 확인하고 있습니다.".into(), None, false);
     let source = source_identity()?;
     if source == target.identity {
         return Err("원본과 대상 엔진이 같습니다.".into());
     }
-    let (images, containers, volumes) = thread::scope(|scope| {
-        let a = scope.spawn(|| lines("image", &["--no-trunc"]));
-        let b = scope.spawn(|| lines("container", &["--all", "--no-trunc"]));
-        let c = scope.spawn(|| lines("volume", &[]));
-        (a.join(), b.join(), c.join())
+    update("프로젝트의 컨테이너를 확인하고 있습니다.".into(), None, false);
+    let containers = source_users()?;
+    update("프로젝트의 이미지를 확인하고 있습니다.".into(), None, false);
+    let images = lines("image", &["--no-trunc"])?;
+    update("프로젝트의 볼륨을 확인하고 있습니다.".into(), None, false);
+    let volume_names: Vec<_> = lines("volume", &[])?.iter().map(|value| text(value, "Name").to_owned()).collect();
+    let volumes = inspect_many(SOURCE, "volume", &volume_names)?;
+    let completed = receipts::read()?;
+    let (target_images, target_containers, target_volumes) = thread::scope(|scope| {
+        let images = scope.spawn(|| target.json("GET", "/images/json?all=1"));
+        let containers = scope.spawn(|| target.containers());
+        let volumes = target.json("GET", "/volumes");
+        (images.join().unwrap_or_else(|_| Err("대상 이미지 조회를 완료하지 못했습니다.".into())), containers.join().unwrap_or_else(|_| Err("대상 컨테이너 조회를 완료하지 못했습니다.".into())), volumes)
     });
-    let images = images.map_err(|_| "이미지 목록 조회가 중단되었습니다.")??;
-    let containers = containers.map_err(|_| "컨테이너 목록 조회가 중단되었습니다.")??;
-    let volumes = volumes.map_err(|_| "볼륨 목록 조회가 중단되었습니다.")??;
+    let (target_images, target_containers, target_volumes) = (array(&target_images?), target_containers?, array(&target_volumes?["Volumes"]));
+    let images: Vec<_> = images.into_iter().filter(|image| !target_images.iter().any(|existing| existing["Id"] == image["ID"] && strings(&existing["RepoTags"]).contains(&format!("{}:{}", text(image,"Repository"), text(image,"Tag"))))).collect();
+    let containers: Vec<_> = containers.into_iter().filter(|value| receipts::find(&completed, &source, &target.identity, "containers", text(value,"Id"), value, &target_containers).is_none()).collect();
+    let volumes: Vec<_> = volumes.into_iter().filter(|value| receipts::find(&completed, &source, &target.identity, "volumes", text(value,"Name"), value, &target_volumes).is_none()).collect();
     Ok(json!({"sourceEngine":source,"targetEngine":target.identity,
         "images":images.iter().map(|v| json!({"id":v["ID"],"name":format!("{}:{}",text(v,"Repository"),text(v,"Tag")),"detail":v["Size"]})).collect::<Vec<_>>(),
-        "containers":containers.iter().map(|v| json!({"id":v["ID"],"name":v["Names"],"detail":v["State"]})).collect::<Vec<_>>(),
-        "volumes":volumes.iter().map(|v| json!({"id":v["Name"],"name":v["Name"],"detail":v["Driver"]})).collect::<Vec<_>>() }))
+        "containers":containers.iter().map(|v| json!({"id":v["Id"],"name":text(v,"Name").trim_start_matches('/'),"detail":v["State"]["Status"],"project":v["Project"],"image":v["Image"],"volumes":array(&v["Mounts"]).iter().filter(|m| m["Type"]=="volume").map(|m|m["Name"].clone()).collect::<Vec<_>>()})).collect::<Vec<_>>(),
+        "volumes":volumes.iter().map(|v| json!({"id":v["Name"],"name":v["Name"],"detail":v["Driver"],"project":v["Labels"]["com.docker.compose.project"]})).collect::<Vec<_>>() }))
+}
+pub fn inventory() -> Result<Value, String> {
+    launch("inventory", runtime::new_token()?, READING, read_inventory)
 }
 
 fn selection_valid(selection: &Selection) -> bool {
@@ -220,7 +267,7 @@ fn selection_valid(selection: &Selection) -> bool {
         ids.dedup();
         ids.len() == values.len()
     };
-    (1..=128).contains(&count)
+    (1..=4096).contains(&count)
         && unique(&selection.images)
         && unique(&selection.containers)
         && unique(&selection.volumes)
@@ -354,14 +401,7 @@ fn source_users() -> Result<Vec<Value>, String> {
     if ids.len() > 4096 || ids.iter().any(|v| !id(v)) {
         return Err("원본 컨테이너 목록이 너무 크거나 ID가 올바르지 않습니다.".into());
     }
-    let mut args = vec!["container".into(), "inspect".into(), "--format".into(), r#"{"Id":{{json .Id}},"Name":{{json .Name}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}},"Mounts":{{json .Mounts}}}"#.into()];
-    args.extend(ids);
-    let output = command(SOURCE, &args, SOURCE_QUERY_TIMEOUT)?;
-    std::str::from_utf8(&output)
-        .map_err(|_| "원본 연결 상태의 인코딩이 올바르지 않습니다.")?
-        .lines()
-        .map(|v| serde_json::from_str(v).map_err(|_| "원본 연결 상태를 읽을 수 없습니다.".into()))
-        .collect()
+    inspect_projected(SOURCE, "container", &ids, Some(r#"{"Id":{{json .Id}},"Name":{{json .Name}},"Image":{{json .Image}},"Project":{{if .Config.Labels}}{{json (index .Config.Labels "com.docker.compose.project")}}{{else}}null{{end}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}},"Mounts":{{json .Mounts}}}"#))
 }
 fn volume_references(name: &str) -> Result<Vec<Value>, String> {
     let filter = format!("volume={name}");
@@ -391,19 +431,12 @@ fn volume_references(name: &str) -> Result<Vec<Value>, String> {
     if ids.is_empty() {
         return Ok(vec![]);
     }
-    let mut args = vec!["container".into(), "inspect".into(), "--format".into(), r#"{"Id":{{json .Id}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}}}"#.into()];
-    args.extend(ids);
-    let output = command(SOURCE, &args, SOURCE_QUERY_TIMEOUT)?;
-    std::str::from_utf8(&output)
-        .map_err(|_| "볼륨 참조 상태를 읽을 수 없습니다.")?
-        .lines()
-        .map(|v| serde_json::from_str(v).map_err(|_| "볼륨 참조 상태가 올바르지 않습니다.".into()))
-        .collect()
+    inspect_projected(SOURCE, "container", &ids, Some(r#"{"Id":{{json .Id}},"State":{"Status":{{json .State.Status}},"StartedAt":{{json .State.StartedAt}},"FinishedAt":{{json .State.FinishedAt}}}}"#))
 }
 fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Plan, String> {
     if !selection_valid(&selection) {
         return Err(
-            "이미지·컨테이너·볼륨을 1~128개 선택하세요. 올바른 ID와 이름이 필요합니다.".into(),
+            "이미지·컨테이너·볼륨을 1~4096개 선택하세요. 올바른 ID와 이름이 필요합니다.".into(),
         );
     }
     let source = source_identity()?;
@@ -421,17 +454,22 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         volumes: vec![],
         networks: vec![],
         reused_networks: vec![],
+        reused_volumes: vec![],
         binds: vec![],
         blocked: vec![],
     };
     let mut image_ids = selection.images;
     let mut volume_names = selection.volumes;
     let mut network_names = Vec::new();
+    let completed = receipts::read()?;
     let target_containers = target.containers()?;
     let containers = inspect_many(SOURCE, "container", &selection.containers)?;
     for (selected, container) in selection.containers.into_iter().zip(containers) {
         if text(&container, "Id") != selected {
             return Err("원본 컨테이너 ID가 변경되었습니다.".into());
+        }
+        if receipts::find(&completed, &plan.source, &plan.target, "containers", &selected, &container, &target_containers).is_some() {
+            return Err("이미 가져온 컨테이너입니다. 목록을 다시 조회하세요.".into());
         }
         let container_name = text(&container, "Name").trim_start_matches('/');
         if !name(container_name) {
@@ -528,6 +566,13 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         plan.images.push(image);
     }
     let target_volumes = target.json("GET", "/volumes")?;
+    let target_volume_rows = array(&target_volumes["Volumes"]);
+    for binding in &mut plan.binds {
+        if let Some(receipt) = receipts::find(&completed, &plan.source, &plan.target, "binds", &binding.source, &Value::Null, &target_volume_rows) {
+            binding.volume = receipt.destination.clone();
+            plan.reused_volumes.push(binding.volume.clone());
+        }
+    }
     let users = if !volume_names.is_empty() || !plan.binds.is_empty() {
         source_users()?
     } else {
@@ -552,9 +597,7 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
         }
     }
     for binding in &plan.binds {
-        if array(&target_volumes["Volumes"])
-            .iter()
-            .any(|v| v["Name"] == binding.volume)
+        if !plan.reused_volumes.contains(&binding.volume) && target_volume_rows.iter().any(|v| v["Name"] == binding.volume)
         {
             plan.blocked.push(format!(
                 "{}: 복사할 폴더 볼륨 이름이 이미 있습니다.",
@@ -572,10 +615,9 @@ fn make_plan(selection: Selection, token: String, target: &Client) -> Result<Pla
                 "{value}: 옵션 없는 local 볼륨만 자동 이전할 수 있습니다."
             ));
         }
-        if array(&target_volumes["Volumes"])
-            .iter()
-            .any(|v| v["Name"] == value)
-        {
+        if receipts::find(&completed, &plan.source, &plan.target, "volumes", &value, &volume, &target_volume_rows).is_some() {
+            plan.reused_volumes.push(value.clone());
+        } else if target_volume_rows.iter().any(|v| v["Name"] == value) {
             plan.blocked
                 .push(format!("{value}: DockSlate에 같은 볼륨 이름이 있습니다."));
         }
@@ -625,22 +667,56 @@ fn public_plan(plan: &mut Plan) -> Value {
         "stopContainers":plan.containers.iter().filter(|v| !stopped(v)).map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),
         "startContainers":if plan.selection.start_after_import { start_order(&plan.containers).unwrap_or_default() } else { vec![] },
         "binds":plan.binds.iter().map(|v| json!({"source":v.source,"volume":v.volume})).collect::<Vec<_>>(),
-        "dockerSocketContainers":plan.containers.iter().filter(|v| array(&v["Mounts"]).iter().any(binds::socket)).map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),"reusedNetworks":plan.reused_networks})
+        "dockerSocketContainers":plan.containers.iter().filter(|v| array(&v["Mounts"]).iter().any(binds::socket)).map(|v| text(v,"Name").trim_start_matches('/')).collect::<Vec<_>>(),"reusedNetworks":plan.reused_networks,"reusedVolumes":plan.reused_volumes})
 }
 pub fn preview(selection: Selection) -> Result<Value, String> {
-    if is_busy() {
-        return Err("데이터 가져오기가 진행 중입니다.".into());
+    if !selection_valid(&selection) { return Err("올바른 가져오기 대상을 1~4096개 선택하세요.".into()); }
+    let token = runtime::new_token()?;
+    launch("preview", token.clone(), READING, move || {
+        let mut plan = make_plan(selection, token, &target_client()?)?;
+        let value = public_plan(&mut plan);
+        *PLAN.lock().map_err(|_| "가져오기 승인 정보를 보관할 수 없습니다.")? = if plan.blocked.is_empty() { Some(plan) } else { None };
+        Ok(value)
+    })
+}
+
+fn launch<F>(kind: &'static str, token: String, operation: u8, work: F) -> Result<Value, String>
+where F: FnOnce() -> Result<Value, String> + Send + 'static {
+    OPERATION.compare_exchange(0, operation, Ordering::AcqRel, Ordering::Acquire)
+        .map_err(|_| "다른 데이터 가져오기 작업이 진행 중입니다.")?;
+    if operation == READING {
+        match PLAN.lock() {
+            Ok(mut plan) => *plan = None,
+            Err(_) => { OPERATION.store(0, Ordering::Release); return Err("이전 승인 정보를 초기화할 수 없습니다.".into()); }
+        }
     }
-    let mut plan = make_plan(selection, runtime::new_token()?, &docker::connected()?)?;
-    let value = public_plan(&mut plan);
-    *PLAN
-        .lock()
-        .map_err(|_| "가져오기 승인 정보를 보관할 수 없습니다.")? = if plan.blocked.is_empty() {
-        Some(plan)
-    } else {
-        None
-    };
-    Ok(value)
+    let initial = json!({"id":token,"kind":kind,"state":"running","message":"작업을 준비하고 있습니다.","completed":[],"warnings":[],"stoppedSources":[],"startedTargets":[]});
+    match JOB.lock() {
+        Ok(mut job) => *job = Some(initial.clone()),
+        Err(_) => { OPERATION.store(0, Ordering::Release); return Err("가져오기 상태를 보관할 수 없습니다.".into()); }
+    }
+    if let Err(error) = thread::Builder::new().name("dockslate-migration".into()).spawn(move || {
+        let result = work();
+        if let Ok(mut state) = JOB.lock() {
+            if let Some(job) = state.as_mut() {
+                job["state"] = json!(if result.is_ok() { "completed" } else { "failed" });
+                job["message"] = json!(match (kind, result.is_ok()) {
+                    ("inventory", true) => "프로젝트 목록을 확인했습니다.",
+                    ("preview", true) => "가져올 대상 검사를 마쳤습니다.",
+                    ("transfer", true) => "복사가 끝났습니다. 대상의 데이터와 실행 상태를 확인하세요. Docker Desktop은 확인을 마치기 전까지 제거하지 마세요.",
+                    ("transfer", false) => "이전이 중단되었습니다. 복사본과 원본 데이터는 보존했습니다. 중지한 원본·시작한 복사본 목록을 확인하고 한쪽만 실행하세요.",
+                    _ => "조회 또는 검사를 완료하지 못했습니다. 다시 시도하세요.",
+                });
+                match result { Ok(value) if kind != "transfer" => job[kind] = value, Err(error) => job["error"] = json!(error), _ => () }
+            }
+            OPERATION.store(0, Ordering::Release);
+        } else { OPERATION.store(0, Ordering::Release); }
+    }) {
+        if let Ok(mut state) = JOB.lock() { if let Some(job) = state.as_mut() { job["state"] = json!("failed"); job["error"] = json!("작업 스레드를 시작하지 못했습니다."); } }
+        OPERATION.store(0, Ordering::Release);
+        return Err(format!("가져오기 작업을 시작하지 못했습니다: {error}"));
+    }
+    Ok(initial)
 }
 
 fn update(message: String, completed: Option<String>, warning: bool) {
@@ -657,15 +733,16 @@ fn update(message: String, completed: Option<String>, warning: bool) {
     }
 }
 pub fn status() -> Result<Value, String> {
-    Ok(JOB
-        .lock()
-        .map_err(|_| "가져오기 상태를 읽을 수 없습니다.")?
-        .clone()
-        .unwrap_or(Value::Null))
+    let mut state = JOB.lock().map_err(|_| "가져오기 상태를 읽을 수 없습니다.")?;
+    let response = state.clone().unwrap_or(Value::Null);
+    if let Some(job) = state.as_mut().filter(|job| job["state"] != "running") {
+        if let Some(object) = job.as_object_mut() { object.remove("inventory"); object.remove("preview"); }
+    }
+    Ok(response)
 }
 
 fn snapshot(plan: &Plan) -> Value {
-    json!({"source":plan.source,"target":plan.target,"images":plan.images,"containers":plan.containers.iter().map(fingerprint).collect::<Vec<_>>(),"volumes":plan.volumes,"networks":plan.networks,"binds":plan.binds,"reusedNetworks":plan.reused_networks})
+    json!({"source":plan.source,"target":plan.target,"images":plan.images,"containers":plan.containers.iter().map(fingerprint).collect::<Vec<_>>(),"volumes":plan.volumes,"networks":plan.networks,"binds":plan.binds,"reusedNetworks":plan.reused_networks,"reusedVolumes":plan.reused_volumes})
 }
 pub fn execute(token: String, approved: bool) -> Result<Value, String> {
     if !approved {
@@ -679,44 +756,16 @@ pub fn execute(token: String, approved: bool) -> Result<Value, String> {
     if token != plan.token || plan.created.elapsed() >= TTL {
         return Err("승인 정보가 만료되었거나 올바르지 않습니다. 다시 검사하세요.".into());
     }
-    let target = docker::connected()?;
-    let rechecked = make_plan(plan.selection.clone(), plan.token.clone(), &target)?;
-    if !rechecked.blocked.is_empty() || snapshot(&rechecked) != snapshot(&plan) {
-        return Err("원본·대상·설정이 검사 후 변경되었습니다. 다시 검사하세요.".into());
-    }
-    ACTIVE
-        .compare_exchange(false, true, Ordering::AcqRel, Ordering::Acquire)
-        .map_err(|_| "다른 가져오기가 진행 중입니다.")?;
-    let initial = json!({"id":plan.token,"state":"running","message":"선택한 데이터를 복사하고 있습니다.","completed":[],"warnings":[],"stoppedSources":[],"startedTargets":[]});
-    match JOB.lock() {
-        Ok(mut job) => *job = Some(initial.clone()),
-        Err(_) => {
-            ACTIVE.store(false, Ordering::Release);
-            return Err("가져오기 상태를 보관할 수 없습니다.".into());
+    launch("transfer", plan.token.clone(), COPYING, move || {
+        let target = target_client()?;
+        update("승인한 대상의 변경 여부를 다시 확인하고 있습니다.".into(), None, false);
+        let rechecked = make_plan(plan.selection.clone(), plan.token.clone(), &target)?;
+        if !rechecked.blocked.is_empty() || snapshot(&rechecked) != snapshot(&plan) {
+            return Err("원본·대상·설정이 검사 후 변경되었습니다. 다시 검사하세요.".into());
         }
-    }
-    thread::spawn(move || {
-        let result = transfer(rechecked, &target);
-        if let Ok(mut state) = JOB.lock() {
-            if let Some(job) = state.as_mut() {
-                job["state"] = json!(if result.is_ok() {
-                    "completed"
-                } else {
-                    "failed"
-                });
-                job["message"] = json!(if result.is_ok() {
-                    "복사가 끝났습니다. 대상의 데이터와 실행 상태를 확인하세요. Docker Desktop은 확인을 마치기 전까지 제거하지 마세요."
-                } else {
-                    "이전이 중단되었습니다. 복사본과 원본 데이터는 보존했습니다. 중지한 원본·시작한 복사본 목록을 확인하고 한쪽만 실행하세요."
-                });
-                if let Err(error) = result {
-                    job["error"] = json!(error);
-                }
-            }
-        }
-        ACTIVE.store(false, Ordering::Release);
-    });
-    Ok(initial)
+        transfer(rechecked, &target)?;
+        Ok(Value::Null)
+    })
 }
 
 struct Workspace {
@@ -725,37 +774,7 @@ struct Workspace {
 }
 impl Workspace {
     fn new(token: &str) -> Result<Self, String> {
-        let local = PathBuf::from(
-            std::env::var_os("LOCALAPPDATA")
-                .ok_or("현재 사용자의 앱 데이터 경로를 확인할 수 없습니다.")?,
-        );
-        if !local.is_absolute() || !local.is_dir() {
-            return Err("현재 사용자의 앱 데이터 경로가 올바르지 않습니다.".into());
-        }
-        let root = local.join("DockSlate/migration").join(token);
-        for parent in root
-            .ancestors()
-            .skip(1)
-            .collect::<Vec<_>>()
-            .into_iter()
-            .rev()
-        {
-            if !parent.exists() && parent.starts_with(&local) {
-                fs::create_dir(parent).map_err(|_| "앱의 복사 작업 폴더를 만들 수 없습니다.")?;
-            }
-            let meta =
-                fs::symlink_metadata(parent).map_err(|_| "임시 경로를 검사할 수 없습니다.")?;
-            #[cfg(windows)]
-            {
-                use std::os::windows::fs::MetadataExt;
-                if meta.file_attributes() & 0x400 != 0 {
-                    return Err("임시 경로의 reparse point는 지원하지 않습니다.".into());
-                }
-            }
-            if meta.file_type().is_symlink() {
-                return Err("임시 경로의 심볼릭 링크는 지원하지 않습니다.".into());
-            }
-        }
+        let root = receipts::directory()?.join(token);
         fs::create_dir(&root).map_err(|_| "새 가져오기 임시 폴더를 만들 수 없습니다.")?;
         Ok(Self {
             root,
@@ -893,22 +912,23 @@ fn stop_sources(plan: &mut Plan, target: &Client) -> Result<(), String> {
         None,
         false,
     );
-    let mut args = vec!["container".into(), "stop".into(), "--timeout=-1".into()];
-    args.extend(running.iter().map(|v| text(v, "Id").to_owned()));
-    let result = command(SOURCE, &args, Duration::from_secs(180));
-    let after = inspect_many(SOURCE, "container", &ids)?;
-    for (previous, current) in before.iter().zip(&after) {
-        if !stopped(previous) && stopped(current) {
-            record_state(
-                "stoppedSources",
-                text(current, "Name").trim_start_matches('/'),
-            );
+    for (index, container) in running.iter().enumerate() {
+        let container_id = text(container, "Id");
+        update(format!("원본 정상 중지 ({}/{}): {}", index + 1, running.len(), text(container, "Name").trim_start_matches('/')), None, false);
+        inspection_progress("stop", index, running.len());
+        let result = command(SOURCE, &["container".into(), "stop".into(), "--timeout=-1".into(), container_id.into()], Duration::from_secs(180));
+        let current = inspect(SOURCE, "container", container_id)?;
+        if stopped(&current) { record_state("stoppedSources", text(&current, "Name").trim_start_matches('/')); }
+        result.map_err(|_| "정상 종료 대기 중 오류 또는 컨테이너당 3분 제한에 도달했습니다. 강제 종료하지 않았습니다. 원본 상태를 확인하고 다시 검사하세요.".to_owned())?;
+        if !same_configuration(container, &current) || !stopped(&current) {
+            return Err("원본의 정상 종료를 확인하지 못했거나 설정이 변경되었습니다. 컨테이너·볼륨 데이터 복사는 시작하지 않았습니다. 중지한 원본 목록을 확인하세요.".into());
         }
-        if !same_configuration(previous, current) || !stopped(current) {
-            return Err("원본의 정상 종료를 확인하지 못했거나 설정이 변경되었습니다. 강제 종료하지 않았으며 컨테이너·볼륨 데이터 복사는 시작하지 않았습니다. 중지한 원본 목록을 확인하세요.".into());
-        }
+        inspection_progress("stop", index + 1, running.len());
     }
-    result.map_err(|_| "정상 종료 대기 중 오류 또는 3분 제한에 도달했습니다. 강제 종료하지 않았습니다. 원본 상태를 확인하고 다시 검사하세요.".to_owned())?;
+    let after = inspect_many(SOURCE, "container", &ids)?;
+    if before.iter().zip(&after).any(|(previous,current)| !same_configuration(previous,current) || !stopped(current)) {
+        return Err("원본 컨테이너의 중지 상태 또는 설정이 변경되어 복사를 시작하지 않았습니다.".into());
+    }
     plan.containers = after;
     Ok(())
 }
@@ -1119,10 +1139,15 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
     let plan = &mut current;
     let destination = cli_platform::endpoint()?;
     let mut workspace = Workspace::new(&plan.token)?;
+    let total = plan.images.len() + plan.binds.len() + plan.volumes.len() + plan.containers.len();
+    let mut copied = 0;
+    inspection_progress("copy", copied, total);
     for image in &plan.images {
         same_engines(plan, target)?;
         let image_id = text(image, "Id");
         update(format!("이미지 복사: {image_id}"), None, false);
+        let present = array(&target.json("GET", "/images/json?all=1")?).iter().any(|value| value["Id"] == image_id);
+        if !present {
         let (path, archive) = workspace.archive()?;
         copy_file(
             SOURCE,
@@ -1147,6 +1172,9 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
         if inspect(&destination, "image", image_id)?["Id"] != image_id {
             return Err("대상 이미지 ID가 원본과 다릅니다. 결과를 확인하세요.".into());
         }
+        drop(archive);
+        workspace.remove(&path)?;
+        }
         for tag in strings(&image["RepoTags"]) {
             ensure_tags(target, image)?;
             command(
@@ -1161,8 +1189,8 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
                 Duration::from_secs(30),
             )?;
         }
-        drop(archive);
-        workspace.remove(&path)?;
+        if let Ok(mut state) = JOB.lock() { if let Some(job) = state.as_mut() { if !job["imported"].is_array() { job["imported"] = json!([]); } job["imported"].as_array_mut().unwrap().push(json!({"kind":"images","id":image_id})); } }
+        copied += 1; inspection_progress("copy", copied, total);
         update(
             "이미지를 복사했습니다.".into(),
             Some(format!("이미지 {image_id}")),
@@ -1176,9 +1204,16 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
     };
     stop_sources(plan, target)?;
     for binding in &plan.binds {
+        copied += 1; inspection_progress("copy", copied - 1, total);
+        if plan.reused_volumes.contains(&binding.volume) { inspection_progress("copy", copied, total); continue; }
         binds::copy(plan, target, binding, &destination, &mut workspace)?;
+        let destination_volume = target.json("GET", &format!("/volumes/{}", crate::resources::encode(&binding.volume)))?;
+        receipts::save(plan, "binds", &binding.source, &Value::Null, &destination_volume)?;
+        inspection_progress("copy", copied, total);
     }
     for volume in &plan.volumes {
+        copied += 1; inspection_progress("copy", copied - 1, total);
+        if plan.reused_volumes.iter().any(|value| volume["Name"] == *value) { inspection_progress("copy", copied, total); continue; }
         same_engines(plan, target)?;
         let volume_name = text(volume, "Name");
         update(format!("볼륨 복사: {volume_name}"), None, false);
@@ -1250,6 +1285,9 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
             }
         }
         result?;
+        let destination_volume = target.json("GET", &format!("/volumes/{}", crate::resources::encode(volume_name)))?;
+        receipts::save(plan, "volumes", volume_name, volume, &destination_volume)?;
+        inspection_progress("copy", copied, total);
         workspace.remove(&path)?;
         update(
             "볼륨을 복사했습니다.".into(),
@@ -1295,6 +1333,7 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
         );
     }
     for source in &plan.containers {
+        copied += 1; inspection_progress("copy", copied - 1, total);
         same_engines(plan, target)?;
         let container_id = text(source, "Id");
         let container_name = text(source, "Name").trim_start_matches('/');
@@ -1339,6 +1378,11 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
         if !id(text(&created, "Id")) {
             return Err("대상 컨테이너 생성 결과를 확인하지 못했습니다.".into());
         }
+        let destination_container = target.json("GET", &format!("/containers/{}/json", text(&created, "Id")))?;
+        let mut receipt_container = destination_container.clone();
+        receipt_container["Labels"] = destination_container["Config"]["Labels"].clone();
+        receipts::save(plan, "containers", container_id, source, &receipt_container)?;
+        inspection_progress("copy", copied, total);
         update(
             "중지 상태의 컨테이너를 만들었습니다.".into(),
             Some(format!(
@@ -1430,6 +1474,15 @@ mod security_tests {
             "NetworkSettings":{"Networks":{"demo_default":{"Aliases":["database","a".repeat(12)],"IPAMConfig":null}}}})
     }
     #[test]
+    fn migration_status_transfers_read_results_without_retaining_a_result_cache() {
+        *JOB.lock().unwrap() = Some(json!({"state":"completed","kind":"inventory","inventory":{"containers":[]},"message":"done"}));
+        assert!(status().unwrap()["inventory"].is_object());
+        let remaining = status().unwrap();
+        assert!(remaining["inventory"].is_null());
+        assert_eq!(remaining["message"], "done");
+        *JOB.lock().unwrap() = None;
+    }
+    #[test]
     fn migration_selection_rejects_options_paths_and_excessive_work() {
         let mut selection = Selection {
             images: vec![format!("sha256:{}", "b".repeat(64))],
@@ -1447,6 +1500,10 @@ mod security_tests {
         assert!(!selection_valid(&selection));
         selection.volumes = vec!["safe".into(); 128];
         assert!(!selection_valid(&selection));
+        selection.volumes = (0..4096).map(|index| format!("volume-{index}")).collect();
+        assert!(!selection_valid(&selection));
+        selection.volumes.pop();
+        assert!(selection_valid(&selection));
         selection.volumes.clear();
         selection.containers = vec!["not-a-full-id".into()];
         assert!(!selection_valid(&selection));
@@ -1613,6 +1670,7 @@ mod security_tests {
             volumes: vec![],
             networks: vec![],
             reused_networks: vec![],
+            reused_volumes: vec![],
             binds: vec![],
             blocked: vec![],
         };
@@ -1643,6 +1701,7 @@ mod security_tests {
             volumes: vec![],
             networks: vec![],
             reused_networks: vec![],
+            reused_volumes: vec![],
             binds: vec![],
             blocked: vec![],
         });

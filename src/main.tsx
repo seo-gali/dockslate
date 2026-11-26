@@ -5,8 +5,10 @@ import './styles.css';
 import { applyAppearance, readAppearance } from './appearance';
 import { initializeLanguage } from './i18n';
 import { TooltipLayer } from './Tooltip';
+import { installContextMenu } from './context-menu';
 
 applyAppearance(readAppearance());
+installContextMenu();
 
 void initializeLanguage().then(() => ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

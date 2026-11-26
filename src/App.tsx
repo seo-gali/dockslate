@@ -103,7 +103,7 @@ export default function App() {
   useEffect(() => {
     if (setupChecked.current || !runtime.query.data || installerMode === null || startup.loading) return;
     if (installerMode) { setupChecked.current = true; return; }
-    if (runtime.query.data.state === 'stopped' && startup.data?.startEngine && startup.data.autoStartAllowed && !runtime.query.data.blockedReasons.length) {
+    if (runtime.query.data.state === 'stopped' && startup.data?.autoStartAllowed && (startup.engineOnLaunch || startup.data.engineFromLogin) && !runtime.query.data.blockedReasons.length) {
       if (runtime.controlsDisabled) return;
       setupChecked.current = true;
       void runtime.startAutomatically().then(setStartupError).catch(error => setStartupError(errorMessage(error)));
@@ -111,7 +111,7 @@ export default function App() {
       setupChecked.current = true;
       if (['not_installed', 'unsupported'].includes(runtime.query.data.state)) setShowEngineSetup(true);
     }
-  }, [runtime.query.data, runtime.controlsDisabled, installerMode, startup.loading, startup.data]);
+  }, [runtime.query.data, runtime.controlsDisabled, installerMode, startup.loading, startup.data, startup.engineOnLaunch]);
   useEffect(() => {
     if (!('__TAURI_INTERNALS__' in window)) return;
     let disposed = false;

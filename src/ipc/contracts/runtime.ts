@@ -29,4 +29,5 @@ export interface StartupSettings {
   conflict: boolean;
   executable: string;
   autoStartAllowed: boolean;
+  engineFromLogin: boolean;
 }

@@ -68,13 +68,14 @@ export type DestructiveRequest = {
   buildCacheIds?: string[];
 };
 export interface DestructivePreview {
-  token: string;
+  token: string | null;
   kind: DestructiveRequest['kind'];
   targets: string[];
   impact: string[];
   recoverable: false;
   expiresAt: number;
   estimatedBytes: number | null;
+  blocked?: { id: string; error: string }[];
 }
 export interface ActionResult { message: string }
 export interface ContainerActionResult extends ActionResult { state: string; exitCode: number | null }

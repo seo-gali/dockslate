@@ -514,6 +514,15 @@ check || exit 0
         Ok(child)
     }
 
+    pub(crate) fn set_restart_policy(&self, api: &str, id: &str, policy: &str) -> Result<(), String> {
+        if !api.strip_prefix("1.").and_then(|minor| minor.parse::<u32>().ok()).is_some_and(|minor| (41..=55).contains(&minor))
+            || !crate::resources::object_id(id) || !["always", "no"].contains(&policy) {
+            return Err("Invalid container restart policy request".into());
+        }
+        let body = serde_json::to_vec(&serde_json::json!({"RestartPolicy":{"Name":policy,"MaximumRetryCount":0}})).unwrap();
+        self.request_inner("POST", &format!("/v{api}/containers/{id}/update"), Some(&body), Duration::from_secs(20), 1024 * 1024, None).map(|_| ())
+    }
+
     fn create_json(
         &self,
         api: &str,
