@@ -3,7 +3,7 @@
   "observedAt": "2026-11-27T11:12:41.710Z",
   "published": false,
   "websitePublished": false,
-  "status": "Exact 0.1.16 EXE/ZIP payloads and both native installer screens verified; public antivirus upload approval pending",
+  "status": "0.1.16 packages and native screens verified; public upload approved; VirusTotal web upload blocked by RecaptchaRequiredError",
   "outputDirectory": "downloads/local-release016-20261127",
   "artifacts": [
     {
@@ -266,7 +266,7 @@
     "temporaryPackagingFilesRemoved": true
   },
   "remaining": [
-    "Fresh 0.1.16 public antivirus upload approval and reports pending",
+    "VirusTotal web CAPTCHA remains unresolved; no complete new scan report verified",
     "Unsigned development build; no signing certificate",
     "Full installation/upgrade/uninstall/reboot/rollback not performed",
     "GitHub Release and website cutover pending"
@@ -313,7 +313,7 @@
     ],
     "decisions": {
       "file": "D:/01_Programming/08_AI/REA/DockSlate-0.1.16-release-decisions.html",
-      "sha256": "44AA2C07596382318AFF2C417C7FB4E79F05CCF50A39C66B0D67D58A542676FA"
+      "sha256": "DD8D2DDBAF363FB85C99EE7A4FDDCF56C55DC6687993A01D181C9216266BA497"
     },
     "cleanup": {
       "removed": [
@@ -357,7 +357,75 @@
     "public015FilesPreserved": true
   },
   "publicationHold": {
-    "reason": "New exact 0.1.16 file uploads to VirusTotal require the pending user response; no previous hash approval reused",
-    "scanInput": ".analysis/release016-scan-input.json"
+    "reason": "VirusTotal requires human verification; user reports repeated image verification failure; awaiting a supported authentication method",
+    "httpStatus": 429,
+    "errorCode": "RecaptchaRequiredError",
+    "uploadApproved": true
+  },
+  "virusTotal": {
+    "version": "0.1.16",
+    "status": "blocked",
+    "observedAt": "2026-11-27T11:57:40.134Z",
+    "publicUploadOfFourFilesApproved": true,
+    "authorization": {
+      "userAnswer": "업로드해",
+      "scope": "Exactly the installer, complete portable ZIP, embedded app and CLI in this manifest; public VirusTotal sharing",
+      "observedAt": "2026-11-27T11:36:15.100Z"
+    },
+    "files": [
+      {
+        "file": "DockSlate_0.1.16_x64-setup.exe",
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
+        "bytes": 41207253,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/c6c4cc47005788237333bf0f70e44de6095f781c5cdfad0d7072c75420fcd821/detection"
+      },
+      {
+        "file": "DockSlate-0.1.16-windows-x64.zip",
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A",
+        "bytes": 56243692,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/6b43b2e306b645f8cb7cd5a29763b1a5b55a3cd24ad652ee3e1d2b95e3f9a79a/detection"
+      },
+      {
+        "file": "DockSlate.exe",
+        "sha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909",
+        "bytes": 5487616,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/8cfbef0eb61108310ef8e8339612810d746d6cbcead98a46c353060dfd88f909/detection"
+      },
+      {
+        "file": "bin/docker.exe",
+        "sha256": "D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72",
+        "bytes": 320512,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/d280d357e03859cc7bea6a0e138d1045856dbe570c2335851eb412d33fc17c72/detection"
+      }
+    ],
+    "publicationApprovals": [],
+    "blocker": {
+      "service": "VirusTotal web upload",
+      "lastObservedAt": "2026-11-27T11:47:06.336Z",
+      "httpStatus": 429,
+      "errorCode": "RecaptchaRequiredError",
+      "errorMessage": "reCAPTCHA validation failed, please try again",
+      "retryAfterSeconds": 60,
+      "humanVerificationAttemptReportedByUser": true,
+      "diagnosticBrowserClosed": true,
+      "apiAuthenticationNotProvided": true
+    },
+    "limitations": [
+      "No completed 0.1.16 scan reports have been verified",
+      "The 56.2 MB multi-file ZIP exceeds the web archive inner-scanning limit of 3 MB and exactly one member; app and CLI are separate approved submissions",
+      "An incomplete scan is not a zero-detection result; previous-version scan approvals are not reused"
+    ]
   }
 }

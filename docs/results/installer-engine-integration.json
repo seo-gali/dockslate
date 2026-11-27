@@ -241,7 +241,7 @@
   "installerFilePresent": true,
   "blocker": null,
   "remaining": [
-    "Fresh 0.1.16 public antivirus upload approval and reports pending",
+    "VirusTotal web CAPTCHA remains unresolved; no complete new scan report verified",
     "Unsigned development build; no signing certificate",
     "Full installation/upgrade/uninstall/reboot/rollback not performed",
     "GitHub Release and website cutover pending"
@@ -879,7 +879,7 @@
     ],
     "decisions": {
       "file": "D:/01_Programming/08_AI/REA/DockSlate-0.1.16-release-decisions.html",
-      "sha256": "44AA2C07596382318AFF2C417C7FB4E79F05CCF50A39C66B0D67D58A542676FA"
+      "sha256": "DD8D2DDBAF363FB85C99EE7A4FDDCF56C55DC6687993A01D181C9216266BA497"
     },
     "cleanup": {
       "removed": [
