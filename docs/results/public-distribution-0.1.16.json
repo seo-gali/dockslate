@@ -1,0 +1,246 @@
+{
+  "version": "0.1.16",
+  "observedAt": "2026-11-27T16:07:08.182Z",
+  "published": true,
+  "websitePublished": false,
+  "files": [
+    {
+      "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
+      "file": "DockSlate_0.1.16_x64-setup.exe",
+      "bytes": 41207253
+    },
+    {
+      "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A",
+      "file": "DockSlate-0.1.16-windows-x64.zip",
+      "bytes": 56243692
+    },
+    {
+      "sha256": "C62B6FB6EFDCED562260AC00D80DD7609ABD2C23AD305EC0E42E0C5EA023FE8A",
+      "file": "DockSlate-0.1.16-third-party-licenses.zip",
+      "bytes": 5269085
+    }
+  ],
+  "virusTotal": {
+    "version": "0.1.16",
+    "status": "blocked",
+    "observedAt": "2026-11-27T16:01:42.246Z",
+    "publicUploadOfFourFilesApproved": true,
+    "authorization": {
+      "userAnswer": "업로드해",
+      "scope": "Exactly the installer, complete portable ZIP, embedded app and CLI in this manifest; public VirusTotal sharing",
+      "observedAt": "2026-11-27T11:36:15.100Z"
+    },
+    "files": [
+      {
+        "file": "DockSlate_0.1.16_x64-setup.exe",
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
+        "bytes": 41207253,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/c6c4cc47005788237333bf0f70e44de6095f781c5cdfad0d7072c75420fcd821/detection"
+      },
+      {
+        "file": "DockSlate-0.1.16-windows-x64.zip",
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A",
+        "bytes": 56243692,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/6b43b2e306b645f8cb7cd5a29763b1a5b55a3cd24ad652ee3e1d2b95e3f9a79a/detection"
+      },
+      {
+        "file": "DockSlate.exe",
+        "sha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909",
+        "bytes": 5487616,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/8cfbef0eb61108310ef8e8339612810d746d6cbcead98a46c353060dfd88f909/detection"
+      },
+      {
+        "file": "bin/docker.exe",
+        "sha256": "D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72",
+        "bytes": 320512,
+        "completed": false,
+        "detections": null,
+        "totalEngines": null,
+        "expectedReportUrl": "https://www.virustotal.com/gui/file/d280d357e03859cc7bea6a0e138d1045856dbe570c2335851eb412d33fc17c72/detection"
+      }
+    ],
+    "publicationApprovals": [],
+    "blocker": {
+      "service": "VirusTotal web upload",
+      "lastObservedAt": "2026-11-27T15:50:03.494Z",
+      "httpStatus": 429,
+      "errorCode": "RecaptchaRequiredError",
+      "errorMessage": "reCAPTCHA validation failed, please try again",
+      "retryAfterSeconds": 60,
+      "humanVerificationAttemptReportedByUser": true,
+      "diagnosticBrowserClosed": false,
+      "apiAuthenticationNotProvided": true
+    },
+    "limitations": [
+      "No completed 0.1.16 scan reports have been verified",
+      "The 56.2 MB multi-file ZIP exceeds the web archive inner-scanning limit of 3 MB and exactly one member; app and CLI are separate approved submissions",
+      "An incomplete scan is not a zero-detection result; previous-version scan approvals are not reused"
+    ],
+    "latestRetry": {
+      "observedAt": "2026-11-27T15:50:04.651Z",
+      "hashesVerified": 4,
+      "hashLookups": [
+        {
+          "kind": "cli",
+          "status": 404
+        },
+        {
+          "kind": "app",
+          "status": 404
+        },
+        {
+          "kind": "installer",
+          "status": 404
+        },
+        {
+          "kind": "zip",
+          "status": 404
+        }
+      ],
+      "uploadsAccepted": 0,
+      "httpStatus": 429,
+      "errorCode": "RecaptchaRequiredError",
+      "captchaInteractedWith": false
+    },
+    "unverifiedPublicationApproval": {
+      "userApproved": true,
+      "version": "0.1.16",
+      "userAnswer": "일단 공개해",
+      "observedAt": "2026-11-27T16:01:42.247Z",
+      "scope": "Unsigned prerelease only, with incomplete antivirus status disclosed; exactly these four files",
+      "files": [
+        {
+          "file": "DockSlate_0.1.16_x64-setup.exe",
+          "bytes": 41207253,
+          "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821"
+        },
+        {
+          "file": "DockSlate-0.1.16-windows-x64.zip",
+          "bytes": 56243692,
+          "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A"
+        },
+        {
+          "file": "DockSlate.exe",
+          "bytes": 5487616,
+          "sha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909"
+        },
+        {
+          "file": "bin/docker.exe",
+          "bytes": 320512,
+          "sha256": "D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72"
+        }
+      ]
+    }
+  },
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.16",
+    "releaseId": 460814587,
+    "tag": "v0.1.16",
+    "sourceCommit": "4c0945399ef62cac572466996bcaefcb493958b5",
+    "checksumSourcePath": ".github/release016-SHA256SUMS.txt",
+    "binaryBuildSourceCommit": "255c37fdec44248bfa388f008b89cf04aa67da9a",
+    "prerelease": true,
+    "draft": false,
+    "publisherRunId": 46030386130,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.16_x64-setup.exe",
+        "bytes": 41207253,
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821"
+      },
+      {
+        "name": "DockSlate-0.1.16-windows-x64.zip",
+        "bytes": 56243692,
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A"
+      },
+      {
+        "name": "DockSlate-0.1.16-third-party-licenses.zip",
+        "bytes": 5269085,
+        "sha256": "C62B6FB6EFDCED562260AC00D80DD7609ABD2C23AD305EC0E42E0C5EA023FE8A"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 304,
+        "sha256": "302F276C5462D2D1F9E01329D2542C27D4B3B3055507730BEDB20135E7585AEE"
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.16_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/DockSlate_0.1.16_x64-setup.exe",
+        "status": 200,
+        "bytes": 41207253,
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.16-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/DockSlate-0.1.16-windows-x64.zip",
+        "status": 200,
+        "bytes": 56243692,
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.16-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/DockSlate-0.1.16-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5269085,
+        "sha256": "C62B6FB6EFDCED562260AC00D80DD7609ABD2C23AD305EC0E42E0C5EA023FE8A",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/SHA256SUMS.txt",
+        "status": 200,
+        "bytes": 304,
+        "sha256": "302F276C5462D2D1F9E01329D2542C27D4B3B3055507730BEDB20135E7585AEE",
+        "githubDigestMatches": true
+      }
+    ]
+  },
+  "checks": {
+    "publishedBytesVerified": true,
+    "tagVerified": true,
+    "oldReleasePreserved": true
+  },
+  "localWebsiteVerification": {
+    "observedAt": "2026-11-27T16:08:40.281Z",
+    "buildExit": 0,
+    "version": "0.1.16",
+    "layout": {
+      "passed": true,
+      "cases": [
+        {
+          "name": "home-desktop",
+          "passed": true
+        },
+        {
+          "name": "home-mobile",
+          "passed": true
+        },
+        {
+          "name": "guide-mobile",
+          "passed": true
+        },
+        {
+          "name": "decisions",
+          "passed": true
+        }
+      ],
+      "rendererExceptions": 0
+    },
+    "unverifiedAntivirusDisclosed": true,
+    "missingScanResultsNotLinked": true,
+    "legacyLegalRoutes": 26
+  }
+}

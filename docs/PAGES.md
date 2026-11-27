@@ -34,11 +34,11 @@ npm run build:site
 
 릴리스 명세의 EXE·포터블·고지 소스 ZIP을 크기·SHA-256으로 검증하고 공개판 고정 커밋의 `SHA256SUMS.txt`와 대조한 뒤 `site-dist/`를 만듭니다. 로컬 파일이 없으면 고정 Git 객체를 읽고, 그 객체도 없으면 해당 공개 GitHub Release에서 다운로드해 검증합니다. 이미 있는 로컬 파일이 다르면 실패하며 다른 사본으로 숨기지 않습니다. 지문표가 다르면 기존 출력 교체 전에 실패합니다. `site-dist/index.html`을 브라우저로 열어 확인합니다. 로컬 빌드는 게시·파일 업로드를 하지 않습니다. Git 객체가 없는 환경에서는 공개 파일 다운로드가 필요하며 검증용 임시 파일은 작업 후 삭제합니다.
 
-체크섬의 고정 Git 경로는 공개 영수증의 `github.checksumSourcePath`로 기록할 수 있으며 기본값은 `downloads/SHA256SUMS.txt`입니다. 0.1.15는 게시 전 기존 홈페이지의 0.1.14 체크섬을 유지하기 위해 릴리스 커밋의 `.github/release015-SHA256SUMS.txt`를 사용했습니다. 어느 경로든 실제 공개 파일의 크기·SHA-256과 일치해야 하며 불일치하면 차단합니다.
+체크섬의 고정 Git 경로는 공개 영수증의 `github.checksumSourcePath`로 기록할 수 있으며 기본값은 `downloads/SHA256SUMS.txt`입니다. 0.1.16은 홈페이지 전환 전 기존 0.1.15 체크섬을 유지하기 위해 릴리스 커밋의 `.github/release016-SHA256SUMS.txt`를 사용했습니다. 어느 경로든 실제 공개 파일의 크기·SHA-256과 일치해야 하며 불일치하면 차단합니다.
 
-사이트 빌드는 현재 0.1.3~0.1.14 고지 ZIP 12개를 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 24개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
+사이트 빌드는 현재 0.1.3~0.1.15 고지 ZIP 13개를 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 26개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
 
-현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.15)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.15.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
+현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.16)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올립니다. 0.1.16은 백신 검사 미완료를 다운로드 전에 표시하고 [진행·승인 기록](results/virustotal-0.1.16.json)을 연결합니다. 검사 결과가 없는 파일을 탐지 0건으로 표시하지 않습니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다.
 
 설치 EXE는 `scripts/build-installer.ps1`, 포터블은 `npm run package:local`로 별도 생성합니다. Pages workflow는 앱 설치 파일을 빌드하지 않습니다. `site-dist/`에는 공개 웹 파일과 다운로드만 포함하며 앱 소스·검증 자료·로컬 영상은 게시하지 않습니다.
 

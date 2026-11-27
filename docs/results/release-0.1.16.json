@@ -1,9 +1,9 @@
 {
   "version": "0.1.16",
   "observedAt": "2026-11-27T11:12:41.710Z",
-  "published": false,
+  "published": true,
   "websitePublished": false,
-  "status": "Unsigned 0.1.16 prerelease publication approved with antivirus scans incomplete; publication pending",
+  "status": "Unsigned 0.1.16 prerelease published with incomplete antivirus status disclosed under exact approval; public bytes verified; website transition pending",
   "outputDirectory": "downloads/local-release016-20261127",
   "artifacts": [
     {
@@ -268,8 +268,7 @@
   "remaining": [
     "VirusTotal web CAPTCHA remains unresolved; no complete new scan report verified",
     "Unsigned development build; no signing certificate",
-    "Full installation/upgrade/uninstall/reboot/rollback not performed",
-    "GitHub Release and website cutover pending"
+    "Full installation/upgrade/uninstall/reboot/rollback not performed"
   ],
   "packagedDocumentsAreBuildTimeSnapshots": true,
   "files": [
@@ -354,7 +353,29 @@
       "sourceAndReleaseEvidencePreserved": true
     },
     "frozenFileHashesRechecked": true,
-    "public015FilesPreserved": true
+    "public015FilesPreserved": true,
+    "layout": {
+      "passed": true,
+      "cases": [
+        {
+          "name": "home-desktop",
+          "passed": true
+        },
+        {
+          "name": "home-mobile",
+          "passed": true
+        },
+        {
+          "name": "guide-mobile",
+          "passed": true
+        },
+        {
+          "name": "decisions",
+          "passed": true
+        }
+      ],
+      "rendererExceptions": 0
+    }
   },
   "virusTotal": {
     "version": "0.1.16",
@@ -515,5 +536,102 @@
     "currentWebsiteVersion": "0.1.15",
     "exactApprovalRequired": true,
     "fullInstallationVerified": false
+  },
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.16",
+    "releaseId": 460814587,
+    "tag": "v0.1.16",
+    "sourceCommit": "4c0945399ef62cac572466996bcaefcb493958b5",
+    "checksumSourcePath": ".github/release016-SHA256SUMS.txt",
+    "binaryBuildSourceCommit": "255c37fdec44248bfa388f008b89cf04aa67da9a",
+    "prerelease": true,
+    "draft": false,
+    "publisherRunId": 46030386130,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.16_x64-setup.exe",
+        "bytes": 41207253,
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821"
+      },
+      {
+        "name": "DockSlate-0.1.16-windows-x64.zip",
+        "bytes": 56243692,
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A"
+      },
+      {
+        "name": "DockSlate-0.1.16-third-party-licenses.zip",
+        "bytes": 5269085,
+        "sha256": "C62B6FB6EFDCED562260AC00D80DD7609ABD2C23AD305EC0E42E0C5EA023FE8A"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 304,
+        "sha256": "302F276C5462D2D1F9E01329D2542C27D4B3B3055507730BEDB20135E7585AEE"
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.16_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/DockSlate_0.1.16_x64-setup.exe",
+        "status": 200,
+        "bytes": 41207253,
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.16-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/DockSlate-0.1.16-windows-x64.zip",
+        "status": 200,
+        "bytes": 56243692,
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.16-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/DockSlate-0.1.16-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5269085,
+        "sha256": "C62B6FB6EFDCED562260AC00D80DD7609ABD2C23AD305EC0E42E0C5EA023FE8A",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.16/SHA256SUMS.txt",
+        "status": 200,
+        "bytes": 304,
+        "sha256": "302F276C5462D2D1F9E01329D2542C27D4B3B3055507730BEDB20135E7585AEE",
+        "githubDigestMatches": true
+      }
+    ]
+  },
+  "localWebsiteVerification": {
+    "observedAt": "2026-11-27T16:08:40.274Z",
+    "buildExit": 0,
+    "version": "0.1.16",
+    "layout": {
+      "passed": true,
+      "cases": [
+        {
+          "name": "home-desktop",
+          "passed": true
+        },
+        {
+          "name": "home-mobile",
+          "passed": true
+        },
+        {
+          "name": "guide-mobile",
+          "passed": true
+        },
+        {
+          "name": "decisions",
+          "passed": true
+        }
+      ],
+      "rendererExceptions": 0
+    },
+    "unverifiedAntivirusDisclosed": true,
+    "missingScanResultsNotLinked": true,
+    "legacyLegalRoutes": 26
   }
 }
