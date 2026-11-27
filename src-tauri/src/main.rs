@@ -1,5 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+#[cfg(all(not(debug_assertions), dev))]
+compile_error!("Release GUI builds require embedded frontend assets. Use npm run desktop:build or --features tauri/custom-protocol.");
+
 mod builds;
 mod cli_platform;
 mod compose;
@@ -597,13 +600,17 @@ async fn desktop_open_windows_features() -> Result<Value, String> {
     read(desktop::open_windows_features).await
 }
 
-fn verify_read_only(report: &str) -> Result<(), String> {
+fn verify_read_only(report: &str, context: &tauri::Context<tauri::Wry>) -> Result<(), String> {
     let cwd = std::env::current_dir().map_err(|error| error.to_string())?;
     let output = cwd.join(report);
     if report != "docs/results/native-verification.json" {
         return Err("검증 보고서는 지정된 프로젝트 결과 파일에만 저장할 수 있습니다".into());
     }
+    if tauri::is_dev() || context.assets().get(&"index.html".into()).is_none() {
+        return Err("배포용 화면이 EXE에 내장되지 않았습니다. npm run desktop:build로 다시 빌드하세요.".into());
+    }
     let result = serde_json::json!({
+        "frontendEmbedded": true,
         "engine": docker::engine_status(),
         "containers": docker::containers_list(),
         "images": docker::images_list(),
@@ -714,11 +721,12 @@ fn main() {
             std::process::exit(1);
         }
     }
+    let context = tauri::generate_context!();
     if first.as_deref() == Some("--verify-read-only") {
         let report = arguments
             .next()
             .unwrap_or_else(|| "docs/results/native-verification.json".into());
-        if let Err(error) = verify_read_only(&report) {
+        if let Err(error) = verify_read_only(&report, &context) {
             eprintln!("{error}");
             std::process::exit(1);
         }
@@ -793,7 +801,7 @@ fn main() {
                 }
             }
         })
-        .build(tauri::generate_context!())
+        .build(context)
         .expect("DockSlate Windows 실행 실패")
         .run(|_, event| {
             if let tauri::RunEvent::Exit = event {

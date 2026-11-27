@@ -1,45 +1,38 @@
 {
-  "observedAt": "2026-11-26T11:47:46.377Z",
-  "scope": "0.1.15 build and exact package verification; actual installation and migration are separate",
+  "observedAt": "2026-11-27T11:12:41.701Z",
+  "scope": "0.1.16 embedded frontend release build; exact packaging and native installer-screen verification are recorded separately",
   "requestedBehavior": "Docker Desktop-style managed Linux engine with official native Windows Docker CLI, Compose, Buildx and an owned named-pipe broker; engine preparation and CLI verification during installation; preserve existing WSL data.",
-  "completed": true,
+  "completed": false,
   "checks": {
     "windowsReleaseBuildExit": 0,
     "frontendBuildExit": 0,
     "rustCheckExit": 0,
-    "nodeTests": 32,
-    "rustSecurityTests": 37,
-    "installerPathChecks": 11,
-    "windowsProcessChecks": 7,
+    "nodeTests": 33,
+    "rustSecurityTests": 38,
     "latestNativeFlowExecuted": false,
-    "componentFixtureChecks": 9,
-    "offlineCliChecks": 6,
-    "installerBuildExit": 0,
-    "installerExecuted": false,
     "dependencyVersionsChanged": false,
-    "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15",
-    "remoteInstallerBuildExit": 0,
-    "readOnlyNativeExecuted": true,
-    "publicReleaseBytesVerified": true
+    "lockChangeScope": "Only own DockSlate version 0.1.15 to 0.1.16",
+    "installerBuildExit": null,
+    "installerExecuted": false
   },
   "artifacts": [
     {
+      "sha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909",
       "name": "dockslate.exe",
-      "bytes": 5298688,
-      "sha256": "19B8E47588FF3164ED3C1CC95E42788BF365FDCC0E0E3E1AF26E6CD2339AEAE0"
+      "bytes": 5487616
     },
     {
+      "sha256": "D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72",
       "name": "docker.exe",
-      "bytes": 320512,
-      "sha256": "3EB9CBCC658312CC721FC1C31498FDD0A12FBC8D976A95D52539E4F035E4069D"
+      "bytes": 320512
     }
   ],
-  "installerFilePresent": true,
-  "blocker": null,
+  "installerFilePresent": false,
+  "blocker": "Packaging and final artifact verification pending",
   "remaining": [
-    "Unsigned development build",
-    "Exact ZIP DeepInstinct detection disclosed and approved; false-positive status unconfirmed",
-    "Actual full Desktop migration, installation/upgrade/uninstall/cold boot/rollback not performed"
+    "Installer and portable package verification pending",
+    "Unsigned; fresh public antivirus scan results pending",
+    "Full installation/upgrade/uninstall/reboot not performed"
   ],
   "protectionEvidence": {
     "record": "2026-10-19 22:16:01.350  [17364:9700]action:PDPEngTips|process:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Bin\\makensis.exe|file:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Contrib\\Graphics\\Wizard\\win.bmp|remember:1",
@@ -231,80 +224,13 @@
     }
   },
   "currentBuild": {
-    "version": "0.1.15",
+    "version": "0.1.16",
     "frontendBuildExit": 0,
     "windowsReleaseBuildExit": 0,
     "rustCheckExit": 0,
     "dependenciesChanged": false,
     "existingUserDataChanged": false,
-    "engineMutationPerformed": false,
-    "fullDesktopMigrationVerified": false,
-    "publicRelease": {
-      "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.15",
-      "releaseId": 459358174,
-      "tag": "v0.1.15",
-      "sourceCommit": "e96f2b350c7d6853130f4aaa11216ead117a4146",
-      "binaryBuildSourceCommit": "9fd842f10dd4d2256750847e163e24c590d6805b",
-      "prerelease": true,
-      "draft": false,
-      "publisherRunId": 45816172615,
-      "assets": [
-        {
-          "name": "DockSlate_0.1.15_x64-setup.exe",
-          "bytes": 41026459,
-          "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9"
-        },
-        {
-          "name": "DockSlate-0.1.15-windows-x64.zip",
-          "bytes": 54874491,
-          "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909"
-        },
-        {
-          "name": "DockSlate-0.1.15-third-party-licenses.zip",
-          "bytes": 5194696,
-          "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745"
-        },
-        {
-          "name": "SHA256SUMS.txt",
-          "bytes": 304,
-          "sha256": "0EC0E22024F3D9C4EA51343AD3BD5E67BE376E3411C0C6DAB5501035A48083A7"
-        }
-      ],
-      "downloads": [
-        {
-          "file": "DockSlate_0.1.15_x64-setup.exe",
-          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate_0.1.15_x64-setup.exe",
-          "status": 200,
-          "bytes": 41026459,
-          "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9",
-          "githubDigestMatches": true
-        },
-        {
-          "file": "DockSlate-0.1.15-windows-x64.zip",
-          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate-0.1.15-windows-x64.zip",
-          "status": 200,
-          "bytes": 54874491,
-          "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909",
-          "githubDigestMatches": true
-        },
-        {
-          "file": "DockSlate-0.1.15-third-party-licenses.zip",
-          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate-0.1.15-third-party-licenses.zip",
-          "status": 200,
-          "bytes": 5194696,
-          "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745",
-          "githubDigestMatches": true
-        },
-        {
-          "file": "SHA256SUMS.txt",
-          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/SHA256SUMS.txt",
-          "status": 200,
-          "bytes": 304,
-          "sha256": "0EC0E22024F3D9C4EA51343AD3BD5E67BE376E3411C0C6DAB5501035A48083A7",
-          "githubDigestMatches": true
-        }
-      ]
-    }
+    "engineMutationPerformed": false
   },
   "portableDelivery": {
     "version": "0.1.14",
@@ -343,7 +269,7 @@
     "sha256": "D7A372A9CBDCE6B46944E830E87D0CCD682A4767359CF599C9798C08A16D8744",
     "filesVerified": 435
   },
-  "version": "0.1.15",
+  "version": "0.1.16",
   "deletedOutputs": [
     "downloads/DockSlate_0.1.4_x64-setup.exe",
     "downloads/DockSlate-0.1.4-windows-x64.zip",
@@ -689,24 +615,25 @@
     }
   },
   "previousChecks": {
-    "version": "0.1.14",
+    "version": "0.1.15",
     "checks": {
       "windowsReleaseBuildExit": 0,
       "frontendBuildExit": 0,
       "rustCheckExit": 0,
-      "nodeTests": 17,
-      "rustSecurityTests": 30,
+      "nodeTests": 32,
+      "rustSecurityTests": 37,
       "installerPathChecks": 11,
       "windowsProcessChecks": 7,
-      "latestNativeFlowExecuted": true,
+      "latestNativeFlowExecuted": false,
+      "componentFixtureChecks": 9,
+      "offlineCliChecks": 6,
       "installerBuildExit": 0,
       "installerExecuted": false,
       "dependencyVersionsChanged": false,
-      "lockChangeScope": "Only DockSlate own package version 0.1.13 to 0.1.14; dependency graph unchanged",
-      "currentNativeChecks": 5,
-      "currentNativeScope": "Exact 0.1.14 app read-only Moby connection, migration tab/denial/absent source, six layout cases and three CLI queries. No engine state changes; full Desktop migration and installation unverified.",
+      "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15",
       "remoteInstallerBuildExit": 0,
-      "installerBuildScope": "Exact 0.1.14 frozen inputs packaged once on GitHub; official artifact digest, 431 shared files and five documents verified. Local installer not executed."
+      "readOnlyNativeExecuted": true,
+      "publicReleaseBytesVerified": true
     }
   }
 }

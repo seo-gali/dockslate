@@ -1,6 +1,16 @@
 use crate::{compose, desktop, docker, image_removal, resources, runtime, volumes, wsl};
 use serde_json::Value;
 
+#[cfg(dev)]
+#[test]
+fn read_only_verification_rejects_development_frontend() {
+    let context = tauri::generate_context!();
+    assert_eq!(
+        crate::verify_read_only("docs/results/native-verification.json", &context).unwrap_err(),
+        "배포용 화면이 EXE에 내장되지 않았습니다. npm run desktop:build로 다시 빌드하세요."
+    );
+}
+
 #[cfg(windows)]
 #[test]
 fn runtime_fingerprint_compares_windows_path_identity_without_ignoring_ownership() {

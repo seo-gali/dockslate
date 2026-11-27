@@ -1,0 +1,105 @@
+name: Package 0.1.16 installer once
+
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/release016-installer.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  installer:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Restore verified application and launcher
+        run: |
+          $payload = '.github/release016-installer-input.zip'
+          if ((Get-FileHash -LiteralPath $payload -Algorithm SHA256).Hash -cne '6E29E9505D508B3A9EA6E95C87C20A9CD226AEB99A39E4E2CBB43E38A877E2CF') { throw 'Installer input ZIP differs from its verified receipt.' }
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $expected = @{
+            'dockslate.exe' = @{path='src-tauri/target/release/dockslate.exe'; sha256='8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909'; bytes=5487616}
+            'docker.exe' = @{path='src-tauri/target/release/docker.exe'; sha256='D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72'; bytes=320512}
+            'docs/USER_GUIDE.md' = @{path='docs/USER_GUIDE.md'; sha256='AD4FDC36A3BA934D9AA7002C81A8C0ED8DA001E558700F2939E11A60905FC847'; bytes=12356}
+            'docs/MIGRATION.md' = @{path='docs/MIGRATION.md'; sha256='575D09C1B765B71FD58C45858EFAE51984E4F12A36E3355178F032D37F3DE961'; bytes=11503}
+            'docs/REQUEST_STATUS.md' = @{path='docs/REQUEST_STATUS.md'; sha256='FED1476FA635B140E430EE60D16FB7A92AC41490F0A63D97DB6636CAE46ABCBF'; bytes=30522}
+            'docs/results/code-signing.md' = @{path='docs/results/code-signing.md'; sha256='CF5DDA06FD2EE4DF9B9384CB02F393CC63B183DA3083E42395EB3B676FD638D7'; bytes=9806}
+            'docs/results/security-review-20261119.md' = @{path='docs/results/security-review-20261119.md'; sha256='45DD1EBE4978695AE71264A074B644D3CFD8321ECFB89ED1FDBA47873F93B293'; bytes=14098}
+            'site/guide.html' = @{path='site/guide.html'; sha256='540A8908844D6AAD10D2AB9E7C6CC305D5E4274E9E6AB26E156DAA797FA42CFB'; bytes=7279}
+          }
+          $archive = [IO.Compression.ZipFile]::OpenRead($payload)
+          try {
+            if ($archive.Entries.Count -ne $expected.Count) { throw 'Unexpected input entry count.' }
+            foreach ($name in $expected.Keys) {
+              $entries = @($archive.Entries | Where-Object FullName -CEQ $name)
+              $record = $expected[$name]
+              if ($entries.Count -ne 1 -or $entries[0].Length -ne $record.bytes) { throw 'Unexpected input layout or size.' }
+              $output = $record.path
+              New-Item -ItemType Directory -Path ([IO.Path]::GetDirectoryName($output)) -Force | Out-Null
+              [IO.Compression.ZipFileExtensions]::ExtractToFile($entries[0],$output,$true)
+              if ((Get-FileHash -LiteralPath $output).Hash -cne $record.sha256) { throw 'Input hash differs.' }
+            }
+          } finally { $archive.Dispose() }
+          npm ci
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm run build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo fetch --manifest-path src-tauri/Cargo.toml --locked
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Prepare components and verify notices
+        run: |
+          & ./scripts/prepare-windows-docker.ps1 -AllowDownload
+          node scripts/verify-license-inventory.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify exact installer sources
+        run: |
+          function TextHash([string]$file) {
+            $text = [IO.File]::ReadAllText($file).Replace("`r`n","`n")
+            $sha = [Security.Cryptography.SHA256]::Create()
+            try { [BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($text))).Replace('-','') } finally { $sha.Dispose() }
+          }
+          if ((TextHash 'src-tauri/installer/hooks.nsh') -cne 'CF5B884F52C57B4DB36D46868A6758C79A7A8E9D9FCDBCEC1E3175EBF0F58808') { throw 'Installer hook changed.' }
+          if ((TextHash 'src-tauri/installer/user-path.ps1') -cne '222F59DC272F9FCC753D40016C4CE6308020B39FC469BB0F7991CE9D433206D5') { throw 'PATH helper changed.' }
+      - name: Verify PATH handling and package installer
+        run: |
+          & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -File ./scripts/verify-installer-path.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./scripts/build-installer.ps1 -SkipBuild -AllowToolDownload
+      - name: Package portable and legal archives
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $legal = 'downloads/DockSlate-0.1.16-third-party-licenses.zip'
+          if (Test-Path -LiteralPath $legal) { throw 'Preserve an existing legal archive.' }
+          [IO.Compression.ZipFile]::CreateFromDirectory((Join-Path $PWD 'licenses'),(Join-Path $PWD $legal),[IO.Compression.CompressionLevel]::Optimal,$false)
+          Copy-Item -LiteralPath 'src-tauri/target/release/bundle/nsis/DockSlate_0.1.16_x64-setup.exe' -Destination 'downloads/DockSlate_0.1.16_x64-setup.exe'
+          & ./scripts/package-local.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $files = @('DockSlate_0.1.16_x64-setup.exe','DockSlate-0.1.16-windows-x64.zip','DockSlate-0.1.16-third-party-licenses.zip')
+          $sums = ($files | ForEach-Object { (Get-FileHash -LiteralPath ('downloads/' + $_)).Hash + '  ' + $_ }) -join "`n"
+          [IO.File]::WriteAllText('downloads/SHA256SUMS.txt',$sums+"`n",[Text.UTF8Encoding]::new($false))
+      - name: Record installer receipt
+        run: |
+          $path = 'src-tauri/target/release/bundle/nsis/DockSlate_0.1.16_x64-setup.exe'
+          if (!(Test-Path -LiteralPath $path -PathType Leaf)) { throw 'Expected installer missing.' }
+          [IO.File]::WriteAllText('src-tauri/target/release/bundle/nsis/SHA256SUMS.txt',((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash + '  DockSlate_0.1.16_x64-setup.exe' + "`n"))
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: DockSlate-0.1.16-delivery
+          path: |
+            downloads/DockSlate_0.1.16_x64-setup.exe
+            downloads/DockSlate-0.1.16-windows-x64.zip
+            downloads/DockSlate-0.1.16-third-party-licenses.zip
+            downloads/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 3

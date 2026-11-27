@@ -1,0 +1,127 @@
+{
+  "observedAt": "2026-11-27T11:03:26.304Z",
+  "scope": "Correct release frontend embedding; actual native installer-screen smoke test, not a full installer/engine installation",
+  "published": false,
+  "versionChanged": false,
+  "sourceCommit": "9da16618504a82696476866e0e6049cf54a0590f",
+  "workingTreeModified": true,
+  "reproduction": {
+    "publicVersion": "0.1.15",
+    "appSha256": "19B8E47588FF3164ED3C1CC95E42788BF365FDCC0E0E3E1AF26E6CD2339AEAE0",
+    "targetUrl": "http://127.0.0.1:1420/",
+    "pageUrl": "chrome-error://chromewebdata/",
+    "error": "ERR_CONNECTION_REFUSED",
+    "cause": "The GUI was built without tauri/custom-protocol, so Tauri used devUrl and omitted frontend assets"
+  },
+  "changes": [
+    "Reject GUI release compilation when Tauri is in development mode",
+    "Require embedded index.html before read-only verification can pass",
+    "Build the GUI through npm run desktop:build; retain the existing WebView2 runtime"
+  ],
+  "checks": {
+    "nodeTests": 33,
+    "rustTests": 38,
+    "unsafeReleaseBuildExit": 101,
+    "unsafeBuildRejectedByIntendedGuard": true,
+    "productionBuildExit": 0,
+    "headlessFrontendEmbedded": true,
+    "nativeInstallerScreen": {
+      "observedAt": "2026-11-27T11:02:02.154Z",
+      "artifactSha256": "A557C662692E2603C3BEB82EAF1F48BC077BE948F046918196D8914F6F34F66A",
+      "passed": true,
+      "page": {
+        "href": "http://tauri.localhost/",
+        "title": "DockSlate",
+        "heading": "Docker Engine을 사용할 준비가 됐습니다",
+        "text": "DockSlate\n언어\n한국어\nEnglish\n연결됨\nDocker Engine을 사용할 준비가 됐습니다\n\nDockSlate에서 Docker Engine, Docker CLI, Buildx와 Compose를 함께 설치합니다. Linux 컨테이너는 내부 WSL 2에서 실행됩니다.\n\nDocker Engine\n컨테이너·이미지·볼륨을 관리하는 전용 엔진\nDocker CLI · Compose · Buildx\nDockerfile 빌드와 Compose 프로젝트 실행\nDockSlate 런타임\n런타임 상태\n실행 중\nWSL 배포판\nDockSlate\n설치 위치\nC:\\Users\\user\\AppData\\Local\\DockSlateData\\runtime\\wsl\n상태 안내\nDockSlate 전용 배포판이 실행 중입니다. 엔진 연결 상태는 아래에서 확인하세요.\n원본 런타임 진단\n런타임 중지…\n중지하면 이 엔진의 컨테이너와 서비스가 중단됩니다. 저장된 데이터는 유지됩니다.\n\n인터넷 연결과 Windows 11·WSL 2가 필요합니다. 설치 전 대상과 영향을 확인하며, 기존 컨테이너와 데이터를 자동으로 변경하지 않습니다.\n\n확인 중…",
+        "tauri": true,
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "scripts": [
+        {
+          "url": "http://tauri.localhost/assets/index-ByuKlXAa.js",
+          "status": 200,
+          "type": "Script"
+        },
+        {
+          "url": "http://tauri.localhost/assets/Overview-WUaqX44_.js",
+          "status": 200,
+          "type": "Script"
+        },
+        {
+          "url": "http://tauri.localhost/assets/EngineSetup-CnUEqPcM.js",
+          "status": 200,
+          "type": "Script"
+        }
+      ],
+      "styles": [
+        {
+          "url": "http://tauri.localhost/assets/index-DbiRl3pF.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
+          "status": 200,
+          "type": "Stylesheet"
+        }
+      ],
+      "installerSetupMode": true,
+      "rendererExceptions": 0,
+      "engineAutoStartAllowed": false,
+      "engineMutationRequested": false,
+      "externalBrowserLaunched": false,
+      "sourceChecks": {
+        "node": 33,
+        "rust": 38
+      },
+      "unsafeReleaseBuildRejected": true,
+      "productionBuildExit": 0,
+      "actualInstallerExecuted": false,
+      "published": false
+    }
+  },
+  "environment": {
+    "initialRustRun": "Two pre-existing migration fixture tests could not write default app-data paths under the filesystem sandbox; all 38 tests passed with an isolated LOCALAPPDATA directory",
+    "initialNativeDebugRun": "Local debugger unavailable in sandboxed child; retried the owned installer fixture under normal-user tool approval",
+    "initialAssetProbe": "Renderer fetch probe blocked by existing CSP; CSP preserved and actual Script/Stylesheet response events used instead"
+  },
+  "decisions": {
+    "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-frontend-fix-decisions.html",
+    "sha256": "c491af4c4d5cef8f7da76fd6801db42b7d8d80619c12c717a8156788f4f59e91"
+  },
+  "publicArtifactsUnchanged": true,
+  "userContainerOrVolumeMutationRequested": false,
+  "engineInstallOrRestartRequested": false,
+  "remaining": [
+    "Fixed candidate is local; public 0.1.15 installer and ZIP still contain the bad frontend build",
+    "Full installation/upgrade/uninstall/reboot not tested",
+    "New packaging, signing, antivirus upload and publication not performed"
+  ],
+  "cleanup": {
+    "removed": [
+      {
+        "path": ".analysis/embedded-frontend-native-2b55b631889c4abeb30515f020469061",
+        "files": 169,
+        "bytes": 10954315,
+        "removed": true
+      },
+      {
+        "path": ".analysis/release015-page-repro-082179ec50cf419d885d006291752f01",
+        "files": 181,
+        "bytes": 19682422,
+        "removed": true
+      },
+      {
+        "path": ".analysis/frontend-regression-data-87b3dede07e14ff8a7f78eae2373c044",
+        "files": 4,
+        "bytes": 5457,
+        "removed": true
+      }
+    ],
+    "testProxiesStopped": 0,
+    "ownedUiProcessStopped": true,
+    "originalReleaseFilesPreserved": true,
+    "evidenceJsonAndScreenshotPreserved": true
+  }
+}

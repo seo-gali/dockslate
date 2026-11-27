@@ -18,6 +18,10 @@ npm ci
 | 포터블 폴더·ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
 
+배포용 앱은 `tauri build`로 화면 파일을 EXE에 내장합니다. Rust 명령을 직접 사용한다면 `--features tauri/custom-protocol`이 필요하며, 이 옵션이 없는 GUI release 빌드는 차단합니다. `cargo build --release`만 실행하면 개발 서버 주소를 사용하는 실행 파일이 만들어질 수 있습니다. 읽기 전용 검증도 내장 `index.html`을 먼저 확인하며, 배포 전에 개발 서버가 없는 상태에서 실제 설치 화면을 열어 확인합니다. WebView2는 앱 화면을 표시하는 런타임이며 Edge 브라우저 설치를 요구하지 않습니다.
+
+0.1.15 공개 파일에서 개발 서버 연결 거부를 재현했으며, 수정 소스의 실제 설치 화면과 내장 자산 검사는 [화면 내장 오류 검증](results/embedded-frontend-20261127.json)에 기록했습니다. 이 로컬 수정은 기존 공개 EXE·ZIP에 아직 반영되지 않았습니다.
+
 사이트 생성은 앱 개발 버전과 독립적입니다. `site/release.json`과 버전별 공개 영수증의 버전·파일·해시·백신 결과를 먼저 대조합니다. 없는 공개 파일은 고정 소스 커밋 또는 공식 Release에서 읽어 임시 검증하며, 지운 구버전 앱 파일을 `downloads/`에 복원하지 않습니다. 공개 버전 전환 전에는 이전 버전의 고지 ZIP을 원래 배포 해시와 대조해 `docs/downloads/`에 보존합니다. 현재 공개 버전은 `site/release.json`이 기준입니다.
 
 포터블 생성은 현재 버전의 `downloads/DockSlate-<version>-windows-x64/`와 ZIP을 갱신합니다. 앱·CLI 빌드와 `docs/results/installer-engine-integration.json`의 검증 해시가 일치해야 합니다. EXE 하나만 복사하면 동봉 CLI·플러그인이 빠질 수 있습니다. 설치 파일 생성과 내부 파일 검증은 [배포 기록](results/installer-engine-integration.json)을 따릅니다. 앱·CLI·문서가 바뀌면 제작 영수증도 실제 새 파일에 맞춰야 하며, 명령 실행만으로 검증 영수증을 통과 처리하지 않습니다.

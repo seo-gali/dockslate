@@ -5,17 +5,17 @@
     {
       "file": "package-lock.json",
       "normalization": "LF",
-      "sha256": "d373509db6227c6a4588210f5c20a7f6aed4838cd7027eb12cd90ad598e123b2"
+      "sha256": "7094f497c7be72b4eac612ca6d32b34dc42398fa4639afa6b188255564011fc8"
     },
     {
       "file": "src-tauri/Cargo.lock",
       "normalization": "LF",
-      "sha256": "169d59a60c1cafad66d997d9ef6dc6469f6fae5a8e8e23972c4411a750107928"
+      "sha256": "c46f21ec3dda012abdf740fbe87a97840be1a5a642cac0728683635ebdbcd2bb"
     },
     {
       "file": "src-tauri/Cargo.toml",
       "normalization": "LF",
-      "sha256": "df97c8ba53415f3f99ba805710101af6fdd149ef32a72f2ef712cb32bc15497e"
+      "sha256": "9921ea6662d8a4d17d7cc3a262c23d0c8fd4aa2f1a19a7b1a8c2b4039ab5f7d2"
     },
     {
       "file": "scripts/windows-docker.manifest.json",
