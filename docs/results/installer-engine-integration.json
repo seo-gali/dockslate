@@ -19,7 +19,8 @@
     "dependencyVersionsChanged": false,
     "lockChangeScope": "Only own DockSlate version 0.1.14 to 0.1.15",
     "remoteInstallerBuildExit": 0,
-    "readOnlyNativeExecuted": true
+    "readOnlyNativeExecuted": true,
+    "publicReleaseBytesVerified": true
   },
   "artifacts": [
     {
@@ -36,9 +37,9 @@
   "installerFilePresent": true,
   "blocker": null,
   "remaining": [
-    "Unsigned development build; no signing certificate",
-    "Actual Desktop full migration, installation/upgrade/uninstall, cold boot and rollback not performed",
-    "Fresh VirusTotal reports and public publication pending"
+    "Unsigned development build",
+    "Exact ZIP DeepInstinct detection disclosed and approved; false-positive status unconfirmed",
+    "Actual full Desktop migration, installation/upgrade/uninstall/cold boot/rollback not performed"
   ],
   "protectionEvidence": {
     "record": "2026-10-19 22:16:01.350  [17364:9700]action:PDPEngTips|process:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Bin\\makensis.exe|file:D:\\01_Programming\\08_AI\\REA\\dockslate\\src-tauri\\target\\.tauri\\NSIS\\Contrib\\Graphics\\Wizard\\win.bmp|remember:1",
@@ -237,7 +238,73 @@
     "dependenciesChanged": false,
     "existingUserDataChanged": false,
     "engineMutationPerformed": false,
-    "fullDesktopMigrationVerified": false
+    "fullDesktopMigrationVerified": false,
+    "publicRelease": {
+      "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.15",
+      "releaseId": 459358174,
+      "tag": "v0.1.15",
+      "sourceCommit": "e96f2b350c7d6853130f4aaa11216ead117a4146",
+      "binaryBuildSourceCommit": "9fd842f10dd4d2256750847e163e24c590d6805b",
+      "prerelease": true,
+      "draft": false,
+      "publisherRunId": 45816172615,
+      "assets": [
+        {
+          "name": "DockSlate_0.1.15_x64-setup.exe",
+          "bytes": 41026459,
+          "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9"
+        },
+        {
+          "name": "DockSlate-0.1.15-windows-x64.zip",
+          "bytes": 54874491,
+          "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909"
+        },
+        {
+          "name": "DockSlate-0.1.15-third-party-licenses.zip",
+          "bytes": 5194696,
+          "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "bytes": 304,
+          "sha256": "0EC0E22024F3D9C4EA51343AD3BD5E67BE376E3411C0C6DAB5501035A48083A7"
+        }
+      ],
+      "downloads": [
+        {
+          "file": "DockSlate_0.1.15_x64-setup.exe",
+          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate_0.1.15_x64-setup.exe",
+          "status": 200,
+          "bytes": 41026459,
+          "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9",
+          "githubDigestMatches": true
+        },
+        {
+          "file": "DockSlate-0.1.15-windows-x64.zip",
+          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate-0.1.15-windows-x64.zip",
+          "status": 200,
+          "bytes": 54874491,
+          "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909",
+          "githubDigestMatches": true
+        },
+        {
+          "file": "DockSlate-0.1.15-third-party-licenses.zip",
+          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate-0.1.15-third-party-licenses.zip",
+          "status": 200,
+          "bytes": 5194696,
+          "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745",
+          "githubDigestMatches": true
+        },
+        {
+          "file": "SHA256SUMS.txt",
+          "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/SHA256SUMS.txt",
+          "status": 200,
+          "bytes": 304,
+          "sha256": "0EC0E22024F3D9C4EA51343AD3BD5E67BE376E3411C0C6DAB5501035A48083A7",
+          "githubDigestMatches": true
+        }
+      ]
+    }
   },
   "portableDelivery": {
     "version": "0.1.14",

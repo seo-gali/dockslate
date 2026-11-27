@@ -1,0 +1,240 @@
+{
+  "version": "0.1.15",
+  "observedAt": "2026-11-26T12:05:53.136Z",
+  "published": true,
+  "websitePublished": false,
+  "files": [
+    {
+      "file": "DockSlate_0.1.15_x64-setup.exe",
+      "bytes": 41026459,
+      "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9"
+    },
+    {
+      "file": "DockSlate-0.1.15-windows-x64.zip",
+      "bytes": 54874491,
+      "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909"
+    },
+    {
+      "file": "DockSlate-0.1.15-third-party-licenses.zip",
+      "bytes": 5194696,
+      "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745"
+    }
+  ],
+  "virusTotal": {
+    "version": "0.1.15",
+    "status": "completed",
+    "observedAt": "2026-11-26T12:00:33.203Z",
+    "files": [
+      {
+        "file": "DockSlate_0.1.15_x64-setup.exe",
+        "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 67,
+        "undetected": 67,
+        "timeout": 2,
+        "failure": 0,
+        "unsupported": 5,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 67,
+          "harmless": 0,
+          "timeout": 2,
+          "confirmed-timeout": 0,
+          "failure": 0,
+          "type-unsupported": 5
+        },
+        "findings": [],
+        "detectionVendors": [],
+        "reportUrl": "https://www.virustotal.com/gui/file/70b5244a88048388b17c6da2b2c167f5c7c9849e18a55f3879b1c65dc426beb9/detection",
+        "observedAt": "2026-11-26T11:58:35.016Z",
+        "analysisAt": "2026-11-26T11:57:22.000Z",
+        "source": "https://www.virustotal.com/ui/files/70b5244a88048388b17c6da2b2c167f5c7c9849e18a55f3879b1c65dc426beb9?relationships=user_votes%2Ccomments%2Cgraphs%2Cvotes",
+        "rawResponseSha256": "7cea235691755c333184206c2ed3d4a24fc5c4a24940b561e3aa72fee0c1f9d3"
+      },
+      {
+        "file": "DockSlate-0.1.15-windows-x64.zip",
+        "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909",
+        "completed": true,
+        "detections": 1,
+        "totalEngines": 65,
+        "undetected": 64,
+        "timeout": 0,
+        "failure": 2,
+        "unsupported": 7,
+        "categories": {
+          "malicious": 1,
+          "suspicious": 0,
+          "undetected": 64,
+          "harmless": 0,
+          "timeout": 0,
+          "confirmed-timeout": 0,
+          "failure": 2,
+          "type-unsupported": 7
+        },
+        "findings": [
+          {
+            "engine": "DeepInstinct",
+            "category": "malicious",
+            "result": "MALICIOUS"
+          }
+        ],
+        "detectionVendors": [
+          "DeepInstinct"
+        ],
+        "reportUrl": "https://www.virustotal.com/gui/file/45575b63d112c6c048d1f4a74ded1734d297dcdf51ff3943fdd1dce898af7909/detection",
+        "observedAt": "2026-11-26T11:59:00.523Z",
+        "analysisAt": "2026-11-26T11:57:22.000Z",
+        "source": "https://www.virustotal.com/ui/files/45575b63d112c6c048d1f4a74ded1734d297dcdf51ff3943fdd1dce898af7909?relationships=user_votes%2Ccomments%2Cgraphs%2Cvotes",
+        "rawResponseSha256": "f82b90df77aaa74778024b6e0f6780cbb208fc9d22e59c6c97f389c081e772f0"
+      },
+      {
+        "file": "DockSlate.exe",
+        "sha256": "19B8E47588FF3164ED3C1CC95E42788BF365FDCC0E0E3E1AF26E6CD2339AEAE0",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 62,
+        "undetected": 62,
+        "timeout": 7,
+        "failure": 1,
+        "unsupported": 4,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 62,
+          "harmless": 0,
+          "timeout": 7,
+          "confirmed-timeout": 0,
+          "failure": 1,
+          "type-unsupported": 4
+        },
+        "findings": [],
+        "detectionVendors": [],
+        "reportUrl": "https://www.virustotal.com/gui/file/19b8e47588ff3164ed3c1cc95e42788bf365fdcc0e0e3e1af26e6cd2339aeae0/detection",
+        "observedAt": "2026-11-26T11:59:18.928Z",
+        "analysisAt": "2026-11-26T11:57:14.000Z",
+        "source": "https://www.virustotal.com/ui/files/19b8e47588ff3164ed3c1cc95e42788bf365fdcc0e0e3e1af26e6cd2339aeae0?relationships=user_votes%2Ccomments%2Cgraphs%2Cvotes",
+        "rawResponseSha256": "dcd7861eb8e58148c6a246d2a994afd4bcd357f14072e809f486ce887393632f"
+      },
+      {
+        "file": "bin/docker.exe",
+        "sha256": "3EB9CBCC658312CC721FC1C31498FDD0A12FBC8D976A95D52539E4F035E4069D",
+        "completed": true,
+        "detections": 0,
+        "totalEngines": 62,
+        "undetected": 62,
+        "timeout": 7,
+        "failure": 1,
+        "unsupported": 4,
+        "categories": {
+          "malicious": 0,
+          "suspicious": 0,
+          "undetected": 62,
+          "harmless": 0,
+          "timeout": 7,
+          "confirmed-timeout": 0,
+          "failure": 1,
+          "type-unsupported": 4
+        },
+        "findings": [],
+        "detectionVendors": [],
+        "reportUrl": "https://www.virustotal.com/gui/file/3eb9cbcc658312cc721fc1c31498fdd0a12fbc8d976a95d52539e4f035e4069d/detection",
+        "observedAt": "2026-11-26T11:59:18.295Z",
+        "analysisAt": "2026-11-26T11:57:14.000Z",
+        "source": "https://www.virustotal.com/ui/files/3eb9cbcc658312cc721fc1c31498fdd0a12fbc8d976a95d52539e4f035e4069d?relationships=user_votes%2Ccomments%2Cgraphs%2Cvotes",
+        "rawResponseSha256": "c73e1ed562e6968d27a8932b43cf4961c22e7a0a0232d6e14f0e679f91d0c022"
+      }
+    ],
+    "publicUploadOfFourFilesApproved": true,
+    "publicationApprovals": [
+      {
+        "userApproved": true,
+        "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909",
+        "vendor": "DeepInstinct",
+        "detections": 1,
+        "scope": "Only this exact 0.1.15 portable ZIP; disclosed unsigned prerelease",
+        "userAnswer": "탐지 결과 명시 후 개발판 공개 승인",
+        "observedAt": "2026-11-26T12:02:39.689Z"
+      }
+    ],
+    "publicationStatus": "Exact ZIP detection disclosed and explicitly approved for unsigned prerelease",
+    "limitations": [
+      "Unsigned development build; false-positive status unconfirmed",
+      "Timeout, failure and unsupported engines are not counted as clean results",
+      "ZIP full content coverage is not guaranteed; app and CLI scanned separately"
+    ]
+  },
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.15",
+    "releaseId": 459358174,
+    "tag": "v0.1.15",
+    "sourceCommit": "e96f2b350c7d6853130f4aaa11216ead117a4146",
+    "binaryBuildSourceCommit": "9fd842f10dd4d2256750847e163e24c590d6805b",
+    "prerelease": true,
+    "draft": false,
+    "publisherRunId": 45816172615,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.15_x64-setup.exe",
+        "bytes": 41026459,
+        "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9"
+      },
+      {
+        "name": "DockSlate-0.1.15-windows-x64.zip",
+        "bytes": 54874491,
+        "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909"
+      },
+      {
+        "name": "DockSlate-0.1.15-third-party-licenses.zip",
+        "bytes": 5194696,
+        "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 304,
+        "sha256": "0EC0E22024F3D9C4EA51343AD3BD5E67BE376E3411C0C6DAB5501035A48083A7"
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.15_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate_0.1.15_x64-setup.exe",
+        "status": 200,
+        "bytes": 41026459,
+        "sha256": "70B5244A88048388B17C6DA2B2C167F5C7C9849E18A55F3879B1C65DC426BEB9",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.15-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate-0.1.15-windows-x64.zip",
+        "status": 200,
+        "bytes": 54874491,
+        "sha256": "45575B63D112C6C048D1F4A74DED1734D297DCDF51FF3943FDD1DCE898AF7909",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.15-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/DockSlate-0.1.15-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5194696,
+        "sha256": "E75F19F77EB369AF113B422C568329ED66491D16F2D1CC1766B2CCB314E3C745",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.15/SHA256SUMS.txt",
+        "status": 200,
+        "bytes": 304,
+        "sha256": "0EC0E22024F3D9C4EA51343AD3BD5E67BE376E3411C0C6DAB5501035A48083A7",
+        "githubDigestMatches": true
+      }
+    ],
+    "checksumSourcePath": ".github/release015-SHA256SUMS.txt"
+  },
+  "checks": {
+    "publishedBytesVerified": true,
+    "tagVerified": true,
+    "oldReleasePreserved": true
+  }
+}

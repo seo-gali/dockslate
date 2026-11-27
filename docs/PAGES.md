@@ -6,9 +6,9 @@
 
 웹사이트 원본은 `site/`에 두며, 빌드 결과는 Git에서 제외하는 `site-dist/` 한 곳에 생성합니다. 저장소 루트에는 웹사이트 파일을 생성하지 않습니다.
 
-게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.14의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.14.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
+게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.15의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.15.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
 
-사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 버전·메타데이터 불일치·완료되지 않은 검사를 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다. 설치 EXE는 완료된 탐지 0건 결과가 필요합니다. 내부 앱·포터블 ZIP의 탐지는 정확한 파일 해시·업체·개수별 사용자 승인과 prerelease를 기록한 경우만 허용하고, 각 파일의 결과를 홈페이지에 표시합니다. 0.1.12의 앱 승인 기록을 보존하며 0.1.14는 앱과 ZIP의 DeepInstinct 탐지 각 1건을 별도로 승인받았습니다. 다른 해시·업체·개수나 설치 EXE에는 이 승인이 적용되지 않습니다.
+사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 버전·메타데이터 불일치·완료되지 않은 검사를 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다. 설치 EXE는 완료된 탐지 0건 결과가 필요합니다. 내부 앱·포터블 ZIP의 탐지는 정확한 파일 해시·업체·개수별 사용자 승인과 prerelease를 기록한 경우만 허용하고, 각 파일의 결과를 홈페이지에 표시합니다. 0.1.12의 앱 승인 기록을 보존하며 0.1.14는 앱과 ZIP의 DeepInstinct 탐지 각 1건, 0.1.15는 ZIP의 DeepInstinct 1건을 해시별로 승인받았습니다. 다른 해시·업체·개수나 설치 EXE에는 이 승인이 적용되지 않습니다.
 
 | 원본 | 출력·역할 |
 | --- | --- |
@@ -32,9 +32,11 @@ npm run build:site
 
 릴리스 명세의 EXE·포터블·고지 소스 ZIP을 크기·SHA-256으로 검증하고 공개판 고정 커밋의 `SHA256SUMS.txt`와 대조한 뒤 `site-dist/`를 만듭니다. 로컬 파일이 없으면 고정 Git 객체를 읽고, 그 객체도 없으면 해당 공개 GitHub Release에서 다운로드해 검증합니다. 이미 있는 로컬 파일이 다르면 실패하며 다른 사본으로 숨기지 않습니다. 지문표가 다르면 기존 출력 교체 전에 실패합니다. `site-dist/index.html`을 브라우저로 열어 확인합니다. 로컬 빌드는 게시·파일 업로드를 하지 않습니다. Git 객체가 없는 환경에서는 공개 파일 다운로드가 필요하며 검증용 임시 파일은 작업 후 삭제합니다.
 
-사이트 빌드는 현재 0.1.3~0.1.12 고지 ZIP 10개를 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 20개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
+체크섬의 고정 Git 경로는 공개 영수증의 `github.checksumSourcePath`로 기록할 수 있으며 기본값은 `downloads/SHA256SUMS.txt`입니다. 0.1.15는 게시 전 기존 홈페이지의 0.1.14 체크섬을 유지하기 위해 릴리스 커밋의 `.github/release015-SHA256SUMS.txt`를 사용했습니다. 어느 경로든 실제 공개 파일의 크기·SHA-256과 일치해야 하며 불일치하면 차단합니다.
 
-현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.14)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.14.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
+사이트 빌드는 현재 0.1.3~0.1.14 고지 ZIP 12개를 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 24개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
+
+현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.15)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올리고, 설치판과 포터블의 SHA-256에 대응하는 VirusTotal 결과를 연결합니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다. [검사 결과](results/virustotal-0.1.15.json)는 조회 시점·탐지·시간 초과·미지원 개수를 구분합니다.
 
 설치 EXE는 `scripts/build-installer.ps1`, 포터블은 `npm run package:local`로 별도 생성합니다. Pages workflow는 앱 설치 파일을 빌드하지 않습니다. `site-dist/`에는 공개 웹 파일과 다운로드만 포함하며 앱 소스·검증 자료·로컬 영상은 게시하지 않습니다.
 

@@ -28,8 +28,26 @@ function fixture(t) {
   const receipt = { published: true, version: release.version, files: assets, github: { tag: 'v0.1.9', sourceCommit, assets: assets.map(({file, ...entry}) => ({ name: file, ...entry })) }, virusTotal: { files: ['installer', 'zip'].map(key => ({ sha256: release[key].sha256, completed: true, detections: 0, totalEngines: 50 })) } };
   const save = () => { json(path.join(root, 'site/release.json'), release); json(path.join(root, 'docs/results/public-distribution-0.1.9.json'), receipt); };
   save();
-  return { root, release, receipt, save, stage: path.join(root, 'stage') };
+  return { root, release, receipt, save, git, stage: path.join(root, 'stage') };
 }
+
+test('published checksums can use an explicit pinned source without accepting an unrelated checksum file', async t => {
+  const f = fixture(t);
+  fs.mkdirSync(path.join(f.root, '.github'));
+  fs.copyFileSync(path.join(f.root, 'downloads/SHA256SUMS.txt'), path.join(f.root, '.github/release019-SHA256SUMS.txt'));
+  fs.writeFileSync(path.join(f.root, 'downloads/SHA256SUMS.txt'), 'previous public release checksums');
+  f.git(['add', 'downloads/SHA256SUMS.txt', '.github']);
+  f.git(['-c', 'user.name=Fixture', '-c', 'user.email=fixture@invalid', '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=' + path.join(f.root, '.git/empty-hooks'), 'commit', '--quiet', '-m', 'inert checksum source']);
+  f.release.notices.sourceCommit = f.receipt.github.sourceCommit = f.git(['rev-parse', 'HEAD']);
+  f.save();
+  const rejected = path.join(f.root, 'rejected'); fs.mkdirSync(rejected);
+  await assert.rejects(stagePublishedAssets(f.root, readPublishedRelease(f.root), rejected), /differs/);
+  f.receipt.github.checksumSourcePath = '.github/release019-SHA256SUMS.txt'; f.save();
+  assert.deepEqual(await stagePublishedAssets(f.root, readPublishedRelease(f.root), f.stage), ['local', 'local', 'local', 'git', 'git']);
+  for (const source of ['../SHA256SUMS.txt', '.github/config.json', 'main:downloads/SHA256SUMS.txt']) {
+    f.receipt.github.checksumSourcePath = source; f.save(); assert.throws(() => readPublishedRelease(f.root), /checksum source path/);
+  }
+});
 
 test('published assets survive a different development version and missing old local downloads', async t => {
   const f = fixture(t);

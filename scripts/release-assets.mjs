@@ -38,8 +38,10 @@ export function readPublishedRelease(root) {
   }
   const sums = receipt.github.assets.find(entry => entry.name === 'SHA256SUMS.txt');
   requireFact(validAsset({ ...sums, file: sums?.name }), 'Published checksum receipt is missing.');
+  const checksumSourcePath = receipt.github.checksumSourcePath ?? 'downloads/SHA256SUMS.txt';
+  requireFact(checksumSourcePath === 'downloads/SHA256SUMS.txt' || /^\.github\/release[0-9]+-SHA256SUMS\.txt$/.test(checksumSourcePath), 'Invalid published checksum source path.');
   requireFact(validAsset(release.notices) && release.notices.file === 'THIRD_PARTY_NOTICES.md' && /^[a-f0-9]{40}$/.test(release.notices.sourceCommit) && release.notices.sourceCommit === receipt.github.sourceCommit, 'Published notices must identify the reviewed source commit.');
-  return { release, receipt, sums: { ...sums, file: sums.name } };
+  return { release, receipt, sums: { ...sums, file: sums.name, sourcePath: checksumSourcePath } };
 }
 
 async function writeVerified(source, asset, destination) {
@@ -91,7 +93,8 @@ export async function stagePublishedAssets(root, published, destination) {
   const origins = [];
   for (const asset of [...['installer', 'zip', 'licenses'].map(key => release[key]), sums]) {
     const candidate = asset.file === 'SHA256SUMS.txt' ? null : path.join(root, 'downloads', asset.file);
-    origins.push(await acquire(root, asset, candidate, `${source}:downloads/${asset.file}`, base + asset.file, path.join(destination, asset.file)));
+    const sourcePath = asset.file === 'SHA256SUMS.txt' ? sums.sourcePath : `downloads/${asset.file}`;
+    origins.push(await acquire(root, asset, candidate, `${source}:${sourcePath}`, base + asset.file, path.join(destination, asset.file)));
   }
   const expected = ['installer', 'zip', 'licenses'].map(key => release[key].sha256 + '  ' + release[key].file).join('\n') + '\n';
   requireFact(fs.readFileSync(path.join(destination, sums.file), 'utf8').replaceAll('\r\n', '\n') === expected, 'Published checksums differ from public release metadata.');
