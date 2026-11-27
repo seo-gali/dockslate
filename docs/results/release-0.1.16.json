@@ -3,7 +3,7 @@
   "observedAt": "2026-11-27T11:12:41.710Z",
   "published": false,
   "websitePublished": false,
-  "status": "Embedded frontend app and CLI built; exact packaging and artifact UI verification pending",
+  "status": "Exact 0.1.16 EXE/ZIP payloads and both native installer screens verified; public antivirus upload approval pending",
   "outputDirectory": "downloads/local-release016-20261127",
   "artifacts": [
     {
@@ -23,24 +23,341 @@
     "rustCheckExit": 0,
     "nodeTests": 33,
     "rustSecurityTests": 38,
-    "latestNativeFlowExecuted": false,
+    "latestNativeFlowExecuted": true,
     "dependencyVersionsChanged": false,
     "lockChangeScope": "Only own DockSlate version 0.1.15 to 0.1.16",
-    "installerBuildExit": null,
-    "installerExecuted": false
+    "installerBuildExit": 0,
+    "installerExecuted": false,
+    "package": {
+      "version": "0.1.16",
+      "observedAt": "2026-11-27T11:23:58.544Z",
+      "portableFiles": 435,
+      "licenseFiles": 410,
+      "sourceFilesCompared": 432,
+      "sourcePayloadAndInstallerMatched": true,
+      "helperMatched": true,
+      "normalizedTextOrJsonFiles": [
+        "licenses/inventory.json",
+        "licenses/README.md",
+        "licenses/THIRD_PARTY_NOTICES.md",
+        "examples/basic-web/.dockerignore",
+        "examples/basic-web/compose.yaml",
+        "examples/basic-web/Dockerfile",
+        "examples/basic-web/README.md",
+        "examples/basic-web/server.mjs",
+        "libexec/manifest.json"
+      ],
+      "public015FilesPreserved": true,
+      "installerExecuted": false,
+      "extractDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release016-installer-extracted-9045549dbcea4996844eb3c766bdaa63"
+    },
+    "nativeFrontend": {
+      "version": "0.1.16",
+      "observedAt": "2026-11-27T11:25:50.181Z",
+      "devServerReachable": false,
+      "cases": [
+        {
+          "kind": "portable",
+          "artifactSha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909",
+          "passed": true,
+          "page": {
+            "href": "http://tauri.localhost/",
+            "title": "DockSlate",
+            "heading": "Docker Engine을 사용할 준비가 됐습니다",
+            "tauri": true,
+            "connectionError": false
+          },
+          "rendererExceptions": 0,
+          "assetResponses": [
+            {
+              "url": "http://tauri.localhost/",
+              "status": 200,
+              "type": "Document"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-DbiRl3pF.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-ByuKlXAa.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/favicon.ico",
+              "status": 200,
+              "type": "Other"
+            },
+            {
+              "url": "http://tauri.localhost/assets/Overview-WUaqX44_.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CnUEqPcM.js",
+              "status": 200,
+              "type": "Script"
+            }
+          ],
+          "installerMode": true,
+          "commands": [
+            "builds_snapshot",
+            "dashboard_snapshot",
+            "startup_settings",
+            "plugin:event|listen",
+            "desktop_tray_language",
+            "containers_metrics",
+            "plugin:event|unlisten",
+            "engine_events_stop",
+            "installer_setup_finish",
+            "installer_setup_mode"
+          ],
+          "engineMutationObserved": false
+        },
+        {
+          "kind": "installer-payload",
+          "artifactSha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909",
+          "passed": true,
+          "page": {
+            "href": "http://tauri.localhost/",
+            "title": "DockSlate",
+            "heading": "Docker Engine을 사용할 준비가 됐습니다",
+            "tauri": true,
+            "connectionError": false
+          },
+          "rendererExceptions": 0,
+          "assetResponses": [
+            {
+              "url": "http://tauri.localhost/",
+              "status": 200,
+              "type": "Document"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-DbiRl3pF.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-ByuKlXAa.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/favicon.ico",
+              "status": 200,
+              "type": "Other"
+            },
+            {
+              "url": "http://tauri.localhost/assets/Overview-WUaqX44_.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CnUEqPcM.js",
+              "status": 200,
+              "type": "Script"
+            }
+          ],
+          "installerMode": true,
+          "commands": [
+            "builds_snapshot",
+            "dashboard_snapshot",
+            "startup_settings",
+            "plugin:event|listen",
+            "desktop_tray_language",
+            "containers_metrics",
+            "plugin:event|unlisten",
+            "engine_events_stop",
+            "installer_setup_finish",
+            "installer_setup_mode"
+          ],
+          "engineMutationObserved": false
+        }
+      ],
+      "actualInstallerExecuted": false,
+      "fullInstallationVerified": false,
+      "published": false
+    },
+    "offlineCli": {
+      "version": "0.1.16",
+      "observedAt": "2026-11-27T11:17:07.924Z",
+      "artifactSha256": "D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.8.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f"
+        },
+        {
+          "name": "prepared plugins match the verified bundled payloads",
+          "passed": true
+        },
+        {
+          "name": "unknown plugin preserved and execution rejected",
+          "passed": true
+        }
+      ],
+      "engineChanged": false,
+      "existingUserProfileUsed": false
+    },
+    "readOnlyFrontendEmbedded": true,
+    "engineMutationE2E": false
   },
   "build": {
     "baseCommit": "9da16618504a82696476866e0e6049cf54a0590f",
-    "sourceCommit": null,
+    "sourceCommit": "255c37fdec44248bfa388f008b89cf04aa67da9a",
     "inputSha256": "6E29E9505D508B3A9EA6E95C87C20A9CD226AEB99A39E4E2CBB43E38A877E2CF",
     "inputBytes": 2440654,
     "packagingMethod": "One-shot verified GitHub Windows packaging; local PowerShell script execution blocked; policy unchanged",
-    "remotePackagingApproved": true
+    "remotePackagingApproved": true,
+    "installerRunId": 45988965102,
+    "installerConclusion": "success",
+    "delivery": {
+      "observedAt": "2026-11-27T11:19:10.191Z",
+      "sourceMetadata": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/45988965102/artifacts",
+      "url": "https://nightly.link/seo-gali/dockslate/actions/artifacts/15193147075.zip",
+      "file": ".analysis/release016-delivery.zip",
+      "artifactId": 15193147075,
+      "runId": 45988965102,
+      "sourceCommit": "255c37fdec44248bfa388f008b89cf04aa67da9a",
+      "bytes": 102427959,
+      "sha256": "f004567c0215c17a1f410f6bfa72ac29b86a92e023f95482f73bdd2f57df3e3b",
+      "githubDigestVerified": true
+    },
+    "sourceCiRunId": 45988963995,
+    "sourceCiConclusion": "success",
+    "temporaryPackagingFilesRemoved": true
   },
   "remaining": [
-    "Installer and portable package verification pending",
-    "Unsigned; fresh public antivirus scan results pending",
-    "Full installation/upgrade/uninstall/reboot not performed"
+    "Fresh 0.1.16 public antivirus upload approval and reports pending",
+    "Unsigned development build; no signing certificate",
+    "Full installation/upgrade/uninstall/reboot/rollback not performed",
+    "GitHub Release and website cutover pending"
   ],
-  "packagedDocumentsAreBuildTimeSnapshots": true
+  "packagedDocumentsAreBuildTimeSnapshots": true,
+  "files": [
+    {
+      "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
+      "file": "DockSlate_0.1.16_x64-setup.exe",
+      "bytes": 41207253
+    },
+    {
+      "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A",
+      "file": "DockSlate-0.1.16-windows-x64.zip",
+      "bytes": 56243692
+    },
+    {
+      "sha256": "C62B6FB6EFDCED562260AC00D80DD7609ABD2C23AD305EC0E42E0C5EA023FE8A",
+      "file": "DockSlate-0.1.16-third-party-licenses.zip",
+      "bytes": 5269085
+    }
+  ],
+  "installerVerified": true,
+  "finalVerification": {
+    "observedAt": "2026-11-27T11:34:22.667Z",
+    "sourceCi": {
+      "runId": 45988963995,
+      "conclusion": "success",
+      "sourceCommit": "255c37fdec44248bfa388f008b89cf04aa67da9a"
+    },
+    "signatures": [
+      {
+        "file": "downloads/local-release016-20261127/DockSlate_0.1.16_x64-setup.exe",
+        "signature": "NotSigned"
+      },
+      {
+        "file": "downloads/local-release016-20261127/DockSlate-0.1.16-windows-x64/DockSlate.exe",
+        "signature": "NotSigned"
+      },
+      {
+        "file": "downloads/local-release016-20261127/DockSlate-0.1.16-windows-x64/bin/docker.exe",
+        "signature": "NotSigned"
+      }
+    ],
+    "decisions": {
+      "file": "D:/01_Programming/08_AI/REA/DockSlate-0.1.16-release-decisions.html",
+      "sha256": "44AA2C07596382318AFF2C417C7FB4E79F05CCF50A39C66B0D67D58A542676FA"
+    },
+    "cleanup": {
+      "removed": [
+        {
+          "path": ".analysis/release016-ui-eb53962cff2c4a248eaec450c5b7d2d1",
+          "files": 343,
+          "bytes": 11998263
+        },
+        {
+          "path": ".analysis/release016-test-appdata",
+          "files": 0,
+          "bytes": 0
+        },
+        {
+          "path": ".analysis/release016-expected-docs",
+          "files": 5,
+          "bytes": 82523
+        },
+        {
+          "path": ".analysis/release016-installer-extracted-4b28ae958ab249edb7526cec63f7e1c5",
+          "files": 444,
+          "bytes": 154916564
+        },
+        {
+          "path": ".analysis/release016-installer-extracted-9045549dbcea4996844eb3c766bdaa63",
+          "files": 444,
+          "bytes": 154916565
+        },
+        {
+          "path": ".analysis/release016-delivery.zip",
+          "files": 1,
+          "bytes": 102427959
+        }
+      ],
+      "totalFiles": 1237,
+      "totalBytes": 424341874,
+      "temporaryWorkflowAndInputRemoved": true,
+      "sourceAndReleaseEvidencePreserved": true
+    },
+    "frozenFileHashesRechecked": true,
+    "public015FilesPreserved": true
+  },
+  "publicationHold": {
+    "reason": "New exact 0.1.16 file uploads to VirusTotal require the pending user response; no previous hash approval reused",
+    "scanInput": ".analysis/release016-scan-input.json"
+  }
 }
