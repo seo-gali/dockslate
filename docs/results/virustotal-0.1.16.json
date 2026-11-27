@@ -55,7 +55,7 @@
     "errorMessage": "reCAPTCHA validation failed, please try again",
     "retryAfterSeconds": 60,
     "humanVerificationAttemptReportedByUser": true,
-    "diagnosticBrowserClosed": false,
+    "diagnosticBrowserClosed": true,
     "apiAuthenticationNotProvided": true
   },
   "limitations": [

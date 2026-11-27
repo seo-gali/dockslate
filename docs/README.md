@@ -62,4 +62,4 @@
 
 [IObit 제출 초안](results/iobit-access-review-draft.md)은 미전송 문서이며 제출 승인이나 원래 경고의 원인 확정이 아니다. [라이선스 자료](../licenses/README.md)는 원문·소스·고지 목록을 관리한다.
 
-[개발판 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.15다. 과거 버전의 고지는 해당 Release에 포함된 파일을 기준으로 확인한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.
+[개발판 고지](../licenses/THIRD_PARTY_NOTICES.md)는 0.1.16이다. 과거 버전의 고지는 해당 Release에 포함된 파일을 기준으로 확인한다. [예전 docs 경로의 고지](downloads/THIRD_PARTY_NOTICES.md)는 0.1.5 호환 스냅샷으로 보존하며 현재 버전 안내로 사용하지 않는다.

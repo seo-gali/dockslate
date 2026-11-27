@@ -877,8 +877,12 @@
       }
     ],
     "decisions": {
-      "file": "D:/01_Programming/08_AI/REA/DockSlate-0.1.16-release-decisions.html",
-      "sha256": "E1A3E4026210087ED6FE77ECFE2365ACE3CA7C096E8FF593F000D25317CC34BF"
+      "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-0.1.16-release-decisions.html",
+      "sha256": "965FDCC7D55737198A83D1F90732C8F5DBD6334B6CC896B87D51CD5CCAB2D396",
+      "width": 1280,
+      "height": 720,
+      "cards": 6,
+      "redFirst": true
     },
     "cleanup": {
       "removed": [
@@ -924,7 +928,7 @@
   "publication": {
     "version": "0.1.16",
     "published": true,
-    "websitePublished": false,
+    "websitePublished": true,
     "github": {
       "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.16",
       "releaseId": 460814587,
@@ -1049,7 +1053,7 @@
         "errorMessage": "reCAPTCHA validation failed, please try again",
         "retryAfterSeconds": 60,
         "humanVerificationAttemptReportedByUser": true,
-        "diagnosticBrowserClosed": false,
+        "diagnosticBrowserClosed": true,
         "apiAuthenticationNotProvided": true
       },
       "limitations": [
@@ -1112,6 +1116,83 @@
           }
         ]
       }
+    },
+    "pages": {
+      "runId": 46031095620,
+      "status": "completed",
+      "conclusion": "success"
     }
+  },
+  "publicationFinalVerification": {
+    "observedAt": "2026-11-27T16:14:01.500Z",
+    "publishedSourceCi": {
+      "runId": 46030386049,
+      "sourceCommit": "4c0945399ef62cac572466996bcaefcb493958b5",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "websiteSourceCommit": "4aea0650bb24995d881f7bb846e08f72146dd3fe",
+    "pages": {
+      "runId": 46031095620,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "websiteSourceCi": {
+      "runId": 46031095634,
+      "status": "in_progress",
+      "conclusion": null
+    },
+    "nodeTests": 34,
+    "releaseAssetTests": 8,
+    "layout": {
+      "passed": true,
+      "cases": [
+        "home-desktop",
+        "home-mobile",
+        "guide-mobile",
+        "decisions"
+      ],
+      "rendererExceptions": 0
+    },
+    "decisions": {
+      "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-0.1.16-release-decisions.html",
+      "sha256": "965FDCC7D55737198A83D1F90732C8F5DBD6334B6CC896B87D51CD5CCAB2D396",
+      "width": 1280,
+      "height": 720,
+      "cards": 6,
+      "redFirst": true
+    },
+    "cleanup": {
+      "observedAt": "2026-11-27T16:11:51.592Z",
+      "removed": [
+        {
+          "path": "downloads/local-release016-20261127",
+          "files": 439,
+          "bytes": 257182324
+        },
+        {
+          "path": ".analysis/vt016-browser-581ee8fa32ec45d3abdba5335746ee5d",
+          "files": 933,
+          "bytes": 214520909
+        },
+        {
+          "path": ".analysis/public016-layout-rM9GfX",
+          "files": 169,
+          "bytes": 5177681
+        },
+        {
+          "path": ".analysis/public016-decisions-fMZxRX",
+          "files": 169,
+          "bytes": 5169211
+        }
+      ],
+      "totalFiles": 1710,
+      "totalBytes": 482050125,
+      "canonicalReleaseFilesPreserved": true,
+      "exactAppAndCliRetainedForPendingAntivirus": true,
+      "personalProfilesChanged": false,
+      "userDataChanged": false
+    },
+    "userDataChanged": false
   }
 }

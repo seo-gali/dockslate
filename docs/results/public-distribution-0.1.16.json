@@ -2,7 +2,7 @@
   "version": "0.1.16",
   "observedAt": "2026-11-27T16:07:08.182Z",
   "published": true,
-  "websitePublished": false,
+  "websitePublished": true,
   "files": [
     {
       "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821",
@@ -77,7 +77,7 @@
       "errorMessage": "reCAPTCHA validation failed, please try again",
       "retryAfterSeconds": 60,
       "humanVerificationAttemptReportedByUser": true,
-      "diagnosticBrowserClosed": false,
+      "diagnosticBrowserClosed": true,
       "apiAuthenticationNotProvided": true
     },
     "limitations": [
@@ -242,5 +242,253 @@
     "unverifiedAntivirusDisclosed": true,
     "missingScanResultsNotLinked": true,
     "legacyLegalRoutes": 26
+  },
+  "status": "Unsigned 0.1.16 prerelease and website published; incomplete antivirus status disclosed under exact approval; public files verified.",
+  "pages": {
+    "htmlSha256": "4355703C45D9F5645AAF01AAEAD685B36AF602779A040F67E9A71B4553B2A000",
+    "observedAt": "2026-11-27T16:10:45.536Z",
+    "url": "https://seo-gali.github.io/dockslate/",
+    "status": 200,
+    "version": "0.1.16",
+    "downloadLinksVerified": 3,
+    "publicGithubFilesPreviouslyHashed": 4,
+    "unverifiedAntivirusDisclosed": true,
+    "disclosuresPrecedeDownload": true,
+    "missingScanResultsNotLinked": true,
+    "staticFiles": [
+      {
+        "file": "styles.css",
+        "status": 200,
+        "bytes": 8122,
+        "sha256": "47C09EA21EBCE1A799C1EF87AA26C5E4DF45D0156011399879BA84271CD4A73E",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "main.js",
+        "status": 200,
+        "bytes": 1667,
+        "sha256": "6175863061971231A7E2C8C0502E031EB9DAFB2C5004928C190959B2AB740831",
+        "matchesDeployedGitBlob": true
+      },
+      {
+        "file": "guide.html",
+        "status": 200,
+        "bytes": 7279,
+        "sha256": "540A8908844D6AAD10D2AB9E7C6CC305D5E4274E9E6AB26E156DAA797FA42CFB",
+        "matchesDeployedGitBlob": true
+      }
+    ],
+    "checksumMatches": true,
+    "legacyLegalRoutes": [
+      {
+        "path": "downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.10-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.11-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.11-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.12-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.12-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.13-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.13-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.14-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.14-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.15-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": true
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.15-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": true
+      },
+      {
+        "path": "downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.3-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.4-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.5-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.6-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.7-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.8-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      },
+      {
+        "path": "docs/downloads/DockSlate-0.1.9-third-party-licenses.zip",
+        "status": 200,
+        "previous015HashVerified": false
+      }
+    ],
+    "firstVerifiedDeployment": {
+      "runId": 46031095620,
+      "status": "completed",
+      "conclusion": "success",
+      "sourceCommit": "4aea0650bb24995d881f7bb846e08f72146dd3fe"
+    },
+    "deployed": true
+  },
+  "publicationFinalVerification": {
+    "observedAt": "2026-11-27T16:14:01.500Z",
+    "publishedSourceCi": {
+      "runId": 46030386049,
+      "sourceCommit": "4c0945399ef62cac572466996bcaefcb493958b5",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "websiteSourceCommit": "4aea0650bb24995d881f7bb846e08f72146dd3fe",
+    "pages": {
+      "runId": 46031095620,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "websiteSourceCi": {
+      "runId": 46031095634,
+      "status": "in_progress",
+      "conclusion": null
+    },
+    "nodeTests": 34,
+    "releaseAssetTests": 8,
+    "layout": {
+      "passed": true,
+      "cases": [
+        "home-desktop",
+        "home-mobile",
+        "guide-mobile",
+        "decisions"
+      ],
+      "rendererExceptions": 0
+    },
+    "decisions": {
+      "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-0.1.16-release-decisions.html",
+      "sha256": "965FDCC7D55737198A83D1F90732C8F5DBD6334B6CC896B87D51CD5CCAB2D396",
+      "width": 1280,
+      "height": 720,
+      "cards": 6,
+      "redFirst": true
+    },
+    "cleanup": {
+      "observedAt": "2026-11-27T16:11:51.592Z",
+      "removed": [
+        {
+          "path": "downloads/local-release016-20261127",
+          "files": 439,
+          "bytes": 257182324
+        },
+        {
+          "path": ".analysis/vt016-browser-581ee8fa32ec45d3abdba5335746ee5d",
+          "files": 933,
+          "bytes": 214520909
+        },
+        {
+          "path": ".analysis/public016-layout-rM9GfX",
+          "files": 169,
+          "bytes": 5177681
+        },
+        {
+          "path": ".analysis/public016-decisions-fMZxRX",
+          "files": 169,
+          "bytes": 5169211
+        }
+      ],
+      "totalFiles": 1710,
+      "totalBytes": 482050125,
+      "canonicalReleaseFilesPreserved": true,
+      "exactAppAndCliRetainedForPendingAntivirus": true,
+      "personalProfilesChanged": false,
+      "userDataChanged": false
+    },
+    "userDataChanged": false
   }
 }
