@@ -8,11 +8,27 @@ const requireFact = (value, message) => { if (!value) throw Error(message); };
 const validFile = file => /^[A-Za-z0-9_.-]+\.(exe|zip|txt|md)$/.test(file);
 const validAsset = asset => asset && validFile(asset.file) && /^[A-F0-9]{64}$/.test(asset.sha256) && Number.isSafeInteger(asset.bytes) && asset.bytes > 0 && asset.bytes <= 512 * 1024 * 1024;
 
+export function approvedUnverifiedPublication(version, scans, prerelease) {
+  const approval = scans?.unverifiedPublicationApproval;
+  const names = ['DockSlate_0.1.16_x64-setup.exe', 'DockSlate-0.1.16-windows-x64.zip', 'DockSlate.exe', 'bin/docker.exe'];
+  return version === '0.1.16' && prerelease === true && scans?.status === 'blocked' &&
+    approval?.userApproved === true && approval.version === version && approval.files?.length === names.length && scans.files?.length === names.length &&
+    names.every(file => {
+      const matches = scans.files.filter(scan => scan.file === file);
+      const approvals = approval.files.filter(scan => scan.file === file);
+      const scan = matches[0], approved = approvals[0];
+      return matches.length === 1 && approvals.length === 1 && validAsset({ ...scan, file: path.basename(file) }) &&
+        scan.completed === false && scan.detections === null && scan.totalEngines === null &&
+        approved.sha256 === scan.sha256 && approved.bytes === scan.bytes;
+    });
+}
+
 export function readPublishedRelease(root) {
   const release = read(path.join(root, 'site/release.json'));
   requireFact(/^\d+\.\d+\.\d+$/.test(release.version), 'Invalid public release version.');
   const receipt = read(path.join(root, `docs/results/public-distribution-${release.version}.json`));
   requireFact(receipt.published === true && receipt.version === release.version && receipt.github?.tag === `v${release.version}`, 'Only an already published release may be used by the website.');
+  const unverifiedAntivirus = approvedUnverifiedPublication(release.version, receipt.virusTotal, receipt.github.prerelease);
   const approvals = [...(receipt.virusTotal?.publicationApprovals ?? []), ...(receipt.virusTotal?.publicationApproval ? [receipt.virusTotal.publicationApproval] : [])];
   const approvedDetection = scan => scan && (scan.file === 'DockSlate.exe' || (scan.file === release.zip.file && scan.sha256 === release.zip.sha256)) &&
     scan.completed === true && scan.totalEngines > 0 && receipt.github.prerelease === true &&
@@ -28,10 +44,11 @@ export function readPublishedRelease(root) {
     }
     if (key !== 'licenses') {
       const scan = receipt.virusTotal?.files?.find(entry => entry.sha256?.toUpperCase() === asset.sha256);
-      requireFact(scan?.completed === true && scan.totalEngines > 0 && (scan.detections === 0 || (key === 'zip' && approvedDetection(scan))), `Unresolved antivirus result: ${key}`);
+      requireFact((unverifiedAntivirus && scan?.file === asset.file && scan.bytes === asset.bytes) || (scan?.completed === true && scan.totalEngines > 0 && (scan.detections === 0 || (key === 'zip' && approvedDetection(scan)))), `Unresolved antivirus result: ${key}`);
     }
   }
   for (const scan of receipt.virusTotal.files) {
+    if (unverifiedAntivirus) continue;
     requireFact(Number.isSafeInteger(scan.detections) && scan.detections >= 0, 'Invalid antivirus detection count.');
     if (scan.detections === 0) continue;
     requireFact(approvedDetection(scan), 'Unresolved antivirus result requires explicit approval for this exact file hash.');
@@ -41,7 +58,7 @@ export function readPublishedRelease(root) {
   const checksumSourcePath = receipt.github.checksumSourcePath ?? 'downloads/SHA256SUMS.txt';
   requireFact(checksumSourcePath === 'downloads/SHA256SUMS.txt' || /^\.github\/release[0-9]+-SHA256SUMS\.txt$/.test(checksumSourcePath), 'Invalid published checksum source path.');
   requireFact(validAsset(release.notices) && release.notices.file === 'THIRD_PARTY_NOTICES.md' && /^[a-f0-9]{40}$/.test(release.notices.sourceCommit) && release.notices.sourceCommit === receipt.github.sourceCommit, 'Published notices must identify the reviewed source commit.');
-  return { release, receipt, sums: { ...sums, file: sums.name, sourcePath: checksumSourcePath } };
+  return { release, receipt, unverifiedAntivirus, sums: { ...sums, file: sums.name, sourcePath: checksumSourcePath } };
 }
 
 async function writeVerified(source, asset, destination) {

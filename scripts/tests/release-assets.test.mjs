@@ -124,3 +124,38 @@ test('unsafe names and unpinned notices are refused before acquiring assets', t 
   f.release.installer.file = '../setup.exe'; f.save(); assert.throws(() => readPublishedRelease(f.root), /metadata/);
   f.release.installer.file = 'setup.exe'; f.release.notices.sourceCommit = 'main'; f.save(); assert.throws(() => readPublishedRelease(f.root), /source commit/);
 });
+
+test('0.1.16 unverified publication requires four exact files and prerelease approval', t => {
+  const f = fixture(t);
+  f.release.version = f.receipt.version = '0.1.16';
+  f.receipt.github.tag = 'v0.1.16'; f.receipt.github.prerelease = true;
+  for (const [key, name] of [['installer', 'DockSlate_0.1.16_x64-setup.exe'], ['zip', 'DockSlate-0.1.16-windows-x64.zip']]) {
+    const old = f.release[key].file;
+    fs.renameSync(path.join(f.root, 'downloads', old), path.join(f.root, 'downloads', name));
+    f.release[key].file = name;
+    f.receipt.github.assets.find(x => x.name === old).name = name;
+  }
+  f.receipt.virusTotal = { status: 'blocked', files: [f.release.installer, f.release.zip, {file:'DockSlate.exe',bytes:11,sha256:'A'.repeat(64)}, {file:'bin/docker.exe',bytes:12,sha256:'B'.repeat(64)}].map(x => ({...x,completed:false,detections:null,totalEngines:null})) };
+  const save = () => { f.save(); json(path.join(f.root, `docs/results/public-distribution-${f.release.version}.json`), f.receipt); };
+  save(); assert.throws(() => readPublishedRelease(f.root), /antivirus/);
+  f.receipt.virusTotal.unverifiedPublicationApproval = {userApproved:true,version:'0.1.16',files:f.receipt.virusTotal.files.map(({file,bytes,sha256})=>({file,bytes,sha256}))};
+  save(); assert.equal(readPublishedRelease(f.root).unverifiedAntivirus, true);
+  const baseline = structuredClone(f.receipt.virusTotal);
+  for (const change of [
+    scans => { scans.unverifiedPublicationApproval.userApproved = false; },
+    scans => { scans.unverifiedPublicationApproval.version = '0.1.15'; },
+    scans => { scans.unverifiedPublicationApproval.files[0].sha256 = 'F'.repeat(64); },
+    scans => { scans.unverifiedPublicationApproval.files[0].bytes++; },
+    scans => { scans.unverifiedPublicationApproval.files.pop(); },
+    scans => { scans.files[0].completed = true; scans.files[0].detections = 1; },
+    scans => { scans.files[0].sha256 = scans.unverifiedPublicationApproval.files[0].sha256 = 'F'.repeat(64); },
+    scans => { scans.files[0].bytes++; scans.unverifiedPublicationApproval.files[0].bytes++; },
+  ]) {
+    f.receipt.virusTotal = structuredClone(baseline); change(f.receipt.virusTotal); save();
+    assert.throws(() => readPublishedRelease(f.root), /antivirus|count/);
+  }
+  f.receipt.virusTotal = baseline; f.receipt.github.prerelease = false; save();
+  assert.throws(() => readPublishedRelease(f.root), /antivirus/);
+  f.receipt.github.prerelease = true; f.release.version = f.receipt.version = '0.1.17'; f.receipt.github.tag = 'v0.1.17'; save();
+  assert.throws(() => readPublishedRelease(f.root), /antivirus/);
+});

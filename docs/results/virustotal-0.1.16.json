@@ -1,7 +1,7 @@
 {
   "version": "0.1.16",
   "status": "blocked",
-  "observedAt": "2026-11-27T11:57:40.134Z",
+  "observedAt": "2026-11-27T16:01:42.246Z",
   "publicUploadOfFourFilesApproved": true,
   "authorization": {
     "userAnswer": "업로드해",
@@ -49,18 +49,73 @@
   "publicationApprovals": [],
   "blocker": {
     "service": "VirusTotal web upload",
-    "lastObservedAt": "2026-11-27T11:47:06.336Z",
+    "lastObservedAt": "2026-11-27T15:50:03.494Z",
     "httpStatus": 429,
     "errorCode": "RecaptchaRequiredError",
     "errorMessage": "reCAPTCHA validation failed, please try again",
     "retryAfterSeconds": 60,
     "humanVerificationAttemptReportedByUser": true,
-    "diagnosticBrowserClosed": true,
+    "diagnosticBrowserClosed": false,
     "apiAuthenticationNotProvided": true
   },
   "limitations": [
     "No completed 0.1.16 scan reports have been verified",
     "The 56.2 MB multi-file ZIP exceeds the web archive inner-scanning limit of 3 MB and exactly one member; app and CLI are separate approved submissions",
     "An incomplete scan is not a zero-detection result; previous-version scan approvals are not reused"
-  ]
+  ],
+  "latestRetry": {
+    "observedAt": "2026-11-27T15:50:04.651Z",
+    "hashesVerified": 4,
+    "hashLookups": [
+      {
+        "kind": "cli",
+        "status": 404
+      },
+      {
+        "kind": "app",
+        "status": 404
+      },
+      {
+        "kind": "installer",
+        "status": 404
+      },
+      {
+        "kind": "zip",
+        "status": 404
+      }
+    ],
+    "uploadsAccepted": 0,
+    "httpStatus": 429,
+    "errorCode": "RecaptchaRequiredError",
+    "captchaInteractedWith": false
+  },
+  "unverifiedPublicationApproval": {
+    "userApproved": true,
+    "version": "0.1.16",
+    "userAnswer": "일단 공개해",
+    "observedAt": "2026-11-27T16:01:42.247Z",
+    "scope": "Unsigned prerelease only, with incomplete antivirus status disclosed; exactly these four files",
+    "files": [
+      {
+        "file": "DockSlate_0.1.16_x64-setup.exe",
+        "bytes": 41207253,
+        "sha256": "C6C4CC47005788237333BF0F70E44DE6095F781C5CDFAD0D7072C75420FCD821"
+      },
+      {
+        "file": "DockSlate-0.1.16-windows-x64.zip",
+        "bytes": 56243692,
+        "sha256": "6B43B2E306B645F8CB7CD5A29763B1A5B55A3CD24AD652EE3E1D2B95E3F9A79A"
+      },
+      {
+        "file": "DockSlate.exe",
+        "bytes": 5487616,
+        "sha256": "8CFBEF0EB61108310EF8E8339612810D746D6CBCEAD98A46C353060DFD88F909"
+      },
+      {
+        "file": "bin/docker.exe",
+        "bytes": 320512,
+        "sha256": "D280D357E03859CC7BEA6A0E138D1045856DBE570C2335851EB412D33FC17C72"
+      }
+    ]
+  }
 }

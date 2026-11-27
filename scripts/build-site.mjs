@@ -19,13 +19,22 @@ if (flagged.length) {
   values.SECURITY_NOTE += ' · ' + flagged.map(scan => `${escape(scan.detectionVendors[0])}: ${scan.file === release.zip.file ? '포터블 ZIP' : '앱 EXE'} 탐지 ${scan.detections}건 · <a href="https://www.virustotal.com/gui/file/${scan.sha256.toLowerCase()}/detection">검사 결과</a>`).join(' · ') + ' · 오탐 여부 미확인.';
   values.SECURITY_ALERT_CLASS = 'has-detection';
 }
+if (published.unverifiedAntivirus) {
+  values.SECURITY_NOTE += ' · 백신 검사 미완료';
+  values.SECURITY_ALERT_CLASS = 'has-detection';
+}
 let verifiedDownloads = 0;
 for (const key of ['installer', 'zip', 'licenses']) {
   const asset = release[key];
   if (!asset || !/^[A-Za-z0-9_.-]+\.(exe|zip)$/.test(asset.file) || !/^[A-F0-9]{64}$/.test(asset.sha256) || !Number.isSafeInteger(asset.bytes) || asset.bytes <= 0) throw Error(`Invalid release metadata: ${key}`);
   const prefix = key.toUpperCase();
   values[`${prefix}_URL`] = assetUrl + encodeURIComponent(asset.file);
-  if (key !== 'licenses') values[`${prefix}_VIRUSTOTAL_URL`] = 'https://www.virustotal.com/gui/file/' + asset.sha256.toLowerCase() + '/detection';
+  if (key !== 'licenses') {
+    values[`${prefix}_VIRUSTOTAL_URL`] = published.unverifiedAntivirus
+      ? `https://github.com/seo-gali/dockslate/blob/${published.receipt.github.sourceCommit}/docs/results/virustotal-${release.version}.json`
+      : 'https://www.virustotal.com/gui/file/' + asset.sha256.toLowerCase() + '/detection';
+    values[`${prefix}_SCAN_LABEL`] = published.unverifiedAntivirus ? '백신 검사 미완료 · 진행 기록' : 'VirusTotal 검사 결과';
+  }
   values[`${prefix}_SIZE`] = (asset.bytes / 1000000).toFixed(1) + ' MB';
   values[`${prefix}_SHA256`] = asset.sha256;
   verifiedDownloads++;
