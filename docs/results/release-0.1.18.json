@@ -1,21 +1,465 @@
 {
   "version": "0.1.18",
-  "observedAt": "2026-11-28T13:36:07.555Z",
+  "observedAt": "2026-11-28T13:51:33.053Z",
   "published": false,
   "websitePublished": false,
-  "status": "Docker Desktop source identity hotfix; fresh Windows packaging pending",
-  "authorization": {
-    "userAnswer": "반영해",
-    "scope": "Build and publish fresh installer and ZIP with the source identity fix; preserve prior public files; unsigned prerelease with incomplete antivirus disclosed"
+  "status": "Verified Windows candidate; unsigned prerelease publication authorized with incomplete antivirus status disclosed",
+  "artifacts": [
+    {
+      "name": "dockslate.exe",
+      "bytes": 5572608,
+      "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01"
+    },
+    {
+      "name": "docker.exe",
+      "bytes": 326656,
+      "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6"
+    }
+  ],
+  "files": [
+    {
+      "file": "DockSlate_0.1.18_x64-setup.exe",
+      "bytes": 41242023,
+      "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+    },
+    {
+      "file": "DockSlate-0.1.18-windows-x64.zip",
+      "bytes": 56283741,
+      "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+    },
+    {
+      "file": "DockSlate-0.1.18-third-party-licenses.zip",
+      "bytes": 5269084,
+      "sha256": "0C8BBC2FA392C81F88569C98A1E4B099B59A79EC8152CF71FC801D5851FA3CFF"
+    }
+  ],
+  "build": {
+    "sourceCommit": "bc1f19c87ab589ec03b4fb40d794e3fc7dc46d4e",
+    "runId": 46150549022,
+    "runUrl": "https://github.com/seo-gali/dockslate/actions/runs/46150549022",
+    "conclusion": "success",
+    "artifact": {
+      "observedAt": "2026-11-28T13:50:29.909Z",
+      "sourceMetadata": "https://api.github.com/repos/seo-gali/dockslate/actions/runs/46150549022/artifacts",
+      "url": "https://nightly.link/seo-gali/dockslate/actions/artifacts/15266112010.zip",
+      "file": ".analysis/release018-delivery.zip",
+      "artifactId": 15266112010,
+      "runId": 46150549022,
+      "sourceCommit": "bc1f19c87ab589ec03b4fb40d794e3fc7dc46d4e",
+      "bytes": 102503989,
+      "sha256": "b78b2e0ae3526169faefdea3f1406ecdc53cb52f4d38c00522e2a54b84f1583e",
+      "githubDigestVerified": true
+    }
   },
   "checks": {
+    "windowsReleaseBuildExit": 0,
+    "rustCheckExit": 0,
+    "frontendBuildExit": 0,
+    "nodeTests": 39,
+    "rustTests": 49,
     "sourceIdentityTests": 18,
-    "dependencyVersionsChanged": false
+    "latestNativeFlowExecuted": true,
+    "dependencyVersionsChanged": false,
+    "lockChangeScope": "Only own DockSlate 0.1.17 to 0.1.18 version",
+    "package": {
+      "version": "0.1.18",
+      "portableDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release018-portable\\DockSlate-0.1.18-windows-x64",
+      "deliveryDirectory": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release018-delivery",
+      "portableFiles": 435,
+      "licenseFiles": 410,
+      "sourceFilesCompared": 429,
+      "normalizedLineEndingFiles": [
+        "licenses/inventory.json",
+        "licenses/README.md",
+        "licenses/THIRD_PARTY_NOTICES.md",
+        "examples/basic-web/.dockerignore",
+        "examples/basic-web/compose.yaml",
+        "examples/basic-web/Dockerfile",
+        "examples/basic-web/README.md",
+        "examples/basic-web/server.mjs",
+        "guide.html",
+        "docs/MIGRATION.md",
+        "docs/REQUEST_STATUS.md",
+        "docs/USER_GUIDE.md",
+        "docs/results/code-signing.md",
+        "docs/results/security-review-20261119.md"
+      ],
+      "files": [
+        {
+          "file": "DockSlate_0.1.18_x64-setup.exe",
+          "bytes": 41242023,
+          "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+        },
+        {
+          "file": "DockSlate-0.1.18-windows-x64.zip",
+          "bytes": 56283741,
+          "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+        },
+        {
+          "file": "DockSlate-0.1.18-third-party-licenses.zip",
+          "bytes": 5269084,
+          "sha256": "0C8BBC2FA392C81F88569C98A1E4B099B59A79EC8152CF71FC801D5851FA3CFF"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "dockslate.exe",
+          "bytes": 5572608,
+          "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01"
+        },
+        {
+          "name": "docker.exe",
+          "bytes": 326656,
+          "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6"
+        }
+      ],
+      "sourceCommit": "bc1f19c87ab589ec03b4fb40d794e3fc7dc46d4e",
+      "fullInstallationVerified": false
+    },
+    "installer": {
+      "version": "0.1.18",
+      "observedAt": "2026-11-28T13:51:03.400Z",
+      "root": "D:\\01_Programming\\08_AI\\REA\\dockslate\\.analysis\\release018-installer-extracted-WYPwz4",
+      "installerSha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9",
+      "archiveReader": {
+        "sha256": "B131230250043538820E4252B79621E829A95BE4EBB5D653779DFB3B45A5FE5F",
+        "source": "Existing signed Bandisoft archive reader",
+        "file": "C:\\Program Files\\Bandizip\\bz.exe",
+        "version": "7.40.0.1"
+      },
+      "extractExit": 0,
+      "sourcePayloadAndInstallerMatched": true,
+      "sharedPayloadFiles": 432,
+      "helperMatched": true,
+      "installerExecuted": false,
+      "engineChanged": false
+    },
+    "nativeFrontend": {
+      "version": "0.1.18",
+      "observedAt": "2026-11-28T13:51:23.436Z",
+      "devServerReachable": false,
+      "cases": [
+        {
+          "kind": "portable",
+          "artifactSha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
+          "passed": true,
+          "page": {
+            "href": "http://tauri.localhost/",
+            "title": "DockSlate",
+            "heading": "Docker Engine 준비",
+            "tauri": true,
+            "connectionError": false
+          },
+          "rendererExceptions": 0,
+          "assetResponses": [
+            {
+              "url": "http://tauri.localhost/",
+              "status": 200,
+              "type": "Document"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-DbiRl3pF.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-Dk8QyrYW.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/favicon.ico",
+              "status": 200,
+              "type": "Other"
+            },
+            {
+              "url": "http://tauri.localhost/assets/Overview-L0IXWxVj.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CtMPqxAR.js",
+              "status": 200,
+              "type": "Script"
+            }
+          ],
+          "installerMode": true,
+          "commands": [
+            "builds_snapshot",
+            "dashboard_snapshot",
+            "startup_settings",
+            "plugin:event|listen",
+            "desktop_tray_language",
+            "plugin:event|unlisten",
+            "installer_setup_mode"
+          ],
+          "engineMutationObserved": false
+        },
+        {
+          "kind": "installer-payload",
+          "artifactSha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
+          "passed": true,
+          "page": {
+            "href": "http://tauri.localhost/",
+            "title": "DockSlate",
+            "heading": "Docker Engine 준비",
+            "tauri": true,
+            "connectionError": false
+          },
+          "rendererExceptions": 0,
+          "assetResponses": [
+            {
+              "url": "http://tauri.localhost/",
+              "status": 200,
+              "type": "Document"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-DbiRl3pF.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/index-Dk8QyrYW.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/favicon.ico",
+              "status": 200,
+              "type": "Other"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
+              "url": "http://tauri.localhost/assets/Overview-L0IXWxVj.js",
+              "status": 200,
+              "type": "Script"
+            },
+            {
+              "url": "http://tauri.localhost/assets/EngineSetup-CtMPqxAR.js",
+              "status": 200,
+              "type": "Script"
+            }
+          ],
+          "installerMode": true,
+          "commands": [
+            "builds_snapshot",
+            "dashboard_snapshot",
+            "startup_settings",
+            "plugin:event|listen",
+            "desktop_tray_language",
+            "plugin:event|unlisten",
+            "installer_setup_mode"
+          ],
+          "engineMutationObserved": false
+        }
+      ],
+      "actualInstallerExecuted": false,
+      "fullInstallationVerified": false,
+      "published": false
+    },
+    "offlineCli": {
+      "version": "0.1.18",
+      "observedAt": "2026-11-28T13:51:04.826Z",
+      "artifactSha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6",
+      "checks": [
+        {
+          "args": [
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "--debug",
+            "--version"
+          ],
+          "exit": 0,
+          "output": "Docker version 29.10.0, build fdd4b8e"
+        },
+        {
+          "args": [
+            "compose",
+            "version"
+          ],
+          "exit": 0,
+          "output": "Docker Compose version v5.8.0"
+        },
+        {
+          "args": [
+            "buildx",
+            "version"
+          ],
+          "exit": 0,
+          "output": "github.com/docker/buildx v0.39.0 360040a78d6113dc84e5d4dcdf0f438e1be7a41f"
+        },
+        {
+          "name": "prepared plugins match the verified bundled payloads",
+          "passed": true
+        },
+        {
+          "name": "unknown plugin preserved and execution rejected",
+          "passed": true
+        }
+      ],
+      "engineChanged": false,
+      "existingUserProfileUsed": false
+    },
+    "signatures": [
+      {
+        "file": ".analysis/release018-delivery/downloads/DockSlate_0.1.18_x64-setup.exe",
+        "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9",
+        "signature": "NotSigned",
+        "productVersion": "0.1.18",
+        "fileVersion": "0.1.18"
+      },
+      {
+        "file": ".analysis/release018-portable/DockSlate-0.1.18-windows-x64/DockSlate.exe",
+        "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
+        "signature": "NotSigned",
+        "productVersion": "0.1.18",
+        "fileVersion": "0.1.18"
+      },
+      {
+        "file": ".analysis/release018-portable/DockSlate-0.1.18-windows-x64/bin/docker.exe",
+        "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6",
+        "signature": "NotSigned",
+        "productVersion": "0.1.18",
+        "fileVersion": "0.1.18"
+      }
+    ],
+    "sourceCi": {
+      "id": 46150549108,
+      "status": "completed",
+      "conclusion": "success"
+    }
   },
-  "files": [],
+  "virusTotal": {
+    "version": "0.1.18",
+    "status": "blocked",
+    "observedAt": "2026-11-28T13:51:33.043Z",
+    "publicUploadOfFourFilesApproved": false,
+    "files": [
+      {
+        "file": "DockSlate_0.1.18_x64-setup.exe",
+        "bytes": 41242023,
+        "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      },
+      {
+        "file": "DockSlate-0.1.18-windows-x64.zip",
+        "bytes": 56283741,
+        "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      },
+      {
+        "file": "DockSlate.exe",
+        "bytes": 5572608,
+        "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      },
+      {
+        "file": "bin/docker.exe",
+        "bytes": 326656,
+        "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      }
+    ],
+    "publicationApprovals": [],
+    "uploadsAttempted": 0,
+    "blocker": {
+      "service": "VirusTotal",
+      "apiAuthenticationProvided": false,
+      "currentVersionUploadAttempted": false,
+      "previousVersionRecord": "virustotal-0.1.16.json",
+      "reason": "No API credentials supplied; previous browser uploads required human verification. No CAPTCHA bypass or personal browser access attempted."
+    },
+    "limitations": [
+      "No completed 0.1.18 antivirus reports verified; detections are unknown, not zero",
+      "Previous-version scan results and upload approvals are not reused",
+      "Complete multi-file ZIP is not an exhaustive inspection of every inner file"
+    ],
+    "unverifiedPublicationApproval": {
+      "userApproved": true,
+      "version": "0.1.18",
+      "userAnswer": "반영해",
+      "followupAnswer": "반영해",
+      "observedAt": "2026-11-28T13:51:33.044Z",
+      "scope": "Unsigned prerelease publication with incomplete antivirus status disclosed, exactly these four files; no new antivirus upload authorization inferred",
+      "files": [
+        {
+          "file": "DockSlate_0.1.18_x64-setup.exe",
+          "bytes": 41242023,
+          "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+        },
+        {
+          "file": "DockSlate-0.1.18-windows-x64.zip",
+          "bytes": 56283741,
+          "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+        },
+        {
+          "file": "DockSlate.exe",
+          "bytes": 5572608,
+          "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01"
+        },
+        {
+          "file": "bin/docker.exe",
+          "bytes": 326656,
+          "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6"
+        }
+      ]
+    }
+  },
+  "publicationAuthorization": {
+    "userApproved": true,
+    "version": "0.1.18",
+    "userAnswer": "반영해",
+    "followupAnswer": "반영해",
+    "observedAt": "2026-11-28T13:51:33.044Z",
+    "scope": "Unsigned prerelease publication with incomplete antivirus status disclosed, exactly these four files; no new antivirus upload authorization inferred",
+    "files": [
+      {
+        "file": "DockSlate_0.1.18_x64-setup.exe",
+        "bytes": 41242023,
+        "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+      },
+      {
+        "file": "DockSlate-0.1.18-windows-x64.zip",
+        "bytes": 56283741,
+        "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+      },
+      {
+        "file": "DockSlate.exe",
+        "bytes": 5572608,
+        "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01"
+      },
+      {
+        "file": "bin/docker.exe",
+        "bytes": 326656,
+        "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6"
+      }
+    ]
+  },
   "remaining": [
-    "Fresh package and native frontend verification",
-    "Actual affected Windows PC response not received",
+    "Actual two-engine migration and affected other Windows PC unverified",
+    "Full installation, upgrade, uninstall, reboot and rollback unverified",
     "Unsigned; antivirus analysis incomplete"
   ]
 }

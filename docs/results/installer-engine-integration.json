@@ -1,24 +1,24 @@
 {
-  "version": "0.1.17",
-  "observedAt": "2026-11-28T07:53:28.720Z",
-  "sourceCommit": "f2e49febc442f99f4251e3e658b724d9ce52c049",
-  "githubRun": "https://github.com/seo-gali/dockslate/actions/runs/46122470465",
+  "version": "0.1.18",
+  "observedAt": "2026-11-28T13:48:31.411Z",
+  "sourceCommit": "bc1f19c87ab589ec03b4fb40d794e3fc7dc46d4e",
+  "githubRun": "https://github.com/seo-gali/dockslate/actions/runs/46150549022",
   "checks": {
     "windowsReleaseBuildExit": 0,
     "rustCheckExit": 0,
     "frontendBuildExit": 0,
-    "rustTests": 47,
+    "rustTests": 49,
     "latestNativeFlowExecuted": true,
     "offlineComposeConfigurationPassed": true,
     "installerPathFixturesPassed": true,
     "nativeFrontend": {
-      "version": "0.1.17",
-      "observedAt": "2026-11-28T12:23:29.802Z",
+      "version": "0.1.18",
+      "observedAt": "2026-11-28T13:51:23.436Z",
       "devServerReachable": false,
       "cases": [
         {
           "kind": "portable",
-          "artifactSha256": "DD267B965D0512749C26FBCB655DBB83B123987CE85547807D32EEB1E3F25877",
+          "artifactSha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
           "passed": true,
           "page": {
             "href": "http://tauri.localhost/",
@@ -79,7 +79,7 @@
         },
         {
           "kind": "installer-payload",
-          "artifactSha256": "DD267B965D0512749C26FBCB655DBB83B123987CE85547807D32EEB1E3F25877",
+          "artifactSha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
           "passed": true,
           "page": {
             "href": "http://tauri.localhost/",
@@ -111,6 +111,11 @@
               "type": "Other"
             },
             {
+              "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
+              "status": 200,
+              "type": "Stylesheet"
+            },
+            {
               "url": "http://tauri.localhost/assets/Overview-L0IXWxVj.js",
               "status": 200,
               "type": "Script"
@@ -119,11 +124,6 @@
               "url": "http://tauri.localhost/assets/EngineSetup-CtMPqxAR.js",
               "status": 200,
               "type": "Script"
-            },
-            {
-              "url": "http://tauri.localhost/assets/EngineSetup-CAh6N3oy.css",
-              "status": 200,
-              "type": "Stylesheet"
             }
           ],
           "installerMode": true,
@@ -144,9 +144,9 @@
       "published": false
     },
     "offlineCli": {
-      "version": "0.1.17",
-      "observedAt": "2026-11-28T12:19:28.190Z",
-      "artifactSha256": "94BCDD55B16C92F4ADE559F7B1EB33EE1EAC52DBC1BECA99F1DC46C1075D9547",
+      "version": "0.1.18",
+      "observedAt": "2026-11-28T13:51:04.826Z",
+      "artifactSha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6",
       "checks": [
         {
           "args": [
@@ -195,13 +195,13 @@
   "artifacts": [
     {
       "name": "dockslate.exe",
-      "bytes": 5572096,
-      "sha256": "DD267B965D0512749C26FBCB655DBB83B123987CE85547807D32EEB1E3F25877"
+      "bytes": 5572608,
+      "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01"
     },
     {
       "name": "docker.exe",
       "bytes": 326656,
-      "sha256": "94BCDD55B16C92F4ADE559F7B1EB33EE1EAC52DBC1BECA99F1DC46C1075D9547"
+      "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6"
     }
   ],
   "engineChanged": false,
@@ -223,5 +223,5 @@
     "Full installation, upgrade, uninstall, reboot and rollback unverified",
     "Unsigned; antivirus analysis incomplete"
   ],
-  "previousReleaseRecord": "release-0.1.16.json"
+  "previousReleaseRecord": "release-0.1.17.json"
 }

@@ -1,0 +1,29 @@
+{
+  "version": "0.1.18",
+  "required": [
+    {
+      "path": "docs/results/release-0.1.18.json",
+      "sha256": "0464B10E926459B87181CCFB30951D7EB6B1FAD82823BE5F3113453DE599FC9A"
+    },
+    {
+      "path": "docs/results/virustotal-0.1.18.json",
+      "sha256": "773D0EAED077CA224E8DEDFEA7E1403ED17CA9637065331AA124FFEAC8AAFC47"
+    },
+    {
+      "path": "docs/releases/v0.1.18.md",
+      "sha256": "BC10D046A1A33C342B7778ADB38808CE6CF2212ECE5754FC774CD2E029B44D04"
+    },
+    {
+      "path": "downloads/DockSlate_0.1.18_x64-setup.exe",
+      "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+    },
+    {
+      "path": "downloads/DockSlate-0.1.18-windows-x64.zip",
+      "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+    },
+    {
+      "path": "downloads/DockSlate-0.1.18-third-party-licenses.zip",
+      "sha256": "0C8BBC2FA392C81F88569C98A1E4B099B59A79EC8152CF71FC801D5851FA3CFF"
+    }
+  ]
+}
