@@ -29,7 +29,7 @@
 | [0.1.16 공개·파일 대조](results/public-distribution-0.1.16.json) · [제작·검사](results/release-0.1.16.md) | 화면 내장 수정, 정확한 공개 파일·백신 검사 미완료 승인과 남은 검증 |
 | [0.1.15 공개·파일 대조](results/public-distribution-0.1.15.json) · [제작·검사](results/release-0.1.15.md) | 자동 시작·이전 분할·선택 삭제, 정확한 공개 파일·탐지 고지와 남은 검증 |
 | [0.1.14 공개·파일 대조](results/public-distribution-0.1.14.json) · [제작·검사](results/release-0.1.14.md) | 조회 120초·승인 시간 수정, 공개 파일·SHA-256·탐지 고지와 남은 검증 |
-| [조회 시간 초과 후속 수정](results/migration-timeout.json) | 불필요한 프록시·플러그인 준비 제거와 단계별 진단. 공개 0.1.14에 포함 |
+| [조회 시간 초과 후속 수정](results/migration-timeout.json) | 초기 0.1.14 검사와 0.1.17의 직접 inspect·120초 제한·단계별 오류·이벤트 연결 수정 검사를 구분 |
 | [0.1.13 공개 배포](results/public-distribution-0.1.13.md) · [제작·검사](results/release-0.1.13.md) | 전체 선택·정상 중지·파일/폴더 복사·실행 상태 유지, 정확한 공개 파일과 백신 검사 |
 | [0.1.12 공개 배포](results/public-distribution-0.1.12.md) · [제작·검사](results/release-0.1.12.md) | 경로·CLI 초기화·가져오기 정렬 수정, 앱 탐지 1건·미서명 고지 및 정확한 공개 파일 대조 |
 | [0.1.11 공개 배포](results/public-distribution-0.1.11.md) · [제작·검사](results/release-0.1.11.md) | 데이터 가져오기·설치/시작 수정, 정확한 EXE·ZIP·SHA-256·백신과 남은 실제 이전 검사 |

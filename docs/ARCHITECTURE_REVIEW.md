@@ -13,7 +13,7 @@
 | `migration.rs` · `migration/binds.rs` | Desktop 이전 검사·승인·복사·실행 상태와 bind 계획·tar 검사 |
 | `pipe.rs` · `cli_platform.rs` · `bin/docker.rs` | 사용자별 엔진 pipe·Windows launcher·공식 CLI 실행 |
 | `scripts/check.mjs` · `check-windows.ps1` | 엔진 비접촉 검사·Rust 보안·PATH·Windows 프로세스 검사 |
-| `site/release.json` · 버전별 공개 기록 | 앱 개발 버전과 독립된 공개 자산·해시·검사·사이트 생성. 현재 메타데이터 버전은 0.1.16 |
+| `site/release.json` · 버전별 공개 기록 | 앱 개발 버전과 독립된 공개 자산·해시·검사·사이트 생성. 현재 공개 버전은 이 메타데이터를 기준으로 확인 |
 
 이 표는 현재 소스 구조와 메타데이터를 설명하며 공개 파일과 현재 소스의 동일성을 보증하지 않는다. 최신 실행 근거와 남은 범위는 [요청 현황](REQUEST_STATUS.md)을 따른다.
 
