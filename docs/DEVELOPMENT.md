@@ -1,6 +1,6 @@
 # 개발·빌드와 저장소 구성
 
-Windows 11 x64에서 Node.js/npm, Rust MSVC, Microsoft C++ Build Tools와 Windows SDK를 사용합니다. 의존성 버전은 루트 `package.json`·잠금 파일과 `src-tauri/Cargo.toml`·`Cargo.lock`이 기준입니다.
+현재 실행 경로는 `package.json`·`scripts/`·`src-tauri/`의 코드가 기준입니다. Windows 11 x64에서 Node.js/npm, Rust MSVC, Microsoft C++ Build Tools와 Windows SDK를 사용합니다. 의존성 버전은 루트 `package.json`·잠금 파일과 `src-tauri/Cargo.toml`·`Cargo.lock`에서 확인합니다.
 
 ```powershell
 npm ci
@@ -13,12 +13,13 @@ npm ci
 | 주석 추가 방지 검사 | `node scripts/check-comments.mjs` |
 | Windows 소스·프로세스 검사 | `npm run check:windows -- -Offline` |
 | 앱 빌드 | `.\scripts\desktop.ps1 -Mode build` |
+| 잠긴 의존성으로 앱 빌드 | `npm run desktop:build -- --ci -- --locked --offline` |
 | CLI 빌드 | `.\scripts\build-cli.ps1` |
 | 설치 EXE 생성 | `.\scripts\build-installer.ps1` |
 | 포터블 폴더·ZIP 생성 | `npm run package:local` |
 | 사이트 미리보기 | `npm run build:site` → `site-dist/index.html` |
 
-배포용 앱은 `tauri build`로 화면 파일을 EXE에 내장합니다. Rust 명령을 직접 사용한다면 `--features tauri/custom-protocol`이 필요하며, 이 옵션이 없는 GUI release 빌드는 차단합니다. `cargo build --release`만 실행하면 개발 서버 주소를 사용하는 실행 파일이 만들어질 수 있습니다. 읽기 전용 검증도 내장 `index.html`을 먼저 확인하며, 배포 전에 개발 서버가 없는 상태에서 실제 설치 화면을 열어 확인합니다. WebView2는 앱 화면을 표시하는 런타임이며 Edge 브라우저 설치를 요구하지 않습니다.
+배포용 앱은 `tauri build`로 화면 파일을 EXE에 내장합니다. Rust 명령을 직접 사용한다면 `--features tauri/custom-protocol`이 필요합니다. 현재 `main.rs`의 컴파일 검사는 이 옵션이 없는 GUI release 빌드를 거부하므로 `cargo build --release`만으로는 GUI 배포물을 만들 수 없습니다. CLI 전용 `--bin docker` 빌드는 별개입니다. 읽기 전용 검증도 내장 `index.html`을 확인합니다. `.\scripts\desktop.ps1 -Mode verify`는 이미 만들어진 EXE를 실행하며 전체 설치·제거 검사를 대신하지 않습니다. WebView2는 앱 화면을 표시하는 런타임이며 Edge 브라우저 설치를 요구하지 않습니다.
 
 0.1.15 공개 파일에서 개발 서버 연결 거부를 재현했으며, 수정 소스의 실제 설치 화면과 내장 자산 검사는 [화면 내장 오류 검증](results/embedded-frontend-20261127.json)에 기록했습니다. 수정은 0.1.16 EXE·ZIP에 반영했습니다. [공개 파일](results/public-distribution-0.1.16.json)은 미서명이며 백신 검사 미완료 상태로 승인받아 공개한 개발판입니다.
 
@@ -26,7 +27,7 @@ npm ci
 
 포터블 생성은 현재 버전의 `downloads/DockSlate-<version>-windows-x64/`와 ZIP을 갱신합니다. 앱·CLI 빌드와 `docs/results/installer-engine-integration.json`의 검증 해시가 일치해야 합니다. EXE 하나만 복사하면 동봉 CLI·플러그인이 빠질 수 있습니다. 설치 파일 생성과 내부 파일 검증은 [배포 기록](results/installer-engine-integration.json)을 따릅니다. 앱·CLI·문서가 바뀌면 제작 영수증도 실제 새 파일에 맞춰야 하며, 명령 실행만으로 검증 영수증을 통과 처리하지 않습니다.
 
-설치 스크립트는 기본적으로 검증된 로컬 NSIS 도구만 사용합니다. 도구 다운로드가 필요하면 사전 승인 후 `-AllowToolDownload`를 지정합니다. `-SkipBuild`는 이미 검증한 앱·CLI를 포장하며 `-CheckToolsOnly`는 도구 상태만 조회합니다. 상시 설치 EXE 빌드 workflow는 없으며 이전 일회성 포장 workflow는 정리했습니다.
+설치 스크립트는 기본적으로 로컬 NSIS 캐시를 사용합니다. `-CheckToolsOnly`는 필수 파일의 존재와 `nsis_tauri_utils.dll`의 고정 SHA-1을 검사합니다. NSIS 캐시 전체의 SHA-256을 검사하는 기능은 아닙니다. 도구 다운로드가 필요하면 사전 승인 후 `-AllowToolDownload`를 지정합니다. `-SkipBuild`는 앱·CLI 재컴파일을 생략하고 파일 존재를 확인해 포장하며, 앱·CLI가 제작 영수증과 일치하는지는 포터블 스크립트와 별도로 확인해야 합니다. 상시 설치 EXE 빌드 workflow는 없으며 이전 일회성 포장 workflow는 정리했습니다.
 
 작업 브랜치는 `main`입니다. 로컬 빌드와 사이트 생성은 외부 게시가 아니며, 푸시·배포·의존성 변경은 별도 승인 범위에서 수행합니다.
 
@@ -66,6 +67,6 @@ npm ci
 
 ## 검사 경계
 
-`npm run check`는 주석 ratchet, workflow SHA, IPC 명령 등록, 값 비노출 시크릿 패턴 검사, 문서 링크, 엄격한 TypeScript와 Node 내장 검사를 실행합니다. `npm run check:windows -- -Offline`는 잠긴 Rust check·보안 검사, 격리 레지스트리의 PATH 검사, 실제 Windows 입출력·시간 제한 검사를 실행합니다. 사용자·시스템 PATH나 엔진을 변경하지 않습니다. CI는 npm 검사·Git 이력 패턴 검사·프런트엔드 빌드·Windows 검사를 실행합니다. 의존성 권고 검사는 주간·수동 job으로 분리합니다. 이 CI는 엔진 설치·시작·변경·설치 파일 제작·배포를 수행하지 않습니다. 네이티브 GUI 검사는 실제 WebView 포트 파일이 필요하고, 변경을 수행하는 E2E는 지정한 fixture 승인을 별도로 받습니다.
+`npm run check`는 주석 ratchet, workflow SHA, IPC 명령 등록, 값 비노출 시크릿 패턴 검사, 문서 링크, 엄격한 TypeScript와 Node 내장 검사를 실행합니다. `npm run check:windows -- -Offline`는 잠긴 Rust check·보안 검사, 격리 레지스트리의 PATH 검사, 실제 Windows 입출력·시간 제한 검사를 실행합니다. 사용자·시스템 PATH나 엔진을 변경하지 않습니다. 소스 CI는 npm 검사·Git 이력 패턴 검사·`npm audit --audit-level=high`·프런트엔드 빌드·Windows 검사를 실행합니다. 추가 Rust·Go 의존성 권고 조회는 주간·수동 job입니다. 소스 CI는 엔진 설치·시작·변경·설치 파일 제작·공개 Release 게시를 수행하지 않으며, Pages 게시 workflow는 별개입니다. 네이티브 GUI 검사는 실제 WebView 포트 파일이 필요하고, 변경을 수행하는 E2E는 지정한 fixture 승인을 별도로 받습니다.
 
 `src/api.ts`는 호환 진입점이며 명령별 타입은 `src/ipc/`, 공유 조회 수명은 `src/queries.ts`에 있습니다. Rust `runtime.rs`는 소유권과 수명, `transport.rs`는 기존 연결의 전송을 담당합니다. 전송 분리 후에도 소유권 lease·승인 토큰·작업 잠금을 유지합니다.

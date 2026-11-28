@@ -536,7 +536,7 @@ fn container_action_with_client(client: &Client, id: &str, action: &str, current
     } else {
         String::new()
     };
-    client.json("POST", &format!("/containers/{id}/{action}{query}"))?;
+    client.bytes("POST", &format!("/containers/{id}/{action}{query}"), Duration::from_secs(120), BODY_LIMIT)?;
     let inspected = client.json("GET", &format!("/containers/{id}/json"))?;
     let state = text(&inspected["State"], "Status");
     let exit_code = inspected["State"]["ExitCode"].as_i64();
@@ -619,6 +619,166 @@ pub fn containers_action(ids: Vec<String>, action: String) -> Result<Value, Stri
     });
     let results: Vec<_> = results.into_iter().take(ids.len()).enumerate().map(|(index,result)| result.into_inner().unwrap_or_else(|| json!({"id":ids[index],"name":ids[index],"outcome":"failed","error":"컨테이너 작업 결과를 확인할 수 없습니다."}))).collect();
     Ok(json!({"results":results}))
+}
+
+fn project_dependencies(container: &Value) -> Result<Vec<(&str, &str)>, String> {
+    text(&container["Labels"], "com.docker.compose.depends_on").split(',')
+        .filter(|entry| !entry.is_empty()).map(|entry| {
+            let mut parts = entry.split(':');
+            let service = parts.next().unwrap_or("");
+            let condition = parts.next().unwrap_or("service_started");
+            if service.is_empty() || !["service_started", "service_healthy", "service_completed_successfully"].contains(&condition) {
+                return Err("Compose 의존 조건을 확인하지 못했습니다. 원본 Compose 파일에서 실행하세요.".into());
+            }
+            Ok((service, condition))
+        }).collect()
+}
+
+fn project_order(containers: &[Value]) -> Result<Vec<usize>, String> {
+    let mut pending: Vec<_> = (0..containers.len()).collect();
+    let mut order = Vec::with_capacity(containers.len());
+    for container in containers {
+        for (service, _) in project_dependencies(container)? {
+            if !containers.iter().any(|candidate| text(&candidate["Labels"], "com.docker.compose.service") == service) {
+                return Err(format!("Compose 의존 서비스 {service}의 컨테이너가 없습니다. 원본 Compose 파일에서 실행하세요."));
+            }
+        }
+    }
+    while !pending.is_empty() {
+        let next = pending.iter().position(|index| {
+            project_dependencies(&containers[*index]).unwrap().iter().all(|(service, _)| {
+                !pending.iter().any(|dependency| text(&containers[*dependency]["Labels"], "com.docker.compose.service") == *service)
+            })
+        }).ok_or("Compose 의존 순서에 순환 참조가 있습니다.")?;
+        order.push(pending.remove(next));
+    }
+    Ok(order)
+}
+
+fn project_steps(order: &[usize], mut run: impl FnMut(usize) -> Result<Value, String>) -> Vec<(usize, Result<Value, String>)> {
+    let mut failed = false;
+    order.iter().map(|index| {
+        let result = if failed { Err("앞선 프로젝트 작업이 실패하여 실행하지 않았습니다. 상태를 확인한 뒤 다시 시도하세요.".into()) } else { run(*index) };
+        failed |= result.is_err();
+        (*index, result)
+    }).collect()
+}
+
+fn dependency_wait_budget(container: &Value, condition: &str) -> Duration {
+    if condition != "service_healthy" { return Duration::from_secs(1800); }
+    let health = &container["Config"]["Healthcheck"];
+    let nanos = |key: &str, default| Duration::from_nanos(health[key].as_u64().filter(|value| *value > 0).unwrap_or(default));
+    let retries = health["Retries"].as_u64().unwrap_or(3).clamp(1, u32::MAX as u64) as u32;
+    nanos("StartPeriod", 0).saturating_add(nanos("Interval", 30_000_000_000).saturating_add(nanos("Timeout", 30_000_000_000)).saturating_mul(retries))
+        .clamp(Duration::from_secs(120), Duration::from_secs(1800))
+}
+fn wait_project_dependency(client: &Client, id: &str, condition: &str) -> Result<(), String> {
+    let mut inspected = client.json("GET", &format!("/containers/{id}/json"))?;
+    let deadline = std::time::Instant::now() + dependency_wait_budget(&inspected, condition);
+    loop {
+        let state = &inspected["State"];
+        let ready = match condition {
+            "service_healthy" => state["Health"]["Status"] == "healthy",
+            "service_completed_successfully" => state["Status"] == "exited" && state["ExitCode"] == 0,
+            _ => state["Status"] == "running",
+        };
+        if ready { return Ok(()); }
+        let terminal = state["Status"] == "dead" || state["Status"] == "exited" || (condition == "service_healthy" && state["Health"]["Status"] == "unhealthy");
+        if terminal || condition == "service_started" || (condition == "service_healthy" && state["Health"].is_null()) || std::time::Instant::now() >= deadline {
+            return Err(format!("의존 컨테이너 {id}의 {condition} 조건이 충족되지 않았습니다. 후속 서비스를 시작하지 않습니다."));
+        }
+        std::thread::sleep(Duration::from_millis(500));
+        inspected = client.json("GET", &format!("/containers/{id}/json"))?;
+    }
+}
+
+pub fn container_project_action(project: String, action: String) -> Result<Value, String> {
+    if project.is_empty() || project.len() > 256 || project.chars().any(char::is_control) || !["start", "stop", "restart"].contains(&action.as_str()) {
+        return Err("Compose 프로젝트와 시작·중지·재시작 작업을 지정하세요.".into());
+    }
+    let _lock = MUTATION.lock().map_err(|_| "Operation lock unavailable")?;
+    let client = connected()?;
+    let containers: Vec<_> = client.containers()?.into_iter().filter(|container| {
+        text(&container["Labels"], "com.docker.compose.project") == project && !text(&container["Labels"], "com.docker.compose.oneoff").eq_ignore_ascii_case("true")
+    }).collect();
+    if containers.is_empty() || containers.len() > 256 || containers.iter().any(|container| !container_id(text(container, "Id"))) {
+        return Err("프로젝트의 컨테이너를 1~256개 확인할 수 있어야 합니다.".into());
+    }
+    let mut order = project_order(&containers)?;
+    let binding = crate::resources::EngineBinding::capture(&client);
+    let mut results = Vec::new();
+    let phases: &[&str] = match action.as_str() { "restart" => &["stop", "start"], "stop" => &["stop"], _ => &["start"] };
+    for phase in phases {
+        if *phase == "stop" { order.reverse(); }
+        results = project_steps(&order, |index| {
+            binding.verify(&client)?;
+            let container = &containers[index];
+            let id = text(container, "Id");
+            if *phase == "start" {
+                for (service, condition) in project_dependencies(container)? {
+                    for dependency in containers.iter().filter(|candidate| text(&candidate["Labels"], "com.docker.compose.service") == service) {
+                        wait_project_dependency(&client, text(dependency, "Id"), condition)?;
+                    }
+                }
+            }
+            let inspected = client.json("GET", &format!("/containers/{id}/json"))?;
+            let state = text(&inspected["State"], "Status");
+            let active = ["running", "paused", "restarting"].contains(&state);
+            if (*phase == "start" && active) || (*phase == "stop" && !active) {
+                return Ok(json!({"outcome":"skipped","state":state}));
+            }
+            let mut result = container_action_with_client(&client, id, phase, state)?;
+            if *phase == "start" && (result["state"] == "dead" || (result["state"] == "exited" && result["exitCode"] != 0)) {
+                return Err(text(&result, "message").into());
+            }
+            result["outcome"] = json!("completed");
+            Ok(result)
+        });
+        if *phase == "stop" { order.reverse(); }
+        if results.iter().any(|(_, result)| result.is_err()) { break; }
+    }
+    Ok(json!({"results":results.into_iter().map(|(index,result)| {
+        let container = &containers[index];
+        let mut result = result.unwrap_or_else(|error| json!({"outcome":"failed","error":error}));
+        result["id"] = container["Id"].clone();
+        result["name"] = json!(container["Names"].as_array().and_then(|names| names.first()).and_then(Value::as_str).unwrap_or(text(container,"Id")).trim_start_matches('/'));
+        result
+    }).collect::<Vec<_>>()}))
+}
+
+#[cfg(test)]
+mod container_project_security_tests {
+    use super::*;
+    fn service(name: &str, dependencies: &str) -> Value {
+        json!({"Labels":{"com.docker.compose.service":name,"com.docker.compose.depends_on":dependencies}})
+    }
+    #[test]
+    fn project_health_wait_respects_start_period_and_bounds_slow_jobs() {
+        let container = json!({"Config":{"Healthcheck":{"StartPeriod":600_000_000_000u64,"Interval":10_000_000_000u64,"Timeout":5_000_000_000u64,"Retries":4}}});
+        assert_eq!(dependency_wait_budget(&container,"service_healthy"),Duration::from_secs(660));
+        assert_eq!(dependency_wait_budget(&json!({}),"service_healthy"),Duration::from_secs(180));
+        let extreme = json!({"Config":{"Healthcheck":{"StartPeriod":u64::MAX,"Retries":u64::MAX}}});
+        assert_eq!(dependency_wait_budget(&extreme,"service_healthy"),Duration::from_secs(1800));
+        assert_eq!(dependency_wait_budget(&container,"service_completed_successfully"),Duration::from_secs(1800));
+    }
+    #[test]
+    fn project_dependencies_order_replicas_and_reject_cycles_or_missing_services() {
+        let containers = vec![service("web", "db:service_healthy:false"), service("db", ""), service("db", "")];
+        assert_eq!(project_order(&containers).unwrap(), vec![1,2,0]);
+        assert_eq!(project_order(&containers).unwrap().into_iter().rev().collect::<Vec<_>>(), vec![0,2,1]);
+        assert!(project_order(&[service("web","db"),service("db","web")]).is_err());
+        assert!(project_order(&[service("web","missing")]).is_err());
+        assert!(project_order(&[service("web","db:unsupported"),service("db","")]).is_err());
+    }
+    #[test]
+    fn failed_project_step_never_runs_a_following_dependency_or_service() {
+        let mut called = Vec::new();
+        let results = project_steps(&[1,2,0], |index| { called.push(index); if index == 2 {Err("start failed".into())} else {Ok(json!({"outcome":"completed"}))} });
+        assert_eq!(called, vec![1,2]);
+        assert!(results[0].1.is_ok());
+        assert!(results[1].1.is_err());
+        assert!(results[2].1.as_ref().unwrap_err().contains("실행하지 않았습니다"));
+    }
 }
 
 fn autostart_policy(action: &str) -> Option<&'static str> {

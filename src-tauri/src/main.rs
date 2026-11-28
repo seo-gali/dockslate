@@ -158,6 +158,8 @@ async fn migration_execute(token: String, approved: bool) -> Result<Value, Strin
 #[tauri::command]
 async fn migration_status() -> Result<Value, String> { read(migration::status).await }
 #[tauri::command]
+async fn migration_compose_prepare(ids: Vec<String>) -> Result<Value, String> { read(move || migration::compose_prepare(ids)).await }
+#[tauri::command]
 async fn container_file_preview(id: String, path: String) -> Result<Value, String> {
     read(move || container_tools::file_preview(id, path)).await
 }
@@ -424,6 +426,10 @@ async fn container_action(id: String, action: String) -> Result<Value, String> {
 #[tauri::command]
 async fn containers_action(ids: Vec<String>, action: String) -> Result<Value, String> {
     mutate(move || docker::containers_action(ids, action)).await
+}
+#[tauri::command]
+async fn container_project_action(project: String, action: String) -> Result<Value, String> {
+    mutate(move || docker::container_project_action(project, action)).await
 }
 #[tauri::command]
 async fn container_run(
@@ -735,7 +741,7 @@ fn main() {
     tauri::Builder::default()
         .setup(tray::setup)
         .invoke_handler(tauri::generate_handler![
-            migration_inventory, migration_preview, migration_execute, migration_status,
+            migration_inventory, migration_preview, migration_execute, migration_status, migration_compose_prepare,
  network_delete_preview, network_delete_execute, image_removal_preview, image_removal_execute, compose_pick_file, compose_preview, compose_build_start, compose_run_preview, compose_run_start, compose_job_status, compose_discard,
             volumes_list, volume_inspect, volume_create, volume_clone, volume_browse, volume_file_preview,
             volume_pick_archive, volume_export, volume_import_preview, volume_destructive_preview, volume_execute, volume_discard_preview, volume_job_status,
@@ -761,6 +767,7 @@ fn main() {
             container_open_port,
             container_action,
             containers_action,
+            container_project_action,
             container_run,
             networks_list,
             network_create,

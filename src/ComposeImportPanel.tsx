@@ -8,7 +8,7 @@ import type { ComposePreview, ComposeService, useComposeImport } from './Compose
 function ports(service: ComposeService) {
   return service.ports?.map(port => `${port.host_ip ? `${port.host_ip}:` : ''}${port.published || t('자동')} → ${port.target}/${port.protocol || 'tcp'}`).join(', ') || t('없음');
 }
-function ComposeSummary({ preview }: { preview: ComposePreview }) {
+export function ComposeSummary({ preview }: { preview: ComposePreview }) {
   const services = useTableRows(preview.services, [{ value: service => service.name }, { value: service => service.build?.contextPath }, { value: ports }, { value: service => service.volumes?.map(volume => volume.target).join(', ') }]);
   return <>
     <dl className="detail-grid"><dt>{t("선택 파일")}</dt><dd className="mono">{preview.path}</dd><dt>{t("프로젝트")}</dt><dd>{formatComposeProject(preview.project)}<details className="project-identity"><summary>{t('내부 프로젝트 이름')}</summary><code>{preview.project}</code></details></dd><dt>{t("대상 엔진")}</dt><dd className="mono">{preview.engineId}</dd></dl>

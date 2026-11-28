@@ -4,6 +4,8 @@ import { ConfirmDialog, ErrorNotice, errorMessage } from './components';
 import { t } from './i18n';
 import { groupMigrationInventory, migrationKinds as kinds, selectMigrationItems } from './migration-selection';
 import type { Inventory, Job, Preview, Selection } from './ipc/contracts/migration';
+import { useComposeImport } from './ComposeImport';
+import { MigrationComposePanel } from './MigrationComposePanel';
 
 const emptySelection = (): Selection => ({ images: [], containers: [], volumes: [], stopRunning: true, startAfterImport: true });
 
@@ -17,8 +19,10 @@ export default function MigrationPanel({ active, connected, blocked, onBusy }: {
   const [approved, setApproved] = useState(false);
   const request = useRef(false);
   const generation = useRef(0);
-  const busy = working || job?.state === 'running';
-  useEffect(() => { onBusy(busy); return () => onBusy(false); }, [busy, onBusy]);
+  const compose = useComposeImport();
+  const busy = working || job?.state === 'running' || compose.busy;
+  const mutating = (job?.kind === 'transfer' && job.state === 'running') || (compose.job?.operation === 'run' && compose.job.state === 'running');
+  useEffect(() => { onBusy(mutating); return () => onBusy(false); }, [mutating, onBusy]);
   const receive = (value: Job) => {
     setJob(value); setError(null);
     if (value.inventory) { setInventory(value.inventory); setSelection(current => ({ ...emptySelection(), stopRunning: current.stopRunning, startAfterImport: current.startAfterImport })); }
@@ -51,14 +55,14 @@ export default function MigrationPanel({ active, connected, blocked, onBusy }: {
   const load = async () => {
     if (request.current || busy || blocked) return;
     generation.current += 1; request.current = true; setWorking(true); setJob(null); setError(null); setPreview(null);
-    try { receive(await backend('migration_inventory')); }
+    try { await compose.discard(); receive(await backend('migration_inventory')); }
     catch (failure) { setError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); }
   };
   const inspect = async () => {
     if (request.current || busy || blocked) return;
     generation.current += 1; request.current = true; setWorking(true); setJob(null); setError(null); setApproved(false);
-    try { setPreview(null); receive(await backend('migration_preview', { selection })); }
+    try { await compose.discard(); setPreview(null); receive(await backend('migration_preview', { selection })); }
     catch (failure) { setError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); }
   };
@@ -70,7 +74,7 @@ export default function MigrationPanel({ active, connected, blocked, onBusy }: {
     catch (failure) { setPreview(null); setError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); setApproved(false); }
   };
-  const change = (next: Selection) => { setSelection(next); setPreview(null); setApproved(false); };
+  const change = (next: Selection) => { setSelection(next); setPreview(null); setApproved(false); if (compose.preview) void compose.discard(); };
   const count = kinds.reduce((sum, kind) => sum + selection[kind].length, 0);
   const allSelected = !!inventory && kinds.every(kind => inventory[kind].every(item => selection[kind].includes(item.id)));
   return <section className="settings-panel" hidden={!active}>
@@ -104,7 +108,10 @@ export default function MigrationPanel({ active, connected, blocked, onBusy }: {
       <p className="usage-note">{t('컨테이너에 필요한 이미지·볼륨·bridge 네트워크도 함께 검사합니다. 환경 변수에 저장한 비밀번호는 복사되며 값은 여기에 표시하지 않습니다.')}</p>
       <p className="usage-note">{t('연결된 파일·폴더는 별도 볼륨으로 복사하며 컨테이너 안 경로를 유지합니다. 원래 호스트 폴더와는 이후 동기화되지 않습니다.')}</p>
       <button className="button primary" disabled={busy || blocked || count === 0} onClick={() => void inspect()}>{t('가져올 대상 검사')}</button>
+      <div className="section-heading"><h3>{t('설정만 Compose로 가져오기')}</h3><button className="button" aria-busy={compose.working} disabled={busy || blocked || !connected || selection.containers.length === 0 || selection.containers.length > 16} onClick={() => { setPreview(null); setApproved(false); void compose.prepareDesktop(selection.containers); }}>{t(compose.working ? 'Compose 설정 검사 중…' : 'Compose 설정 검사')}</button></div>
+      <p className="usage-note">{t('선택한 컨테이너 1~16개의 실행 설정만 가져옵니다. 이미지·데이터는 복사하지 않고 새 볼륨은 빈 상태로 만듭니다. 원본은 그대로 두며 실행 전에 별도로 승인합니다. 파일·폴더 연결이나 미지원 설정이 있는 컨테이너는 선택에서 제외하세요.')}</p>
     </>}
+    <MigrationComposePanel compose={compose} blocked={blocked || working || job?.state === 'running' || !connected} />
     {preview && !preview.eligible && <div className="notice error" role="alert"><div><strong>{t('가져올 수 없는 항목')}</strong><ul>{preview.blockedReasons.map((reason, index) => <li key={index}>{t(reason)}</li>)}</ul></div></div>}
     {job && <div aria-live="polite" role="status"><h3>{t(job.kind === 'inventory' ? '프로젝트 목록 조회' : job.kind === 'preview' ? '가져올 대상 검사' : job.state === 'running' ? '데이터 복사 중' : job.state === 'completed' ? '데이터 복사 완료' : '데이터 복사 중단')}</h3><p>{t(job.message)}</p>{job.state === 'running' && <><progress aria-label={t(job.message)} value={job.progress?.completed} max={job.progress?.total} />{job.progress && <span>{job.progress.completed} / {job.progress.total}</span>}</>}{job.error && <ErrorNotice message={job.error} />}{!!job.stoppedSources?.length && <p>{t('중지한 원본')}: {job.stoppedSources.join(', ')}</p>}{!!job.startedTargets?.length && <p>{t('시작한 복사본')}: {job.startedTargets.join(', ')}</p>}<ul>{job.completed.map((item, index) => <li key={index}>{item}</li>)}</ul>{job.warnings.map((item, index) => <p className="usage-note warning" key={index}>{item}</p>)}</div>}
     </div>

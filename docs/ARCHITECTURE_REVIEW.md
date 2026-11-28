@@ -7,13 +7,17 @@
 | `src/api.ts` · `src/ipc/` | 호환 export, 명령별 인수·응답 계약과 호출 경계 |
 | `src/queries.ts` | 고정 조회 슬롯·현재 화면 데이터·진행 중 요청 병합·Docker 이벤트 반영 |
 | `src/App.tsx` · `src/pages/` · 기능 컴포넌트 | 7개 메뉴·진행 작업·기능별 UI |
+| `src/container-action-queue.ts` · `src/pages/Containers.tsx` | 대상별 작업·대기 상태, 개별·일괄·프로젝트 요청의 순차 전송과 조회 유지 |
+| `src-tauri/src/docker.rs` | 컨테이너·이미지·조회 집계와 변경 정책. 프로젝트 작업은 실제 Compose 라벨로 순서·조건을 검사하고 후속 실패를 차단 |
 | `src-tauri/src/runtime.rs` · `transport.rs` | 소유 엔진 수명·lease와 기존 연결의 전송 |
 | `migration.rs` · `migration/binds.rs` | Desktop 이전 검사·승인·복사·실행 상태와 bind 계획·tar 검사 |
 | `pipe.rs` · `cli_platform.rs` · `bin/docker.rs` | 사용자별 엔진 pipe·Windows launcher·공식 CLI 실행 |
 | `scripts/check.mjs` · `check-windows.ps1` | 엔진 비접촉 검사·Rust 보안·PATH·Windows 프로세스 검사 |
-| `site/release.json` · 버전별 공개 기록 | 앱 개발 버전과 독립된 공개 0.1.13 자산·해시·검사·사이트 생성 |
+| `site/release.json` · 버전별 공개 기록 | 앱 개발 버전과 독립된 공개 자산·해시·검사·사이트 생성. 현재 메타데이터 버전은 0.1.16 |
 
-현재 소스의 Desktop 조회 후속 수정은 아직 공개 파일에 포함되지 않았다. 최신 실행 근거와 남은 범위는 [요청 현황](REQUEST_STATUS.md)을 따른다.
+이 표는 현재 소스 구조와 메타데이터를 설명하며 공개 파일과 현재 소스의 동일성을 보증하지 않는다. 최신 실행 근거와 남은 범위는 [요청 현황](REQUEST_STATUS.md)을 따른다.
+
+컨테이너 작업의 변경 HTTP 요청은 조회 기본값 20초와 분리해 120초를 사용한다. 프로젝트 시작은 의존 서비스의 실행·건강·정상 완료 조건을 확인하며, 재시작은 중지 역순과 시작 정순을 나눠 실행한다. 화면 대기열은 한 요청씩 전송하고 Docker 변경 조회를 기다리지 않는다. 이 구조 설명은 다른 PC나 실제 엔진의 실행 검증을 대신하지 않는다.
 
 ## 2026-11-15 최초 감사와 후속 적용
 

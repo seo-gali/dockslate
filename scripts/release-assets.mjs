@@ -10,8 +10,8 @@ const validAsset = asset => asset && validFile(asset.file) && /^[A-F0-9]{64}$/.t
 
 export function approvedUnverifiedPublication(version, scans, prerelease) {
   const approval = scans?.unverifiedPublicationApproval;
-  const names = ['DockSlate_0.1.16_x64-setup.exe', 'DockSlate-0.1.16-windows-x64.zip', 'DockSlate.exe', 'bin/docker.exe'];
-  return version === '0.1.16' && prerelease === true && scans?.status === 'blocked' &&
+  const names = [`DockSlate_${version}_x64-setup.exe`, `DockSlate-${version}-windows-x64.zip`, 'DockSlate.exe', 'bin/docker.exe'];
+  return ['0.1.16', '0.1.17'].includes(version) && prerelease === true && scans?.status === 'blocked' &&
     approval?.userApproved === true && approval.version === version && approval.files?.length === names.length && scans.files?.length === names.length &&
     names.every(file => {
       const matches = scans.files.filter(scan => scan.file === file);

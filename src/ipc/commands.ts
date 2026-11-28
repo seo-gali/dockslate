@@ -24,6 +24,7 @@ export interface Commands {
   migration_preview: Call<{ selection: Migration.Selection }, Migration.Job>;
   migration_execute: Call<Approved, Migration.Job>;
   migration_status: Call<undefined, Migration.Job | null>;
+  migration_compose_prepare: Call<{ ids: string[] }, Compose.ComposePreview>;
   engine_status: Call<undefined, Core.EngineStatus>;
   overview: Call<undefined, Core.OverviewData>;
   containers_list: Call<undefined, Core.Container[]>;
@@ -43,6 +44,7 @@ export interface Commands {
   engine_events_stop: Call<{ streamId: string }, unknown>;
   container_action: Call<Id & { action: string }, Core.ContainerActionResult>;
   containers_action: Call<{ ids: string[]; action: string }, Core.ContainerBatchResult>;
+  container_project_action: Call<{ project: string; action: 'start' | 'stop' | 'restart' }, Core.ContainerBatchResult>;
   containers_metrics: Call<{ ids: string[] }, Core.ContainerMetrics>;
   container_stats: Call<Id, Core.ContainerMetric>;
   container_inspect: Call<Id, Record<string, unknown>>;

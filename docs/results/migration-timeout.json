@@ -142,5 +142,245 @@
     "publicDownloadVersion": "0.1.13",
     "newVirusTotalSubmission": false,
     "installerAndZipCompleted": true
+  },
+  "followup20261128": {
+    "observedAt": "2026-11-28T07:20:27.660Z",
+    "sourceBaseCommit": "0c34c9d7bbec4bae6e2bd57f5ed44623953d8f29",
+    "workingTree": true,
+    "includedInPublishedFiles": false,
+    "publishedVersion": "0.1.16",
+    "sourceFiles": [
+      {
+        "file": "src-tauri/src/docker.rs",
+        "sha256": "92b029f2a160d782b2827c9727177d5cf14c6757696736d14d6441057bad18db"
+      },
+      {
+        "file": "src-tauri/src/engine_events.rs",
+        "sha256": "7bc5372a926a1a6d7fc4ea6ab0ca5411bdde1d2b770bfd8c1c63f38c75bba213"
+      },
+      {
+        "file": "src-tauri/src/main.rs",
+        "sha256": "b56deb902bc0c75e6fc062d37b8590876d491145822ab536bc51c67cef8ee7c0"
+      },
+      {
+        "file": "src-tauri/src/migration.rs",
+        "sha256": "b941ca8d301cee6097bc2d8c6f39f0dc6fbcd921f615a48d8182d2ff4a19d23f"
+      },
+      {
+        "file": "src-tauri/src/migration/binds.rs",
+        "sha256": "0a31e6edb56e14b7a812f84370ab9a143e5aaa115553448679117decf1eaf3d7"
+      },
+      {
+        "file": "src-tauri/src/migration/configuration.rs",
+        "sha256": "8e779501bd0fe0b86a946fe623ce4d80f0ac89a9b5f153a098e41b2f32a17b4d"
+      },
+      {
+        "file": "src-tauri/src/compose.rs",
+        "sha256": "e9e26719ffab3f01afd440b18d4ee47e7e215be77bf307bf533900c343148f85"
+      },
+      {
+        "file": "src/container-action-queue.ts",
+        "sha256": "8194dd48fb6550b6cfbd16eec1b2db3505bf078eeef8f148c2ba6d53a940327c"
+      },
+      {
+        "file": "src/pages/Containers.tsx",
+        "sha256": "47b8e37d229b6d3b4a6d0f0a0a25fdf89c326d4c8d5363dcfcd77036bdf06318"
+      },
+      {
+        "file": "src/MigrationPanel.tsx",
+        "sha256": "5125e30beb02727f1ebb74e08ade352bb2a2b8c8489c5b8c780d3cdf30785b81"
+      },
+      {
+        "file": "src/MigrationComposePanel.tsx",
+        "sha256": "3e8e87369b3e8c63ef0974f299ee5dd678a2e2aa4b220e680b0bd814a1fa2e46"
+      },
+      {
+        "file": "src/ComposeImport.tsx",
+        "sha256": "de47d1fd779ae35e8625b6b29db4d69da4d9ad58a4cddcbdad166446656a7e2f"
+      },
+      {
+        "file": "src/ComposeImportPanel.tsx",
+        "sha256": "96b0d8f9f8d49baab662069d2150c514a5a4436814da6095490c22c2412ba95c"
+      },
+      {
+        "file": "src/ipc/commands.ts",
+        "sha256": "1cd1c09cfbd899b5125a248f7da6723244b67ed1ed94f362a08366b70700e4de"
+      },
+      {
+        "file": "src/locales.en.ts",
+        "sha256": "d9f562943f165c903d2d0d963e4125f78ae92f64fafcbc49a219165540034491"
+      }
+    ],
+    "changes": [
+      "Compose project actions use full membership, dependency order, health/completion conditions, reverse stop/restart and stop after a failed step",
+      "Container rows share a sequential queue with per-ID reservations; unrelated selection, details and queries remain available; read-only migration does not raise the global mutation flag",
+      "Desktop run settings convert in memory to the existing Compose validation and approval path; 1–16 services, exact local image IDs and new empty volumes; unsupported options are explicitly blocked",
+      "Owned migration inspect bypasses the CLI proxy with bounded direct API reads; source/target inspection and helper/container creation use 120-second budgets; mutations are not automatically retried",
+      "Project readiness follows healthcheck timing with a 2–30 minute bound; completion dependencies have a 30-minute bound",
+      "Docker event socket references survive Connection: close responses; command failures expose fixed safe categories rather than environment-bearing daemon output"
+    ],
+    "checks": {
+      "node": {
+        "command": "npm.cmd run check",
+        "exit": 0,
+        "passed": 37,
+        "skipped": 0,
+        "pythonProvided": true
+      },
+      "rust": {
+        "command": "cargo test --locked --offline --manifest-path src-tauri/Cargo.toml -- --test-threads=1",
+        "exit": 0,
+        "guiPassed": 44,
+        "cliPassed": 2,
+        "ignored": 1
+      },
+      "offlineCompose": {
+        "command": "DOCKER_CONFIG=<empty workspace fixture> DOCKSLATE_TEST_COMPOSE=<verified executable> cargo test --locked --offline --manifest-path src-tauri/Cargo.toml configuration_matches_offline_compose -- --ignored --nocapture --test-threads=1",
+        "exit": 0,
+        "passed": 1,
+        "engineUsed": false,
+        "version": "5.8.0",
+        "sha256": "0c2d9245a5f61e8e3cc85009b8b4888fa82fded08239d28bd6da5ca818eda2b2",
+        "isolatedDockerConfigRequired": true
+      },
+      "frontendBuild": {
+        "command": "npm.cmd run build",
+        "exit": 0
+      },
+      "composeUi": {
+        "passed": 7,
+        "rendererExceptions": 0,
+        "engineUsed": false,
+        "checks": [
+          "Retry clears the previous failure",
+          "Inventory and configuration preparation keep global actions available",
+          "Configuration preview shows empty-volume impact and environment count only",
+          "Running requires acknowledgement and explicit approval",
+          "Actual Compose execution protects writes",
+          "Compose execution is submitted exactly once",
+          "Configuration-only flow does not invoke data copying or runtime mutation"
+        ]
+      },
+      "containerUi": {
+        "passed": 8,
+        "engineUsed": false,
+        "evidence": "Sub-agent Playwright tool output; no standalone receipt or screenshot retained"
+      },
+      "documentation": {
+        "command": "node scripts/check-docs.mjs",
+        "exit": 0,
+        "markdownFiles": 100,
+        "links": 590,
+        "anchors": 18,
+        "missing": 0
+      },
+      "layout": {
+        "cases": [
+          {
+            "name": "guide-mobile",
+            "passed": true
+          },
+          {
+            "name": "decisions",
+            "passed": true
+          }
+        ],
+        "rendererExceptions": 0
+      }
+    },
+    "regressions": [
+      {
+        "case": "Close-delimited Docker events",
+        "before": "AttributeError after getresponse clears connection.sock",
+        "after": "Chunked and close-delimited actual Python socketpair tests pass"
+      },
+      {
+        "case": "Migration command diagnostics",
+        "before": "Generic exit 1 hides actionable causes",
+        "after": "Image, mount, space, permissions, read-only and connection categories without raw daemon values"
+      },
+      {
+        "case": "Native fixture environment",
+        "initialFailure": "Default LOCALAPPDATA is outside writable sandbox",
+        "resolved": "Rerun with isolated workspace LOCALAPPDATA; all native tests passed"
+      },
+      {
+        "case": "Secret-pattern check",
+        "initialFailure": "Synthetic test literal matched the secret rule",
+        "resolved": "Use an explicit example value; scanner rules unchanged, final findings empty"
+      }
+    ],
+    "documentationCorrections": [
+      "Code is the authority for existing behavior; README/DESIGN references do not override it",
+      "Current release, signature and antivirus state updated to exact 0.1.16 receipts; new source features explicitly not included in old packages",
+      "Kind-based selection corrected to full/project/individual selection",
+      "Window sizes, padding, pagination and batch limits matched to CSS/config/handlers",
+      "GUI release feature guard, build commands, installer SkipBuild/NSIS verification and CI scopes corrected to actual code",
+      "Copy ordering, original stopping, per-command timeouts, cleanup attempts and fixed error classifications corrected",
+      "Old request-status duplication replaced with current source behavior and links to dated evidence; original historical results preserved",
+      "User-supplied session review distinguishes observed reCAPTCHA rejection from suspected browser-automation influence; wmux/herdr or archive size is not presented as a confirmed cause; manual upload or the official API is documented without claiming completed scans"
+    ],
+    "decisions": {
+      "file": "D:\\01_Programming\\08_AI\\REA\\DockSlate-source-fixes-decisions.html",
+      "sha256": "eef1d81c33b69a2e42e1b64202df11059af577e5cfe13b671ef9e343acb40f5f",
+      "width": 1280,
+      "height": 720,
+      "cards": 6,
+      "red": 2,
+      "redFirst": true
+    },
+    "cleanup": {
+      "removed": [
+        {
+          "path": ".analysis/source-fixes-layout-6KAL1z",
+          "files": 169,
+          "bytes": 5173474
+        },
+        {
+          "path": ".analysis/native-tests-20261128",
+          "files": 0,
+          "bytes": 0
+        },
+        {
+          "path": ".analysis/migration-compose-ui/profile-ieg3cR",
+          "files": 172,
+          "bytes": 6639825
+        },
+        {
+          "path": ".analysis/migration-compose-ui/profile-kfcaXu",
+          "files": 172,
+          "bytes": 6636375
+        }
+      ],
+      "removedBytes": 18449674,
+      "ownedViteStopped": true,
+      "ownedFixtureTabClosed": true
+    },
+    "userDataChanged": false,
+    "dependenciesChanged": false,
+    "releaseFilesReplaced": false,
+    "remaining": [
+      "Actual reproduction and Docker Desktop container-create failure cause on the reported other Windows PC",
+      "Real project start/stop and two-engine configuration-only migration with user workloads",
+      "New installer/portable build, signing, antivirus scans and publication for these source changes"
+    ],
+    "externalSourceReference": {
+      "source": "https://raw.githubusercontent.com/docker/compose/v5.8.0/cmd/compose/config.go",
+      "version": "5.8.0",
+      "observedAt": "2026-11-28T07:22:37.404Z",
+      "bytes": 22999,
+      "sha256": "e674f856e95d59927e850577829da404dd2d73fa83550563f36a5b336fbd86c2"
+    },
+    "testSources": [
+      {
+        "file": "scripts/tests/container-action-queue.test.mjs",
+        "sha256": "00397f4ef9da8ee97885560c8de809d90fa4e19e4273558cb34b95fa6e238b4e"
+      },
+      {
+        "file": "scripts/tests/engine-events.test.mjs",
+        "sha256": "ebb583866388048a67376b3119c24560e791c62f0e9560fd61e3936bea2e8abe"
+      }
+    ],
+    "publicFilesRehashed": true
   }
 }

@@ -92,6 +92,13 @@ export function useComposeImport({ onBusy, onDone, onDockerfileSelected }: Optio
     catch (failure) { setError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); }
   };
+  const prepareDesktop = async (ids: string[]) => {
+    if (busy || request.current) return;
+    request.current = true; setWorking(true); setError(null); setPollError(null); setApproval(null); setAcknowledged(false);
+    try { setPreview(null); setJob(null); setPreview(await backend('migration_compose_prepare', { ids })); }
+    catch (failure) { setError(errorMessage(failure)); }
+    finally { request.current = false; setWorking(false); }
+  };
   const run = async () => {
     if (!approval || !acknowledged || busy || request.current) return;
     request.current = true; setWorking(true); setError(null);
@@ -106,5 +113,5 @@ export function useComposeImport({ onBusy, onDone, onDockerfileSelected }: Optio
     catch (failure) { setError(errorMessage(failure)); }
     finally { request.current = false; setWorking(false); }
   };
-  return { preview, job, approval, acknowledged, setAcknowledged, busy, working, refreshing, error, pollError, choose, prepareRun, run, discard, poll, cancelApproval: () => { if (!working) { setApproval(null); setAcknowledged(false); } }, supportsDockerfile: !!onDockerfileSelected };
+  return { preview, job, approval, acknowledged, setAcknowledged, busy, working, refreshing, error, pollError, choose, prepareDesktop, prepareRun, run, discard, poll, cancelApproval: () => { if (!working) { setApproval(null); setAcknowledged(false); } }, supportsDockerfile: !!onDockerfileSelected };
 }

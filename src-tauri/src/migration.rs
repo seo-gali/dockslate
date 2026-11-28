@@ -19,10 +19,13 @@ use std::{
 
 mod binds;
 mod batch;
+mod configuration;
 mod receipts;
 
 const SOURCE: &str = cli_platform::DESKTOP_SOURCE;
 const SOURCE_QUERY_TIMEOUT: Duration = Duration::from_secs(120);
+const TARGET_QUERY_TIMEOUT: Duration = Duration::from_secs(120);
+const CREATE_TIMEOUT: Duration = Duration::from_secs(120);
 const TTL: Duration = Duration::from_secs(120);
 const COPY_TIMEOUT: Duration = Duration::from_secs(3600);
 static PLAN: Mutex<Option<Plan>> = Mutex::new(None);
@@ -129,9 +132,30 @@ fn command_result(host: &str, args: &[String], timeout: Duration) -> Result<Vec<
             else { batch::ReadError::Other(message) }
         })?;
     if !output.status.success() {
-        return Err(batch::ReadError::Other(command_error(host, args, timeout, &format!("명령이 실패했습니다 (종료 {}). 엔진 연결 상태를 확인하세요.", output.status.code().unwrap_or(-1)))));
+        return Err(batch::ReadError::Other(command_error(host, args, timeout, &command_exit_error(output.status.code().unwrap_or(-1), &output.stderr))));
     }
     Ok(output.stdout)
+}
+fn command_exit_error(code: i32, stderr: &[u8]) -> String {
+    format!("명령이 실패했습니다 (종료 {code}). {}", daemon_error_reason(stderr))
+}
+fn daemon_error_reason(stderr: &[u8]) -> &'static str {
+    let message = String::from_utf8_lossy(&stderr[..stderr.len().min(8192)]).to_ascii_lowercase();
+    if message.contains("no such image") || message.contains("unable to find image") {
+        "임시 복사 컨테이너에 사용할 이미지가 없습니다. 원본 이미지 목록을 다시 확인하세요."
+    } else if message.contains("invalid mount") || message.contains("invalid volume specification") {
+        "볼륨·마운트 설정을 Docker 엔진이 거부했습니다. 선택한 컨테이너의 연결 설정을 확인하세요."
+    } else if message.contains("no space left") || message.contains("not enough space") {
+        "엔진 저장 공간이 부족합니다. 해당 엔진과 Windows 디스크의 여유 공간을 확인하세요."
+    } else if message.contains("permission denied") || message.contains("access is denied") {
+        "엔진 또는 파일의 접근 권한이 부족합니다. Docker Desktop의 공유·보안 설정을 확인하세요."
+    } else if message.contains("read-only file system") {
+        "엔진 파일 시스템이 읽기 전용입니다. 원본과 대상 엔진의 저장소 상태를 확인하세요."
+    } else if message.contains("cannot connect") || message.contains("connection refused") {
+        "엔진 연결을 확인할 수 없습니다. 해당 엔진이 실행 중인지 확인하세요."
+    } else {
+        "엔진의 진단 로그에서 같은 시각의 실패 원인을 확인하세요. 원본 명령 출력은 비밀 값 보호를 위해 표시하지 않습니다."
+    }
 }
 fn command_error(host: &str, args: &[String], timeout: Duration, error: &str) -> String {
     let engine = if host == SOURCE { "Docker Desktop" } else { "DockSlate" };
@@ -147,12 +171,29 @@ fn query(host: &str, args: &[&str]) -> Result<Value, String> {
     serde_json::from_slice(&command(
         host,
         &args.iter().map(|v| (*v).into()).collect::<Vec<_>>(),
-        if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { Duration::from_secs(30) },
+        if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { TARGET_QUERY_TIMEOUT },
     )?)
     .map_err(|_| "Docker 응답을 읽을 수 없습니다.".into())
 }
 fn inspect(host: &str, kind: &str, value: &str) -> Result<Value, String> {
+    if host != SOURCE {
+        return inspect_owned(&target_client()?, kind, value);
+    }
     Ok(inspect_many(host, kind, &[value.into()])?.remove(0))
+}
+fn owned_inspection_path(kind: &str, value: &str) -> Result<String, String> {
+    if (kind == "image" && image_id(value)) || (["container", "volume", "network"].contains(&kind) && name(value)) {
+        let suffix = if ["image", "container"].contains(&kind) { "/json" } else { "" };
+        Ok(format!("/{kind}s/{}{suffix}", crate::resources::encode(value)))
+    } else {
+        Err("DockSlate 검사 대상의 종류 또는 ID가 올바르지 않습니다.".into())
+    }
+}
+fn inspect_owned(target: &Client, kind: &str, value: &str) -> Result<Value, String> {
+    let path = owned_inspection_path(kind, value)?;
+    let bytes = target.bytes("GET", &path, TARGET_QUERY_TIMEOUT, 16 * 1024 * 1024)
+        .map_err(|error| command_error("owned", &[kind.into(), "inspect".into()], TARGET_QUERY_TIMEOUT, &error))?;
+    serde_json::from_slice(&bytes).map_err(|_| "DockSlate 검사 응답을 읽을 수 없습니다.".into())
 }
 fn inspect_many(host: &str, kind: &str, values: &[String]) -> Result<Vec<Value>, String> {
     inspect_projected(host, kind, values, None)
@@ -176,7 +217,7 @@ fn inspect_projected(host: &str, kind: &str, values: &[String], projection: Opti
         let mut args = vec![kind.into(), "inspect".into()];
         if let Some(format) = projection { args.extend(["--format".into(), format.into()]); }
         args.extend_from_slice(chunk);
-        let output = command_result(host, &args, if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { Duration::from_secs(30) })?;
+        let output = command_result(host, &args, if host == SOURCE { SOURCE_QUERY_TIMEOUT } else { TARGET_QUERY_TIMEOUT })?;
         let rows: Vec<Value> = if projection.is_some() {
             std::str::from_utf8(&output).map_err(|_| batch::ReadError::Other("Docker 검사 응답 인코딩이 올바르지 않습니다.".into()))?
                 .lines().filter(|line| !line.trim().is_empty()).map(serde_json::from_str)
@@ -257,6 +298,9 @@ fn read_inventory() -> Result<Value, String> {
 }
 pub fn inventory() -> Result<Value, String> {
     launch("inventory", runtime::new_token()?, READING, read_inventory)
+}
+pub fn compose_prepare(ids: Vec<String>) -> Result<Value, String> {
+    configuration::prepare(ids)
 }
 
 fn selection_valid(selection: &Selection) -> bool {
@@ -1022,7 +1066,7 @@ fn create_helper(
     let result = command(
         host,
         &helper_args(volume, image, token, read_only)?,
-        Duration::from_secs(30),
+        CREATE_TIMEOUT,
     )?;
     let value = std::str::from_utf8(&result)
         .map_err(|_| "임시 컨테이너 ID를 읽지 못했습니다.")?
@@ -1169,7 +1213,7 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
             ],
             COPY_TIMEOUT,
         )?;
-        if inspect(&destination, "image", image_id)?["Id"] != image_id {
+        if inspect_owned(target, "image", image_id)?["Id"] != image_id {
             return Err("대상 이미지 ID가 원본과 다릅니다. 결과를 확인하세요.".into());
         }
         drop(archive);
@@ -1374,7 +1418,7 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
             false,
         );
         let body = configuration(source, rootfs, &plan.token, &plan.binds)?;
-        let created: Value = serde_json::from_slice(&target.transport.create_container(&target.api,container_name,&serde_json::to_vec(&body).unwrap(),Duration::from_secs(30),1024*1024).map_err(|_| format!("{container_name}: 컨테이너 생성에 실패했습니다. 복사한 이미지·볼륨은 보존했습니다."))?).map_err(|_| "컨테이너 생성 결과를 읽지 못했습니다.")?;
+        let created: Value = serde_json::from_slice(&target.transport.create_container(&target.api,container_name,&serde_json::to_vec(&body).unwrap(),CREATE_TIMEOUT,1024*1024).map_err(|error| format!("{container_name}: 컨테이너 생성에 실패했습니다. 복사한 이미지·볼륨은 보존했습니다. {}", daemon_error_reason(error.as_bytes())))?).map_err(|_| "컨테이너 생성 결과를 읽지 못했습니다.")?;
         if !id(text(&created, "Id")) {
             return Err("대상 컨테이너 생성 결과를 확인하지 못했습니다.".into());
         }
@@ -1410,25 +1454,18 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
     let mut start_errors = Vec::new();
     for container_name in start_names {
         same_engines(plan, target)?;
-        let output = command(
-            &destination,
-            &["container".into(), "inspect".into(), container_name.clone()],
-            Duration::from_secs(30),
-        )?;
-        let rows: Vec<Value> =
-            serde_json::from_slice(&output).map_err(|_| "복사본 설정을 확인할 수 없습니다.")?;
-        let value = rows.first().ok_or("복사본이 없습니다.")?;
+        let value = inspect_owned(target, "container", &container_name)?;
         if value["Config"]["Labels"]["io.dockslate.migration"] != plan.token {
             return Err("복사본의 소유권이 변경되었습니다. 시작하지 않았습니다.".into());
         }
         match command(
             &destination,
-            &["container".into(), "start".into(), text(value, "Id").into()],
-            Duration::from_secs(60),
+            &["container".into(), "start".into(), text(&value, "Id").into()],
+            Duration::from_secs(120),
         ) {
             Ok(_) => {
                 record_state("startedTargets", &container_name);
-                if inspect(&destination, "container", text(value, "Id"))?["State"]["Running"]
+                if inspect_owned(target, "container", text(&value, "Id"))?["State"]["Running"]
                     == true
                 {
                     update(
@@ -1452,6 +1489,34 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
 #[cfg(test)]
 mod security_tests {
     use super::*;
+
+    #[test]
+    fn owned_inspection_paths_accept_only_fixed_resources_and_encoded_identifiers() {
+        let image = format!("sha256:{}", "a".repeat(64));
+        assert_eq!(owned_inspection_path("image", &image).unwrap(), format!("/images/sha256%3A{}/json", "a".repeat(64)));
+        assert_eq!(owned_inspection_path("container", "demo-database-1").unwrap(), "/containers/demo-database-1/json");
+        assert_eq!(owned_inspection_path("volume", "demo-data").unwrap(), "/volumes/demo-data");
+        for (kind, value) in [("image", "not-an-id"), ("container", "../other"), ("volume", "data?force=1"), ("container", "--host"), ("system", "info")] {
+            assert!(owned_inspection_path(kind, value).is_err());
+        }
+    }
+
+    #[test]
+    fn migration_failure_diagnosis_identifies_common_causes_without_daemon_values() {
+        for (stderr, expected) in [
+            ("Error response from daemon: invalid mount config for type volume DB_PASSWORD=fixture-secret", "볼륨·마운트 설정"),
+            ("No such image: private-registry/fixture-secret", "이미지가 없습니다"),
+            ("write /fixture-secret: no space left on device", "저장 공간"),
+            ("permission denied: fixture-secret", "접근 권한"),
+        ] {
+            let message = command_exit_error(1, stderr.as_bytes());
+            assert!(message.contains(expected), "{message}");
+            assert!(message.contains("종료 1"));
+            assert!(!message.contains("fixture-secret") && !message.contains("DB_PASSWORD"));
+        }
+        let unknown = command_exit_error(17, b"unknown fixture-secret daemon detail");
+        assert!(unknown.contains("종료 17") && !unknown.contains("fixture-secret"));
+    }
 
     #[test]
     fn migration_timeout_identifies_engine_and_step_without_configuration_values() {

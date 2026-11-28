@@ -460,6 +460,9 @@ fn relative(root: &Path, path: &str) -> Result<PathBuf, String> {
     }
     Ok(path)
 }
+fn service_summary(name: &str, service: &Value, build: Value) -> Value {
+    json!({"name":name,"image":service["image"],"build":build,"ports":service["ports"],"volumes":service["volumes"],"networks":service["networks"].as_object().map(|value| value.keys().collect::<Vec<_>>()).unwrap_or_default(),"environmentKeys":service["environment"].as_object().map(|value| value.keys().collect::<Vec<_>>()).unwrap_or_default()})
+}
 fn normalize(
     selection: &Selection,
     client: &crate::docker::Client,
@@ -578,7 +581,6 @@ fn normalize(
         {
             return Err("각 서비스에 로컬 이미지 또는 빌드 구성이 필요합니다.".into());
         }
-        let image = image.to_owned();
         if let Some(mounts) = service["volumes"].as_array() {
             for mount in mounts {
                 keys(
@@ -641,7 +643,7 @@ fn normalize(
             }
         }
         labels(&mut service["labels"], &selection.token)?;
-        summaries.push(json!({"name":name,"image":image,"build":build_summary,"ports":service["ports"],"volumes":service["volumes"],"networks":service["networks"].as_object().map(|value| value.keys().collect::<Vec<_>>()).unwrap_or_default(),"environmentKeys":service["environment"].as_object().map(|value| value.keys().collect::<Vec<_>>()).unwrap_or_default()}));
+        summaries.push(service_summary(name, service, build_summary));
     }
     let mut resources = Vec::new();
     for category in ["volumes", "networks"] {
@@ -905,6 +907,56 @@ pub fn preview(id: String) -> Result<Value, String> {
     selection.built = false;
     Ok(result)
 }
+pub(crate) fn prepare_configuration(client: &crate::docker::Client, config: Value, warnings: Vec<String>) -> Result<Value, String> {
+    if is_busy() { return Err("Compose 작업을 마친 뒤 설정을 가져오세요.".into()); }
+    let mut guard = store().lock().map_err(|_| "가져오기 상태에 접근할 수 없습니다.")?;
+    if is_busy() { return Err("Compose 작업을 마친 뒤 설정을 가져오세요.".into()); }
+    let id = token()?;
+    let root = std::env::current_exe().ok().and_then(|path| path.parent().map(Path::to_owned)).ok_or("앱 폴더를 확인할 수 없습니다.")?;
+    let mut selection = Selection {
+        project: format!("dockslate-import-{id}"), token: id, file: root.join("Docker Desktop"), root,
+        _pins: Vec::new(), source: Vec::new(), prepared: None, run: None, built: true,
+    };
+    let root = client.transport.build_path(&display(&selection.root)?)?;
+    let bytes = serde_json::to_vec(&config).map_err(|_| "Compose 설정을 준비할 수 없습니다.")?;
+    let config = serde_json::from_slice(&command(client, &root, &selection.project, &bytes, "config")?).map_err(|_| "Compose 정규화 JSON을 읽을 수 없습니다.")?;
+    let mut prepared = normalize(&selection, client, config)?;
+    if prepared.has_build { return Err("컨테이너 설정 가져오기에서는 이미지를 빌드하지 않습니다.".into()); }
+    no_collisions(&prepared, client, &selection.project, false)?;
+    prepared.summary["path"] = json!("Docker Desktop 컨테이너 설정");
+    prepared.summary["contextPath"] = json!("");
+    prepared.summary["warnings"] = json!(warnings);
+    let result = prepared.summary.clone();
+    selection.prepared = Some(prepared);
+    *guard = Some(selection);
+    Ok(result)
+}
+pub(crate) fn literal_values(value: &mut Value) {
+    match value {
+        Value::String(value) => *value = value.replace('$', "$$"),
+        Value::Array(values) => values.iter_mut().for_each(literal_values),
+        Value::Object(values) => values.values_mut().for_each(literal_values),
+        _ => {}
+    }
+}
+#[cfg(test)]
+mod configuration_tests {
+    use super::*;
+
+    #[test]
+    fn compose_literals_escape_once_and_public_summary_omits_values() {
+        let service = json!({"image":"demo/app:latest","environment":{"PASSWORD":"example-p${secret}$$\\!"},"command":["sh","-c","printf '%s' \"$PASSWORD\""],"healthcheck":{"test":["CMD-SHELL","test -n \"$PASSWORD\""]}});
+        let summary = service_summary("web", &service, Value::Null);
+        assert_eq!(summary["environmentKeys"], json!(["PASSWORD"]));
+        let public = summary.to_string();
+        assert!(!public.contains("secret")); assert!(!public.contains("printf")); assert!(!public.contains("healthcheck"));
+        let mut escaped = service.clone();
+        literal_values(&mut escaped);
+        assert_eq!(escaped["environment"]["PASSWORD"], "example-p$${secret}$$$$\\!");
+        assert_eq!(escaped["command"][2], "printf '%s' \"$$PASSWORD\"");
+        assert_eq!(escaped["healthcheck"]["test"][1], "test -n \"$$PASSWORD\"");
+    }
+}
 fn finish(id: &str, result: Result<(), String>) {
     if let Ok(mut guard) = jobs().lock() {
         if let Some(job) = guard.as_mut().filter(|job| job["id"] == id) {
@@ -1121,8 +1173,9 @@ pub fn run_start(approval: String, approved: bool) -> Result<Value, String> {
         }
         let root = client.transport.build_path(&display(&selection.root)?)?;
         let project = selection.project.clone();
-        let config =
-            serde_json::to_vec(&run.config).map_err(|_| "실행 구성을 준비할 수 없습니다.")?;
+        let mut config = run.config;
+        literal_values(&mut config);
+        let config = serde_json::to_vec(&config).map_err(|_| "실행 구성을 준비할 수 없습니다.")?;
         let job_id = token()?;
         drop(guard);
         launch(job_id, "run", project.clone(), move || {

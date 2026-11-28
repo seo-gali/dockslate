@@ -1,0 +1,24 @@
+{
+  "version": "0.1.17",
+  "observedAt": "2026-11-28T07:36:17.328Z",
+  "published": false,
+  "websitePublished": false,
+  "status": "Source fixes verified; native packaging pending",
+  "authorization": {
+    "userAnswer": "공개해",
+    "scope": "Build, verify, commit, push and publish the requested fixes as an unsigned prerelease with incomplete antivirus status disclosed"
+  },
+  "checks": {
+    "sourceNodeTests": 37,
+    "sourceRustTests": 47,
+    "sourceUiScenarios": 15,
+    "dependencyVersionsChanged": false
+  },
+  "files": [],
+  "remaining": [
+    "Fresh EXE/ZIP packaging and artifact verification",
+    "Native packaged UI and CLI verification",
+    "VirusTotal scan completion and official signing unavailable",
+    "Actual two-engine migration and reported other-PC failure remain unverified"
+  ]
+}

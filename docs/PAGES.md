@@ -6,11 +6,13 @@
 
 웹사이트 원본은 `site/`에 두며, 빌드 결과는 Git에서 제외하는 `site-dist/` 한 곳에 생성합니다. 저장소 루트에는 웹사이트 파일을 생성하지 않습니다.
 
-게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 승인된 `main` 변경을 반영해 사이트를 빌드·게시하며 수동 실행도 지원합니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.15의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.15.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
+게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 `main`의 `site/`·사이트 빌드 스크립트·공개 영수증·다운로드·고지 관련 경로가 바뀌면 실행하며 수동 실행도 지원합니다. README나 일반 개발 문서만 수정한 푸시는 이 workflow의 실행 조건이 아닙니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.16의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.16.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
 
 사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 버전·메타데이터 불일치·승인 없는 미완료 검사를 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다. 기본적으로 설치 EXE는 완료된 탐지 0건 결과가 필요합니다. 내부 앱·포터블 ZIP의 탐지는 정확한 파일 해시·업체·개수별 사용자 승인과 prerelease를 기록한 경우만 허용하고, 각 파일의 결과를 홈페이지에 표시합니다. 0.1.12의 앱 승인 기록을 보존하며 0.1.14는 앱과 ZIP의 DeepInstinct 탐지 각 1건, 0.1.15는 ZIP의 DeepInstinct 1건을 해시별로 승인받았습니다. 다른 해시·업체·개수나 설치 EXE에는 이 탐지 승인이 적용되지 않습니다.
 
 0.1.16은 2026-11-28 사용자의 “일단 공개해” 지시에 따라 별도 예외를 기록합니다. 차단 상태인 새 파일 4개의 이름·크기·SHA-256 전체와 `unverifiedPublicationApproval`이 일치하고 prerelease인 경우에만 검사 미완료 공개를 허용합니다. 탐지·분석 수는 `null`, 완료는 `false`로 유지합니다. 홈페이지에 **백신 검사 미완료**를 표시하고 없는 VirusTotal 결과 대신 검사 진행 기록으로 연결합니다. 이 예외는 다른 버전·변경된 파일·확인된 탐지 결과·정식 배포에 적용되지 않습니다.
+
+0.1.17은 후속 수정에 대한 사용자의 “공개해” 지시에 따라 같은 형식의 별도 승인을 기록합니다. 새 EXE·ZIP·내부 앱·CLI의 이름·크기·해시를 새 승인과 대조하며 0.1.16의 승인 해시를 재사용하지 않습니다. 미서명·검사 미완료를 고지한 prerelease에 한정하고, 이후 버전이나 확인된 탐지에 자동으로 적용하지 않습니다.
 
 | 원본 | 출력·역할 |
 | --- | --- |
@@ -57,6 +59,6 @@ npm run build:site
 
 [로컬 사이트 검사](results/pages-e2e.json)는 파일·HTTP 렌더링, 안내서, 키보드·모바일, SEO와 다운로드를 확인합니다. [안내서 검사](results/guide-delivery-e2e.json)는 사이트 원본·사이트 출력·앱 출력의 독립 HTML을 확인합니다. 두 기록의 실행 날짜와 공개 배포 검사 여부를 구분하세요.
 
-[0.1.14 공개 파일·사이트 검사](results/public-distribution-0.1.14.json)는 공개 파일 4개·다운로드 링크·앱/ZIP 두 탐지 고지·정적 자산·옛 고지 주소 22개를 확인했습니다. [0.1.13 검사](results/public-distribution-0.1.13.json)·[0.1.6 공개 다운로드](results/public-release-0.1.6.json)·[공개 SEO](results/pages-seo.json)는 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
+[0.1.16 공개 파일·사이트 검사](results/public-distribution-0.1.16.json)는 공개 파일 4개·다운로드 링크·백신 검사 미완료 고지·정적 자산·옛 고지 주소 26개를 확인했습니다. [0.1.14 검사](results/public-distribution-0.1.14.json)·[0.1.13 검사](results/public-distribution-0.1.13.json)·[0.1.6 공개 다운로드](results/public-release-0.1.6.json)·[공개 SEO](results/pages-seo.json)는 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
 
 [사이트 화면](assets/site-desktop.png) · [모바일](assets/site-mobile.png) · [404](assets/site-404-mobile.png) · [안내서](assets/guide-desktop.png)

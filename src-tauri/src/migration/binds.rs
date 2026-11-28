@@ -164,7 +164,7 @@ pub(super) fn copy(
     let image = plan.images.first().ok_or("폴더 복사 이미지가 없습니다.")?;
     let (path, mut archive) = workspace.archive()?;
     let args = bind_helper_args(&binding.source, image, &plan.token)?;
-    let output = command(SOURCE, &args, Duration::from_secs(30))?;
+    let output = command(SOURCE, &args, super::CREATE_TIMEOUT)?;
     let source_helper = std::str::from_utf8(&output)
         .map_err(|_| "원본 복사 도구 ID를 읽을 수 없습니다.")?
         .trim()

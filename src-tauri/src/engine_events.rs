@@ -53,10 +53,11 @@ while True:
         connection.close()
         connection = OwnedSocket('localhost', timeout=10)
         connection.request('GET', '/v' + sys.argv[1] + '/events?filters=' + filters)
+        stream = connection.sock
         response = connection.getresponse()
         if response.status != 200:
             raise RuntimeError('Events unavailable')
-        connection.sock.settimeout(None)
+        stream.settimeout(None)
         send('ready', 31)
         while True:
             line = response.readline(65537)
