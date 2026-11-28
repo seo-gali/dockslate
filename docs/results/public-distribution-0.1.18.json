@@ -1,0 +1,179 @@
+{
+  "version": "0.1.18",
+  "observedAt": "2026-11-28T13:54:17.651Z",
+  "published": true,
+  "websitePublished": false,
+  "files": [
+    {
+      "file": "DockSlate_0.1.18_x64-setup.exe",
+      "bytes": 41242023,
+      "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+    },
+    {
+      "file": "DockSlate-0.1.18-windows-x64.zip",
+      "bytes": 56283741,
+      "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+    },
+    {
+      "file": "DockSlate-0.1.18-third-party-licenses.zip",
+      "bytes": 5269084,
+      "sha256": "0C8BBC2FA392C81F88569C98A1E4B099B59A79EC8152CF71FC801D5851FA3CFF"
+    }
+  ],
+  "virusTotal": {
+    "version": "0.1.18",
+    "status": "blocked",
+    "observedAt": "2026-11-28T13:51:33.043Z",
+    "publicUploadOfFourFilesApproved": false,
+    "files": [
+      {
+        "file": "DockSlate_0.1.18_x64-setup.exe",
+        "bytes": 41242023,
+        "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      },
+      {
+        "file": "DockSlate-0.1.18-windows-x64.zip",
+        "bytes": 56283741,
+        "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      },
+      {
+        "file": "DockSlate.exe",
+        "bytes": 5572608,
+        "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      },
+      {
+        "file": "bin/docker.exe",
+        "bytes": 326656,
+        "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6",
+        "completed": false,
+        "detections": null,
+        "totalEngines": null
+      }
+    ],
+    "publicationApprovals": [],
+    "uploadsAttempted": 0,
+    "blocker": {
+      "service": "VirusTotal",
+      "apiAuthenticationProvided": false,
+      "currentVersionUploadAttempted": false,
+      "previousVersionRecord": "virustotal-0.1.16.json",
+      "reason": "No API credentials supplied; previous browser uploads required human verification. No CAPTCHA bypass or personal browser access attempted."
+    },
+    "limitations": [
+      "No completed 0.1.18 antivirus reports verified; detections are unknown, not zero",
+      "Previous-version scan results and upload approvals are not reused",
+      "Complete multi-file ZIP is not an exhaustive inspection of every inner file"
+    ],
+    "unverifiedPublicationApproval": {
+      "userApproved": true,
+      "version": "0.1.18",
+      "userAnswer": "반영해",
+      "followupAnswer": "반영해",
+      "observedAt": "2026-11-28T13:51:33.044Z",
+      "scope": "Unsigned prerelease publication with incomplete antivirus status disclosed, exactly these four files; no new antivirus upload authorization inferred",
+      "files": [
+        {
+          "file": "DockSlate_0.1.18_x64-setup.exe",
+          "bytes": 41242023,
+          "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+        },
+        {
+          "file": "DockSlate-0.1.18-windows-x64.zip",
+          "bytes": 56283741,
+          "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+        },
+        {
+          "file": "DockSlate.exe",
+          "bytes": 5572608,
+          "sha256": "684F825825F95B731B5F2870514CA78C3D4777FBAB8F249436113750DE952A01"
+        },
+        {
+          "file": "bin/docker.exe",
+          "bytes": 326656,
+          "sha256": "AEBAD6A5B0416C1F84A0BF967A6B2835A28E5EB017C43FB7210A871195619ED6"
+        }
+      ]
+    }
+  },
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.18",
+    "releaseId": 461594115,
+    "tag": "v0.1.18",
+    "sourceCommit": "646cc5a1e300c79b37cae34a01a16bf355943c26",
+    "checksumSourcePath": ".github/release018-SHA256SUMS.txt",
+    "binaryBuildSourceCommit": "bc1f19c87ab589ec03b4fb40d794e3fc7dc46d4e",
+    "prerelease": true,
+    "draft": false,
+    "publisherRunId": 46151774989,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.18_x64-setup.exe",
+        "bytes": 41242023,
+        "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9"
+      },
+      {
+        "name": "DockSlate-0.1.18-windows-x64.zip",
+        "bytes": 56283741,
+        "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300"
+      },
+      {
+        "name": "DockSlate-0.1.18-third-party-licenses.zip",
+        "bytes": 5269084,
+        "sha256": "0C8BBC2FA392C81F88569C98A1E4B099B59A79EC8152CF71FC801D5851FA3CFF"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 304,
+        "sha256": "52F8B50FE746E62810B68915277CF6B434722CB9B0EA7F91230E1B91B2CA533F"
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.18_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.18/DockSlate_0.1.18_x64-setup.exe",
+        "status": 200,
+        "bytes": 41242023,
+        "sha256": "60DF080CD58CA801A9A4F4A63D8A4FA39558CCFFDE5847101F5E93256E1D72C9",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.18-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.18/DockSlate-0.1.18-windows-x64.zip",
+        "status": 200,
+        "bytes": 56283741,
+        "sha256": "BD361BC455BC5B86A1DCC515E3DCC935A4F3BBBFA8095A42559DFCCF5A32C300",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.18-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.18/DockSlate-0.1.18-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5269084,
+        "sha256": "0C8BBC2FA392C81F88569C98A1E4B099B59A79EC8152CF71FC801D5851FA3CFF",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.18/SHA256SUMS.txt",
+        "status": 200,
+        "bytes": 304,
+        "sha256": "52F8B50FE746E62810B68915277CF6B434722CB9B0EA7F91230E1B91B2CA533F",
+        "githubDigestMatches": true
+      }
+    ]
+  },
+  "checks": {
+    "publishedBytesVerified": true,
+    "tagVerified": true,
+    "oldReleasePreserved": true
+  }
+}

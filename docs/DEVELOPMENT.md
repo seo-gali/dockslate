@@ -21,7 +21,7 @@ npm ci
 
 배포용 앱은 `tauri build`로 화면 파일을 EXE에 내장합니다. Rust 명령을 직접 사용한다면 `--features tauri/custom-protocol`이 필요합니다. 현재 `main.rs`의 컴파일 검사는 이 옵션이 없는 GUI release 빌드를 거부하므로 `cargo build --release`만으로는 GUI 배포물을 만들 수 없습니다. CLI 전용 `--bin docker` 빌드는 별개입니다. 읽기 전용 검증도 내장 `index.html`을 확인합니다. `.\scripts\desktop.ps1 -Mode verify`는 이미 만들어진 EXE를 실행하며 전체 설치·제거 검사를 대신하지 않습니다. WebView2는 앱 화면을 표시하는 런타임이며 Edge 브라우저 설치를 요구하지 않습니다.
 
-0.1.15 공개 파일에서 개발 서버 연결 거부를 재현했으며, 수정 소스의 실제 설치 화면과 내장 자산 검사는 [화면 내장 오류 검증](results/embedded-frontend-20261127.json)에 기록했습니다. 수정은 0.1.16부터 반영했습니다. 현재 [0.1.17 공개 파일](results/public-distribution-0.1.17.json)은 미서명·백신 검사 미완료 개발판입니다.
+0.1.15 공개 파일에서 개발 서버 연결 거부를 재현했으며, 수정 소스의 실제 설치 화면과 내장 자산 검사는 [화면 내장 오류 검증](results/embedded-frontend-20261127.json)에 기록했습니다. 수정은 0.1.16부터 반영했습니다. 현재 [0.1.18 공개 파일](results/public-distribution-0.1.18.json)은 미서명·백신 검사 미완료 개발판입니다.
 
 사이트 생성은 앱 개발 버전과 독립적입니다. `site/release.json`과 버전별 공개 영수증의 버전·파일·해시·백신 결과를 먼저 대조합니다. 없는 공개 파일은 고정 소스 커밋 또는 공식 Release에서 읽어 임시 검증하며, 지운 구버전 앱 파일을 `downloads/`에 복원하지 않습니다. 공개 버전 전환 전에는 이전 버전의 고지 ZIP을 원래 배포 해시와 대조해 `docs/downloads/`에 보존합니다. 현재 공개 버전은 `site/release.json`이 기준입니다.
 
