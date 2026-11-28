@@ -1,9 +1,9 @@
 {
   "version": "0.1.17",
   "observedAt": "2026-11-28T12:24:10.510Z",
-  "published": false,
+  "published": true,
   "websitePublished": false,
-  "status": "Verified Windows candidate; unsigned prerelease publication authorized with incomplete antivirus status disclosed",
+  "status": "Unsigned 0.1.17 prerelease published with incomplete antivirus status disclosed under exact approval; public bytes verified; website transition pending",
   "artifacts": [
     {
       "name": "dockslate.exe",
@@ -455,5 +455,72 @@
     "Actual two-engine migration and affected other Windows PC unverified",
     "Full installation, upgrade, uninstall, reboot and rollback unverified",
     "Unsigned; antivirus analysis incomplete"
-  ]
+  ],
+  "github": {
+    "url": "https://github.com/seo-gali/dockslate/releases/tag/v0.1.17",
+    "releaseId": 461541841,
+    "tag": "v0.1.17",
+    "sourceCommit": "90d7dae9d81cbd642ac47e5a1dd1324c49cf5051",
+    "checksumSourcePath": ".github/release017-SHA256SUMS.txt",
+    "binaryBuildSourceCommit": "f2e49febc442f99f4251e3e658b724d9ce52c049",
+    "prerelease": true,
+    "draft": false,
+    "publisherRunId": 46144558730,
+    "assets": [
+      {
+        "name": "DockSlate_0.1.17_x64-setup.exe",
+        "bytes": 41237742,
+        "sha256": "73C7EEED390884DBE53E4D76BCB0746CC08F6A57F7038EA19CAE4808443B9469"
+      },
+      {
+        "name": "DockSlate-0.1.17-windows-x64.zip",
+        "bytes": 56283993,
+        "sha256": "EE37DE8DC69B610B3F391F15356ABF35872BD87254AAFB4E2A7CF8BDBB874798"
+      },
+      {
+        "name": "DockSlate-0.1.17-third-party-licenses.zip",
+        "bytes": 5269088,
+        "sha256": "23DB01C8843BDBDF5819E04F72C68B6B5592B4AE142DFC663127B2BF29E39A1D"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 304,
+        "sha256": "9FFF19AFBEC28F1366D54C8EC88E69669588575994143D81638B80BEF0AC6F6C"
+      }
+    ],
+    "downloads": [
+      {
+        "file": "DockSlate_0.1.17_x64-setup.exe",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.17/DockSlate_0.1.17_x64-setup.exe",
+        "status": 200,
+        "bytes": 41237742,
+        "sha256": "73C7EEED390884DBE53E4D76BCB0746CC08F6A57F7038EA19CAE4808443B9469",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.17-windows-x64.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.17/DockSlate-0.1.17-windows-x64.zip",
+        "status": 200,
+        "bytes": 56283993,
+        "sha256": "EE37DE8DC69B610B3F391F15356ABF35872BD87254AAFB4E2A7CF8BDBB874798",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "DockSlate-0.1.17-third-party-licenses.zip",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.17/DockSlate-0.1.17-third-party-licenses.zip",
+        "status": 200,
+        "bytes": 5269088,
+        "sha256": "23DB01C8843BDBDF5819E04F72C68B6B5592B4AE142DFC663127B2BF29E39A1D",
+        "githubDigestMatches": true
+      },
+      {
+        "file": "SHA256SUMS.txt",
+        "url": "https://github.com/seo-gali/dockslate/releases/download/v0.1.17/SHA256SUMS.txt",
+        "status": 200,
+        "bytes": 304,
+        "sha256": "9FFF19AFBEC28F1366D54C8EC88E69669588575994143D81638B80BEF0AC6F6C",
+        "githubDigestMatches": true
+      }
+    ]
+  }
 }

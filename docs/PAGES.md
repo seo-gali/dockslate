@@ -6,7 +6,7 @@
 
 웹사이트 원본은 `site/`에 두며, 빌드 결과는 Git에서 제외하는 `site-dist/` 한 곳에 생성합니다. 저장소 루트에는 웹사이트 파일을 생성하지 않습니다.
 
-게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 `main`의 `site/`·사이트 빌드 스크립트·공개 영수증·다운로드·고지 관련 경로가 바뀌면 실행하며 수동 실행도 지원합니다. README나 일반 개발 문서만 수정한 푸시는 이 workflow의 실행 조건이 아닙니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.16의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.16.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
+게시 방식은 **Settings → Pages → Build and deployment → Source: GitHub Actions**입니다. [Pages workflow](../.github/workflows/pages.yml)는 `main`의 `site/`·사이트 빌드 스크립트·공개 영수증·다운로드·고지 관련 경로가 바뀌면 실행하며 수동 실행도 지원합니다. README나 일반 개발 문서만 수정한 푸시는 이 workflow의 실행 조건이 아닙니다. Actions 모드 전환은 저장소 설정 변경이므로 별도 승인을 받아 적용합니다. 현재 공개판 0.1.17의 배포·파일 대조는 [공개 기록](results/public-distribution-0.1.17.json)에 있습니다. 로컬 문서 수정만으로 원격 게시가 갱신되지는 않습니다.
 
 사이트의 공개 버전은 `site/release.json`이 정합니다. 앱 개발 버전과 달라도 공개 영수증 `docs/results/public-distribution-<version>.json`의 게시 상태·파일·해시·백신 검사 결과가 맞으면 빌드할 수 있습니다. 미게시 버전·메타데이터 불일치·승인 없는 미완료 검사를 거부하며 사이트 변경만으로 앱을 새로 공개하지 않습니다. 기본적으로 설치 EXE는 완료된 탐지 0건 결과가 필요합니다. 내부 앱·포터블 ZIP의 탐지는 정확한 파일 해시·업체·개수별 사용자 승인과 prerelease를 기록한 경우만 허용하고, 각 파일의 결과를 홈페이지에 표시합니다. 0.1.12의 앱 승인 기록을 보존하며 0.1.14는 앱과 ZIP의 DeepInstinct 탐지 각 1건, 0.1.15는 ZIP의 DeepInstinct 1건을 해시별로 승인받았습니다. 다른 해시·업체·개수나 설치 EXE에는 이 탐지 승인이 적용되지 않습니다.
 
@@ -40,7 +40,7 @@ npm run build:site
 
 사이트 빌드는 현재 0.1.3~0.1.15 고지 ZIP 13개를 `docs/downloads/` 원본에서 출력의 `downloads/`와 `docs/downloads/` 양쪽으로 복사합니다. 이전 패키지의 공개 URL 26개를 유지하면서 저장소에서는 중복 ZIP을 관리하지 않습니다. 배포 파일이나 라이선스 원문을 다시 압축하지 않습니다.
 
-현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.16)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올립니다. 0.1.16은 백신 검사 미완료를 다운로드 전에 표시하고 [진행·승인 기록](results/virustotal-0.1.16.json)을 연결합니다. 검사 결과가 없는 파일을 탐지 0건으로 표시하지 않습니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다.
+현재 다운로드 버튼은 [GitHub Release](https://github.com/seo-gali/dockslate/releases/tag/v0.1.17)의 첨부 파일로 연결합니다. Release에는 설치 EXE·포터블 ZIP·고지 ZIP·`SHA256SUMS.txt`를 함께 올립니다. 0.1.17은 백신 검사 미완료를 다운로드 전에 표시하고 [진행·승인 기록](results/virustotal-0.1.17.json)을 연결합니다. 검사 결과가 없는 파일을 탐지 0건으로 표시하지 않습니다. 사이트의 기존 `downloads/` 파일 주소와 체크섬 파일도 유지합니다.
 
 설치 EXE는 `scripts/build-installer.ps1`, 포터블은 `npm run package:local`로 별도 생성합니다. Pages workflow는 앱 설치 파일을 빌드하지 않습니다. `site-dist/`에는 공개 웹 파일과 다운로드만 포함하며 앱 소스·검증 자료·로컬 영상은 게시하지 않습니다.
 

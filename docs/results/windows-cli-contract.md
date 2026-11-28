@@ -1,6 +1,6 @@
 # Windows Docker CLI
 
-현재 소스의 Windows CLI 연결 계약이다. 현재 공개 0.1.16의 정확한 실행 파일은 [공개 기록](public-distribution-0.1.16.json)이 기준이며, 후속 GUI의 프로젝트 실행·Compose 설정 이전과 구분한다. 공식 Docker CLI·Compose·Buildx의 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
+현재 소스의 Windows CLI 연결 계약이다. 현재 공개 0.1.17의 정확한 실행 파일은 [공개 기록](public-distribution-0.1.17.json)이 기준이다. 공식 Docker CLI·Compose·Buildx의 고정 버전·해시는 [구성 요소 명세](../../scripts/windows-docker.manifest.json)가 기준이며 기존 WSL 인수 변환 런처는 사용하지 않는다. [0.1.6 실제 설치·CLI 연결](reinstall-recovery.md)과 아래 과거 통합 테스트의 범위를 구분한다.
 
 ## 실행과 프로필
 
