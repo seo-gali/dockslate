@@ -125,7 +125,7 @@ test('unsafe names and unpinned notices are refused before acquiring assets', t 
   f.release.installer.file = 'setup.exe'; f.release.notices.sourceCommit = 'main'; f.save(); assert.throws(() => readPublishedRelease(f.root), /source commit/);
 });
 
-for (const version of ['0.1.16', '0.1.17']) test(`${version} unverified publication requires four exact files and prerelease approval`, t => {
+for (const version of ['0.1.16', '0.1.17', '0.1.18']) test(`${version} unverified publication requires four exact files and prerelease approval`, t => {
   const f = fixture(t);
   f.release.version = f.receipt.version = version;
   f.receipt.github.tag = 'v' + version; f.receipt.github.prerelease = true;
@@ -156,6 +156,6 @@ for (const version of ['0.1.16', '0.1.17']) test(`${version} unverified publicat
   }
   f.receipt.virusTotal = baseline; f.receipt.github.prerelease = false; save();
   assert.throws(() => readPublishedRelease(f.root), /antivirus/);
-  f.receipt.github.prerelease = true; f.release.version = f.receipt.version = '0.1.18'; f.receipt.github.tag = 'v0.1.18'; save();
+  f.receipt.github.prerelease = true; f.release.version = f.receipt.version = '0.1.19'; f.receipt.github.tag = 'v0.1.19'; save();
   assert.throws(() => readPublishedRelease(f.root), /antivirus/);
 });

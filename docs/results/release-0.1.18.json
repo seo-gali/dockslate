@@ -1,0 +1,21 @@
+{
+  "version": "0.1.18",
+  "observedAt": "2026-11-28T13:36:07.555Z",
+  "published": false,
+  "websitePublished": false,
+  "status": "Docker Desktop source identity hotfix; fresh Windows packaging pending",
+  "authorization": {
+    "userAnswer": "반영해",
+    "scope": "Build and publish fresh installer and ZIP with the source identity fix; preserve prior public files; unsigned prerelease with incomplete antivirus disclosed"
+  },
+  "checks": {
+    "sourceIdentityTests": 18,
+    "dependencyVersionsChanged": false
+  },
+  "files": [],
+  "remaining": [
+    "Fresh package and native frontend verification",
+    "Actual affected Windows PC response not received",
+    "Unsigned; antivirus analysis incomplete"
+  ]
+}

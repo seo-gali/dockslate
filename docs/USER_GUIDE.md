@@ -2,7 +2,7 @@
 
 [다운로드](https://seo-gali.github.io/dockslate/) · [사용 가이드 영상](https://youtu.be/EbL7LkbNrPY) · [지원·검증 현황](REQUEST_STATUS.md)
 
-이 안내는 0.1.17 소스 기준입니다. 프로젝트 일괄 실행·설정만 Compose로 가져오기·이전 시간 제한 및 오류 안내 개선을 포함합니다. 실제 공개 파일은 [홈페이지](https://seo-gali.github.io/dockslate/)에서 확인하세요.
+이 안내는 현재 소스 기준입니다. 프로젝트 일괄 실행·설정만 Compose로 가져오기·이전 시간 제한 및 오류 안내 개선을 포함합니다. 실제 공개 파일은 [홈페이지](https://seo-gali.github.io/dockslate/)에서 확인하세요.
 
 ## 트레이
 

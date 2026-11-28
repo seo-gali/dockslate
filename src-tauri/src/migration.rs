@@ -252,15 +252,19 @@ fn inspection_progress(kind: &str, completed: usize, total: usize) {
 }
 fn source_identity() -> Result<String, String> {
     let info = query(SOURCE, &["info", "--format", "{{json .}}"])?;
-    if info["OSType"] != "linux"
-        || !text(&info, "OperatingSystem")
-            .to_ascii_lowercase()
-            .contains("docker desktop")
-        || text(&info, "ID").is_empty()
-    {
-        return Err("Docker Desktop Linux 엔진으로 확인된 경우에만 가져올 수 있습니다.".into());
+    source_info_identity(&info)
+}
+fn source_info_identity(info: &Value) -> Result<String, String> {
+    match text(info, "OSType") {
+        "linux" => {},
+        "windows" => return Err("Docker Desktop이 Windows 컨테이너 모드입니다. Linux 컨테이너로 전환한 뒤 다시 조회하세요.".into()),
+        _ => return Err("Docker Desktop 응답에서 컨테이너 운영체제를 확인하지 못했습니다. Docker Desktop의 실행 상태를 확인한 뒤 다시 조회하세요.".into()),
     }
-    Ok(text(&info, "ID").into())
+    let identity = text(info, "ID");
+    if identity.trim().is_empty() {
+        return Err("Docker Desktop 응답에 엔진 ID가 없습니다. 엔진이 준비된 뒤 다시 조회하세요.".into());
+    }
+    Ok(identity.into())
 }
 fn target_client() -> Result<Client, String> {
     update("DockSlate 엔진 연결을 확인하고 있습니다.".into(), None, false);
@@ -1489,6 +1493,27 @@ fn transfer(mut current: Plan, target: &Client) -> Result<(), String> {
 #[cfg(test)]
 mod security_tests {
     use super::*;
+
+    #[test]
+    fn desktop_source_identity_does_not_depend_on_operating_system_description() {
+        for operating_system in [json!("Docker Desktop"), json!("Ubuntu 24.04.3 LTS"), json!(""), Value::Null] {
+            let info = json!({"OSType":"linux", "ID":"source-engine-id", "OperatingSystem":operating_system});
+            assert_eq!(source_info_identity(&info).unwrap(), "source-engine-id");
+        }
+    }
+
+    #[test]
+    fn desktop_source_identity_rejects_non_linux_and_missing_identity() {
+        for os_type in [json!("windows"), json!(""), json!("darwin"), Value::Null] {
+            assert!(source_info_identity(&json!({"OSType":os_type, "ID":"source-engine-id", "OperatingSystem":"Docker Desktop"})).is_err());
+        }
+        for identity in [json!(""), json!(" \t"), json!(42), Value::Null] {
+            let error = source_info_identity(&json!({"OSType":"linux", "ID":identity, "OperatingSystem":"Docker Desktop"})).unwrap_err();
+            assert!(error.contains("엔진 ID"));
+        }
+        assert!(source_info_identity(&json!({"OSType":"windows", "ID":"source-engine-id"})).unwrap_err().contains("Windows 컨테이너 모드"));
+        assert!(source_info_identity(&json!({"ID":"source-engine-id"})).unwrap_err().contains("운영체제를 확인하지 못했습니다"));
+    }
 
     #[test]
     fn owned_inspection_paths_accept_only_fixed_resources_and_encoded_identifiers() {

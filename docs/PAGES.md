@@ -62,3 +62,5 @@ npm run build:site
 [0.1.16 공개 파일·사이트 검사](results/public-distribution-0.1.16.json)는 공개 파일 4개·다운로드 링크·백신 검사 미완료 고지·정적 자산·옛 고지 주소 26개를 확인했습니다. [0.1.14 검사](results/public-distribution-0.1.14.json)·[0.1.13 검사](results/public-distribution-0.1.13.json)·[0.1.6 공개 다운로드](results/public-release-0.1.6.json)·[공개 SEO](results/pages-seo.json)는 당시의 원격 상태입니다. 로컬 구조를 변경했다고 원격 재배포나 앱 재검증이 완료된 것은 아닙니다.
 
 [사이트 화면](assets/site-desktop.png) · [모바일](assets/site-mobile.png) · [404](assets/site-404-mobile.png) · [안내서](assets/guide-desktop.png)
+
+0.1.18은 Docker Desktop 원본 판별 수정의 설치 파일 반영 요청에 따라 별도의 정확한 파일 4개 승인을 기록합니다. 미서명·백신 검사 미완료 고지를 유지한 prerelease에 한정하며, 이전 버전의 해시·완료 결과를 재사용하지 않습니다.
